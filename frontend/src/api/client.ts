@@ -178,7 +178,11 @@ export const parametersApi = {
     const response = await apiClient.get<ParameterReading[]>('/parameters', {
       params,
     })
-    return response.data
+    // Map time to timestamp for compatibility
+    return response.data.map(reading => ({
+      ...reading,
+      timestamp: reading.time || reading.timestamp
+    }))
   },
 
   latest: async (tank_id: string): Promise<LatestParameters> => {

@@ -77,6 +77,7 @@ export interface ParameterSubmission {
 
 export interface ParameterReading {
   time: string
+  timestamp: string  // Alias for time
   tank_id: string
   parameter_type: string
   value: number
