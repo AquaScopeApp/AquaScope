@@ -5,19 +5,136 @@ All notable changes to ReefLab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-02-07
+
+### 🎉 First Stable Release
+
+Complete ReefLab application with all core features implemented and production-ready.
+
+### Added - Phase 5-7: Complete Frontend & Documentation
+
+#### Photos Feature
+- Photo gallery page with grid layout
+- Drag-and-drop photo upload component
+- Image preview before upload
+- File validation (JPG, PNG, GIF, 10MB max)
+- Lightbox viewer for full-size images
+- Keyboard navigation (arrows, ESC)
+- In-place photo metadata editing
+- Tank filtering for photos
+- Statistics dashboard (total photos, monthly count)
+- Empty state with upload prompt
+
+#### Notes System
+- Notes/journal page for tank observations
+- Note card component with formatted display
+- Modal note editor with formatting tips
+- Create, edit, delete functionality
+- Tank-based organization
+- Character counter
+- Preserved whitespace formatting
+- Statistics (total notes, monthly, weekly average)
+- Edit history tracking
+
+#### Tank Management Enhancements
+- Split volume tracking (display + sump)
+- Total volume auto-calculation
+- Tank description field
+- Custom tank image URLs
+- Default animated tank SVG
+- Tank events/milestones system
+- Working navigation links to parameters
+- Enhanced tank cards with visual improvements
+
+#### Parameter Enhancements
+- Recharts visualization with color-coded ranges
+- Inline parameter editing
+- Excel/CSV bulk import
+- Ratio calculations (NO3/PO4, Mg/Ca)
+- SPS-optimized parameter ranges
+- Floating-point precision fixes
+- Latest reading indicators
+
+#### Maintenance System Complete
+- Visual reminder categorization (overdue, due soon, upcoming)
+- Statistics dashboard by status
+- 9 predefined reminder types with icons
+- Frequency presets (3 days to 6 months)
+- Custom frequency input
+- Automatic next-due calculation
+- Active/inactive toggle
+- Mark as complete with custom dates
+
+#### Livestock Inventory Complete
+- Type-specific styling (fish, coral, invertebrate)
+- Grouped display by type
+- FishBase search integration
+- Auto-fill species data
+- Type and tank filtering
+- Statistics by type
+- Species notes and observations
+
+### Testing
+- Comprehensive integration tests for Maintenance API
+  - CRUD operations
+  - Filtering (active, overdue, tank)
+  - Complete reminder with date calculation
+  - Authorization tests
+- Comprehensive integration tests for Livestock API
+  - CRUD for fish, corals, invertebrates
+  - Type and tank filtering
+  - FishBase search endpoint
+- Test coverage for all critical paths
+- Pytest fixtures for test data
+
+### Documentation
+- Complete API documentation (API.md)
+  - All endpoints documented
+  - Request/response examples
+  - Error codes and responses
+  - Authentication guide
+- Updated README with features status
+  - Completed features section
+  - Updated roadmap
+  - Installation guide
+  - Development instructions
+- CHANGELOG.md with full version history
+
+### UI/UX Improvements
+- Consistent empty states across all pages
+- Loading states for async operations
+- Statistics cards on all pages
+- Color-coded status indicators
+- Responsive grid layouts
+- Modal forms for create/edit operations
+- Confirmation dialogs for deletions
+- Toast notifications
+
+### Technical Improvements
+- Frontend version bumped to 1.0.0
+- Production-optimized builds
+- Proper TypeScript types throughout
+- Consistent component patterns
+- Error handling improvements
+- Performance optimizations
+
+### Fixed
+- Floating-point precision issues in parameter ranges
+- TypeScript build errors with unused variables
+- File read requirements for editing
+- Frontend hot-reload issues in production
+- Missing routes in App.tsx
+
 ## [Unreleased]
 
-### Planned
-- Tank management UI (CRUD operations)
-- Parameter entry form with validation
-- Photo gallery with upload
-- Maintenance calendar view
-- Livestock management UI
-- Notes editor
-- Grafana dashboard templates
+### Planned for v1.1.0+
 - Email notifications for maintenance reminders
+- Grafana dashboard templates
 - API rate limiting
-- Database migration automation
+- Mobile responsive design improvements
+- Dosing calculator
+- Water change calculator
+- Equipment tracking
 
 ## [0.4.0] - 2024-02-07
 
@@ -365,6 +482,8 @@ All releases are tagged in Git and available on GitHub:
 - `v0.1.0` - Project Infrastructure
 - `v0.2.0` - Backend Foundation
 - `v0.3.0` - Complete Backend API
+- `v0.4.0` - Frontend Foundation
+- `v1.0.0` - First Stable Release 🎉
 
 ## Versioning Strategy
 
@@ -378,10 +497,8 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 1** (v0.1.0): Infrastructure setup
 - ✅ **Phase 2** (v0.2.0): Backend foundation
 - ✅ **Phase 3** (v0.3.0): Complete API
-- 🚧 **Phase 4** (v0.4.0): Frontend application (in progress)
-- 📅 **Phase 5** (v0.5.0): Frontend features
-- 📅 **Phase 6** (v0.6.0): Grafana integration
-- 📅 **Phase 7** (v1.0.0): Production release
+- ✅ **Phase 4** (v0.4.0): Frontend application
+- ✅ **Phase 5-7** (v1.0.0): Complete features & production release 🎉
 
 ## Contributing
 
