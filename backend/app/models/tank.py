@@ -6,15 +6,18 @@ Represents a reef aquarium. Users can have multiple tanks, each tracked separate
 Design Decisions:
 - Separate tank entity: Allows users to manage multiple aquariums
 - Volume in liters: Standardized metric unit (can be converted in UI)
+- Separate display and sump volumes: Allows for precise system calculations
 - Setup date: Important for tracking tank maturity and parameter stability
 - Foreign key to User: Implements multi-tenancy and data isolation
+- Description and image: Rich tank information and visual identification
+- Events: Track major milestones and changes
 
 Why separate tanks from users?
 - Hobbyists often maintain multiple tanks (display, quarantine, frag tanks)
 - Parameters, livestock, and maintenance are tank-specific
 - Allows for tank-specific analytics and comparisons
 """
-from sqlalchemy import Column, String, Float, Date, DateTime, ForeignKey
+from sqlalchemy import Column, String, Float, Date, DateTime, ForeignKey, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -29,7 +32,15 @@ class Tank(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     name = Column(String, nullable=False)
-    volume_liters = Column(Float, nullable=True)  # Optional - not everyone measures precisely
+
+    # Volume fields (optional - not everyone measures precisely)
+    display_volume_liters = Column(Float, nullable=True)
+    sump_volume_liters = Column(Float, nullable=True)
+
+    # Rich information
+    description = Column(Text, nullable=True)
+    image_url = Column(String, nullable=True)  # URL or path to tank image
+
     setup_date = Column(Date, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
@@ -40,6 +51,41 @@ class Tank(Base):
     photos = relationship("Photo", back_populates="tank", cascade="all, delete-orphan")
     maintenance_reminders = relationship("MaintenanceReminder", back_populates="tank", cascade="all, delete-orphan")
     livestock = relationship("Livestock", back_populates="tank", cascade="all, delete-orphan")
+    events = relationship("TankEvent", back_populates="tank", cascade="all, delete-orphan")
+
+    @property
+    def total_volume_liters(self) -> float:
+        """Calculate total system volume"""
+        total = 0.0
+        if self.display_volume_liters:
+            total += self.display_volume_liters
+        if self.sump_volume_liters:
+            total += self.sump_volume_liters
+        return total
 
     def __repr__(self):
         return f"<Tank {self.name}>"
+
+
+class TankEvent(Base):
+    """Major events and milestones in tank history"""
+    __tablename__ = "tank_events"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    tank_id = Column(UUID(as_uuid=True), ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+    event_date = Column(Date, nullable=False)
+    event_type = Column(String, nullable=True)  # e.g., "setup", "rescape", "upgrade", "crash", "milestone"
+
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Relationships
+    tank = relationship("Tank", back_populates="events")
+    owner = relationship("User")
+
+    def __repr__(self):
+        return f"<TankEvent {self.title} on {self.event_date}>"

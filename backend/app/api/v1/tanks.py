@@ -12,8 +12,11 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.user import User
-from app.models.tank import Tank
-from app.schemas.tank import TankCreate, TankUpdate, TankResponse
+from app.models.tank import Tank, TankEvent
+from app.schemas.tank import (
+    TankCreate, TankUpdate, TankResponse,
+    TankEventCreate, TankEventUpdate, TankEventResponse
+)
 from app.api.deps import get_current_user
 
 router = APIRouter()
@@ -140,5 +143,129 @@ def delete_tank(
         )
 
     db.delete(tank)
+    db.commit()
+    return None
+
+
+# ============================================================================
+# Tank Events Endpoints
+# ============================================================================
+
+@router.post("/{tank_id}/events", response_model=TankEventResponse, status_code=status.HTTP_201_CREATED)
+def create_tank_event(
+    tank_id: UUID,
+    event_in: TankEventCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Create a new event for a tank (milestone, rescape, upgrade, etc.)
+    """
+    # Verify tank ownership
+    tank = db.query(Tank).filter(
+        Tank.id == tank_id,
+        Tank.user_id == current_user.id
+    ).first()
+
+    if not tank:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tank not found"
+        )
+
+    event = TankEvent(
+        **event_in.model_dump(),
+        tank_id=tank_id,
+        user_id=current_user.id
+    )
+    db.add(event)
+    db.commit()
+    db.refresh(event)
+    return event
+
+
+@router.get("/{tank_id}/events", response_model=List[TankEventResponse])
+def list_tank_events(
+    tank_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    List all events for a tank, ordered by date (most recent first)
+    """
+    # Verify tank ownership
+    tank = db.query(Tank).filter(
+        Tank.id == tank_id,
+        Tank.user_id == current_user.id
+    ).first()
+
+    if not tank:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Tank not found"
+        )
+
+    events = db.query(TankEvent).filter(
+        TankEvent.tank_id == tank_id
+    ).order_by(TankEvent.event_date.desc()).all()
+
+    return events
+
+
+@router.put("/{tank_id}/events/{event_id}", response_model=TankEventResponse)
+def update_tank_event(
+    tank_id: UUID,
+    event_id: UUID,
+    event_in: TankEventUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update a tank event
+    """
+    event = db.query(TankEvent).filter(
+        TankEvent.id == event_id,
+        TankEvent.tank_id == tank_id,
+        TankEvent.user_id == current_user.id
+    ).first()
+
+    if not event:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Event not found"
+        )
+
+    update_data = event_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(event, field, value)
+
+    db.commit()
+    db.refresh(event)
+    return event
+
+
+@router.delete("/{tank_id}/events/{event_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_tank_event(
+    tank_id: UUID,
+    event_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Delete a tank event
+    """
+    event = db.query(TankEvent).filter(
+        TankEvent.id == event_id,
+        TankEvent.tank_id == tank_id,
+        TankEvent.user_id == current_user.id
+    ).first()
+
+    if not event:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Event not found"
+        )
+
+    db.delete(event)
     db.commit()
     return None
