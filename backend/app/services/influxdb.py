@@ -266,10 +266,11 @@ class InfluxDBService:
         """
         delete_api = self.client.delete_api()
 
-        # Convert timestamp to RFC3339 format
-        start_time = timestamp.isoformat() + "Z"
+        # Convert timestamp to RFC3339 format (without fractional seconds)
+        # InfluxDB requires RFC3339Nano format like "2026-02-07T16:07:00Z"
+        start_time = timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
         # Add 1 second to create a narrow time range for deletion
-        stop_time = (timestamp.replace(microsecond=0) + timedelta(seconds=1)).isoformat() + "Z"
+        stop_time = (timestamp + timedelta(seconds=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Build predicate to target specific data point
         predicate = f'_measurement="reef_parameters" AND user_id="{user_id}" AND tank_id="{tank_id}" AND parameter_type="{parameter_type}"'

@@ -195,17 +195,27 @@ export default function Parameters() {
     }
 
     try {
+      const isoTimestamp = new Date(timestamp).toISOString()
+      console.log('[Delete] Attempting to delete:', {
+        tank_id: selectedTank,
+        parameter_type: paramType,
+        timestamp: isoTimestamp,
+        original: timestamp
+      })
+
       await parametersApi.delete({
         tank_id: selectedTank,
         parameter_type: paramType,
-        timestamp: new Date(timestamp).toISOString(),
+        timestamp: isoTimestamp,
       })
 
+      console.log('[Delete] Successfully deleted')
       // Reload data after successful deletion
       loadParameters()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to delete parameter:', error)
-      alert('Failed to delete parameter reading')
+      const errorMessage = error.response?.data?.detail || error.message || 'Unknown error'
+      alert(`Failed to delete parameter reading: ${errorMessage}`)
     }
   }
 
@@ -229,12 +239,22 @@ export default function Parameters() {
     }
 
     try {
+      const isoTimestamp = new Date(editingReading.reading.timestamp).toISOString()
+      console.log('[Edit] Step 1: Deleting old reading:', {
+        tank_id: selectedTank,
+        parameter_type: editingReading.paramType,
+        timestamp: isoTimestamp,
+        original: editingReading.reading.timestamp
+      })
+
       // Delete old reading
       await parametersApi.delete({
         tank_id: selectedTank,
         parameter_type: editingReading.paramType,
-        timestamp: new Date(editingReading.reading.timestamp).toISOString(),
+        timestamp: isoTimestamp,
       })
+
+      console.log('[Edit] Step 2: Submitting new reading with value:', newValue)
 
       // Submit new reading with updated value
       const paramData: any = {
@@ -245,13 +265,16 @@ export default function Parameters() {
 
       await parametersApi.submit(paramData)
 
+      console.log('[Edit] Successfully edited parameter')
+
       // Reload data
       setEditingReading(null)
       setEditValue('')
       loadParameters()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to edit parameter:', error)
-      alert('Failed to edit parameter reading')
+      const errorMessage = error.response?.data?.detail || error.message || 'Unknown error'
+      alert(`Failed to edit parameter reading: ${errorMessage}`)
     }
   }
 
