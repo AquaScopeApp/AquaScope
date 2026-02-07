@@ -59,6 +59,9 @@ docker-compose.override.yml
 uploads/
 photos/
 
+# Personal data
+data/
+
 # Testing
 .coverage
 htmlcov/
