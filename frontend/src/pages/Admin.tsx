@@ -23,6 +23,8 @@ export default function Admin() {
   const [editingUser, setEditingUser] = useState<string | null>(null)
   const [editUsername, setEditUsername] = useState('')
   const [editIsAdmin, setEditIsAdmin] = useState(false)
+  const [importData, setImportData] = useState('')
+  const [showImport, setShowImport] = useState(false)
 
   // Redirect non-admin users
   if (!user?.is_admin) {
@@ -98,6 +100,43 @@ export default function Admin() {
     } catch (error: any) {
       console.error('Failed to delete user:', error)
       alert(error.response?.data?.detail || 'Failed to delete user')
+    }
+  }
+
+  const handleExport = async (userId: string) => {
+    try {
+      const data = await adminApi.exportUserData(userId)
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `reeflab-export-${data.user.email}-${new Date().toISOString().split('T')[0]}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Failed to export data:', error)
+      alert('Failed to export user data')
+    }
+  }
+
+  const handleImport = async (userId: string) => {
+    if (!importData.trim()) {
+      alert('Please paste JSON data to import')
+      return
+    }
+
+    try {
+      const data = JSON.parse(importData)
+      const result = await adminApi.importUserData(userId, data)
+      alert(`Import successful!\n${JSON.stringify(result.imported, null, 2)}`)
+      setImportData('')
+      setShowImport(false)
+      loadData()
+    } catch (error: any) {
+      console.error('Failed to import data:', error)
+      alert(error.response?.data?.detail || 'Failed to import data. Check JSON format.')
     }
   }
 
@@ -378,6 +417,61 @@ export default function Admin() {
                         <span className="text-sm font-medium text-gray-700">Total Items</span>
                         <span className="font-bold">{userDataSummary.total_items}</span>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Export/Import Section */}
+                  <div className="border-t pt-4">
+                    <div className="text-sm font-medium text-gray-700 mb-3">Data Management</div>
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => handleExport(selectedUser.id)}
+                        className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm flex items-center justify-center space-x-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>Export Data (JSON)</span>
+                      </button>
+
+                      {!showImport ? (
+                        <button
+                          onClick={() => setShowImport(true)}
+                          className="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm flex items-center justify-center space-x-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                          </svg>
+                          <span>Import Data (JSON)</span>
+                        </button>
+                      ) : (
+                        <div className="space-y-2">
+                          <textarea
+                            value={importData}
+                            onChange={(e) => setImportData(e.target.value)}
+                            placeholder="Paste JSON export data here..."
+                            rows={8}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-xs font-mono"
+                          />
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleImport(selectedUser.id)}
+                              className="flex-1 px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
+                            >
+                              Import
+                            </button>
+                            <button
+                              onClick={() => {
+                                setShowImport(false)
+                                setImportData('')
+                              }}
+                              className="flex-1 px-3 py-1.5 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

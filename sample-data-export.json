@@ -1,0 +1,106 @@
+{
+  "user": {
+    "email": "sample@reeflab.com",
+    "username": "SampleUser",
+    "is_admin": false
+  },
+  "tanks": [
+    {
+      "name": "Main Reef Tank",
+      "display_volume_liters": 200,
+      "sump_volume_liters": 50,
+      "description": "Mixed reef with SPS and LPS corals. Running since January 2024.",
+      "image_url": null,
+      "setup_date": "2024-01-15",
+      "events": []
+    }
+  ],
+  "notes": [
+    {
+      "content": "Initial setup complete. Cycling started with Dr. Tim's One and Only bacterial culture. Adding 2ppm ammonia daily.",
+      "created_at": "2024-01-15T10:00:00Z"
+    },
+    {
+      "content": "First coral additions:\n- Monitipora digitata (green)\n- Acropora millepora (blue)\n- Stylophora pistillata (pink)\n\nAll showing good polyp extension. Parameters stable.",
+      "created_at": "2024-02-01T14:30:00Z"
+    },
+    {
+      "content": "Installed dosing system for:\n- Calcium chloride\n- Sodium bicarbonate\n- Magnesium chloride\n\nDosing rates: Ca 50ml/day, Alk 45ml/day, Mg 30ml/day",
+      "created_at": "2024-03-10T09:15:00Z"
+    }
+  ],
+  "livestock": [
+    {
+      "species_name": "Amphiprion ocellaris",
+      "common_name": "Ocellaris Clownfish",
+      "type": "fish",
+      "fishbase_species_id": "5537",
+      "added_date": "2024-02-15",
+      "notes": "Pair of clowns. Very active, hosting in Duncan coral."
+    },
+    {
+      "species_name": "Zebrasoma flavescens",
+      "common_name": "Yellow Tang",
+      "type": "fish",
+      "fishbase_species_id": "5953",
+      "added_date": "2024-03-01",
+      "notes": "Excellent algae control. Peaceful temperament."
+    },
+    {
+      "species_name": "Acropora millepora",
+      "common_name": "Blue Acropora",
+      "type": "coral",
+      "fishbase_species_id": null,
+      "added_date": "2024-02-01",
+      "notes": "Beautiful blue coloration. Growing rapidly with good PAR."
+    },
+    {
+      "species_name": "Stylophora pistillata",
+      "common_name": "Pink Stylophora",
+      "type": "coral",
+      "fishbase_species_id": null,
+      "added_date": "2024-02-01",
+      "notes": "Pink/purple tips. Very hardy SPS coral."
+    },
+    {
+      "species_name": "Lysmata amboinensis",
+      "common_name": "Cleaner Shrimp",
+      "type": "invertebrate",
+      "fishbase_species_id": null,
+      "added_date": "2024-02-20",
+      "notes": "Setting up cleaning station near cave. Fish visiting regularly."
+    }
+  ],
+  "reminders": [
+    {
+      "title": "Weekly 10% Water Change",
+      "description": "Change 25L of water (10% total volume). Clean powerheads during change.",
+      "reminder_type": "water_change",
+      "frequency_days": 7,
+      "next_due": "2024-04-01",
+      "last_completed": "2024-03-25",
+      "is_active": true
+    },
+    {
+      "title": "Clean Protein Skimmer",
+      "description": "Remove skimmer cup and clean thoroughly. Check air intake.",
+      "reminder_type": "skimmer_cleaning",
+      "frequency_days": 14,
+      "next_due": "2024-04-05",
+      "last_completed": "2024-03-22",
+      "is_active": true
+    },
+    {
+      "title": "Test ICP Kit",
+      "description": "Send water sample to Triton or ATI for ICP analysis.",
+      "reminder_type": "test_kit_calibration",
+      "frequency_days": 90,
+      "next_due": "2024-06-15",
+      "last_completed": null,
+      "is_active": true
+    }
+  ],
+  "photos": [],
+  "exported_at": "2024-03-28T12:00:00Z",
+  "version": "1.0"
+}

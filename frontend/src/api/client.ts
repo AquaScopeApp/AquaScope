@@ -444,6 +444,16 @@ export const adminApi = {
     const response = await apiClient.get<UserDataSummary>(`/admin/users/${userId}/data-summary`)
     return response.data
   },
+
+  exportUserData: async (userId: string): Promise<any> => {
+    const response = await apiClient.get(`/admin/export/${userId}`)
+    return response.data
+  },
+
+  importUserData: async (userId: string, data: any): Promise<any> => {
+    const response = await apiClient.post(`/admin/import/${userId}`, data)
+    return response.data
+  },
 }
 
 // ============================================================================

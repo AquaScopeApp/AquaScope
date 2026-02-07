@@ -5,6 +5,7 @@ Admin-only endpoints for user management and system monitoring.
 """
 from typing import List
 from uuid import UUID
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func, text
@@ -214,3 +215,165 @@ def get_user_data_summary(
         "reminders": reminders_count,
         "total_items": tanks_count + photos_count + notes_count + livestock_count + reminders_count
     }
+
+
+@router.get("/export/{user_id}")
+def export_user_data(
+    user_id: UUID,
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Export all data for a specific user as JSON (admin only).
+
+    Returns a complete JSON export including:
+    - User info
+    - Tanks (with events)
+    - Notes
+    - Livestock
+    - Maintenance reminders
+    - Photos metadata (not the actual files)
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    # Get all user data
+    tanks = db.query(Tank).filter(Tank.user_id == user_id).all()
+    notes = db.query(Note).filter(Note.user_id == user_id).all()
+    photos = db.query(Photo).filter(Photo.user_id == user_id).all()
+    livestock = db.query(Livestock).filter(Livestock.user_id == user_id).all()
+    reminders = db.query(MaintenanceReminder).filter(MaintenanceReminder.user_id == user_id).all()
+
+    # Convert to dict
+    from app.schemas.tank import TankResponse
+    from app.schemas.note import NoteResponse
+    from app.schemas.photo import PhotoResponse
+    from app.schemas.livestock import LivestockResponse
+    from app.schemas.maintenance import MaintenanceReminderResponse
+
+    export_data = {
+        "user": {
+            "email": user.email,
+            "username": user.username,
+            "is_admin": user.is_admin,
+        },
+        "tanks": [TankResponse.model_validate(t).model_dump(mode='json') for t in tanks],
+        "notes": [NoteResponse.model_validate(n).model_dump(mode='json') for n in notes],
+        "photos": [PhotoResponse.model_validate(p).model_dump(mode='json') for p in photos],
+        "livestock": [LivestockResponse.model_validate(l).model_dump(mode='json') for l in livestock],
+        "reminders": [MaintenanceReminderResponse.model_validate(r).model_dump(mode='json') for r in reminders],
+        "exported_at": datetime.utcnow().isoformat(),
+        "version": "1.0"
+    }
+
+    return export_data
+
+
+@router.post("/import/{user_id}")
+async def import_user_data(
+    user_id: UUID,
+    import_data: dict,
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Import data for a specific user from JSON export (admin only).
+
+    WARNING: This will ADD data to the user's account, not replace it.
+    To replace, delete the user first and recreate.
+
+    The import data should match the export format.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+
+    imported_counts = {
+        "tanks": 0,
+        "notes": 0,
+        "photos": 0,
+        "livestock": 0,
+        "reminders": 0
+    }
+
+    try:
+        # Import tanks
+        for tank_data in import_data.get("tanks", []):
+            # Remove IDs to create new records
+            tank_data.pop("id", None)
+            tank_data.pop("user_id", None)
+            tank_data.pop("created_at", None)
+            tank_data.pop("updated_at", None)
+            tank_data.pop("events", None)  # Skip events for now
+
+            tank = Tank(**tank_data, user_id=user.id)
+            db.add(tank)
+            imported_counts["tanks"] += 1
+
+        # Import notes
+        for note_data in import_data.get("notes", []):
+            note_data.pop("id", None)
+            note_data.pop("user_id", None)
+            note_data.pop("created_at", None)
+            note_data.pop("updated_at", None)
+
+            # Find tank by name or skip
+            tank_id = note_data.pop("tank_id", None)
+            if tank_id:
+                tank = db.query(Tank).filter(
+                    Tank.user_id == user.id
+                ).first()
+                if tank:
+                    note = Note(**note_data, user_id=user.id, tank_id=tank.id)
+                    db.add(note)
+                    imported_counts["notes"] += 1
+
+        # Import livestock
+        for livestock_data in import_data.get("livestock", []):
+            livestock_data.pop("id", None)
+            livestock_data.pop("user_id", None)
+            livestock_data.pop("created_at", None)
+
+            tank_id = livestock_data.pop("tank_id", None)
+            if tank_id:
+                tank = db.query(Tank).filter(Tank.user_id == user.id).first()
+                if tank:
+                    livestock_item = Livestock(**livestock_data, user_id=user.id, tank_id=tank.id)
+                    db.add(livestock_item)
+                    imported_counts["livestock"] += 1
+
+        # Import reminders
+        for reminder_data in import_data.get("reminders", []):
+            reminder_data.pop("id", None)
+            reminder_data.pop("user_id", None)
+            reminder_data.pop("created_at", None)
+            reminder_data.pop("updated_at", None)
+
+            tank_id = reminder_data.pop("tank_id", None)
+            if tank_id:
+                tank = db.query(Tank).filter(Tank.user_id == user.id).first()
+                if tank:
+                    reminder = MaintenanceReminder(**reminder_data, user_id=user.id, tank_id=tank.id)
+                    db.add(reminder)
+                    imported_counts["reminders"] += 1
+
+        db.commit()
+
+        return {
+            "message": "Data imported successfully",
+            "imported": imported_counts
+        }
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Import failed: {str(e)}"
+        )
