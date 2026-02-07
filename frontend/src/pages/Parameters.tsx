@@ -25,6 +25,8 @@ export default function Parameters() {
     reading: ParameterReading
   } | null>(null)
   const [editValue, setEditValue] = useState<string>('')
+  const [editTimestamp, setEditTimestamp] = useState<string>('')
+  const [tableFilter, setTableFilter] = useState<string>('')
 
   useEffect(() => {
     loadTanks()
@@ -222,11 +224,18 @@ export default function Parameters() {
   const handleStartEdit = (paramType: string, reading: ParameterReading) => {
     setEditingReading({ paramType, reading })
     setEditValue(reading.value.toString())
+    // Convert timestamp to datetime-local format (YYYY-MM-DDTHH:mm)
+    const timestamp = new Date(reading.timestamp)
+    const localDateTime = new Date(timestamp.getTime() - timestamp.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 16)
+    setEditTimestamp(localDateTime)
   }
 
   const handleCancelEdit = () => {
     setEditingReading(null)
     setEditValue('')
+    setEditTimestamp('')
   }
 
   const handleSaveEdit = async () => {
@@ -238,12 +247,21 @@ export default function Parameters() {
       return
     }
 
+    // Validate timestamp
+    const newTimestamp = new Date(editTimestamp)
+    if (isNaN(newTimestamp.getTime())) {
+      alert('Invalid timestamp')
+      return
+    }
+
     try {
-      const isoTimestamp = new Date(editingReading.reading.timestamp).toISOString()
+      const oldIsoTimestamp = new Date(editingReading.reading.timestamp).toISOString()
+      const newIsoTimestamp = newTimestamp.toISOString()
+
       console.log('[Edit] Step 1: Deleting old reading:', {
         tank_id: selectedTank,
         parameter_type: editingReading.paramType,
-        timestamp: isoTimestamp,
+        timestamp: oldIsoTimestamp,
         original: editingReading.reading.timestamp
       })
 
@@ -251,15 +269,18 @@ export default function Parameters() {
       await parametersApi.delete({
         tank_id: selectedTank,
         parameter_type: editingReading.paramType,
-        timestamp: isoTimestamp,
+        timestamp: oldIsoTimestamp,
       })
 
-      console.log('[Edit] Step 2: Submitting new reading with value:', newValue)
+      console.log('[Edit] Step 2: Submitting new reading:', {
+        value: newValue,
+        timestamp: newIsoTimestamp
+      })
 
-      // Submit new reading with updated value
+      // Submit new reading with updated value and timestamp
       const paramData: any = {
         tank_id: selectedTank,
-        timestamp: editingReading.reading.timestamp,
+        timestamp: newIsoTimestamp,
       }
       paramData[editingReading.paramType] = newValue
 
@@ -270,6 +291,7 @@ export default function Parameters() {
       // Reload data
       setEditingReading(null)
       setEditValue('')
+      setEditTimestamp('')
       loadParameters()
     } catch (error: any) {
       console.error('Failed to edit parameter:', error)
@@ -378,12 +400,25 @@ export default function Parameters() {
       {showTableView && selectedTank && !isLoading && (
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">
-              Raw Data Table (Debug View)
-            </h3>
-            <p className="text-sm text-gray-600 mt-1">
-              Total entries: {Object.values(parameters).flat().length}
-            </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Raw Data Table (Debug View)
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Total entries: {Object.values(parameters).flat().length}
+                </p>
+              </div>
+              <div className="w-64">
+                <input
+                  type="text"
+                  placeholder="Filter by parameter..."
+                  value={tableFilter}
+                  onChange={(e) => setTableFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
+                />
+              </div>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -414,6 +449,14 @@ export default function Parameters() {
                       reading,
                     }))
                   )
+                  .filter(({ paramType }) => {
+                    // Filter by search term
+                    if (!tableFilter) return true
+                    const range = PARAMETER_RANGES[paramType]
+                    const paramName = range?.name || paramType
+                    return paramName.toLowerCase().includes(tableFilter.toLowerCase()) ||
+                           paramType.toLowerCase().includes(tableFilter.toLowerCase())
+                  })
                   .sort((a, b) =>
                     new Date(b.reading.timestamp).getTime() -
                     new Date(a.reading.timestamp).getTime()
@@ -424,8 +467,17 @@ export default function Parameters() {
                                      editingReading?.reading.timestamp === reading.timestamp
                     return (
                       <tr key={`${paramType}-${reading.timestamp}`}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {new Date(reading.timestamp).toLocaleString()}
+                        <td className="px-6 py-4 text-sm text-gray-900">
+                          {isEditing ? (
+                            <input
+                              type="datetime-local"
+                              value={editTimestamp}
+                              onChange={(e) => setEditTimestamp(e.target.value)}
+                              className="w-48 px-2 py-1 border border-ocean-300 rounded focus:outline-none focus:ring-2 focus:ring-ocean-500"
+                            />
+                          ) : (
+                            new Date(reading.timestamp).toLocaleString()
+                          )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {range?.name || paramType}

@@ -74,10 +74,28 @@ export default function ParameterChart({
 
   // Calculate domain with some padding
   const values = chartData.map((d) => d.value)
-  const minValue = Math.min(...values, range.min)
-  const maxValue = Math.max(...values, range.max)
-  const padding = (maxValue - minValue) * 0.1
-  const yDomain = [minValue - padding, maxValue + padding]
+
+  // For ratio charts, use tighter bounds to keep them readable
+  const isRatio = parameterType.includes('_ratio')
+  let yDomain: [number, number]
+
+  if (isRatio) {
+    // For ratios, prioritize the defined range with minimal expansion
+    const minValue = Math.min(...values, range.min)
+    const maxValue = Math.max(...values, range.max)
+    const rangeSpan = range.max - range.min
+    const padding = rangeSpan * 0.15 // Smaller padding for ratios
+    yDomain = [
+      Math.max(0, minValue - padding), // Don't go below 0 for ratios
+      maxValue + padding
+    ]
+  } else {
+    // For regular parameters, use existing logic
+    const minValue = Math.min(...values, range.min)
+    const maxValue = Math.max(...values, range.max)
+    const padding = (maxValue - minValue) * 0.1
+    yDomain = [minValue - padding, maxValue + padding]
+  }
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
