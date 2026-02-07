@@ -474,7 +474,6 @@ export default function Parameters() {
                   const startIndex = (currentPage - 1) * itemsPerPage
                   const endIndex = startIndex + itemsPerPage
                   const paginatedRows = allRows.slice(startIndex, endIndex)
-                  const totalPages = Math.ceil(allRows.length / itemsPerPage)
 
                   return (
                     <>
