@@ -112,9 +112,15 @@ export default function ParameterChart({
           <div className={`px-3 py-2 rounded-md border ${getStatusColor(status)}`}>
             <div className="text-xs font-medium">Current</div>
             <div className="text-2xl font-bold">
-              {parameterType === 'salinity' || parameterType === 'phosphate'
-                ? latestReading.value.toFixed(3)
-                : latestReading.value.toFixed(2)}
+              {(() => {
+                if (parameterType === 'salinity' || parameterType === 'phosphate') {
+                  return latestReading.value.toFixed(3)
+                } else if (parameterType.includes('_ratio')) {
+                  return latestReading.value.toFixed(2)
+                } else {
+                  return latestReading.value.toFixed(2)
+                }
+              })()}
               <span className="text-sm ml-1">{range.unit}</span>
             </div>
           </div>
@@ -127,14 +133,20 @@ export default function ParameterChart({
           <div>
             <span className="text-gray-600">Normal Range:</span>
             <span className="font-semibold text-gray-900 ml-2">
-              {range.min} - {range.max} {range.unit}
+              {(() => {
+                const decimals = parameterType === 'salinity' || parameterType === 'phosphate' ? 3 : 2
+                return `${Number(range.min).toFixed(decimals)} - ${Number(range.max).toFixed(decimals)} ${range.unit}`
+              })()}
             </span>
           </div>
           {range.ideal && (
             <div>
               <span className="text-gray-600">Ideal:</span>
               <span className="font-semibold text-green-600 ml-2">
-                {range.ideal} {range.unit}
+                {(() => {
+                  const decimals = parameterType === 'salinity' || parameterType === 'phosphate' ? 3 : 2
+                  return `${Number(range.ideal).toFixed(decimals)} ${range.unit}`
+                })()}
               </span>
             </div>
           )}
@@ -203,7 +215,12 @@ export default function ParameterChart({
             }}
             labelFormatter={(timestamp: number) => format(new Date(timestamp), 'MMM dd, yyyy HH:mm')}
             formatter={(value: number) => {
-              const decimals = parameterType === 'salinity' || parameterType === 'phosphate' ? 3 : 2
+              let decimals = 2
+              if (parameterType === 'salinity' || parameterType === 'phosphate') {
+                decimals = 3
+              } else if (parameterType.includes('_ratio')) {
+                decimals = 2
+              }
               return [
                 `${value.toFixed(decimals)} ${range.unit}`,
                 range.name,

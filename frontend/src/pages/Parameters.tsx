@@ -17,7 +17,7 @@ export default function Parameters() {
   const [parameters, setParameters] = useState<Record<string, ParameterReading[]>>({})
   const [ratios, setRatios] = useState<Record<string, ParameterReading[]>>({})
   const [isLoading, setIsLoading] = useState(true)
-  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d')
+  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | '365d' | 'all'>('365d')
   const [showForm, setShowForm] = useState(false)
   const [showTableView, setShowTableView] = useState(false)
   const [editingReading, setEditingReading] = useState<{
@@ -27,6 +27,8 @@ export default function Parameters() {
   const [editValue, setEditValue] = useState<string>('')
   const [editTimestamp, setEditTimestamp] = useState<string>('')
   const [tableFilter, setTableFilter] = useState<string>('')
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const itemsPerPage = 30
 
   useEffect(() => {
     loadTanks()
@@ -37,6 +39,11 @@ export default function Parameters() {
       loadParameters()
     }
   }, [selectedTank, dateRange])
+
+  // Reset pagination when filter changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [tableFilter])
 
   const loadTanks = async () => {
     try {
@@ -442,26 +449,36 @@ export default function Parameters() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {Object.entries(parameters)
-                  .flatMap(([paramType, readings]) =>
-                    readings.map((reading) => ({
-                      paramType,
-                      reading,
-                    }))
-                  )
-                  .filter(({ paramType }) => {
-                    // Filter by search term
-                    if (!tableFilter) return true
-                    const range = PARAMETER_RANGES[paramType]
-                    const paramName = range?.name || paramType
-                    return paramName.toLowerCase().includes(tableFilter.toLowerCase()) ||
-                           paramType.toLowerCase().includes(tableFilter.toLowerCase())
-                  })
-                  .sort((a, b) =>
-                    new Date(b.reading.timestamp).getTime() -
-                    new Date(a.reading.timestamp).getTime()
-                  )
-                  .map(({ paramType, reading }) => {
+                {(() => {
+                  const allRows = Object.entries(parameters)
+                    .flatMap(([paramType, readings]) =>
+                      readings.map((reading) => ({
+                        paramType,
+                        reading,
+                      }))
+                    )
+                    .filter(({ paramType }) => {
+                      // Filter by search term
+                      if (!tableFilter) return true
+                      const range = PARAMETER_RANGES[paramType]
+                      const paramName = range?.name || paramType
+                      return paramName.toLowerCase().includes(tableFilter.toLowerCase()) ||
+                             paramType.toLowerCase().includes(tableFilter.toLowerCase())
+                    })
+                    .sort((a, b) =>
+                      new Date(b.reading.timestamp).getTime() -
+                      new Date(a.reading.timestamp).getTime()
+                    )
+
+                  // Calculate pagination
+                  const startIndex = (currentPage - 1) * itemsPerPage
+                  const endIndex = startIndex + itemsPerPage
+                  const paginatedRows = allRows.slice(startIndex, endIndex)
+                  const totalPages = Math.ceil(allRows.length / itemsPerPage)
+
+                  return (
+                    <>
+                      {paginatedRows.map(({ paramType, reading }) => {
                     const range = PARAMETER_RANGES[paramType]
                     const isEditing = editingReading?.paramType === paramType &&
                                      editingReading?.reading.timestamp === reading.timestamp
@@ -493,9 +510,13 @@ export default function Parameters() {
                               autoFocus
                             />
                           ) : (
-                            paramType === 'salinity' || paramType === 'phosphate'
-                              ? reading.value.toFixed(3)
-                              : reading.value.toFixed(2)
+                            (() => {
+                              if (paramType === 'salinity' || paramType === 'phosphate') {
+                                return reading.value.toFixed(3)
+                              } else {
+                                return reading.value.toFixed(2)
+                              }
+                            })()
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -537,18 +558,69 @@ export default function Parameters() {
                           )}
                         </td>
                       </tr>
-                    )
-                  })}
-                {Object.values(parameters).flat().length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                      No data available in the selected time range
-                    </td>
-                  </tr>
-                )}
+                        )
+                      })}
+                      {allRows.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                            No data available in the selected time range
+                          </td>
+                        </tr>
+                      )}
+                    </>
+                  )
+                })()}
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {(() => {
+            const allRows = Object.entries(parameters)
+              .flatMap(([paramType, readings]) =>
+                readings.map((reading) => ({
+                  paramType,
+                  reading,
+                }))
+              )
+              .filter(({ paramType }) => {
+                if (!tableFilter) return true
+                const range = PARAMETER_RANGES[paramType]
+                const paramName = range?.name || paramType
+                return paramName.toLowerCase().includes(tableFilter.toLowerCase()) ||
+                       paramType.toLowerCase().includes(tableFilter.toLowerCase())
+              })
+            const totalPages = Math.ceil(allRows.length / itemsPerPage)
+
+            if (totalPages <= 1) return null
+
+            return (
+              <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                <div className="text-sm text-gray-700">
+                  Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, allRows.length)} of {allRows.length} entries
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="text-sm text-gray-700">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
 
@@ -561,6 +633,7 @@ export default function Parameters() {
               { value: '7d', label: '7 Days' },
               { value: '30d', label: '30 Days' },
               { value: '90d', label: '90 Days' },
+              { value: '365d', label: '1 Year' },
               { value: 'all', label: 'All Time' },
             ].map((option) => (
               <button
