@@ -283,7 +283,21 @@ For issues and questions:
 - GitHub Issues: https://github.com/eprifti/reeflab/issues
 - Discussions: https://github.com/eprifti/reeflab/discussions
 
-## Roadmap
+## Features Status
+
+### ✅ Completed
+- Parameter tracking with InfluxDB integration
+- Tank management with volume tracking (display + sump)
+- Maintenance reminder system with automatic scheduling
+- Photo gallery with drag-and-drop upload
+- Notes/journal system
+- Livestock inventory with FishBase integration
+- Multi-user authentication and authorization
+- Responsive UI with Tailwind CSS
+- Data visualization with Recharts
+- Excel/CSV import for historical data
+
+### 🎯 Roadmap
 
 - [ ] Email notifications for maintenance reminders
 - [ ] Mobile responsive design improvements
@@ -291,9 +305,11 @@ For issues and questions:
 - [ ] Water change calculator
 - [ ] Equipment tracking
 - [ ] Cost tracking
-- [ ] Community features
+- [ ] Community features (share tanks publicly)
 - [ ] Integration with reef controllers (ReefPi, Neptune)
 - [ ] Mobile app (React Native)
+- [ ] Advanced analytics and trend prediction
+- [ ] Automatic parameter recommendations based on tank type
 
 ---
 
