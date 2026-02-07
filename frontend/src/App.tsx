@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Parameters from './pages/Parameters'
 import Tanks from './pages/Tanks'
+import Maintenance from './pages/Maintenance'
 
 function App() {
   return (
@@ -32,11 +33,11 @@ function App() {
             {/* Feature Routes */}
             <Route path="parameters" element={<Parameters />} />
             <Route path="tanks" element={<Tanks />} />
+            <Route path="maintenance" element={<Maintenance />} />
 
             {/* Placeholder routes - will be implemented in next phase */}
             <Route path="photos" element={<div className="text-center py-12 text-gray-600">Photos page coming soon...</div>} />
             <Route path="notes" element={<div className="text-center py-12 text-gray-600">Notes page coming soon...</div>} />
-            <Route path="maintenance" element={<div className="text-center py-12 text-gray-600">Maintenance page coming soon...</div>} />
             <Route path="livestock" element={<div className="text-center py-12 text-gray-600">Livestock page coming soon...</div>} />
           </Route>
 
