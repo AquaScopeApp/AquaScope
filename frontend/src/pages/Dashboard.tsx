@@ -124,9 +124,9 @@ export default function Dashboard() {
                   className="block p-4 border border-gray-200 rounded-lg hover:border-ocean-500 hover:shadow-md transition-all"
                 >
                   <h3 className="font-semibold text-gray-900">{tank.name}</h3>
-                  {tank.volume_liters && (
+                  {tank.total_volume_liters > 0 && (
                     <p className="text-sm text-gray-600 mt-1">
-                      {tank.volume_liters}L
+                      {tank.total_volume_liters}L
                     </p>
                   )}
                   {tank.setup_date && (

@@ -36,25 +36,62 @@ export interface AuthToken {
 // Tank Types
 // ============================================================================
 
-export interface Tank {
+export interface TankEvent {
   id: string
+  tank_id: string
   user_id: string
-  name: string
-  volume_liters: number | null
-  setup_date: string | null
+  title: string
+  description: string | null
+  event_date: string
+  event_type: string | null
   created_at: string
   updated_at: string
 }
 
+export interface TankEventCreate {
+  title: string
+  description?: string | null
+  event_date: string
+  event_type?: string | null
+}
+
+export interface TankEventUpdate {
+  title?: string
+  description?: string | null
+  event_date?: string
+  event_type?: string | null
+}
+
+export interface Tank {
+  id: string
+  user_id: string
+  name: string
+  display_volume_liters: number | null
+  sump_volume_liters: number | null
+  total_volume_liters: number
+  description: string | null
+  image_url: string | null
+  setup_date: string | null
+  created_at: string
+  updated_at: string
+  events: TankEvent[]
+}
+
 export interface TankCreate {
   name: string
-  volume_liters?: number | null
+  display_volume_liters?: number | null
+  sump_volume_liters?: number | null
+  description?: string | null
+  image_url?: string | null
   setup_date?: string | null
 }
 
 export interface TankUpdate {
   name?: string
-  volume_liters?: number | null
+  display_volume_liters?: number | null
+  sump_volume_liters?: number | null
+  description?: string | null
+  image_url?: string | null
   setup_date?: string | null
 }
 

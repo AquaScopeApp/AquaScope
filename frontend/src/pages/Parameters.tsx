@@ -375,7 +375,7 @@ export default function Parameters() {
           >
             {tanks.map((tank) => (
               <option key={tank.id} value={tank.id}>
-                {tank.name} {tank.volume_liters && `(${tank.volume_liters}L)`}
+                {tank.name} {tank.total_volume_liters > 0 && `(${tank.total_volume_liters}L)`}
               </option>
             ))}
           </select>
@@ -388,8 +388,8 @@ export default function Parameters() {
           <h2 className="text-xl font-semibold text-ocean-900">
             {selectedTankData.name}
           </h2>
-          {selectedTankData.volume_liters && (
-            <p className="text-ocean-700">Volume: {selectedTankData.volume_liters}L</p>
+          {selectedTankData.total_volume_liters > 0 && (
+            <p className="text-ocean-700">Volume: {selectedTankData.total_volume_liters}L</p>
           )}
         </div>
       )}

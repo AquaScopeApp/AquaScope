@@ -15,17 +15,27 @@ interface TankFormProps {
 
 export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
   const [name, setName] = useState('')
-  const [volumeLiters, setVolumeLiters] = useState('')
+  const [displayVolume, setDisplayVolume] = useState('')
+  const [sumpVolume, setSumpVolume] = useState('')
+  const [description, setDescription] = useState('')
   const [setupDate, setSetupDate] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (tank) {
       setName(tank.name)
-      setVolumeLiters(tank.volume_liters?.toString() || '')
+      setDisplayVolume(tank.display_volume_liters?.toString() || '')
+      setSumpVolume(tank.sump_volume_liters?.toString() || '')
+      setDescription(tank.description || '')
       setSetupDate(tank.setup_date || '')
     }
   }, [tank])
+
+  const getTotalVolume = () => {
+    const display = parseFloat(displayVolume) || 0
+    const sump = parseFloat(sumpVolume) || 0
+    return display + sump
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,7 +44,9 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
     try {
       const data: TankCreate = {
         name,
-        volume_liters: volumeLiters ? parseFloat(volumeLiters) : null,
+        display_volume_liters: displayVolume ? parseFloat(displayVolume) : null,
+        sump_volume_liters: sumpVolume ? parseFloat(sumpVolume) : null,
+        description: description || null,
         setup_date: setupDate || null,
       }
 
@@ -43,7 +55,9 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
       // Reset form if creating new tank
       if (!tank) {
         setName('')
-        setVolumeLiters('')
+        setDisplayVolume('')
+        setSumpVolume('')
+        setDescription('')
         setSetupDate('')
       }
     } catch (error) {
@@ -80,27 +94,79 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
             />
           </div>
 
-          {/* Volume */}
+          {/* Description */}
           <div>
             <label
-              htmlFor="volume"
+              htmlFor="description"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Volume (Liters)
+              Description
             </label>
-            <input
-              type="number"
-              id="volume"
-              value={volumeLiters}
-              onChange={(e) => setVolumeLiters(e.target.value)}
-              step="0.1"
-              min="0"
-              placeholder="e.g., 500"
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              placeholder="e.g., Mixed reef with SPS and LPS corals, heavy feeding schedule..."
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
-            <p className="mt-1 text-sm text-gray-500">
-              Total system volume including sump
-            </p>
+          </div>
+
+          {/* Volume Section */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-gray-900">System Volume (Liters)</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Display Volume */}
+              <div>
+                <label
+                  htmlFor="displayVolume"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Display Tank
+                </label>
+                <input
+                  type="number"
+                  id="displayVolume"
+                  value={displayVolume}
+                  onChange={(e) => setDisplayVolume(e.target.value)}
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 400"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                />
+              </div>
+
+              {/* Sump Volume */}
+              <div>
+                <label
+                  htmlFor="sumpVolume"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Sump
+                </label>
+                <input
+                  type="number"
+                  id="sumpVolume"
+                  value={sumpVolume}
+                  onChange={(e) => setSumpVolume(e.target.value)}
+                  step="0.1"
+                  min="0"
+                  placeholder="e.g., 100"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                />
+              </div>
+            </div>
+
+            {/* Total Volume Display */}
+            {(displayVolume || sumpVolume) && (
+              <div className="bg-ocean-50 border border-ocean-200 rounded-md p-3">
+                <p className="text-sm text-ocean-900">
+                  <span className="font-medium">Total System Volume:</span>{' '}
+                  <span className="text-lg font-semibold">{getTotalVolume().toFixed(1)} L</span>
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Setup Date */}
@@ -119,12 +185,12 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
             <p className="mt-1 text-sm text-gray-500">
-              When did you set up this tank?
+              When did you first set up this tank?
             </p>
           </div>
 
           {/* Form Actions */}
-          <div className="flex justify-end space-x-3 pt-4">
+          <div className="flex justify-end space-x-3 pt-4 border-t">
             <button
               type="button"
               onClick={onCancel}

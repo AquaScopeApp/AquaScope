@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f0f9ff"/>
+
+  <!-- Tank container -->
+  <rect x="40" y="80" width="320" height="180" rx="8" fill="#0c4a6e" opacity="0.1" stroke="#0369a1" stroke-width="2"/>
+
+  <!-- Water -->
+  <defs>
+    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:0.8" />
+    </linearGradient>
+
+    <!-- Bubbles -->
+    <circle id="bubble" r="3" fill="#ffffff" opacity="0.6"/>
+  </defs>
+
+  <!-- Water fill -->
+  <rect x="42" y="90" width="316" height="168" rx="6" fill="url(#waterGrad)"/>
+
+  <!-- Animated bubbles -->
+  <use href="#bubble" x="100" y="220">
+    <animate attributeName="y" from="220" to="100" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="3s" repeatCount="indefinite"/>
+  </use>
+  <use href="#bubble" x="200" y="240">
+    <animate attributeName="y" from="240" to="100" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="4s" repeatCount="indefinite"/>
+  </use>
+  <use href="#bubble" x="300" y="230">
+    <animate attributeName="y" from="230" to="100" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.6" to="0" dur="3.5s" repeatCount="indefinite"/>
+  </use>
+
+  <!-- Coral shapes -->
+  <g opacity="0.7">
+    <!-- Left coral -->
+    <path d="M 80 250 Q 75 230 70 210 Q 70 200 75 190 L 80 190 Q 85 200 85 210 Q 80 230 75 250 Z" fill="#f97316"/>
+    <path d="M 90 250 Q 85 235 80 220 Q 80 210 85 200 L 90 200 Q 95 210 95 220 Q 90 235 85 250 Z" fill="#fb923c"/>
+
+    <!-- Center coral -->
+    <ellipse cx="200" cy="240" rx="25" ry="20" fill="#8b5cf6"/>
+    <ellipse cx="200" cy="230" rx="20" ry="15" fill="#a78bfa"/>
+    <ellipse cx="200" cy="222" rx="15" ry="12" fill="#c4b5fd"/>
+
+    <!-- Right coral -->
+    <path d="M 310 250 L 305 220 Q 305 210 310 200 L 315 200 Q 320 210 320 220 L 315 250 Z" fill="#ec4899"/>
+    <path d="M 320 250 L 318 225 Q 318 215 320 205 L 325 205 Q 327 215 327 225 L 325 250 Z" fill="#f472b6"/>
+  </g>
+
+  <!-- Fish -->
+  <g>
+    <ellipse cx="150" cy="150" rx="20" ry="8" fill="#fbbf24">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        from="0 0"
+        to="100 -20"
+        dur="5s"
+        repeatCount="indefinite"/>
+    </ellipse>
+    <path d="M 130 150 L 125 145 L 130 155 Z" fill="#f59e0b">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        from="0 0"
+        to="100 -20"
+        dur="5s"
+        repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- Light rays from top -->
+  <g opacity="0.3">
+    <line x1="120" y1="80" x2="100" y2="260" stroke="#fbbf24" stroke-width="15"/>
+    <line x1="200" y1="80" x2="200" y2="260" stroke="#fbbf24" stroke-width="20"/>
+    <line x1="280" y1="80" x2="300" y2="260" stroke="#fbbf24" stroke-width="15"/>
+  </g>
+
+  <!-- Tank icon label -->
+  <text x="200" y="45" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0369a1" text-anchor="middle">
+    Reef Aquarium
+  </text>
+</svg>

@@ -17,6 +17,9 @@ import type {
   Tank,
   TankCreate,
   TankUpdate,
+  TankEvent,
+  TankEventCreate,
+  TankEventUpdate,
   ParameterSubmission,
   ParameterSubmissionResponse,
   ParameterReading,
@@ -151,6 +154,26 @@ export const tanksApi = {
 
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/tanks/${id}`)
+  },
+
+  // Tank Events
+  listEvents: async (tankId: string): Promise<TankEvent[]> => {
+    const response = await apiClient.get<TankEvent[]>(`/tanks/${tankId}/events`)
+    return response.data
+  },
+
+  createEvent: async (tankId: string, data: TankEventCreate): Promise<TankEvent> => {
+    const response = await apiClient.post<TankEvent>(`/tanks/${tankId}/events`, data)
+    return response.data
+  },
+
+  updateEvent: async (tankId: string, eventId: string, data: TankEventUpdate): Promise<TankEvent> => {
+    const response = await apiClient.put<TankEvent>(`/tanks/${tankId}/events/${eventId}`, data)
+    return response.data
+  },
+
+  deleteEvent: async (tankId: string, eventId: string): Promise<void> => {
+    await apiClient.delete(`/tanks/${tankId}/events/${eventId}`)
   },
 }
 
