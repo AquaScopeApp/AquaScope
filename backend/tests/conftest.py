@@ -76,7 +76,7 @@ def test_user(db_session, fake) -> User:
 @pytest.fixture(scope="function")
 def test_user_token(test_user) -> str:
     """Generate an access token for the test user"""
-    return create_access_token(subject=str(test_user.id))
+    return create_access_token(subject=test_user.email)
 
 
 @pytest.fixture(scope="function")
