@@ -2,8 +2,14 @@
 
 [![CI Tests](https://github.com/eprifti/reeflab/actions/workflows/ci.yml/badge.svg)](https://github.com/eprifti/reeflab/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
-[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://www.python.org/)
+[![Release](https://img.shields.io/github/v/release/eprifti/reeflab?color=success)](https://github.com/eprifti/reeflab/releases)
+[![Issues](https://img.shields.io/github/issues/eprifti/reeflab?color=yellow)](https://github.com/eprifti/reeflab/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/eprifti/reeflab?color=brightgreen)](https://github.com/eprifti/reeflab/pulls)
+[![Stars](https://img.shields.io/github/stars/eprifti/reeflab?style=social)](https://github.com/eprifti/reeflab/stargazers)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 A comprehensive web application for managing reef aquarium parameters, maintenance schedules, and livestock tracking.
 
