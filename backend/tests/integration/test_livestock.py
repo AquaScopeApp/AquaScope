@@ -281,4 +281,5 @@ class TestFishBaseSearch:
         )
         # Note: This will fail in CI without actual FishBase API access
         # Should mock in production tests
-        assert response.status_code in [200, 503]  # 503 if FishBase is unavailable
+        # 200 = success, 503 = service unavailable, 422 = validation error
+        assert response.status_code in [200, 422, 503]

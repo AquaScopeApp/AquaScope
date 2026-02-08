@@ -91,7 +91,7 @@ class TestTankModel:
         db_session.refresh(tank)
 
         # Check relationship
-        assert tank.user.id == test_user.id
+        assert tank.owner.id == test_user.id
         assert tank in test_user.tanks
 
 

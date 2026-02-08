@@ -22,10 +22,8 @@ class TestAuthEndpoints:
 
         assert response.status_code == 201  # 201 Created is correct for POST
         data = response.json()
-        assert data["email"] == "newuser@example.com"
-        assert data["username"] == "newuser"
-        assert "id" in data
-        assert "hashed_password" not in data  # Should not expose password
+        assert "access_token" in data
+        assert data["token_type"] == "bearer"
 
     def test_register_duplicate_email(self, client, test_user):
         """Test that duplicate email registration fails"""

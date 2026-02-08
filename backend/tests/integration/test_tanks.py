@@ -138,8 +138,8 @@ class TestTanksAPI:
         db_session.refresh(tank)
 
         # User2 tries to access User1's tank
-        user2_token = create_access_token(subject=str(user2.id))
+        user2_token = create_access_token(subject=user2.email)
         client.headers = {"Authorization": f"Bearer {user2_token}"}
 
         response = client.get(f"/api/v1/tanks/{tank.id}")
-        assert response.status_code == 404  # Should not find it
+        assert response.status_code == 404  # Should not find it (or 401 if endpoint checks ownership)
