@@ -5,6 +5,152 @@ All notable changes to ReefLab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-08
+
+### Added
+
+#### Enhanced Tank Management Hub
+- **Tank Detail Pages**: Comprehensive individual tank views with split-view layout
+  - Left sidebar with tank info, statistics, and quick actions
+  - Right content area with 8 tabbed sections (Overview, Events, Equipment, Livestock, Photos, Notes, ICP Tests, Maintenance)
+  - Tank image display with fallback to animated aquarium visualization
+
+- **Tank Image Upload**: Upload custom images for tanks
+  - Drag-and-drop file upload modal in `TankImageUpload` component
+  - Image validation (type: jpg/jpeg/png/gif/webp, size: max 10MB)
+  - Secure image storage in `/uploads/tank-images/`
+  - Blob URL serving for security
+  - Backend endpoints: `POST /tanks/{id}/upload-image` and `GET /tanks/{id}/image`
+
+- **Default Tank Animation**: Beautiful animated aquarium for tanks without custom images
+  - `DefaultTankAnimation` component with pure CSS animations
+  - Swimming fish with parallax movement (3 fish at different speeds)
+  - Rising bubbles with fade effect (4 bubbles with staggered delays)
+  - Swaying seaweed and coral at the bottom
+  - No external dependencies (pure CSS keyframes)
+  - Gradient ocean background (blue tones)
+
+- **Tank Events Timeline**: Track tank history and milestones
+  - `TankTimeline` component with chronological event display
+  - `TankEventForm` for creating and editing events
+  - Event categories: water_change, addition, removal, maintenance, observation, test
+  - CRUD operations via API: `GET/POST/PUT/DELETE /tanks/{id}/events`
+  - Visual timeline with date markers
+  - Event descriptions up to 2000 characters
+
+- **Tank Statistics Dashboard**: Real-time counts of tank-related data
+  - Equipment, livestock, photos, notes counts
+  - Active maintenance reminders count
+  - ICP tests count
+  - Tank age calculation (days running since setup date)
+  - Displayed in sidebar `TankStats` component
+
+#### Footer & Credits
+- **Application Footer**: Added `Footer` component to all pages
+  - Credits to **Edi Prifti** (creator)
+  - Built with Claude Sonnet 4.5 attribution
+  - Links to GitHub repository, issues, and documentation
+  - Donation buttons:
+    - GitHub Sponsors: `https://github.com/sponsors/eprifti`
+    - Ko-fi: `https://ko-fi.com/ediprifti`
+  - Version display
+  - Copyright notice
+
+- **Version Banner**: `VersionBanner` component with fixed position display
+  - Current application version (from `VITE_APP_VERSION` env var)
+  - Git commit hash display (if available)
+  - Build date display (if available)
+  - Fixed bottom-right position, doesn't obstruct content
+
+#### CI/CD Pipeline
+- **GitHub Actions Workflow**: `.github/workflows/ci.yml`
+  - **Backend Tests**: Pytest suite with PostgreSQL 15 service container
+    - Environment variables for test database
+    - Coverage reporting
+    - Runs in parallel with other jobs
+  - **Frontend Tests**: TypeScript type checking and build verification
+    - `npm run type-check` for TypeScript validation
+    - `npm run build` to ensure production build succeeds
+    - Node.js 18 with npm caching
+  - **Docker Build**: Validates image builds for both services
+    - Docker Buildx setup
+    - Cache optimization with GitHub Actions cache
+    - Tests both backend and frontend Dockerfiles
+  - Runs on push and PR to `main` and `develop` branches
+
+#### Documentation
+- **Enhanced README**: Comprehensive documentation updates
+  - Project badges: CI status, license, TypeScript, Python versions
+  - Animated tank demo reference (placeholder for GIF)
+  - Credits section with Edi Prifti attribution
+  - Support section with GitHub Sponsors and Ko-fi links
+  - Expanded features list with all new capabilities
+  - CI/CD pipeline documentation
+  - Technologies and acknowledgments section
+  - Updated roadmap with completed items moved to v1.2.0
+
+- **Documentation Images Directory**: `docs/images/`
+  - `README.md` with instructions for creating animated tank GIF
+  - Multiple capture methods: screen recording, browser tools, animated screenshot tools
+  - Recommended settings: 800x450px, 15-20fps, optimized with gifsicle
+  - Placeholder for `tank-animation.gif`
+
+### Changed
+- **Dashboard Maintenance Reminders**: Enhanced overdue reminders display
+  - Now shows tank name for each reminder
+  - Format: "🏠 Tank: {tank_name}"
+  - Helps users identify which tank needs attention in multi-tank setups
+  - Tank lookup via `tankSummaries.find()`
+
+- **Tank Cards**: Updated `TankCard` component
+  - Uses blob URLs via `tanksApi.getImageBlobUrl()` for secure image loading
+  - Shows `DefaultTankAnimation` when no custom image is set
+  - Improved loading states ("Loading..." while fetching)
+  - Proper cleanup with `URL.revokeObjectURL()` in useEffect
+  - Maintained click-to-detail navigation
+
+- **Photo Display**: Fixed photo rendering across application
+  - `TankOverview` component: Recent photos now load via `photosApi.getFileBlobUrl()`
+  - `TankTabs` component: Photos tab uses blob URLs
+  - Proper loading states and error handling
+  - Memory cleanup with `URL.revokeObjectURL()` on unmount
+  - Parallel loading of multiple photos for performance
+
+- **Frontend Package Scripts**: Added `type-check` script
+  - `npm run type-check` runs `tsc --noEmit` for CI validation
+  - Allows type checking without building
+
+### Fixed
+- **Image Loading Issues**: Resolved photos and tank images not displaying
+  - Root cause: Direct file path access vs. API blob URL fetching
+  - Implemented blob URL pattern for all images:
+    - Photos: `photosApi.getFileBlobUrl(photoId, thumbnail)`
+    - Tank images: `tanksApi.getImageBlobUrl(tankId)`
+  - Added proper cleanup in useEffect returns
+  - Fixed TypeScript errors with imageUrl state management
+
+- **TypeScript Build Errors**: Removed unused props
+  - Fixed `tankId` unused in `TankOverview` and `TankTabs`
+  - Updated prop interfaces to remove unnecessary parameters
+  - Clean TypeScript compilation with no errors
+
+### Technical
+- **Routing**: Nested routes structure for tank details
+  - `/tanks` - Tank list
+  - `/tanks/:tankId` - Individual tank detail page
+  - Uses React Router `<Outlet />` for nested rendering
+
+- **API Client Additions**:
+  - `tanksApi.uploadImage(tankId, file)` - FormData upload
+  - `tanksApi.getImageBlobUrl(tankId)` - Blob URL fetch
+  - `tanksApi.listEvents(tankId)` - Tank events
+  - `tanksApi.createEvent/updateEvent/deleteEvent` - Event CRUD
+
+- **Component Architecture**:
+  - Split-view pattern (sidebar + tabbed content) from ICPTests
+  - Reusable modal patterns for uploads and forms
+  - Consistent loading and empty states across components
+
 ## [1.0.0] - 2026-02-07
 
 ### 🎉 First Stable Release

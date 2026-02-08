@@ -7,6 +7,8 @@
 
 import { Link, useLocation, Outlet } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import Footer from './Footer'
+import VersionBanner from './VersionBanner'
 
 export default function Layout() {
   const location = useLocation()
@@ -125,6 +127,12 @@ export default function Layout() {
           </main>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Version Banner */}
+      <VersionBanner />
     </div>
   )
 }

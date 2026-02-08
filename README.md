@@ -1,16 +1,89 @@
-# ReefLab
+# ReefLab 🐠
+
+[![CI Tests](https://github.com/eprifti/reeflab/actions/workflows/ci.yml/badge.svg)](https://github.com/eprifti/reeflab/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://www.python.org/)
 
 A comprehensive web application for managing reef aquarium parameters, maintenance schedules, and livestock tracking.
 
+![ReefLab Animated Demo](docs/images/tank-animation-placeholder.svg)
+*Animated aquarium visualization for tanks without custom images*
+
+> 💡 **Note**: The animation above is an SVG preview. For the full animated GIF, see the [capture instructions](docs/images/README.md) or run `node scripts/capture-tank-animation.js` after installing dependencies.
+
+> **Created by [Edi Prifti](https://github.com/eprifti)** with ❤️ for the reef keeping community
+
+## ✨ Demo & Support
+
+- **GitHub Repository**: [github.com/eprifti/reeflab](https://github.com/eprifti/reeflab)
+- **Report Issues**: [GitHub Issues](https://github.com/eprifti/reeflab/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/eprifti/reeflab/discussions)
+
+### Support the Project
+
+If you find ReefLab useful, consider supporting its development:
+
+- ⭐ Star the repository on GitHub
+- 💖 [Sponsor on GitHub](https://github.com/sponsors/eprifti)
+- ☕ [Buy me a coffee on Ko-fi](https://ko-fi.com/ediprifti)
+- 🐛 Report bugs and suggest features
+- 🔧 Contribute code and documentation
+
 ## Features
 
-- **Parameter Tracking**: Log weekly water test results (Ca, Mg, KH, NO3, PO4, Salinity, Temperature, pH)
-- **InfluxDB Integration**: Store time-series data for visualization in Grafana
-- **Photo Gallery**: Upload and manage aquarium photos with descriptions
-- **Notes System**: Keep detailed notes about your reef tank
-- **Maintenance Reminders**: Track and schedule maintenance tasks (water changes, pump cleaning, skimmer maintenance)
-- **Livestock Database**: Catalog fish, corals, and invertebrates with FishBase integration
+### Core Functionality
+
+- **Tank Management Hub**: Comprehensive tank detail views with timeline, events, and statistics
+  - Individual tank pages with split-view layout
+  - Tank image upload with animated fallback visualization
+  - Tank events timeline for tracking changes and milestones
+  - Quick actions for common tasks
+  - Statistics dashboard showing equipment, livestock, photos, and test counts
+
+- **Parameter Tracking**: Log water test results (Ca, Mg, KH, NO3, PO4, Salinity, Temperature, pH)
+  - InfluxDB integration for time-series data storage
+  - Visualization with Recharts in the dashboard
+  - Export data to Grafana for advanced analytics
+
+- **ICP Test Management**: Upload and track ICP-OES test results
+  - Support for multiple lab providers (Triton, ATI, Fauna Marin, etc.)
+  - Element-level tracking with visual indicators
+  - Comparison across multiple tests
+  - Detailed element analysis with scores
+
+- **Photo Gallery**: Upload and manage aquarium photos
+  - Drag-and-drop file upload
+  - Thumbnail generation
+  - Photo descriptions and timestamps
+  - Tank-specific photo filtering
+
+- **Notes System**: Keep detailed notes and observations about your reef tank
+  - Rich text notes with timestamps
+  - Tank-specific note filtering
+  - Search and organize notes
+
+- **Maintenance Reminders**: Track and schedule maintenance tasks
+  - Automatic scheduling based on frequency
+  - Overdue reminder notifications
+  - Maintenance history tracking
+  - Task templates (water changes, pump cleaning, skimmer maintenance)
+
+- **Livestock Database**: Catalog fish, corals, and invertebrates
+  - FishBase integration for species information
+  - Track acquisition dates and sources
+  - Monitor health and status
+  - Tank-specific livestock filtering
+
+- **Equipment Tracking**: Manage aquarium equipment
+  - Equipment inventory with manufacturers and models
+  - Installation dates and status tracking
+  - Tank-specific equipment filtering
+
 - **Multi-User Support**: Secure authentication and user-specific data management
+  - JWT-based authentication
+  - User registration and login
+  - Data isolation between users
 
 ## Technology Stack
 
@@ -171,6 +244,16 @@ npm run test:coverage   # Run with coverage report
 
 For detailed testing documentation, see [TESTING.md](TESTING.md).
 
+### Continuous Integration
+
+ReefLab uses GitHub Actions for automated testing and quality assurance. Every push and pull request triggers:
+
+1. **Backend Tests**: Pytest suite with PostgreSQL service container
+2. **Frontend Tests**: TypeScript type checking and Vite build verification
+3. **Docker Build**: Validates that both frontend and backend Docker images build successfully
+
+The CI pipeline ensures code quality and prevents regressions. View the [workflow file](.github/workflows/ci.yml) for details.
+
 ### Database Migrations
 
 Create a new migration:
@@ -285,17 +368,22 @@ For issues and questions:
 
 ## Features Status
 
-### ✅ Completed
-- Parameter tracking with InfluxDB integration
-- Tank management with volume tracking (display + sump)
-- Maintenance reminder system with automatic scheduling
-- Photo gallery with drag-and-drop upload
-- Notes/journal system
-- Livestock inventory with FishBase integration
-- Multi-user authentication and authorization
-- Responsive UI with Tailwind CSS
-- Data visualization with Recharts
-- Excel/CSV import for historical data
+### ✅ Completed (v1.2.0)
+- ✅ Tank management hub with detail views and timeline
+- ✅ Tank image upload with animated fallback visualization
+- ✅ ICP test management with element tracking
+- ✅ Parameter tracking with InfluxDB integration
+- ✅ Equipment tracking and inventory management
+- ✅ Maintenance reminder system with automatic scheduling
+- ✅ Photo gallery with drag-and-drop upload
+- ✅ Notes/journal system
+- ✅ Livestock inventory with FishBase integration
+- ✅ Multi-user authentication and authorization
+- ✅ Responsive UI with Tailwind CSS
+- ✅ Data visualization with Recharts
+- ✅ Excel/CSV import for historical data
+- ✅ GitHub Actions CI/CD pipeline with automated tests
+- ✅ Comprehensive unit and integration tests
 
 ### 🎯 Roadmap
 
@@ -303,13 +391,55 @@ For issues and questions:
 - [ ] Mobile responsive design improvements
 - [ ] Dosing calculator
 - [ ] Water change calculator
-- [ ] Equipment tracking
-- [ ] Cost tracking
+- [ ] Cost tracking and equipment expenses
 - [ ] Community features (share tanks publicly)
 - [ ] Integration with reef controllers (ReefPi, Neptune)
 - [ ] Mobile app (React Native)
 - [ ] Advanced analytics and trend prediction
 - [ ] Automatic parameter recommendations based on tank type
+- [ ] Real-time parameter monitoring with IoT integration
+- [ ] Multi-language support
+
+---
+
+## Credits & Acknowledgments
+
+**ReefLab** is created and maintained by **[Edi Prifti](https://github.com/eprifti)**.
+
+Built with:
+- ❤️ Passion for reef keeping and open-source software
+- 🤖 [Claude Sonnet 4.5](https://claude.ai) by Anthropic
+- 🌊 Inspiration from the amazing reef keeping community
+
+### Technologies
+
+Special thanks to the open-source projects that make ReefLab possible:
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+- [React](https://react.dev/) - UI library
+- [PostgreSQL](https://www.postgresql.org/) - Relational database
+- [InfluxDB](https://www.influxdata.com/) - Time-series database
+- [Docker](https://www.docker.com/) - Containerization
+- And many more amazing tools and libraries
+
+### Contributing
+
+Contributions are welcome! Whether it's:
+- 🐛 Bug reports and fixes
+- ✨ New features
+- 📝 Documentation improvements
+- 🎨 UI/UX enhancements
+- 🧪 Test coverage
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+### Support
+
+If you find ReefLab useful:
+- ⭐ Star the repository
+- 💖 [Sponsor on GitHub](https://github.com/sponsors/eprifti)
+- ☕ [Buy me a coffee](https://ko-fi.com/ediprifti)
+- 📢 Share with other reef keepers
+- 🐛 Report bugs and suggest features
 
 ---
 
