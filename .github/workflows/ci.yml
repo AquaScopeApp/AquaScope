@@ -47,6 +47,10 @@ jobs:
           SECRET_KEY: test_secret_key_for_ci
           ALGORITHM: HS256
           ACCESS_TOKEN_EXPIRE_MINUTES: 30
+          INFLUXDB_URL: http://localhost:8086
+          INFLUXDB_TOKEN: test_token
+          INFLUXDB_ORG: test_org
+          INFLUXDB_BUCKET: test_bucket
           PYTHONPATH: .
         run: |
           cd backend
