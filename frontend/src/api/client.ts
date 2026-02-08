@@ -439,6 +439,7 @@ export const equipmentApi = {
   list: async (params?: {
     tank_id?: string
     equipment_type?: string
+    status?: string
   }): Promise<Equipment[]> => {
     const response = await apiClient.get<Equipment[]>('/equipment', { params })
     return response.data

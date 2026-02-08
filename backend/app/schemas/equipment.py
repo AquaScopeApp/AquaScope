@@ -15,6 +15,7 @@ class EquipmentBase(BaseModel):
     purchase_date: Optional[date] = None
     purchase_price: Optional[str] = Field(None, max_length=50)
     condition: Optional[str] = Field(None, max_length=100)
+    status: str = Field(default="active", description="active (in use) or stock (available)")
     notes: Optional[str] = None
 
 
@@ -33,6 +34,7 @@ class EquipmentUpdate(BaseModel):
     purchase_date: Optional[date] = None
     purchase_price: Optional[str] = Field(None, max_length=50)
     condition: Optional[str] = Field(None, max_length=100)
+    status: Optional[str] = Field(None, description="active or stock")
     notes: Optional[str] = None
 
 

@@ -40,6 +40,11 @@ const CONDITIONS = [
   'failing',
 ]
 
+const STATUSES = [
+  'active',
+  'stock',
+]
+
 export default function EquipmentPage() {
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -48,6 +53,7 @@ export default function EquipmentPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [selectedTank, setSelectedTank] = useState<string>('')
   const [selectedType, setSelectedType] = useState<string>('')
+  const [selectedStatus, setSelectedStatus] = useState<string>('')
 
   // Form state
   const [formData, setFormData] = useState<EquipmentCreate>({
@@ -60,12 +66,13 @@ export default function EquipmentPage() {
     purchase_date: '',
     purchase_price: '',
     condition: 'new',
+    status: 'active',
     notes: '',
   })
 
   useEffect(() => {
     loadData()
-  }, [selectedTank, selectedType])
+  }, [selectedTank, selectedType, selectedStatus])
 
   const loadData = async () => {
     try {
@@ -74,6 +81,7 @@ export default function EquipmentPage() {
         equipmentApi.list({
           tank_id: selectedTank || undefined,
           equipment_type: selectedType || undefined,
+          status: selectedStatus || undefined,
         }),
         tanksApi.list(),
       ])
@@ -151,6 +159,7 @@ export default function EquipmentPage() {
       purchase_date: '',
       purchase_price: '',
       condition: 'new',
+      status: 'active',
       notes: '',
     })
   }
@@ -166,6 +175,10 @@ export default function EquipmentPage() {
 
   const formatType = (type: string) => {
     return type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  }
+
+  const formatStatus = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1)
   }
 
   if (isLoading) {
@@ -198,7 +211,7 @@ export default function EquipmentPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Tank</label>
             <select
@@ -226,6 +239,22 @@ export default function EquipmentPage() {
               {EQUIPMENT_TYPES.map((type) => (
                 <option key={type} value={type}>
                   {formatType(type)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+            >
+              <option value="">All Status</option>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {formatStatus(status)}
                 </option>
               ))}
             </select>
@@ -272,8 +301,8 @@ export default function EquipmentPage() {
               </div>
             )}
 
-            {item.condition && (
-              <div className="mb-2">
+            <div className="mb-2 flex gap-2">
+              {item.condition && (
                 <span className={`inline-block px-2 py-1 text-xs rounded-full ${
                   item.condition === 'new' || item.condition === 'excellent' ? 'bg-green-100 text-green-800' :
                   item.condition === 'good' ? 'bg-blue-100 text-blue-800' :
@@ -282,8 +311,16 @@ export default function EquipmentPage() {
                 }`}>
                   {formatCondition(item.condition)}
                 </span>
-              </div>
-            )}
+              )}
+              {item.status && (
+                <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
+                  item.status === 'active' ? 'bg-ocean-100 text-ocean-800' :
+                  'bg-gray-100 text-gray-800'
+                }`}>
+                  {formatStatus(item.status)}
+                </span>
+              )}
+            </div>
 
             {item.purchase_date && (
               <div className="text-xs text-gray-500 mb-1">
@@ -436,6 +473,23 @@ export default function EquipmentPage() {
                       {CONDITIONS.map((cond) => (
                         <option key={cond} value={cond}>
                           {formatCondition(cond)}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Status
+                    </label>
+                    <select
+                      value={formData.status || 'active'}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                    >
+                      {STATUSES.map((stat) => (
+                        <option key={stat} value={stat}>
+                          {formatStatus(stat)}
                         </option>
                       ))}
                     </select>

@@ -295,6 +295,7 @@ export interface Equipment {
   purchase_date: string | null
   purchase_price: string | null
   condition: string | null
+  status: string
   notes: string | null
   created_at: string
   updated_at: string
@@ -310,6 +311,7 @@ export interface EquipmentCreate {
   purchase_date?: string | null
   purchase_price?: string | null
   condition?: string | null
+  status?: string
   notes?: string | null
 }
 
@@ -322,6 +324,7 @@ export interface EquipmentUpdate {
   purchase_date?: string | null
   purchase_price?: string | null
   condition?: string | null
+  status?: string
   notes?: string | null
 }
 

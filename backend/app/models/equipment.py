@@ -47,6 +47,7 @@ class Equipment(Base):
     purchase_date = Column(Date, nullable=True)
     purchase_price = Column(String, nullable=True)  # Store as string to allow currency symbols
     condition = Column(String, nullable=True)  # new, used, refurbished, needs_maintenance, failing
+    status = Column(String, nullable=False, default="active", index=True)  # active (in use) or stock (available)
 
     # Additional notes
     notes = Column(Text, nullable=True)

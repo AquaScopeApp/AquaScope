@@ -62,6 +62,7 @@ def import_equipment():
                 "manufacturer": "Bubble Magus",
                 "model": "Curve 7 Elite",
                 "condition": "excellent",
+                "status": "active",
                 "notes": "Replaced ARKA ACS180 skimmer which failed. Excellent performance.",
             },
             {
@@ -70,7 +71,8 @@ def import_equipment():
                 "manufacturer": "ARKA",
                 "model": "ACS180",
                 "condition": "failing",
-                "notes": "Original skimmer - failed and replaced by Bubble Magus Curve 7 Elite",
+                "status": "stock",
+                "notes": "Original skimmer - failed and replaced by Bubble Magus Curve 7 Elite. Kept as backup.",
             },
             {
                 "name": "UV Sterilizer JEBAO 55W",
@@ -78,6 +80,7 @@ def import_equipment():
                 "manufacturer": "JEBAO",
                 "model": "55W",
                 "condition": "excellent",
+                "status": "active",
                 "notes": "55W UV sterilizer for algae and pathogen control",
             },
             {
@@ -86,6 +89,7 @@ def import_equipment():
                 "manufacturer": "ReefBreeders",
                 "model": "Photon V2+ 32\"",
                 "condition": "excellent",
+                "status": "active",
                 "specs": {
                     "size": "32 inches",
                     "type": "LED",
@@ -98,12 +102,14 @@ def import_equipment():
                 "name": "Osmolateur (ATO)",
                 "equipment_type": "ato",
                 "condition": "good",
+                "status": "active",
                 "notes": "Auto Top-Off system. Had a failure incident in January 2026 causing salinity spike. Monitor regularly.",
             },
             {
                 "name": "Return Pump #1",
                 "equipment_type": "return_pump",
                 "condition": "good",
+                "status": "active",
                 "specs": {
                     "head_height": "1.5m",
                     "redundancy": "Primary pump with secondary backup",
@@ -114,6 +120,7 @@ def import_equipment():
                 "name": "Return Pump #2",
                 "equipment_type": "return_pump",
                 "condition": "good",
+                "status": "active",
                 "specs": {
                     "head_height": "1.5m",
                     "redundancy": "Backup pump for primary",
@@ -124,18 +131,21 @@ def import_equipment():
                 "name": "Circulation Pump",
                 "equipment_type": "wavemaker",
                 "condition": "good",
+                "status": "active",
                 "notes": "Provides water circulation and flow in display tank. Regular cleaning required to prevent blockage.",
             },
             {
                 "name": "Dosing Pump",
                 "equipment_type": "doser",
                 "condition": "excellent",
+                "status": "active",
                 "notes": "Automated dosing pump for KH buffer and trace elements. Calibrated for daily dosing schedule.",
             },
             {
                 "name": "Air Pump",
                 "equipment_type": "other",
                 "condition": "excellent",
+                "status": "active",
                 "notes": "Added to enhance oxygenation. Particularly helpful during stress events. Corals visibly more open with air pump running.",
             },
         ]

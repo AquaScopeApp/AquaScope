@@ -59,13 +59,14 @@ def create_equipment(
 def list_equipment(
     tank_id: UUID = Query(None, description="Filter by tank ID"),
     equipment_type: str = Query(None, description="Filter by equipment type"),
+    status: str = Query(None, description="Filter by status (active or stock)"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
     List equipment.
 
-    - Optional filtering by tank or equipment type
+    - Optional filtering by tank, equipment type, or status
     - Returns user's equipment only
     """
     query = db.query(Equipment).filter(Equipment.user_id == current_user.id)
@@ -85,6 +86,9 @@ def list_equipment(
 
     if equipment_type:
         query = query.filter(Equipment.equipment_type == equipment_type)
+
+    if status:
+        query = query.filter(Equipment.status == status)
 
     equipment_list = query.order_by(Equipment.name).all()
     return equipment_list
