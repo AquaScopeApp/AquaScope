@@ -7,6 +7,8 @@ import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Parameters from './pages/Parameters'
 import Tanks from './pages/Tanks'
+import TankList from './pages/TankList'
+import TankDetail from './pages/TankDetail'
 import Maintenance from './pages/Maintenance'
 import Livestock from './pages/Livestock'
 import Equipment from './pages/Equipment'
@@ -38,7 +40,10 @@ function App() {
 
             {/* Feature Routes */}
             <Route path="parameters" element={<Parameters />} />
-            <Route path="tanks" element={<Tanks />} />
+            <Route path="tanks" element={<Tanks />}>
+              <Route index element={<TankList />} />
+              <Route path=":tankId" element={<TankDetail />} />
+            </Route>
             <Route path="maintenance" element={<Maintenance />} />
 
             <Route path="livestock" element={<Livestock />} />

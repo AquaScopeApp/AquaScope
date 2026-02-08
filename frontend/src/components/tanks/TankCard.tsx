@@ -41,6 +41,10 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
     navigate(`/parameters?tank=${tank.id}&new=true`)
   }
 
+  const handleCardClick = () => {
+    navigate(`/tanks/${tank.id}`)
+  }
+
   const age = getAge(tank.setup_date)
   const imageUrl = tank.image_url || '/default-tank.svg'
 
@@ -50,7 +54,10 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
   ).slice(0, 3)
 
   return (
-    <div className="bg-white rounded-lg shadow hover:shadow-md transition-shadow border border-gray-200 overflow-hidden">
+    <div
+      className="bg-white rounded-lg shadow hover:shadow-xl transition-all border border-gray-200 overflow-hidden cursor-pointer"
+      onClick={handleCardClick}
+    >
       {/* Tank Image */}
       <div className="h-48 bg-gradient-to-b from-ocean-100 to-ocean-200 relative overflow-hidden">
         <img
@@ -63,7 +70,10 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
         />
         <div className="absolute top-3 right-3 flex space-x-2">
           <button
-            onClick={() => onEdit(tank)}
+            onClick={(e) => {
+              e.stopPropagation()
+              onEdit(tank)
+            }}
             className="p-2 bg-white text-ocean-600 hover:bg-ocean-50 rounded-md transition-colors shadow-sm"
             title="Edit tank"
           >
@@ -77,7 +87,10 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
             </svg>
           </button>
           <button
-            onClick={() => onDelete(tank.id)}
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete(tank.id)
+            }}
             className="p-2 bg-white text-red-600 hover:bg-red-50 rounded-md transition-colors shadow-sm"
             title="Delete tank"
           >
@@ -173,13 +186,19 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
         <div className="flex items-center justify-between text-sm">
           <button
-            onClick={handleViewParameters}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleViewParameters()
+            }}
             className="text-ocean-600 hover:text-ocean-700 font-medium transition-colors"
           >
             View Parameters
           </button>
           <button
-            onClick={handleAddTest}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleAddTest()
+            }}
             className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 font-medium transition-colors"
           >
             Add Test
