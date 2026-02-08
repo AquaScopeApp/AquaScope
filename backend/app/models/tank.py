@@ -53,6 +53,7 @@ class Tank(Base):
     livestock = relationship("Livestock", back_populates="tank", cascade="all, delete-orphan")
     events = relationship("TankEvent", back_populates="tank", cascade="all, delete-orphan")
     equipment = relationship("Equipment", back_populates="tank", cascade="all, delete-orphan")
+    icp_tests = relationship("ICPTest", back_populates="tank", cascade="all, delete-orphan")
 
     @property
     def total_volume_liters(self) -> float:

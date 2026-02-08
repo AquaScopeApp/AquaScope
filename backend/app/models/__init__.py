@@ -6,5 +6,6 @@ from app.models.photo import Photo
 from app.models.maintenance import MaintenanceReminder
 from app.models.livestock import Livestock
 from app.models.equipment import Equipment
+from app.models.icp_test import ICPTest
 
-__all__ = ["User", "Tank", "Note", "Photo", "MaintenanceReminder", "Livestock", "Equipment"]
+__all__ = ["User", "Tank", "Note", "Photo", "MaintenanceReminder", "Livestock", "Equipment", "ICPTest"]
