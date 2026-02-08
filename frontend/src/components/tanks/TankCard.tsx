@@ -4,10 +4,12 @@
  * Displays tank information in a card layout with image, volumes, description, and events
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
+import { tanksApi } from '../../api/client'
+import DefaultTankAnimation from './DefaultTankAnimation'
 
 interface TankCardProps {
   tank: Tank
@@ -18,6 +20,7 @@ interface TankCardProps {
 export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
   const navigate = useNavigate()
   const [imageError, setImageError] = useState(false)
+  const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Not set'
@@ -48,7 +51,34 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
   }
 
   const age = getAge(tank.setup_date)
-  const hasImage = tank.image_url && !imageError
+  const hasImage = tank.image_url && !imageError && imageUrl
+
+  // Load tank image via API
+  useEffect(() => {
+    const loadTankImage = async () => {
+      if (tank.image_url) {
+        try {
+          const url = await tanksApi.getImageBlobUrl(tank.id)
+          setImageUrl(url)
+          setImageError(false)
+        } catch (error) {
+          console.error('Failed to load tank image:', error)
+          setImageError(true)
+        }
+      } else {
+        setImageUrl(null)
+      }
+    }
+
+    loadTankImage()
+
+    // Cleanup: revoke blob URL when component unmounts or tank changes
+    return () => {
+      if (imageUrl) {
+        URL.revokeObjectURL(imageUrl)
+      }
+    }
+  }, [tank.id, tank.image_url])
 
   // Sort events by date (most recent first)
   const recentEvents = [...(tank.events || [])].sort(
@@ -61,16 +91,20 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
       onClick={handleCardClick}
     >
       {/* Tank Image */}
-      <div className="h-48 bg-gradient-to-b from-ocean-100 to-ocean-200 relative overflow-hidden flex items-center justify-center">
+      <div className="h-48 relative overflow-hidden">
         {hasImage ? (
           <img
-            src={tank.image_url!}
+            src={imageUrl!}
             alt={tank.name}
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />
+        ) : tank.image_url && !imageUrl ? (
+          <div className="flex items-center justify-center h-full bg-gradient-to-b from-ocean-100 to-ocean-200">
+            <div className="text-ocean-400 text-sm">Loading...</div>
+          </div>
         ) : (
-          <span className="text-6xl">🐠</span>
+          <DefaultTankAnimation />
         )}
         <div className="absolute top-3 right-3 flex space-x-2">
           <button

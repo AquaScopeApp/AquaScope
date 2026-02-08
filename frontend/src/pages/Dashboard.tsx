@@ -277,25 +277,33 @@ export default function Dashboard() {
             Overdue Maintenance ({overdueReminders.length})
           </h2>
           <div className="space-y-2">
-            {overdueReminders.map((reminder) => (
-              <div
-                key={reminder.id}
-                className="flex justify-between items-center py-2"
-              >
-                <div>
-                  <p className="font-medium text-gray-900">{reminder.title}</p>
-                  <p className="text-sm text-gray-600">
-                    Due: {new Date(reminder.next_due).toLocaleDateString()}
-                  </p>
-                </div>
-                <Link
-                  to="/maintenance"
-                  className="text-sm text-ocean-600 hover:text-ocean-700"
+            {overdueReminders.map((reminder) => {
+              const tank = tankSummaries.find(s => s.tank.id === reminder.tank_id)?.tank
+              return (
+                <div
+                  key={reminder.id}
+                  className="flex justify-between items-center py-3 border-b border-coral-100 last:border-b-0"
                 >
-                  View →
-                </Link>
-              </div>
-            ))}
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{reminder.title}</p>
+                    {tank && (
+                      <p className="text-sm text-ocean-600 font-medium mt-1">
+                        🏠 Tank: {tank.name}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-600 mt-1">
+                      Due: {new Date(reminder.next_due).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <Link
+                    to="/maintenance"
+                    className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
+                  >
+                    View →
+                  </Link>
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
