@@ -41,6 +41,10 @@ import type {
   Equipment,
   EquipmentCreate,
   EquipmentUpdate,
+  ICPTest,
+  ICPTestCreate,
+  ICPTestUpdate,
+  ICPTestSummary,
   ApiError,
 } from '../types'
 
@@ -462,6 +466,59 @@ export const equipmentApi = {
 
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/equipment/${id}`)
+  },
+}
+
+// ============================================================================
+// ICP Tests API
+// ============================================================================
+
+export const icpTestsApi = {
+  list: async (params?: {
+    tank_id?: string
+    lab_name?: string
+    from_date?: string
+    to_date?: string
+    skip?: number
+    limit?: number
+  }): Promise<ICPTestSummary[]> => {
+    const response = await apiClient.get<ICPTestSummary[]>('/icp-tests', { params })
+    return response.data
+  },
+
+  get: async (id: string): Promise<ICPTest> => {
+    const response = await apiClient.get<ICPTest>(`/icp-tests/${id}`)
+    return response.data
+  },
+
+  create: async (data: ICPTestCreate): Promise<ICPTest> => {
+    const response = await apiClient.post<ICPTest>('/icp-tests', data)
+    return response.data
+  },
+
+  upload: async (tank_id: string, file: File): Promise<ICPTest> => {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const response = await apiClient.post<ICPTest>(
+      `/icp-tests/upload?tank_id=${tank_id}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+    return response.data
+  },
+
+  update: async (id: string, data: ICPTestUpdate): Promise<ICPTest> => {
+    const response = await apiClient.put<ICPTest>(`/icp-tests/${id}`, data)
+    return response.data
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(`/icp-tests/${id}`)
   },
 }
 
