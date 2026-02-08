@@ -32,6 +32,9 @@ def add_livestock(
     - fish: Any fish species
     - coral: Hard and soft corals
     - invertebrate: Shrimp, snails, crabs, etc.
+
+    Note: Species names with numbers (e.g., "Amphiprion ocellaris 5606")
+    will be automatically cleaned to remove the trailing number.
     """
     # Verify tank ownership
     tank = db.query(Tank).filter(
@@ -45,8 +48,13 @@ def add_livestock(
             detail="Tank not found"
         )
 
+    # Clean species name if it contains numbers
+    data = livestock_in.model_dump()
+    if data.get("species_name"):
+        data["species_name"] = fishbase_service.clean_species_name(data["species_name"])
+
     livestock = Livestock(
-        **livestock_in.model_dump(),
+        **data,
         user_id=current_user.id
     )
     db.add(livestock)
@@ -173,14 +181,57 @@ async def search_fishbase(
     Use this to find fishbase_species_id when adding fish.
 
     Example: /livestock/fishbase/search?query=clownfish
+    Example: /livestock/fishbase/search?query=Amphiprion ocellaris
+
+    Note: Species names are automatically cleaned (numbers removed)
     """
     try:
-        results = await fishbase_service.search_species(query, limit)
+        # Clean the query first
+        clean_query = fishbase_service.clean_species_name(query)
+        results = await fishbase_service.search_species(clean_query, limit)
         return results
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error searching FishBase: {str(e)}"
+        )
+
+
+@router.get("/fishbase/validate")
+async def validate_fishbase_species(
+    species_name: str = Query(..., description="Species name to validate")
+):
+    """
+    Validate if a species exists in FishBase.
+
+    Returns match information or null if no match found.
+
+    Example: /livestock/fishbase/validate?species_name=Amphiprion ocellaris
+    """
+    try:
+        clean_name = fishbase_service.clean_species_name(species_name)
+        results = await fishbase_service.search_species(clean_name, limit=1)
+
+        if results and len(results) > 0:
+            match = results[0]
+            return {
+                "found": True,
+                "species_id": str(match.get("SpecCode", "")),
+                "genus": match.get("Genus", ""),
+                "species": match.get("Species", ""),
+                "common_name": match.get("FBname", ""),
+                "clean_name": clean_name
+            }
+        else:
+            return {
+                "found": False,
+                "clean_name": clean_name,
+                "message": "No match found in FishBase. This fish may not be in the database."
+            }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error validating species: {str(e)}"
         )
 
 

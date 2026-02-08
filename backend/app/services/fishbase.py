@@ -61,6 +61,21 @@ class FishBaseService:
         self.base_url = settings.FISHBASE_API_URL
         self.timeout = 10.0  # API timeout in seconds
 
+    def clean_species_name(self, name: str) -> str:
+        """
+        Clean species name by removing numbers and extra whitespace.
+
+        Examples:
+            "Amphiprion ocellaris 5606" -> "Amphiprion ocellaris"
+            "Zebrasoma flavescens  123" -> "Zebrasoma flavescens"
+        """
+        import re
+        # Remove numbers at the end
+        name = re.sub(r'\s+\d+$', '', name)
+        # Remove extra whitespace
+        name = ' '.join(name.split())
+        return name.strip()
+
     async def search_species(
         self,
         query: str,
@@ -89,15 +104,37 @@ class FishBaseService:
             ]
         """
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                # FishBase API endpoint for species search
-                # Note: Actual API might differ - adjust based on documentation
-                response = await client.get(
-                    f"{self.base_url}/species",
-                    params={"Species": query, "limit": limit}
-                )
-                response.raise_for_status()
-                return response.json()
+            # Clean the query
+            query = self.clean_species_name(query)
+
+            # Disable SSL verification for FishBase API (development only)
+            async with httpx.AsyncClient(timeout=self.timeout, verify=False) as client:
+                # Try searching by scientific name first (Genus + Species)
+                parts = query.split()
+                results = []
+
+                if len(parts) >= 2:
+                    # Search by Genus and Species separately for better matches
+                    genus = parts[0]
+                    species = parts[1]
+
+                    response = await client.get(
+                        f"{self.base_url}/species",
+                        params={"Genus": genus, "Species": species, "limit": limit}
+                    )
+                    response.raise_for_status()
+                    results = response.json()
+
+                # If no results, try searching by full query
+                if not results:
+                    response = await client.get(
+                        f"{self.base_url}/species",
+                        params={"Species": query, "limit": limit}
+                    )
+                    response.raise_for_status()
+                    results = response.json()
+
+                return results if isinstance(results, list) else []
         except httpx.HTTPError as e:
             print(f"Error searching FishBase: {e}")
             return []
@@ -125,12 +162,13 @@ class FishBaseService:
             }
         """
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, verify=False) as client:
                 response = await client.get(
                     f"{self.base_url}/species/{species_id}"
                 )
                 response.raise_for_status()
-                return response.json()
+                result = response.json()
+                return result[0] if isinstance(result, list) and len(result) > 0 else result
         except httpx.HTTPError as e:
             print(f"Error fetching species from FishBase: {e}")
             return None
@@ -157,13 +195,14 @@ class FishBaseService:
             ]
         """
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, verify=False) as client:
                 response = await client.get(
                     f"{self.base_url}/comnames",
                     params={"SpecCode": species_id}
                 )
                 response.raise_for_status()
-                return response.json()
+                result = response.json()
+                return result if isinstance(result, list) else []
         except httpx.HTTPError as e:
             print(f"Error fetching common names from FishBase: {e}")
             return []
@@ -193,7 +232,7 @@ class FishBaseService:
             ]
         """
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, verify=False) as client:
                 # FishBase photos endpoint
                 response = await client.get(
                     f"{self.base_url}/photos",
@@ -201,6 +240,10 @@ class FishBaseService:
                 )
                 response.raise_for_status()
                 photos = response.json()
+
+                # Ensure we have a list
+                if not isinstance(photos, list):
+                    return []
 
                 # Return photos with properly formatted URLs
                 # FishBase photos are available at fishbase.org
@@ -218,6 +261,9 @@ class FishBaseService:
                 return photos
         except httpx.HTTPError as e:
             print(f"Error fetching images from FishBase: {e}")
+            return []
+        except Exception as e:
+            print(f"Unexpected error fetching images: {e}")
             return []
 
     async def get_primary_image(self, species_id: str) -> Optional[str]:
