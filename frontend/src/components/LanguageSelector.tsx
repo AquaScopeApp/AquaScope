@@ -15,10 +15,10 @@ const languages = [
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
 ]
 
-export default function LanguageSelector() {
+export default function LanguageSelector(): JSX.Element {
   const { i18n } = useTranslation()
 
-  const changeLanguage = (lng: string) => {
+  const changeLanguage = (lng: string): void => {
     i18n.changeLanguage(lng)
     localStorage.setItem('reeflab_language', lng)
   }

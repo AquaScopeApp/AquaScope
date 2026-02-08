@@ -12,7 +12,7 @@ import Footer from './Footer'
 import VersionBanner from './VersionBanner'
 import LanguageSelector from './LanguageSelector'
 
-export default function Layout() {
+export default function Layout(): JSX.Element {
   const location = useLocation()
   const { user, logout } = useAuth()
   const { t } = useTranslation('common')

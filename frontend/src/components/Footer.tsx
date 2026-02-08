@@ -4,7 +4,7 @@
  * App footer with credits, links, and version info
  */
 
-export default function Footer() {
+export default function Footer(): JSX.Element {
   const version = import.meta.env.VITE_APP_VERSION || 'v1.2.0'
   const githubUrl = 'https://github.com/eprifti/reeflab'
 
