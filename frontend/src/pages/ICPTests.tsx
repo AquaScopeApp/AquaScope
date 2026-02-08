@@ -98,14 +98,6 @@ export default function ICPTestsPage() {
     return 'bg-red-500'
   }
 
-  const getStatusColor = (status: string | null): string => {
-    if (!status) return 'text-gray-500'
-    if (status === 'NORMAL') return 'text-green-600'
-    if (status.includes('CRITICALLY')) return 'text-red-600 font-bold'
-    if (status.includes('ABOVE') || status.includes('BELOW')) return 'text-orange-600'
-    return 'text-gray-600'
-  }
-
   const getStatusBadge = (status: string | null): string => {
     if (!status) return 'bg-gray-100 text-gray-600'
     if (status === 'NORMAL') return 'bg-green-100 text-green-700'
