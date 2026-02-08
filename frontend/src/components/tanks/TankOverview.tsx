@@ -8,7 +8,6 @@ import type { TankEvent, Equipment, Livestock, Photo, Note, ICPTestSummary } fro
 import { Link } from 'react-router-dom'
 
 interface TankOverviewProps {
-  tankId: string
   events: TankEvent[]
   equipment: Equipment[]
   livestock: Livestock[]
@@ -18,7 +17,6 @@ interface TankOverviewProps {
 }
 
 export default function TankOverview({
-  tankId,
   events,
   equipment,
   livestock,

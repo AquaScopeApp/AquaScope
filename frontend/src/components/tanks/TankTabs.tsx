@@ -10,7 +10,6 @@ import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
 
 interface TankTabsProps {
-  tankId: string
   events: TankEvent[]
   equipment: Equipment[]
   livestock: Livestock[]
@@ -34,7 +33,6 @@ interface Tab {
 }
 
 export default function TankTabs({
-  tankId,
   events,
   equipment,
   livestock,
@@ -65,7 +63,6 @@ export default function TankTabs({
       case 'overview':
         return (
           <TankOverview
-            tankId={tankId}
             events={events}
             equipment={equipment}
             livestock={livestock}
