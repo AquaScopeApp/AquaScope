@@ -46,8 +46,8 @@ export default function Dashboard() {
           const [equipment, livestock, photos, notes, maintenance] = await Promise.all([
             equipmentApi.list({ tank_id: tank.id }).catch(() => []),
             livestockApi.list({ tank_id: tank.id }).catch(() => []),
-            photosApi.list({ tank_id: tank.id }).catch(() => []),
-            notesApi.list({ tank_id: tank.id }).catch(() => []),
+            photosApi.list(tank.id).catch(() => []),
+            notesApi.list(tank.id).catch(() => []),
             maintenanceApi.listReminders({ tank_id: tank.id }).catch(() => []),
           ])
 
@@ -159,110 +159,109 @@ export default function Dashboard() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-4">
               {tankSummaries.map(({ tank, equipmentCount, livestockCount, photosCount, notesCount, maintenanceCount, daysUp }) => (
                 <div
                   key={tank.id}
-                  className="bg-white border border-gray-200 rounded-lg hover:border-ocean-500 hover:shadow-lg transition-all overflow-hidden"
+                  className="bg-white border-2 border-gray-200 rounded-lg hover:border-ocean-500 hover:shadow-xl transition-all overflow-hidden"
                 >
-                  {/* Tank Header */}
-                  <Link to={`/tanks/${tank.id}`} className="block p-4 border-b border-gray-100 bg-gradient-to-r from-ocean-50 to-ocean-100">
-                    <h3 className="font-bold text-lg text-gray-900">{tank.name}</h3>
-                    <div className="flex items-center justify-between mt-2">
-                      {tank.total_volume_liters > 0 && (
-                        <span className="text-sm font-medium text-ocean-700">
-                          {tank.total_volume_liters}L
-                        </span>
-                      )}
-                      {daysUp !== null && (
-                        <span className="text-xs text-ocean-600 bg-white px-2 py-1 rounded-full">
-                          {daysUp} days up
-                        </span>
-                      )}
-                    </div>
-                  </Link>
+                  <div className="flex flex-col md:flex-row">
+                    {/* Left Section - Tank Info */}
+                    <div className="bg-gradient-to-br from-ocean-50 via-ocean-100 to-ocean-50 p-6 md:w-64 flex flex-col justify-between border-b md:border-b-0 md:border-r border-gray-200">
+                      <div>
+                        <Link to={`/tanks/${tank.id}`} className="group">
+                          <h3 className="font-bold text-xl text-gray-900 group-hover:text-ocean-600 transition-colors">
+                            {tank.name}
+                          </h3>
+                        </Link>
+                        {tank.total_volume_liters > 0 && (
+                          <div className="mt-2 flex items-center">
+                            <span className="text-2xl font-bold text-ocean-700">
+                              {tank.total_volume_liters}
+                            </span>
+                            <span className="ml-1 text-sm text-ocean-600 font-medium">Liters</span>
+                          </div>
+                        )}
+                      </div>
 
-                  {/* Tank Stats Grid */}
-                  <div className="p-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <Link
-                        to="/equipment"
-                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="text-xl">⚙️</span>
-                        <div>
-                          <div className="text-xs text-gray-500">Equipment</div>
-                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                      <div className="mt-4 space-y-2">
+                        {daysUp !== null && (
+                          <div className="inline-block px-3 py-1 bg-ocean-600 text-white text-sm font-semibold rounded-full">
+                            {daysUp} days up
+                          </div>
+                        )}
+                        {tank.setup_date && (
+                          <div className="text-xs text-gray-600">
+                            Setup: {new Date(tank.setup_date).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right Section - Stats Grid */}
+                    <div className="flex-1 p-6">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        {/* Equipment */}
+                        <Link
+                          to="/equipment"
+                          className="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-gray-200 hover:border-ocean-400 hover:bg-ocean-50 transition-all group"
+                        >
+                          <span className="text-3xl mb-2">⚙️</span>
+                          <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {equipmentCount}
                           </div>
-                        </div>
-                      </Link>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">Equipment</div>
+                        </Link>
 
-                      <Link
-                        to="/livestock"
-                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="text-xl">🐟</span>
-                        <div>
-                          <div className="text-xs text-gray-500">Livestock</div>
-                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                        {/* Livestock */}
+                        <Link
+                          to="/livestock"
+                          className="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-gray-200 hover:border-ocean-400 hover:bg-ocean-50 transition-all group"
+                        >
+                          <span className="text-3xl mb-2">🐟</span>
+                          <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {livestockCount}
                           </div>
-                        </div>
-                      </Link>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">Livestock</div>
+                        </Link>
 
-                      <Link
-                        to="/photos"
-                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="text-xl">📷</span>
-                        <div>
-                          <div className="text-xs text-gray-500">Photos</div>
-                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                        {/* Photos */}
+                        <Link
+                          to="/photos"
+                          className="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-gray-200 hover:border-ocean-400 hover:bg-ocean-50 transition-all group"
+                        >
+                          <span className="text-3xl mb-2">📷</span>
+                          <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {photosCount}
                           </div>
-                        </div>
-                      </Link>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">Photos</div>
+                        </Link>
 
-                      <Link
-                        to="/notes"
-                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
-                      >
-                        <span className="text-xl">📝</span>
-                        <div>
-                          <div className="text-xs text-gray-500">Notes</div>
-                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                        {/* Notes */}
+                        <Link
+                          to="/notes"
+                          className="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-gray-200 hover:border-ocean-400 hover:bg-ocean-50 transition-all group"
+                        >
+                          <span className="text-3xl mb-2">📝</span>
+                          <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {notesCount}
                           </div>
-                        </div>
-                      </Link>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">Notes</div>
+                        </Link>
+
+                        {/* Maintenance */}
+                        <Link
+                          to="/maintenance"
+                          className="flex flex-col items-center justify-center p-4 rounded-lg border-2 border-gray-200 hover:border-coral-400 hover:bg-coral-50 transition-all group"
+                        >
+                          <span className="text-3xl mb-2">🔧</span>
+                          <div className="text-2xl font-bold text-gray-900 group-hover:text-coral-600">
+                            {maintenanceCount}
+                          </div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">Maintenance</div>
+                        </Link>
+                      </div>
                     </div>
-
-                    {/* Maintenance Status */}
-                    <Link
-                      to="/maintenance"
-                      className="mt-3 flex items-center justify-between p-2 rounded bg-gray-50 hover:bg-ocean-50 transition-colors group"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <span className="text-lg">🔧</span>
-                        <span className="text-xs font-medium text-gray-700">Maintenance Tasks</span>
-                      </div>
-                      <span className="text-sm font-bold text-ocean-600 group-hover:text-ocean-700">
-                        {maintenanceCount}
-                      </span>
-                    </Link>
-
-                    {/* Setup Date */}
-                    {tank.setup_date && (
-                      <div className="mt-3 pt-3 border-t border-gray-100">
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span>Setup:</span>
-                          <span className="font-medium">
-                            {new Date(tank.setup_date).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               ))}
