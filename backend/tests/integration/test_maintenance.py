@@ -230,7 +230,7 @@ class TestCompleteReminder:
 
     def test_complete_reminder_success(self, authenticated_client, test_reminder):
         """Test successful reminder completion"""
-        original_due = test_reminder.next_due  # Already a date object, not a string
+        # API calculates next_due from completion_date (today), not from old next_due
         response = authenticated_client.post(
             f"/api/v1/maintenance/reminders/{test_reminder.id}/complete",
             json={}
@@ -239,7 +239,8 @@ class TestCompleteReminder:
         data = response.json()
         assert data["last_completed"] is not None
         new_due = date.fromisoformat(data["next_due"])
-        assert new_due == original_due + timedelta(days=test_reminder.frequency_days)
+        # Next due = today + frequency_days (API implementation)
+        assert new_due == date.today() + timedelta(days=test_reminder.frequency_days)
 
     def test_complete_reminder_custom_date(self, authenticated_client, test_reminder):
         """Test completing reminder with custom completion date"""
