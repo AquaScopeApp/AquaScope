@@ -56,7 +56,26 @@ export default function LivestockForm({
     setIsSearching(true)
     try {
       const results = await livestockApi.searchFishBase(searchQuery)
-      setSearchResults(results)
+
+      // Enhance results with thumbnails
+      const enhancedResults = await Promise.all(
+        results.slice(0, 5).map(async (result) => {
+          try {
+            const specCode = result.SpecCode || result.species_id
+            if (specCode) {
+              const images = await livestockApi.getFishBaseSpeciesImages(String(specCode))
+              if (images && images.length > 0) {
+                result.thumbnail = images[0].ThumbPic || images[0].Pic
+              }
+            }
+          } catch (error) {
+            // Continue without thumbnail if fetch fails
+          }
+          return result
+        })
+      )
+
+      setSearchResults(enhancedResults)
     } catch (error) {
       console.error('Error searching FishBase:', error)
       setSearchResults([])
@@ -66,9 +85,16 @@ export default function LivestockForm({
   }
 
   const handleSelectFishBaseResult = (result: any) => {
-    setSpeciesName(result.scientific_name || result.species)
-    setCommonName(result.common_name || '')
-    setFishbaseSpeciesId(result.species_id || result.id || '')
+    // FishBase API returns different field names
+    const genus = result.Genus || ''
+    const species = result.Species || ''
+    const scientificName = genus && species ? `${genus} ${species}` : result.scientific_name || ''
+    const commonName = result.FBname || result.ComName || result.common_name || ''
+    const speciesId = String(result.SpecCode || result.species_id || result.id || '')
+
+    setSpeciesName(scientificName)
+    setCommonName(commonName)
+    setFishbaseSpeciesId(speciesId)
     setSearchResults([])
     setSearchQuery('')
   }
@@ -209,22 +235,50 @@ export default function LivestockForm({
 
               {/* Search Results */}
               {searchResults.length > 0 && (
-                <div className="mt-3 bg-white border border-gray-300 rounded-md max-h-48 overflow-y-auto">
-                  {searchResults.map((result, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => handleSelectFishBaseResult(result)}
-                      className="w-full px-4 py-2 text-left hover:bg-gray-50 border-b border-gray-200 last:border-b-0"
-                    >
-                      <div className="font-medium text-gray-900">
-                        {result.common_name || 'Unknown'}
-                      </div>
-                      <div className="text-sm text-gray-600 italic">
-                        {result.scientific_name || result.species}
-                      </div>
-                    </button>
-                  ))}
+                <div className="mt-3 bg-white border border-gray-300 rounded-md max-h-64 overflow-y-auto">
+                  {searchResults.map((result, index) => {
+                    const genus = result.Genus || ''
+                    const species = result.Species || ''
+                    const scientificName = genus && species ? `${genus} ${species}` : ''
+                    const commonName = result.FBname || result.ComName || result.common_name || 'Unknown'
+
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => handleSelectFishBaseResult(result)}
+                        className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-200 last:border-b-0 flex items-center space-x-3"
+                      >
+                        {/* Thumbnail */}
+                        {result.thumbnail ? (
+                          <img
+                            src={result.thumbnail}
+                            alt={commonName}
+                            className="w-16 h-16 object-contain bg-blue-50 rounded"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none'
+                            }}
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-blue-50 rounded flex items-center justify-center text-2xl">
+                            🐠
+                          </div>
+                        )}
+
+                        {/* Species Info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-gray-900">
+                            {commonName}
+                          </div>
+                          {scientificName && (
+                            <div className="text-sm text-gray-600 italic">
+                              {scientificName}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </div>

@@ -168,10 +168,85 @@ class FishBaseService:
             print(f"Error fetching common names from FishBase: {e}")
             return []
 
+    async def get_species_images(self, species_id: str) -> List[Dict[str, Any]]:
+        """
+        Get images/photos for a species from FishBase.
+
+        Args:
+            species_id: FishBase species code
+
+        Returns:
+            List of image URLs and metadata
+
+        Example:
+            >>> await service.get_species_images("5606")
+            [
+                {
+                    "PicID": "FA00001",
+                    "autoctr": 1234,
+                    "SpecCode": 5606,
+                    "PicPreferredName": "Amphiprion ocellaris",
+                    "PicName": "amphiprion_ocellaris_01.jpg",
+                    "Pic": "https://fishbase.ropensci.org/...",
+                    "ThumbPic": "https://fishbase.ropensci.org/..."
+                }
+            ]
+        """
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                # FishBase photos endpoint
+                response = await client.get(
+                    f"{self.base_url}/photos",
+                    params={"SpecCode": species_id}
+                )
+                response.raise_for_status()
+                photos = response.json()
+
+                # Return photos with properly formatted URLs
+                # FishBase photos are available at fishbase.org
+                for photo in photos:
+                    if isinstance(photo, dict) and "PicName" in photo:
+                        # Add full URLs if they're not already included
+                        pic_name = photo["PicName"]
+                        if not photo.get("Pic"):
+                            photo["Pic"] = f"https://www.fishbase.se/images/species/{pic_name}"
+                        if not photo.get("ThumbPic"):
+                            # Thumbnails are typically prefixed with "tn_"
+                            thumb_name = f"tn_{pic_name}"
+                            photo["ThumbPic"] = f"https://www.fishbase.se/images/thumbnails/{thumb_name}"
+
+                return photos
+        except httpx.HTTPError as e:
+            print(f"Error fetching images from FishBase: {e}")
+            return []
+
+    async def get_primary_image(self, species_id: str) -> Optional[str]:
+        """
+        Get the primary/thumbnail image URL for a species.
+
+        Convenience method to get just the main thumbnail for display.
+
+        Args:
+            species_id: FishBase species code
+
+        Returns:
+            Thumbnail URL or None if no image available
+
+        Example:
+            >>> await service.get_primary_image("5606")
+            "https://www.fishbase.se/images/thumbnails/tn_amphiprion_ocellaris_01.jpg"
+        """
+        images = await self.get_species_images(species_id)
+        if images and len(images) > 0:
+            # Return the first (primary) thumbnail
+            return images[0].get("ThumbPic") or images[0].get("Pic")
+        return None
+
     async def search_with_details(
         self,
         query: str,
-        limit: int = 10
+        limit: int = 10,
+        include_images: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Search species and enrich with detailed information.
@@ -181,6 +256,7 @@ class FishBaseService:
         Args:
             query: Search term
             limit: Maximum results
+            include_images: If True, also fetch image URLs
 
         Returns:
             List of species with enriched details
@@ -190,8 +266,14 @@ class FishBaseService:
 
         for species in species_list:
             if "SpecCode" in species:
-                details = await self.get_species_by_id(str(species["SpecCode"]))
+                spec_code = str(species["SpecCode"])
+                details = await self.get_species_by_id(spec_code)
                 if details:
+                    # Optionally add thumbnail
+                    if include_images:
+                        thumbnail = await self.get_primary_image(spec_code)
+                        if thumbnail:
+                            details["thumbnail"] = thumbnail
                     enriched_results.append(details)
 
         return enriched_results

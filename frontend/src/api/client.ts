@@ -450,9 +450,20 @@ export const livestockApi = {
     return response.data
   },
 
-  getFishBaseSpecies: async (species_id: string): Promise<any> => {
+  getFishBaseSpecies: async (
+    species_id: string,
+    include_images = false
+  ): Promise<any> => {
     const response = await apiClient.get<any>(
-      `/livestock/fishbase/species/${species_id}`
+      `/livestock/fishbase/species/${species_id}`,
+      { params: { include_images } }
+    )
+    return response.data
+  },
+
+  getFishBaseSpeciesImages: async (species_id: string): Promise<any[]> => {
+    const response = await apiClient.get<any[]>(
+      `/livestock/fishbase/species/${species_id}/images`
     )
     return response.data
   },

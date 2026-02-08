@@ -186,12 +186,14 @@ async def search_fishbase(
 
 @router.get("/fishbase/species/{species_id}")
 async def get_fishbase_species(
-    species_id: str
+    species_id: str,
+    include_images: bool = Query(False, description="Include image URLs in response")
 ):
     """
     Get detailed species information from FishBase.
 
     Provides care requirements, max size, habitat, diet, etc.
+    Optionally includes thumbnail image URL.
     """
     try:
         result = await fishbase_service.get_species_by_id(species_id)
@@ -200,9 +202,37 @@ async def get_fishbase_species(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Species not found in FishBase"
             )
+
+        # Optionally add thumbnail
+        if include_images:
+            thumbnail = await fishbase_service.get_primary_image(species_id)
+            if thumbnail:
+                result["thumbnail"] = thumbnail
+
         return result
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error fetching from FishBase: {str(e)}"
+        )
+
+
+@router.get("/fishbase/species/{species_id}/images")
+async def get_fishbase_species_images(
+    species_id: str
+):
+    """
+    Get all images/photos for a species from FishBase.
+
+    Returns full-size and thumbnail URLs for all available photos.
+
+    Example: /livestock/fishbase/species/5606/images
+    """
+    try:
+        images = await fishbase_service.get_species_images(species_id)
+        return images
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error fetching images from FishBase: {str(e)}"
         )

@@ -1,11 +1,13 @@
 /**
  * Livestock Card Component
  *
- * Displays livestock information in a card layout
+ * Displays livestock information in a card layout with FishBase thumbnail
  */
 
+import { useState, useEffect } from 'react'
 import { Livestock, Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
+import { livestockApi } from '../../api/client'
 
 interface LivestockCardProps {
   livestock: Livestock
@@ -21,6 +23,38 @@ export default function LivestockCard({
   onDelete,
 }: LivestockCardProps) {
   const tank = tanks.find((t) => t.id === livestock.tank_id)
+  const [thumbnail, setThumbnail] = useState<string | null>(null)
+  const [imageLoading, setImageLoading] = useState(false)
+  const [imageError, setImageError] = useState(false)
+
+  // Load thumbnail from FishBase if species_id exists
+  useEffect(() => {
+    const loadThumbnail = async () => {
+      if (livestock.fishbase_species_id && livestock.type === 'fish') {
+        setImageLoading(true)
+        setImageError(false)
+        try {
+          const images = await livestockApi.getFishBaseSpeciesImages(
+            livestock.fishbase_species_id
+          )
+          if (images && images.length > 0) {
+            // Get the first thumbnail
+            const thumbUrl = images[0].ThumbPic || images[0].Pic
+            if (thumbUrl) {
+              setThumbnail(thumbUrl)
+            }
+          }
+        } catch (error) {
+          console.error('Failed to load FishBase thumbnail:', error)
+          setImageError(true)
+        } finally {
+          setImageLoading(false)
+        }
+      }
+    }
+
+    loadThumbnail()
+  }, [livestock.fishbase_species_id, livestock.type])
 
   const getTypeIcon = () => {
     switch (livestock.type) {
@@ -66,12 +100,37 @@ export default function LivestockCard({
   const age = getAge()
 
   return (
-    <div className={`rounded-lg shadow border-2 ${getTypeColor()}`}>
+    <div className={`rounded-lg shadow border-2 ${getTypeColor()} overflow-hidden`}>
+      {/* Thumbnail Image - Only for fish with FishBase data */}
+      {livestock.type === 'fish' && livestock.fishbase_species_id && (
+        <div className="h-40 bg-gradient-to-b from-blue-100 to-blue-50 relative">
+          {imageLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-600"></div>
+            </div>
+          ) : thumbnail && !imageError ? (
+            <img
+              src={thumbnail}
+              alt={livestock.common_name || livestock.species_name}
+              className="w-full h-full object-contain p-2"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <span className="text-6xl opacity-50">{getTypeIcon()}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3 flex-1">
-            <span className="text-3xl">{getTypeIcon()}</span>
+            {/* Only show icon if no thumbnail */}
+            {!(livestock.type === 'fish' && livestock.fishbase_species_id && thumbnail && !imageError) && (
+              <span className="text-3xl">{getTypeIcon()}</span>
+            )}
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-gray-900 truncate">
                 {livestock.common_name || livestock.species_name}
