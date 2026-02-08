@@ -32,6 +32,7 @@ export interface SystemStats {
   total_notes: number
   total_livestock: number
   total_reminders: number
+  total_equipment: number
   database_size_mb: number | null
   active_users_last_30_days: number
 }
@@ -211,6 +212,7 @@ export interface MaintenanceReminder {
   id: string
   tank_id: string
   user_id: string
+  equipment_id: string | null
   title: string
   description: string | null
   reminder_type: string
@@ -224,6 +226,7 @@ export interface MaintenanceReminder {
 
 export interface MaintenanceReminderCreate {
   tank_id: string
+  equipment_id?: string | null
   title: string
   description?: string | null
   reminder_type: string
@@ -236,6 +239,7 @@ export interface MaintenanceReminderUpdate {
   description?: string | null
   reminder_type?: string
   frequency_days?: number
+  equipment_id?: string | null
   is_active?: boolean
 }
 
@@ -272,6 +276,52 @@ export interface LivestockUpdate {
   type?: 'fish' | 'coral' | 'invertebrate'
   fishbase_species_id?: string | null
   added_date?: string | null
+  notes?: string | null
+}
+
+// ============================================================================
+// Equipment Types
+// ============================================================================
+
+export interface Equipment {
+  id: string
+  tank_id: string
+  user_id: string
+  name: string
+  equipment_type: string
+  manufacturer: string | null
+  model: string | null
+  specs: Record<string, any> | null
+  purchase_date: string | null
+  purchase_price: string | null
+  condition: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface EquipmentCreate {
+  tank_id: string
+  name: string
+  equipment_type: string
+  manufacturer?: string | null
+  model?: string | null
+  specs?: Record<string, any> | null
+  purchase_date?: string | null
+  purchase_price?: string | null
+  condition?: string | null
+  notes?: string | null
+}
+
+export interface EquipmentUpdate {
+  name?: string
+  equipment_type?: string
+  manufacturer?: string | null
+  model?: string | null
+  specs?: Record<string, any> | null
+  purchase_date?: string | null
+  purchase_price?: string | null
+  condition?: string | null
   notes?: string | null
 }
 

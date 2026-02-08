@@ -38,6 +38,9 @@ import type {
   Livestock,
   LivestockCreate,
   LivestockUpdate,
+  Equipment,
+  EquipmentCreate,
+  EquipmentUpdate,
   ApiError,
 } from '../types'
 
@@ -425,6 +428,39 @@ export const livestockApi = {
       `/livestock/fishbase/species/${species_id}`
     )
     return response.data
+  },
+}
+
+// ============================================================================
+// Equipment API
+// ============================================================================
+
+export const equipmentApi = {
+  list: async (params?: {
+    tank_id?: string
+    equipment_type?: string
+  }): Promise<Equipment[]> => {
+    const response = await apiClient.get<Equipment[]>('/equipment', { params })
+    return response.data
+  },
+
+  get: async (id: string): Promise<Equipment> => {
+    const response = await apiClient.get<Equipment>(`/equipment/${id}`)
+    return response.data
+  },
+
+  create: async (data: EquipmentCreate): Promise<Equipment> => {
+    const response = await apiClient.post<Equipment>('/equipment', data)
+    return response.data
+  },
+
+  update: async (id: string, data: EquipmentUpdate): Promise<Equipment> => {
+    const response = await apiClient.put<Equipment>(`/equipment/${id}`, data)
+    return response.data
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(`/equipment/${id}`)
   },
 }
 

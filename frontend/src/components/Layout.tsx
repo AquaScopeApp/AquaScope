@@ -20,6 +20,7 @@ export default function Layout() {
     { name: 'Notes', href: '/notes', icon: '📝' },
     { name: 'Maintenance', href: '/maintenance', icon: '🔧' },
     { name: 'Livestock', href: '/livestock', icon: '🐟' },
+    { name: 'Equipment', href: '/equipment', icon: '⚙️' },
   ]
 
   const isActive = (path: string) => location.pathname.startsWith(path)
