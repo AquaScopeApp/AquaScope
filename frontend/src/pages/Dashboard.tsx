@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { tanksApi, maintenanceApi } from '../api/client'
+import { tanksApi, maintenanceApi, equipmentApi, livestockApi, photosApi, notesApi } from '../api/client'
 import type { Tank, MaintenanceReminder } from '../types'
+
+interface TankSummary {
+  tank: Tank
+  equipmentCount: number
+  livestockCount: number
+  photosCount: number
+  notesCount: number
+  maintenanceCount: number
+  daysUp: number | null
+}
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const [tanks, setTanks] = useState<Tank[]>([])
+  const [tankSummaries, setTankSummaries] = useState<TankSummary[]>([])
   const [overdueReminders, setOverdueReminders] = useState<MaintenanceReminder[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -14,13 +24,46 @@ export default function Dashboard() {
     loadDashboardData()
   }, [])
 
+  const calculateDaysUp = (setupDate: string | null): number | null => {
+    if (!setupDate) return null
+    const setup = new Date(setupDate)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - setup.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays
+  }
+
   const loadDashboardData = async () => {
     try {
       const [tanksData, remindersData] = await Promise.all([
         tanksApi.list(),
         maintenanceApi.listReminders({ overdue_only: true }),
       ])
-      setTanks(tanksData)
+
+      // Load counts for each tank
+      const summaries = await Promise.all(
+        tanksData.map(async (tank) => {
+          const [equipment, livestock, photos, notes, maintenance] = await Promise.all([
+            equipmentApi.list({ tank_id: tank.id }).catch(() => []),
+            livestockApi.list({ tank_id: tank.id }).catch(() => []),
+            photosApi.list({ tank_id: tank.id }).catch(() => []),
+            notesApi.list({ tank_id: tank.id }).catch(() => []),
+            maintenanceApi.listReminders({ tank_id: tank.id }).catch(() => []),
+          ])
+
+          return {
+            tank,
+            equipmentCount: equipment.length,
+            livestockCount: livestock.length,
+            photosCount: photos.length,
+            notesCount: notes.length,
+            maintenanceCount: maintenance.length,
+            daysUp: calculateDaysUp(tank.setup_date),
+          }
+        })
+      )
+
+      setTankSummaries(summaries)
       setOverdueReminders(remindersData)
     } catch (error) {
       console.error('Failed to load dashboard data:', error)
@@ -54,7 +97,7 @@ export default function Dashboard() {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-sm font-medium text-gray-600">Total Tanks</div>
           <div className="text-3xl font-bold text-ocean-600 mt-2">
-            {tanks.length}
+            {tankSummaries.length}
           </div>
         </div>
 
@@ -103,7 +146,7 @@ export default function Dashboard() {
         </div>
 
         <div className="p-6">
-          {tanks.length === 0 ? (
+          {tankSummaries.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-600 mb-4">
                 You haven't added any tanks yet
@@ -116,25 +159,112 @@ export default function Dashboard() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {tanks.map((tank) => (
-                <Link
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tankSummaries.map(({ tank, equipmentCount, livestockCount, photosCount, notesCount, maintenanceCount, daysUp }) => (
+                <div
                   key={tank.id}
-                  to={`/tanks/${tank.id}`}
-                  className="block p-4 border border-gray-200 rounded-lg hover:border-ocean-500 hover:shadow-md transition-all"
+                  className="bg-white border border-gray-200 rounded-lg hover:border-ocean-500 hover:shadow-lg transition-all overflow-hidden"
                 >
-                  <h3 className="font-semibold text-gray-900">{tank.name}</h3>
-                  {tank.total_volume_liters > 0 && (
-                    <p className="text-sm text-gray-600 mt-1">
-                      {tank.total_volume_liters}L
-                    </p>
-                  )}
-                  {tank.setup_date && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Since {new Date(tank.setup_date).toLocaleDateString()}
-                    </p>
-                  )}
-                </Link>
+                  {/* Tank Header */}
+                  <Link to={`/tanks/${tank.id}`} className="block p-4 border-b border-gray-100 bg-gradient-to-r from-ocean-50 to-ocean-100">
+                    <h3 className="font-bold text-lg text-gray-900">{tank.name}</h3>
+                    <div className="flex items-center justify-between mt-2">
+                      {tank.total_volume_liters > 0 && (
+                        <span className="text-sm font-medium text-ocean-700">
+                          {tank.total_volume_liters}L
+                        </span>
+                      )}
+                      {daysUp !== null && (
+                        <span className="text-xs text-ocean-600 bg-white px-2 py-1 rounded-full">
+                          {daysUp} days up
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+
+                  {/* Tank Stats Grid */}
+                  <div className="p-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link
+                        to="/equipment"
+                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
+                      >
+                        <span className="text-xl">⚙️</span>
+                        <div>
+                          <div className="text-xs text-gray-500">Equipment</div>
+                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                            {equipmentCount}
+                          </div>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/livestock"
+                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
+                      >
+                        <span className="text-xl">🐟</span>
+                        <div>
+                          <div className="text-xs text-gray-500">Livestock</div>
+                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                            {livestockCount}
+                          </div>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/photos"
+                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
+                      >
+                        <span className="text-xl">📷</span>
+                        <div>
+                          <div className="text-xs text-gray-500">Photos</div>
+                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                            {photosCount}
+                          </div>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/notes"
+                        className="flex items-center space-x-2 p-2 rounded hover:bg-gray-50 transition-colors group"
+                      >
+                        <span className="text-xl">📝</span>
+                        <div>
+                          <div className="text-xs text-gray-500">Notes</div>
+                          <div className="font-semibold text-gray-900 group-hover:text-ocean-600">
+                            {notesCount}
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+
+                    {/* Maintenance Status */}
+                    <Link
+                      to="/maintenance"
+                      className="mt-3 flex items-center justify-between p-2 rounded bg-gray-50 hover:bg-ocean-50 transition-colors group"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">🔧</span>
+                        <span className="text-xs font-medium text-gray-700">Maintenance Tasks</span>
+                      </div>
+                      <span className="text-sm font-bold text-ocean-600 group-hover:text-ocean-700">
+                        {maintenanceCount}
+                      </span>
+                    </Link>
+
+                    {/* Setup Date */}
+                    {tank.setup_date && (
+                      <div className="mt-3 pt-3 border-t border-gray-100">
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span>Setup:</span>
+                          <span className="font-medium">
+                            {new Date(tank.setup_date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
           )}
