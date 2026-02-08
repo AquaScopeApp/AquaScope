@@ -18,7 +18,7 @@ Features:
 - Trend analysis over time
 """
 from sqlalchemy import Column, String, Text, DateTime, Date, ForeignKey, JSON, Float, Integer
-from sqlalchemy.dialects.postgresql import UUID
+from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -29,9 +29,9 @@ from app.database import Base
 class ICPTest(Base):
     __tablename__ = "icp_tests"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    tank_id = Column(UUID(as_uuid=True), ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
+    tank_id = Column(GUID, ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # Test metadata
     test_date = Column(Date, nullable=False, index=True)

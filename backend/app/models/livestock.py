@@ -24,7 +24,7 @@ Why track livestock?
 - Aid in troubleshooting (new addition causing issues)
 """
 from sqlalchemy import Column, String, Text, Date, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -35,9 +35,9 @@ from app.database import Base
 class Livestock(Base):
     __tablename__ = "livestock"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    tank_id = Column(UUID(as_uuid=True), ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
+    tank_id = Column(GUID, ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     # Species information
     species_name = Column(String, nullable=False)  # Scientific name (e.g., "Amphiprion ocellaris")

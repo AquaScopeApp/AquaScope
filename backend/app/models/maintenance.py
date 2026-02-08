@@ -24,7 +24,7 @@ Why automatic next_due calculation?
 - Frontend can sort by urgency (overdue, due soon, upcoming)
 """
 from sqlalchemy import Column, String, Text, Integer, Date, Boolean, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -35,10 +35,10 @@ from app.database import Base
 class MaintenanceReminder(Base):
     __tablename__ = "maintenance_reminders"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    tank_id = Column(UUID(as_uuid=True), ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    equipment_id = Column(UUID(as_uuid=True), ForeignKey("equipment.id", ondelete="SET NULL"), nullable=True, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
+    tank_id = Column(GUID, ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    equipment_id = Column(GUID, ForeignKey("equipment.id", ondelete="SET NULL"), nullable=True, index=True)
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
 

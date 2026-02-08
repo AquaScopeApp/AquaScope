@@ -18,7 +18,7 @@ Why separate tanks from users?
 - Allows for tank-specific analytics and comparisons
 """
 from sqlalchemy import Column, String, Float, Date, DateTime, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID
+from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -29,8 +29,8 @@ from app.database import Base
 class Tank(Base):
     __tablename__ = "tanks"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     name = Column(String, nullable=False)
 
     # Volume fields (optional - not everyone measures precisely)
@@ -73,9 +73,9 @@ class TankEvent(Base):
     """Major events and milestones in tank history"""
     __tablename__ = "tank_events"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    tank_id = Column(UUID(as_uuid=True), ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    id = Column(GUID, primary_key=True, default=uuid.uuid4, index=True)
+    tank_id = Column(GUID, ForeignKey("tanks.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
 
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)
