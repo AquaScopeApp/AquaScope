@@ -5,6 +5,114 @@ All notable changes to ReefLab will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2026-02-09
+
+### Added
+
+#### Bottom Dwellers & Rocks
+- **Cleaner shrimp**: SVG with curved body, antennae, walking legs, tail fan; `crawl-bottom` keyframe animation (scuttle-pause-return with flip)
+- **Turbo snail**: Purple spiral shell, soft body/foot, eye stalks; `snail-crawl` keyframe (very slow crawl with direction flip)
+- **2 Gobies**: Small bottom-dwelling fish with large characteristic eyes, pectoral perching fins; `goby-hop` keyframe (mostly still, occasional quick hop)
+- **Rock formations**: Large rock left (x=155), medium center-left (x=240), small right-center (x=385), cluster right (x=540), scattered pebbles
+- **CSS animation classes**: `.animate-crawl-shrimp`, `.animate-snail-crawl`, `.animate-goby-hop`, `.animate-goby-hop-2`
+
+#### Logo & Branding
+- **logo.svg**: Full ReefLab logo — ocean gradient circle with clownfish, pink branching coral, green sea fan coral, and "ReefLab" text
+- **favicon.svg**: Compact icon version for browser tabs — clownfish with coral accents
+- Logo integrated into Login page, Register page, and Layout navbar
+- Replaced default Vite favicon with ReefLab favicon in `index.html`
+
+#### GitHub README Banner
+- **banner.svg**: Animated SVG with SMIL animations for GitHub README
+  - 5 swimming fish (clownfish, blue tang, yellow tang, 2 chromis) with ping-pong flip
+  - 4 coral groups with swaying animations
+  - Bottom dwellers (shrimp, snail, 2 gobies) with rocks
+  - Rising bubbles and floating particles
+  - Centered ReefLab logo with tagline
+- Redesigned README header with centered layout and centered badge rows
+- Updated completed features list to reflect v1.5.1
+
+### Changed
+- README header redesigned: animated banner, centered `<h1>`, centered badges in `<p align="center">` blocks
+- Updated completed features: added i18n, livestock split, animations, logo entries
+- Removed "Multi-language support" from roadmap (now completed)
+
+## [1.5.0] - 2026-02-09
+
+### Added
+
+#### Full Internationalization (i18n)
+- **6 languages**: English, French, Spanish, German, Italian, Portuguese
+- **10 namespaces**: common, dashboard, tanks, parameters, maintenance, livestock, icptests, notes, photos, equipment
+- **60+ locale files** in `frontend/public/locales/{en,fr,es,de,it,pt}/`
+- **i18next + react-i18next** integration with `useTranslation` hook across all 9 pages
+- **LanguageSelector** component in Layout navbar and Login/Register pages
+- **i18n config** (`frontend/src/i18n/config.ts`): language detection, fallback to English, namespace loading
+- **TypeScript types** (`frontend/src/i18n/types.ts`): type declarations for all 10 namespaces
+
+#### Pages Wired with i18n
+- Dashboard.tsx, TankList.tsx, Parameters.tsx, Maintenance.tsx, ICPTests.tsx, Notes.tsx, Photos.tsx, Equipment.tsx, Livestock.tsx
+- All hardcoded strings replaced with `t()` translation calls
+- Layout.tsx navigation items translated
+- Common namespace for shared strings (auth, navigation, actions, footer)
+
+#### Animated Aquarium Scene
+- **AquariumScene.tsx**: SVG-based underwater scene component
+  - 5 swimming fish: clownfish, blue tang, 2 chromis, yellow tang
+  - 4 coral groups: pink branching, purple brain, green sea fan, yellow anemone
+  - Rising bubbles (5) and floating particles (3)
+  - Water caustics overlay with radial gradients
+  - Sandy bottom with gradient
+- **Fish ping-pong animation**: `swim-bounce` keyframe — fish swim right, turn (scaleX flip), swim left, turn back
+- **Coral sway animations**: `coral-sway`, `coral-sway-alt` with different timing
+- **Bubble rise animation**: `bubble-rise` with scale and opacity
+- **Emoji animations**: `emoji-swim`, `emoji-sway`, `emoji-wiggle` for stats cards
+- Scene placed in Layout.tsx above `<Outlet />` on all authenticated pages
+
+#### Yellow Tang (Fish 5)
+- Bright yellow disc-shaped body with tall dorsal and ventral fins
+- White tail spine detail
+- `animate-swim-right-medium` class (15s cycle, 3s delay)
+
+### Fixed
+- **Footer version**: Fixed hardcoded v1.3.0 → dynamic version with v1.5.0 fallback
+- **VersionBanner**: Aligned fallback version to v1.5.0
+- **Equipment API**: Fixed variable shadowing bug (`status` parameter vs `EquipmentStatus.status`)
+
+## [1.4.0] - 2026-02-09
+
+### Added
+
+#### Livestock Split Feature
+- **Split endpoint**: `POST /api/v1/livestock/{id}/split` — split a group entry (e.g., 3 Chromis → 2 alive + 1 dead)
+- **LivestockSplitRequest** schema: `split_quantity` (int, ge=1), `new_status` ("dead" | "removed")
+- **LivestockSplitResponse** schema: returns both `original` and `split` entries
+- Reduces original quantity, creates new entry copying all species data with new status + `removed_date`
+- Validates: split_quantity < current quantity, new_status is "dead" or "removed", ownership
+- **Frontend**: Split button on LivestockCard (visible when quantity > 1 and status is "alive"), inline dialog with quantity input and status toggle
+
+#### Time-in-Tank Display
+- Shows how long each livestock entry has been in the tank (e.g., "3 months, 12 days")
+- Calculated from `added_date` to now (or `removed_date` if dead/removed)
+
+#### Livestock Enhancements (v1.3.0)
+- **WoRMS integration**: World Register of Marine Species lookup for taxonomic data
+- **iNaturalist integration**: Photo and observation data from citizen science platform
+- **Status tracking**: alive, dead, removed statuses with `removed_date`
+- **Quantity support**: Track groups of same species (e.g., "5x Chromis viridis")
+
+### Testing
+- **10 split test cases**: split to dead, split to removed, split >= total (422), split 0 (422), invalid status (422), not found (404), unauthorized (401), external IDs copied, both entries in listing
+- **121 total backend tests**, 60% coverage
+
+## [1.3.0] - 2026-02-09
+
+### Added
+- Livestock WoRMS/iNaturalist species integration
+- Status tracking (alive, dead, removed) with removed_date
+- Quantity support for group entries
+- Full i18n support for livestock page
+
 ## [1.2.0] - 2026-02-08
 
 ### Added
@@ -273,14 +381,16 @@ Complete ReefLab application with all core features implemented and production-r
 
 ## [Unreleased]
 
-### Planned for v1.1.0+
+### Planned
 - Email notifications for maintenance reminders
-- Grafana dashboard templates
-- API rate limiting
 - Mobile responsive design improvements
 - Dosing calculator
 - Water change calculator
-- Equipment tracking
+- Cost tracking and equipment expenses
+- Community features (share tanks publicly)
+- Integration with reef controllers (ReefPi, Neptune)
+- Advanced analytics and trend prediction
+- Raspberry Pi deployment guide
 
 ## [0.4.0] - 2024-02-07
 
@@ -629,7 +739,12 @@ All releases are tagged in Git and available on GitHub:
 - `v0.2.0` - Backend Foundation
 - `v0.3.0` - Complete Backend API
 - `v0.4.0` - Frontend Foundation
-- `v1.0.0` - First Stable Release 🎉
+- `v1.0.0` - First Stable Release
+- `v1.2.0` - Tank Hub, CI/CD, Footer
+- `v1.3.0` - Livestock WoRMS/iNaturalist, status tracking, quantity
+- `v1.4.0` - Livestock split, time-in-tank, test coverage
+- `v1.5.0` - Full i18n (6 languages), aquarium animation, yellow tang
+- `v1.5.1` - Bottom dwellers, rocks, logo, GitHub banner
 
 ## Versioning Strategy
 
@@ -644,7 +759,10 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 2** (v0.2.0): Backend foundation
 - ✅ **Phase 3** (v0.3.0): Complete API
 - ✅ **Phase 4** (v0.4.0): Frontend application
-- ✅ **Phase 5-7** (v1.0.0): Complete features & production release 🎉
+- ✅ **Phase 5-7** (v1.0.0): Complete features & production release
+- ✅ **Phase 8** (v1.2.0): Tank hub, CI/CD, footer & credits
+- ✅ **Phase 9** (v1.3.0-v1.4.0): Livestock enhancements & split feature
+- ✅ **Phase 10** (v1.5.x): i18n, animations, branding
 
 ## Contributing
 
