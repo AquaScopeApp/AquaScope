@@ -39,7 +39,8 @@ export default function Layout(): JSX.Element {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <Link to="/dashboard" className="flex items-center">
+              <Link to="/dashboard" className="flex items-center space-x-2">
+                <img src="/favicon.svg" alt="ReefLab" className="h-8 w-8" />
                 <span className="text-2xl font-bold text-ocean-600">
                   ReefLab
                 </span>

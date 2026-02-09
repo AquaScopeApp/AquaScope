@@ -19,6 +19,26 @@ export default function AquariumScene() {
         <ellipse cx="300" cy="210" rx="340" ry="30" fill="#e8d5a3" opacity="0.6" />
         <ellipse cx="300" cy="215" rx="320" ry="20" fill="#d4c28a" opacity="0.4" />
 
+        {/* Rocks */}
+        {/* Large rock left */}
+        <ellipse cx="155" cy="190" rx="28" ry="14" fill="#7f8c8d" />
+        <ellipse cx="155" cy="188" rx="26" ry="12" fill="#95a5a6" />
+        <ellipse cx="148" cy="186" rx="12" ry="6" fill="#a8b5b8" opacity="0.6" />
+        {/* Medium rock center-left */}
+        <ellipse cx="240" cy="192" rx="18" ry="10" fill="#6c7a7d" />
+        <ellipse cx="240" cy="190" rx="16" ry="8" fill="#8e9ea2" />
+        {/* Small rock right-center */}
+        <ellipse cx="385" cy="193" rx="14" ry="8" fill="#7f8c8d" />
+        <ellipse cx="385" cy="191" rx="12" ry="6" fill="#a3b1b5" />
+        {/* Rock cluster right */}
+        <ellipse cx="540" cy="191" rx="22" ry="11" fill="#6c7a7d" />
+        <ellipse cx="540" cy="189" rx="20" ry="9" fill="#8e9ea2" />
+        <ellipse cx="550" cy="187" rx="10" ry="5" fill="#a8b5b8" opacity="0.5" />
+        {/* Tiny pebbles scattered */}
+        <ellipse cx="180" cy="196" rx="5" ry="3" fill="#a3b1b5" opacity="0.6" />
+        <ellipse cx="320" cy="197" rx="4" ry="2.5" fill="#95a5a6" opacity="0.5" />
+        <ellipse cx="430" cy="196" rx="6" ry="3" fill="#8e9ea2" opacity="0.5" />
+
         {/* Coral group left - swaying */}
         <g className="animate-coral-sway" style={{ transformOrigin: '100px 185px' }}>
           {/* Branching coral */}
@@ -147,6 +167,96 @@ export default function AquariumScene() {
             <circle cx="8" cy="-2" r="1.3" fill="#2d3436" />
             {/* Mouth */}
             <path d="M13 0 Q14 1 13 2" stroke="#d4a800" strokeWidth="0.8" fill="none" />
+          </g>
+        </g>
+
+        {/* Bottom dwellers */}
+        {/* Cleaner shrimp - scuttling along sand */}
+        <g className="animate-crawl-shrimp" style={{ transformOrigin: '70px 186px' }}>
+          <g transform="translate(70, 186)">
+            {/* Body - curved */}
+            <path d="M-8 0 Q-6 -4 0 -3 Q6 -2 8 0 Q6 2 0 2 Q-6 1 -8 0Z" fill="#e17055" />
+            {/* Abdomen segments */}
+            <path d="M-3 -2 L-3 1.5" stroke="#d35400" strokeWidth="0.5" opacity="0.5" />
+            <path d="M0 -2.5 L0 1.8" stroke="#d35400" strokeWidth="0.5" opacity="0.5" />
+            <path d="M3 -2 L3 1.5" stroke="#d35400" strokeWidth="0.5" opacity="0.5" />
+            {/* Tail fan */}
+            <path d="M-8 0 L-12 -2 L-13 0 L-12 2 Z" fill="#fab1a0" />
+            {/* Long antennae */}
+            <path d="M8 -2 Q14 -8 18 -10" stroke="#e17055" strokeWidth="0.6" fill="none" />
+            <path d="M8 -1 Q16 -6 20 -7" stroke="#e17055" strokeWidth="0.6" fill="none" />
+            {/* Walking legs */}
+            <line x1="-3" y1="2" x2="-4" y2="5" stroke="#d35400" strokeWidth="0.5" />
+            <line x1="0" y1="2" x2="0" y2="5" stroke="#d35400" strokeWidth="0.5" />
+            <line x1="3" y1="2" x2="3" y2="5" stroke="#d35400" strokeWidth="0.5" />
+            <line x1="5" y1="1" x2="6" y2="4" stroke="#d35400" strokeWidth="0.5" />
+            {/* Eye */}
+            <circle cx="7" cy="-3" r="1" fill="white" />
+            <circle cx="7.3" cy="-3" r="0.5" fill="#2d3436" />
+          </g>
+        </g>
+
+        {/* Turbo snail - very slow crawl */}
+        <g className="animate-snail-crawl" style={{ transformOrigin: '340px 192px' }}>
+          <g transform="translate(340, 192)">
+            {/* Soft body / foot */}
+            <ellipse cx="0" cy="2" rx="8" ry="3" fill="#b2bec3" />
+            {/* Shell - spiral */}
+            <ellipse cx="-2" cy="-2" rx="7" ry="7" fill="#6c5ce7" />
+            <ellipse cx="-2" cy="-2" rx="6" ry="6" fill="#a29bfe" />
+            {/* Spiral pattern */}
+            <path d="M-2 -8 Q4 -5 2 -1 Q0 2 -5 0 Q-8 -2 -5 -5" stroke="#6c5ce7" strokeWidth="1" fill="none" />
+            <path d="M-2 -5 Q1 -3 0 -1" stroke="#6c5ce7" strokeWidth="0.8" fill="none" />
+            {/* Head poking out */}
+            <ellipse cx="6" cy="0" rx="3" ry="2.5" fill="#b2bec3" />
+            {/* Eye stalks */}
+            <line x1="7" y1="-1" x2="9" y2="-4" stroke="#b2bec3" strokeWidth="1" />
+            <line x1="5" y1="-1" x2="6" y2="-4" stroke="#b2bec3" strokeWidth="1" />
+            <circle cx="9" cy="-4.5" r="0.8" fill="#2d3436" />
+            <circle cx="6" cy="-4.5" r="0.8" fill="#2d3436" />
+          </g>
+        </g>
+
+        {/* Goby 1 - resting near a rock, occasional hop */}
+        <g className="animate-goby-hop" style={{ transformOrigin: '170px 186px' }}>
+          <g transform="translate(170, 186)">
+            {/* Body - small, elongated */}
+            <ellipse cx="0" cy="0" rx="10" ry="5" fill="#636e72" />
+            <ellipse cx="0" cy="0" rx="9" ry="4.5" fill="#b2bec3" />
+            {/* Spots */}
+            <circle cx="-3" cy="-1" r="1" fill="#636e72" opacity="0.4" />
+            <circle cx="2" cy="0" r="0.8" fill="#636e72" opacity="0.4" />
+            {/* Tail */}
+            <path d="M-10 0 L-15 -4 L-15 4 Z" fill="#95a5a6" />
+            {/* Dorsal fin */}
+            <path d="M-3 -5 Q0 -8 4 -5" fill="#b2bec3" stroke="#95a5a6" strokeWidth="0.5" />
+            {/* Large eyes (characteristic of gobies) */}
+            <circle cx="6" cy="-2.5" r="2.5" fill="white" />
+            <circle cx="6.5" cy="-2.5" r="1.5" fill="#2d3436" />
+            {/* Pectoral fin (used to perch) */}
+            <path d="M2 3 Q4 6 6 4" stroke="#95a5a6" strokeWidth="1" fill="none" />
+          </g>
+        </g>
+
+        {/* Goby 2 - near right rock cluster */}
+        <g className="animate-goby-hop-2" style={{ transformOrigin: '530px 186px' }}>
+          <g transform="translate(530, 186)">
+            {/* Body */}
+            <ellipse cx="0" cy="0" rx="9" ry="4.5" fill="#636e72" />
+            <ellipse cx="0" cy="0" rx="8" ry="4" fill="#dfe6e9" />
+            {/* Stripe pattern */}
+            <path d="M-4 -3 L-4 3" stroke="#636e72" strokeWidth="0.8" opacity="0.3" />
+            <path d="M0 -4 L0 4" stroke="#636e72" strokeWidth="0.8" opacity="0.3" />
+            <path d="M4 -3 L4 3" stroke="#636e72" strokeWidth="0.8" opacity="0.3" />
+            {/* Tail */}
+            <path d="M-9 0 L-13 -3.5 L-13 3.5 Z" fill="#b2bec3" />
+            {/* Dorsal fin */}
+            <path d="M-2 -4 Q1 -7 4 -4" fill="#dfe6e9" stroke="#b2bec3" strokeWidth="0.5" />
+            {/* Large eyes */}
+            <circle cx="5" cy="-2" r="2.2" fill="white" />
+            <circle cx="5.5" cy="-2" r="1.3" fill="#2d3436" />
+            {/* Pectoral fin */}
+            <path d="M1.5 2.5 Q3 5 5 3.5" stroke="#b2bec3" strokeWidth="0.8" fill="none" />
           </g>
         </g>
 

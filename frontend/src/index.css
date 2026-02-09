@@ -140,6 +140,50 @@ body {
   animation: caustics 12s ease-in-out infinite 3s;
 }
 
+/* Bottom dweller animations */
+/* Shrimp: scuttles along the sand, pauses, scuttles back */
+@keyframes crawl-bottom {
+  0% { transform: translateX(30px) scaleX(1); }
+  10% { transform: translateX(35px) scaleX(1); }
+  30% { transform: translateX(80px) scaleX(1); }
+  35% { transform: translateX(80px) scaleX(1); }
+  45% { transform: translateX(110px) scaleX(1); }
+  50% { transform: translateX(110px) scaleX(-1); }
+  55% { transform: translateX(100px) scaleX(-1); }
+  70% { transform: translateX(60px) scaleX(-1); }
+  75% { transform: translateX(60px) scaleX(-1); }
+  90% { transform: translateX(30px) scaleX(-1); }
+  100% { transform: translateX(30px) scaleX(1); }
+}
+/* Snail: very slow, one-direction crawl and return */
+@keyframes snail-crawl {
+  0% { transform: translateX(0) scaleX(1); }
+  45% { transform: translateX(50px) scaleX(1); }
+  50% { transform: translateX(50px) scaleX(-1); }
+  95% { transform: translateX(0) scaleX(-1); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+/* Goby: mostly still, occasional quick hop then settle */
+@keyframes goby-hop {
+  0%, 70% { transform: translateX(0) translateY(0); }
+  73% { transform: translateX(5px) translateY(-6px); }
+  76% { transform: translateX(12px) translateY(0); }
+  78%, 100% { transform: translateX(12px) translateY(0); }
+}
+
+.animate-crawl-shrimp {
+  animation: crawl-bottom 12s ease-in-out infinite;
+}
+.animate-snail-crawl {
+  animation: snail-crawl 25s ease-in-out infinite;
+}
+.animate-goby-hop {
+  animation: goby-hop 8s ease-in-out infinite;
+}
+.animate-goby-hop-2 {
+  animation: goby-hop 10s ease-in-out infinite 5s;
+}
+
 /* Emoji animations for stats cards and section headers */
 /* Fish: gentle forward drift (only rightward, never backwards) */
 @keyframes emoji-swim {
