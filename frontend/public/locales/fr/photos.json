@@ -1,0 +1,16 @@
+{
+  "title": "Photos",
+  "subtitle": "Galerie photo et chronologie de l'aquarium",
+  "uploadPhoto": "Télécharger une photo",
+  "filterByTank": "Filtrer par aquarium",
+  "allTanks": "Tous les aquariums",
+  "totalPhotos": "Total des photos",
+  "thisMonth": "Ce mois-ci",
+  "tanksWithPhotos": "Aquariums avec photos",
+  "noPhotos": "Aucune photo pour le moment",
+  "startUploading": "Téléchargez votre première photo pour commencer votre chronologie",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette photo ?",
+  "deleteFailed": "Échec de la suppression de la photo",
+  "updateFailed": "Échec de la mise à jour de la photo",
+  "loading": "Chargement des photos..."
+}

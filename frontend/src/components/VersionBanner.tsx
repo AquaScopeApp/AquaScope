@@ -5,7 +5,7 @@
  */
 
 export default function VersionBanner(): JSX.Element {
-  const version = import.meta.env.VITE_APP_VERSION || 'v1.2.0'
+  const version = import.meta.env.VITE_APP_VERSION || 'v1.5.0'
   const gitCommit = import.meta.env.VITE_GIT_COMMIT?.substring(0, 7)
   const buildDate = import.meta.env.VITE_BUILD_DATE
 

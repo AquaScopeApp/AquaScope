@@ -1,0 +1,17 @@
+{
+  "title": "Notes",
+  "subtitle": "Tank journal and observations",
+  "newNote": "New Note",
+  "filterByTank": "Filter by Tank",
+  "allTanks": "All Tanks",
+  "totalNotes": "Total Notes",
+  "thisMonth": "This Month",
+  "avgPerWeek": "Average per Week",
+  "noNotes": "No notes yet",
+  "startDocumenting": "Start documenting your reef journey with observations and notes",
+  "createFirst": "Create First Note",
+  "confirmDelete": "Are you sure you want to delete this note?",
+  "saveFailed": "Failed to save note",
+  "deleteFailed": "Failed to delete note",
+  "loading": "Loading notes..."
+}

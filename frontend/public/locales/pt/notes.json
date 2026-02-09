@@ -1,0 +1,17 @@
+{
+  "title": "Notas",
+  "subtitle": "Diário e observações do aquário",
+  "newNote": "Nova nota",
+  "filterByTank": "Filtrar por aquário",
+  "allTanks": "Todos os aquários",
+  "totalNotes": "Total de notas",
+  "thisMonth": "Este mês",
+  "avgPerWeek": "Média por semana",
+  "noNotes": "Nenhuma nota ainda",
+  "startDocumenting": "Comece a documentar sua jornada no reef com observações e notas",
+  "createFirst": "Criar primeira nota",
+  "confirmDelete": "Tem certeza de que deseja excluir esta nota?",
+  "saveFailed": "Falha ao salvar a nota",
+  "deleteFailed": "Falha ao excluir a nota",
+  "loading": "Carregando notas..."
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Attrezzatura",
+  "subtitle": "Monitora e gestisci l'attrezzatura del tuo acquario",
+  "addEquipment": "Aggiungi attrezzatura",
+  "editEquipment": "Modifica attrezzatura",
+  "filterByTank": "Filtra per acquario",
+  "filterByType": "Filtra per tipo",
+  "filterByStatus": "Filtra per stato",
+  "allTanks": "Tutti gli acquari",
+  "allTypes": "Tutti i tipi",
+  "allStatus": "Tutti gli stati",
+  "purchased": "Acquistato:",
+  "price": "Prezzo:",
+  "noEquipment": "Nessuna attrezzatura trovata. Aggiungi la tua prima attrezzatura per iniziare!",
+  "confirmDelete": "Sei sicuro di voler eliminare questa attrezzatura?",
+  "saveFailed": "Salvataggio dell'attrezzatura non riuscito",
+  "deleteFailed": "Eliminazione dell'attrezzatura non riuscita",
+  "updateEquipment": "Aggiorna attrezzatura",
+  "loading": "Caricamento attrezzatura...",
+  "form": {
+    "name": "Nome",
+    "type": "Tipo di attrezzatura",
+    "brand": "Marca",
+    "model": "Modello",
+    "status": "Stato",
+    "tank": "Acquario",
+    "selectTank": "Seleziona acquario",
+    "purchaseDate": "Data di acquisto",
+    "price": "Prezzo",
+    "condition": "Condizione",
+    "notes": "Note"
+  }
+}

@@ -5,12 +5,14 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Note, Tank } from '../types'
 import { notesApi, tanksApi } from '../api/client'
 import NoteCard from '../components/notes/NoteCard'
 import NoteEditor from '../components/notes/NoteEditor'
 
 export default function Notes() {
+  const { t } = useTranslation('notes')
   const [notes, setNotes] = useState<Note[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -60,12 +62,12 @@ export default function Notes() {
       loadData()
     } catch (error) {
       console.error('Failed to save note:', error)
-      alert('Failed to save note')
+      alert(t('saveFailed'))
     }
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this note?')) {
+    if (!confirm(t('confirmDelete'))) {
       return
     }
 
@@ -74,7 +76,7 @@ export default function Notes() {
       loadData()
     } catch (error) {
       console.error('Failed to delete note:', error)
-      alert('Failed to delete note')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -86,7 +88,7 @@ export default function Notes() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">Loading notes...</div>
+        <div className="text-gray-600">{t('loading')}</div>
       </div>
     )
   }
@@ -96,8 +98,8 @@ export default function Notes() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Notes</h1>
-          <p className="text-gray-600 mt-1">Tank journal and observations</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={handleCreate}
@@ -106,7 +108,7 @@ export default function Notes() {
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          <span>New Note</span>
+          <span>{t('newNote')}</span>
         </button>
       </div>
 
@@ -114,7 +116,7 @@ export default function Notes() {
       {tanks.length > 1 && (
         <div className="bg-white rounded-lg shadow p-4">
           <label htmlFor="tank-filter" className="block text-sm font-medium text-gray-700 mb-2">
-            Filter by Tank
+            {t('filterByTank')}
           </label>
           <select
             id="tank-filter"
@@ -122,7 +124,7 @@ export default function Notes() {
             onChange={(e) => setSelectedTankId(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
           >
-            <option value="">All Tanks</option>
+            <option value="">{t('allTanks')}</option>
             {tanks.map((tank) => (
               <option key={tank.id} value={tank.id}>
                 {tank.name}
@@ -135,11 +137,11 @@ export default function Notes() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-ocean-500">
-          <div className="text-sm text-gray-600">Total Notes</div>
+          <div className="text-sm text-gray-600">{t('totalNotes')}</div>
           <div className="text-2xl font-bold text-gray-900">{notes.length}</div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-          <div className="text-sm text-gray-600">This Month</div>
+          <div className="text-sm text-gray-600">{t('thisMonth')}</div>
           <div className="text-2xl font-bold text-gray-900">
             {notes.filter((n) => {
               const date = new Date(n.created_at)
@@ -149,7 +151,7 @@ export default function Notes() {
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-          <div className="text-sm text-gray-600">Average per Week</div>
+          <div className="text-sm text-gray-600">{t('avgPerWeek')}</div>
           <div className="text-2xl font-bold text-gray-900">
             {notes.length > 0
               ? Math.round((notes.length /
@@ -185,15 +187,15 @@ export default function Notes() {
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No notes yet</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noNotes')}</h3>
           <p className="text-gray-600 mb-4">
-            Start documenting your reef journey with observations and notes
+            {t('startDocumenting')}
           </p>
           <button
             onClick={handleCreate}
             className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
           >
-            Create First Note
+            {t('createFirst')}
           </button>
         </div>
       ) : (

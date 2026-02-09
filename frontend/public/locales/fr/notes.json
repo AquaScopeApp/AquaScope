@@ -1,0 +1,17 @@
+{
+  "title": "Notes",
+  "subtitle": "Journal et observations de l'aquarium",
+  "newNote": "Nouvelle note",
+  "filterByTank": "Filtrer par aquarium",
+  "allTanks": "Tous les aquariums",
+  "totalNotes": "Total des notes",
+  "thisMonth": "Ce mois-ci",
+  "avgPerWeek": "Moyenne par semaine",
+  "noNotes": "Aucune note pour le moment",
+  "startDocumenting": "Commencez à documenter votre parcours récifal avec des observations et des notes",
+  "createFirst": "Créer la première note",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette note ?",
+  "saveFailed": "Échec de l'enregistrement de la note",
+  "deleteFailed": "Échec de la suppression de la note",
+  "loading": "Chargement des notes..."
+}

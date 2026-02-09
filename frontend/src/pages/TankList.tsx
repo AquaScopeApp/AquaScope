@@ -3,12 +3,15 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { tanksApi } from '../api/client'
 import type { Tank } from '../types'
 import TankCard from '../components/tanks/TankCard'
 import TankForm from '../components/tanks/TankForm'
 
 export default function TankList() {
+  const { t } = useTranslation('tanks')
+  const { t: tc } = useTranslation('common')
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -43,7 +46,7 @@ export default function TankList() {
   }
 
   const handleDeleteTank = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this tank? All associated data will be lost.')) {
+    if (!confirm(t('confirmDelete'))) {
       return
     }
 
@@ -52,7 +55,7 @@ export default function TankList() {
       loadTanks()
     } catch (error) {
       console.error('Failed to delete tank:', error)
-      alert('Failed to delete tank')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -78,9 +81,9 @@ export default function TankList() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Tanks</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('myTanks')}</h1>
           <p className="text-gray-600 mt-1">
-            Manage your reef aquarium systems
+            {t('manageSystems')}
           </p>
         </div>
 
@@ -91,7 +94,7 @@ export default function TankList() {
           }}
           className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
         >
-          {showForm ? 'Cancel' : 'Add Tank'}
+          {showForm ? tc('actions.cancel') : t('addTank')}
         </button>
       </div>
 
@@ -130,15 +133,15 @@ export default function TankList() {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No tanks yet</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noTanksYet')}</h3>
           <p className="text-gray-600 mb-6">
-            Get started by adding your first reef aquarium
+            {t('getStarted')}
           </p>
           <button
             onClick={() => setShowForm(true)}
             className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
           >
-            Add Your First Tank
+            {t('addFirstTank')}
           </button>
         </div>
       ) : (

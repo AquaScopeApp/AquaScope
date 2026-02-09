@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { tanksApi, parametersApi } from '../api/client'
 import { PARAMETER_ORDER, PARAMETER_RANGES, RATIO_ORDER } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'
@@ -12,6 +13,8 @@ import ParameterForm from '../components/parameters/ParameterForm'
 import type { Tank, ParameterReading } from '../types'
 
 export default function Parameters() {
+  const { t } = useTranslation('parameters')
+  const { t: tc } = useTranslation('common')
   const [tanks, setTanks] = useState<Tank[]>([])
   const [selectedTank, setSelectedTank] = useState<string | null>(null)
   const [parameters, setParameters] = useState<Record<string, ParameterReading[]>>({})
@@ -318,15 +321,15 @@ export default function Parameters() {
   if (tanks.length === 0) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">No Tanks Yet</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 mb-4">{t('noTanksYet')}</h2>
         <p className="text-gray-600 mb-6">
-          You need to create a tank before logging parameters
+          {t('noTanksDescription')}
         </p>
         <a
           href="/tanks/new"
           className="inline-block px-6 py-3 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
         >
-          Create Your First Tank
+          {t('createFirstTank')}
         </a>
       </div>
     )
@@ -339,9 +342,9 @@ export default function Parameters() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Water Parameters</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Track and visualize your reef tank water chemistry
+            {t('subtitle')}
           </p>
         </div>
 
@@ -350,13 +353,13 @@ export default function Parameters() {
             onClick={() => setShowTableView(!showTableView)}
             className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
           >
-            {showTableView ? 'Hide Table' : 'Show Table'}
+            {showTableView ? t('hideTable') : t('showTable')}
           </button>
           <button
             onClick={() => setShowForm(!showForm)}
             className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
           >
-            {showForm ? 'Hide Form' : 'Log Parameters'}
+            {showForm ? t('hideForm') : t('logParameters')}
           </button>
         </div>
       </div>
@@ -365,7 +368,7 @@ export default function Parameters() {
       {tanks.length > 1 && (
         <div className="bg-white rounded-lg shadow p-4">
           <label htmlFor="tank" className="block text-sm font-medium text-gray-700 mb-2">
-            Select Tank
+            {t('selectTank')}
           </label>
           <select
             id="tank"
@@ -410,16 +413,16 @@ export default function Parameters() {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Raw Data Table (Debug View)
+                  {t('rawDataTable')}
                 </h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  Total entries: {Object.values(parameters).flat().length}
+                  {t('totalEntries')} {Object.values(parameters).flat().length}
                 </p>
               </div>
               <div className="w-64">
                 <input
                   type="text"
-                  placeholder="Filter by parameter..."
+                  placeholder={t('filterByParameter')}
                   value={tableFilter}
                   onChange={(e) => setTableFilter(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
@@ -432,19 +435,19 @@ export default function Parameters() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Timestamp
+                    {t('table.timestamp')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Parameter
+                    {t('table.parameter')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Value
+                    {t('table.value')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Unit
+                    {t('table.unit')}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    {t('table.actions')}
                   </th>
                 </tr>
               </thead>
@@ -528,13 +531,13 @@ export default function Parameters() {
                                 onClick={handleSaveEdit}
                                 className="text-green-600 hover:text-green-900 mr-3"
                               >
-                                Save
+                                {tc('actions.save')}
                               </button>
                               <button
                                 onClick={handleCancelEdit}
                                 className="text-gray-600 hover:text-gray-900"
                               >
-                                Cancel
+                                {tc('actions.cancel')}
                               </button>
                             </>
                           ) : (
@@ -543,7 +546,7 @@ export default function Parameters() {
                                 onClick={() => handleStartEdit(paramType, reading)}
                                 className="text-ocean-600 hover:text-ocean-900 mr-3"
                               >
-                                Edit
+                                {tc('actions.edit')}
                               </button>
                               <button
                                 onClick={() =>
@@ -551,7 +554,7 @@ export default function Parameters() {
                                 }
                                 className="text-red-600 hover:text-red-900"
                               >
-                                Delete
+                                {tc('actions.delete')}
                               </button>
                             </>
                           )}
@@ -562,7 +565,7 @@ export default function Parameters() {
                       {allRows.length === 0 && (
                         <tr>
                           <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                            No data available in the selected time range
+                            {t('noData')}
                           </td>
                         </tr>
                       )}
@@ -596,7 +599,7 @@ export default function Parameters() {
             return (
               <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
                 <div className="text-sm text-gray-700">
-                  Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, allRows.length)} of {allRows.length} entries
+                  {t('showing', { from: ((currentPage - 1) * itemsPerPage) + 1, to: Math.min(currentPage * itemsPerPage, allRows.length), total: allRows.length })}
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
@@ -604,17 +607,17 @@ export default function Parameters() {
                     disabled={currentPage === 1}
                     className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                   >
-                    ← Previous
+                    {`\u2190 ${tc('actions.previous')}`}
                   </button>
                   <span className="text-sm text-gray-700">
-                    Page {currentPage} of {totalPages}
+                    {t('page', { current: currentPage, total: totalPages })}
                   </span>
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
                     className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                   >
-                    Next →
+                    {`${tc('actions.next')} \u2192`}
                   </button>
                 </div>
               </div>
@@ -626,14 +629,14 @@ export default function Parameters() {
       {/* Date Range Selector */}
       <div className="bg-white rounded-lg shadow p-4">
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium text-gray-700">Time Range:</span>
+          <span className="text-sm font-medium text-gray-700">{t('timeRange')}</span>
           <div className="flex space-x-2">
             {[
-              { value: '7d', label: '7 Days' },
-              { value: '30d', label: '30 Days' },
-              { value: '90d', label: '90 Days' },
-              { value: '365d', label: '1 Year' },
-              { value: 'all', label: 'All Time' },
+              { value: '7d', label: t('ranges.7d') },
+              { value: '30d', label: t('ranges.30d') },
+              { value: '90d', label: t('ranges.90d') },
+              { value: '365d', label: t('ranges.1y') },
+              { value: 'all', label: t('ranges.all') },
             ].map((option) => (
               <button
                 key={option.value}
@@ -709,16 +712,16 @@ export default function Parameters() {
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No Parameter Data Yet
+              {t('noParameterData')}
             </h3>
             <p className="text-gray-600 mb-6">
-              Start tracking your water chemistry by logging your first water test results
+              {t('startTracking')}
             </p>
             <button
               onClick={() => setShowForm(true)}
               className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
             >
-              Log First Parameters
+              {t('logFirst')}
             </button>
           </div>
         )}

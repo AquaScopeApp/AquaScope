@@ -1,0 +1,33 @@
+{
+  "title": "Ausrüstung",
+  "subtitle": "Verfolgen und verwalten Sie Ihre Aquariumausrüstung",
+  "addEquipment": "Ausrüstung hinzufügen",
+  "editEquipment": "Ausrüstung bearbeiten",
+  "filterByTank": "Nach Aquarium filtern",
+  "filterByType": "Nach Typ filtern",
+  "filterByStatus": "Nach Status filtern",
+  "allTanks": "Alle Aquarien",
+  "allTypes": "Alle Typen",
+  "allStatus": "Alle Status",
+  "purchased": "Gekauft:",
+  "price": "Preis:",
+  "noEquipment": "Keine Ausrüstung gefunden. Fügen Sie Ihre erste Ausrüstung hinzu!",
+  "confirmDelete": "Sind Sie sicher, dass Sie diese Ausrüstung löschen möchten?",
+  "saveFailed": "Ausrüstung konnte nicht gespeichert werden",
+  "deleteFailed": "Ausrüstung konnte nicht gelöscht werden",
+  "updateEquipment": "Ausrüstung aktualisieren",
+  "loading": "Ausrüstung wird geladen...",
+  "form": {
+    "name": "Name",
+    "type": "Ausrüstungstyp",
+    "brand": "Marke",
+    "model": "Modell",
+    "status": "Status",
+    "tank": "Aquarium",
+    "selectTank": "Aquarium auswählen",
+    "purchaseDate": "Kaufdatum",
+    "price": "Preis",
+    "condition": "Zustand",
+    "notes": "Notizen"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Notizen",
+  "subtitle": "Aquarium-Tagebuch und Beobachtungen",
+  "newNote": "Neue Notiz",
+  "filterByTank": "Nach Aquarium filtern",
+  "allTanks": "Alle Aquarien",
+  "totalNotes": "Notizen gesamt",
+  "thisMonth": "Diesen Monat",
+  "avgPerWeek": "Durchschnitt pro Woche",
+  "noNotes": "Noch keine Notizen",
+  "startDocumenting": "Beginnen Sie, Ihre Riffaquarium-Reise mit Beobachtungen und Notizen zu dokumentieren",
+  "createFirst": "Erste Notiz erstellen",
+  "confirmDelete": "Sind Sie sicher, dass Sie diese Notiz löschen möchten?",
+  "saveFailed": "Notiz konnte nicht gespeichert werden",
+  "deleteFailed": "Notiz konnte nicht gelöscht werden",
+  "loading": "Notizen werden geladen..."
+}

@@ -56,6 +56,13 @@
     "noIcpTests": "Nessun test ICP",
     "noMaintenance": "Nessun promemoria di manutenzione"
   },
+  "myTanks": "Le mie vasche",
+  "manageSystems": "Gestisci i tuoi sistemi di acquari reef",
+  "confirmDelete": "Sei sicuro di voler eliminare questa vasca? Tutti i dati associati andranno persi.",
+  "deleteFailed": "Eliminazione della vasca fallita",
+  "noTanksYet": "Nessuna vasca ancora",
+  "getStarted": "Inizia aggiungendo il tuo primo acquario reef",
+  "addFirstTank": "Aggiungi la tua prima vasca",
   "imageUpload": {
     "title": "Carica immagine vasca",
     "dragDrop": "Clicca o trascina per caricare",

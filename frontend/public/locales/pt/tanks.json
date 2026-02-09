@@ -56,6 +56,13 @@
     "noIcpTests": "Nenhum teste ICP",
     "noMaintenance": "Nenhum lembrete de manutenção"
   },
+  "myTanks": "Meus aquários",
+  "manageSystems": "Gerencie seus sistemas de aquários de recife",
+  "confirmDelete": "Tem certeza de que deseja excluir este aquário? Todos os dados associados serão perdidos.",
+  "deleteFailed": "Falha ao excluir o aquário",
+  "noTanksYet": "Nenhum aquário ainda",
+  "getStarted": "Comece adicionando seu primeiro aquário de recife",
+  "addFirstTank": "Adicione seu primeiro aquário",
   "imageUpload": {
     "title": "Enviar imagem do aquário",
     "dragDrop": "Clique ou arraste para enviar",

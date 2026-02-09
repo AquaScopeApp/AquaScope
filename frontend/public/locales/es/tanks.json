@@ -56,6 +56,13 @@
     "noIcpTests": "Sin pruebas ICP",
     "noMaintenance": "Sin recordatorios de mantenimiento"
   },
+  "myTanks": "Mis acuarios",
+  "manageSystems": "Gestiona tus sistemas de acuarios de arrecife",
+  "confirmDelete": "¿Estás seguro de que deseas eliminar este acuario? Todos los datos asociados se perderán.",
+  "deleteFailed": "Error al eliminar el acuario",
+  "noTanksYet": "Aún no hay acuarios",
+  "getStarted": "Comienza agregando tu primer acuario de arrecife",
+  "addFirstTank": "Agrega tu primer acuario",
   "imageUpload": {
     "title": "Subir imagen del acuario",
     "dragDrop": "Haz clic para subir o arrastra y suelta",

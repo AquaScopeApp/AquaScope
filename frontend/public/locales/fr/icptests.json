@@ -1,0 +1,38 @@
+{
+  "title": "Tests ICP de l'eau",
+  "subtitle": "Téléchargez les PDFs du laboratoire ATI pour suivre automatiquement les oligo-éléments et la qualité de l'eau",
+  "uploadNew": "Télécharger un nouveau test",
+  "selectTank": "Sélectionner un aquarium",
+  "allTanks": "Tous les aquariums",
+  "uploading": "Téléchargement...",
+  "uploadATI": "Télécharger PDF ATI",
+  "processing": "Traitement...",
+  "uploadHelp": "Téléchargez le PDF du test ICP ATI Aquaristik pour l'extraction automatique des données",
+  "testHistory": "Historique des tests",
+  "tests": "tests",
+  "loading": "Chargement...",
+  "noTests": "Aucun test ICP. Téléchargez votre premier test !",
+  "uploadSuccess": "Test ICP téléchargé avec succès",
+  "uploadSuccessMulti": "tests ICP téléchargés avec succès",
+  "uploadFailed": "Échec du téléchargement :",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce test ICP ?",
+  "deleteFailed": "Échec de la suppression du test",
+  "selectTest": "Sélectionnez un test dans la liste pour voir les détails",
+  "testId": "ID du test :",
+  "waterType": {
+    "saltwater": "Eau de mer",
+    "roWater": "Eau osmosée"
+  },
+  "scores": {
+    "major": "Éléments majeurs",
+    "minor": "Éléments mineurs",
+    "pollutants": "Polluants",
+    "base": "Éléments de base"
+  },
+  "tabs": {
+    "major": "Majeurs",
+    "minor": "Mineurs",
+    "pollutants": "Polluants"
+  },
+  "notes": "Notes"
+}

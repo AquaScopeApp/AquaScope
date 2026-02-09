@@ -1,0 +1,38 @@
+{
+  "title": "ICP-Wassertests",
+  "subtitle": "Laden Sie ATI-Labor-PDFs hoch, um Spurenelemente und Wasserqualität automatisch zu verfolgen",
+  "uploadNew": "Neuen Test hochladen",
+  "selectTank": "Aquarium auswählen",
+  "allTanks": "Alle Aquarien",
+  "uploading": "Wird hochgeladen...",
+  "uploadATI": "ATI-PDF hochladen",
+  "processing": "Verarbeitung...",
+  "uploadHelp": "Laden Sie das ATI Aquaristik ICP-Test-PDF zur automatischen Datenextraktion hoch",
+  "testHistory": "Testverlauf",
+  "tests": "Tests",
+  "loading": "Laden...",
+  "noTests": "Noch keine ICP-Tests. Laden Sie Ihren ersten Test hoch!",
+  "uploadSuccess": "ICP-Test erfolgreich hochgeladen",
+  "uploadSuccessMulti": "ICP-Tests erfolgreich hochgeladen",
+  "uploadFailed": "Hochladen fehlgeschlagen:",
+  "confirmDelete": "Sind Sie sicher, dass Sie diesen ICP-Test löschen möchten?",
+  "deleteFailed": "Fehler beim Löschen des Tests",
+  "selectTest": "Wählen Sie einen Test aus der Liste, um Details anzuzeigen",
+  "testId": "Test-ID:",
+  "waterType": {
+    "saltwater": "Salzwasser",
+    "roWater": "Osmosewasser"
+  },
+  "scores": {
+    "major": "Hauptelemente",
+    "minor": "Nebenelemente",
+    "pollutants": "Schadstoffe",
+    "base": "Basiselemente"
+  },
+  "tabs": {
+    "major": "Haupt",
+    "minor": "Neben",
+    "pollutants": "Schadstoffe"
+  },
+  "notes": "Notizen"
+}

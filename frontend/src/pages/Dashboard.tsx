@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import { tanksApi, maintenanceApi, equipmentApi, livestockApi, photosApi, notesApi } from '../api/client'
 import type { Tank, MaintenanceReminder } from '../types'
@@ -16,6 +17,7 @@ interface TankSummary {
 
 export default function Dashboard() {
   const { user } = useAuth()
+  const { t } = useTranslation('dashboard')
   const [tankSummaries, setTankSummaries] = useState<TankSummary[]>([])
   const [overdueReminders, setOverdueReminders] = useState<MaintenanceReminder[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -85,17 +87,17 @@ export default function Dashboard() {
       {/* Welcome Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">
-          Welcome back, {user?.username}!
+          {t('welcome', { name: user?.username })}
         </h1>
         <p className="text-gray-600 mt-1">
-          Here's an overview of your reef systems
+          {t('subtitle')}
         </p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white rounded-lg shadow p-6">
-          <div className="text-sm font-medium text-gray-600">Total Tanks</div>
+          <div className="text-sm font-medium text-gray-600">{t('stats.totalTanks')}</div>
           <div className="text-3xl font-bold text-ocean-600 mt-2">
             {tankSummaries.length}
           </div>
@@ -103,7 +105,7 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-sm font-medium text-gray-600">
-            Overdue Maintenance
+            {t('stats.overdueMaintenance')}
           </div>
           <div className="text-3xl font-bold text-coral-600 mt-2">
             {overdueReminders.length}
@@ -112,20 +114,20 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-sm font-medium text-gray-600">
-            Quick Actions
+            {t('quickActions')}
           </div>
           <div className="mt-3 space-y-2">
             <Link
               to="/parameters"
               className="block text-sm text-ocean-600 hover:text-ocean-700"
             >
-              → Log Parameters
+              {t('quickActions.logParameters')}
             </Link>
             <Link
               to="/tanks"
               className="block text-sm text-ocean-600 hover:text-ocean-700"
             >
-              → Manage Tanks
+              {t('quickActions.manageTanks')}
             </Link>
           </div>
         </div>
@@ -135,12 +137,12 @@ export default function Dashboard() {
       <div className="bg-white rounded-lg shadow">
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold text-gray-900">Your Tanks</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{t('yourTanks')}</h2>
             <Link
               to="/tanks/new"
               className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 text-sm"
             >
-              Add Tank
+              {t('addTank')}
             </Link>
           </div>
         </div>
@@ -149,13 +151,13 @@ export default function Dashboard() {
           {tankSummaries.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-600 mb-4">
-                You haven't added any tanks yet
+                {t('noTanksYet')}
               </p>
               <Link
                 to="/tanks/new"
                 className="inline-block px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
               >
-                Add Your First Tank
+                {t('addFirstTank')}
               </Link>
             </div>
           ) : (
@@ -179,7 +181,7 @@ export default function Dashboard() {
                             <span className="text-2xl font-bold text-ocean-700">
                               {tank.total_volume_liters}
                             </span>
-                            <span className="ml-1 text-sm text-ocean-600 font-medium">Liters</span>
+                            <span className="ml-1 text-sm text-ocean-600 font-medium">{t('liters')}</span>
                           </div>
                         )}
                       </div>
@@ -187,12 +189,12 @@ export default function Dashboard() {
                       <div className="mt-4 space-y-2">
                         {daysUp !== null && (
                           <div className="inline-block px-3 py-1 bg-ocean-600 text-white text-sm font-semibold rounded-full">
-                            {daysUp} days up
+                            {daysUp} {t('daysUp')}
                           </div>
                         )}
                         {tank.setup_date && (
                           <div className="text-xs text-gray-600">
-                            Setup: {new Date(tank.setup_date).toLocaleDateString()}
+                            {t('setup')} {new Date(tank.setup_date).toLocaleDateString()}
                           </div>
                         )}
                       </div>
@@ -210,7 +212,7 @@ export default function Dashboard() {
                           <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {equipmentCount}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1 font-medium">Equipment</div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">{t('equipment')}</div>
                         </Link>
 
                         {/* Livestock */}
@@ -222,7 +224,7 @@ export default function Dashboard() {
                           <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {livestockCount}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1 font-medium">Livestock</div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">{t('livestock')}</div>
                         </Link>
 
                         {/* Photos */}
@@ -234,7 +236,7 @@ export default function Dashboard() {
                           <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {photosCount}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1 font-medium">Photos</div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">{t('photos')}</div>
                         </Link>
 
                         {/* Notes */}
@@ -246,7 +248,7 @@ export default function Dashboard() {
                           <div className="text-2xl font-bold text-gray-900 group-hover:text-ocean-600">
                             {notesCount}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1 font-medium">Notes</div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">{t('notes')}</div>
                         </Link>
 
                         {/* Maintenance */}
@@ -258,7 +260,7 @@ export default function Dashboard() {
                           <div className="text-2xl font-bold text-gray-900 group-hover:text-coral-600">
                             {maintenanceCount}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1 font-medium">Maintenance</div>
+                          <div className="text-xs text-gray-600 mt-1 font-medium">{t('maintenance')}</div>
                         </Link>
                       </div>
                     </div>
@@ -274,7 +276,7 @@ export default function Dashboard() {
       {overdueReminders.length > 0 && (
         <div className="bg-coral-50 border border-coral-200 rounded-lg p-6">
           <h2 className="text-xl font-semibold text-coral-900 mb-4">
-            Overdue Maintenance ({overdueReminders.length})
+            {t('overdueMaintenance')} ({overdueReminders.length})
           </h2>
           <div className="space-y-2">
             {overdueReminders.map((reminder) => {
@@ -288,18 +290,18 @@ export default function Dashboard() {
                     <p className="font-medium text-gray-900">{reminder.title}</p>
                     {tank && (
                       <p className="text-sm text-ocean-600 font-medium mt-1">
-                        🏠 Tank: {tank.name}
+                        🏠 {t('tank')} {tank.name}
                       </p>
                     )}
                     <p className="text-sm text-gray-600 mt-1">
-                      Due: {new Date(reminder.next_due).toLocaleDateString()}
+                      {t('due')} {new Date(reminder.next_due).toLocaleDateString()}
                     </p>
                   </div>
                   <Link
                     to="/maintenance"
                     className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
                   >
-                    View →
+                    {t('view')}
                   </Link>
                 </div>
               )

@@ -21,3 +21,157 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+/* ── Aquarium Scene Animations ── */
+
+/* Fish swimming: forward, turn, back, turn (ping-pong with flip) */
+@keyframes swim-bounce {
+  0% { transform: translateX(-60px) translateY(0) scaleX(1); }
+  5% { transform: translateX(-30px) translateY(-4px) scaleX(1); }
+  20% { transform: translateX(200px) translateY(6px) scaleX(1); }
+  35% { transform: translateX(450px) translateY(-5px) scaleX(1); }
+  48% { transform: translateX(620px) translateY(2px) scaleX(1); }
+  50% { transform: translateX(620px) translateY(0) scaleX(-1); }
+  55% { transform: translateX(580px) translateY(-4px) scaleX(-1); }
+  70% { transform: translateX(350px) translateY(5px) scaleX(-1); }
+  85% { transform: translateX(100px) translateY(-3px) scaleX(-1); }
+  98% { transform: translateX(-60px) translateY(2px) scaleX(-1); }
+  100% { transform: translateX(-60px) translateY(0) scaleX(1); }
+}
+
+/* Tail wagging */
+@keyframes tail-wag {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(12deg); }
+  75% { transform: rotate(-12deg); }
+}
+@keyframes tail-wag-fast {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* Coral swaying with water movement */
+@keyframes coral-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-2deg); }
+}
+@keyframes coral-sway-alt {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-1.5deg); }
+  70% { transform: rotate(1.5deg); }
+}
+
+/* Bubbles rising */
+@keyframes bubble-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0.4; }
+  50% { opacity: 0.3; }
+  100% { transform: translateY(-180px) scale(1.4); opacity: 0; }
+}
+
+/* Floating particles */
+@keyframes float-particle {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  25% { transform: translate(5px, -3px); opacity: 0.15; }
+  50% { transform: translate(-3px, -6px); opacity: 0.25; }
+  75% { transform: translate(-5px, -2px); opacity: 0.15; }
+}
+
+/* Water caustic light patterns */
+@keyframes caustics {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  33% { transform: scale(1.1) translate(10px, -5px); }
+  66% { transform: scale(0.95) translate(-8px, 3px); }
+}
+
+/* Animation classes */
+.animate-swim-right {
+  animation: swim-bounce 14s ease-in-out infinite;
+}
+.animate-swim-right-slow {
+  animation: swim-bounce 18s ease-in-out infinite 2s;
+}
+.animate-swim-right-fast {
+  animation: swim-bounce 10s ease-in-out infinite 1s;
+}
+.animate-swim-right-fast-2 {
+  animation: swim-bounce 11s ease-in-out infinite 4s;
+}
+.animate-swim-right-medium {
+  animation: swim-bounce 15s ease-in-out infinite 3s;
+}
+
+.animate-tail-wag {
+  animation: tail-wag 0.4s ease-in-out infinite;
+}
+.animate-tail-wag-fast {
+  animation: tail-wag-fast 0.3s ease-in-out infinite;
+}
+
+.animate-coral-sway {
+  animation: coral-sway 4s ease-in-out infinite;
+}
+.animate-coral-sway-alt {
+  animation: coral-sway-alt 5s ease-in-out infinite 0.5s;
+}
+.animate-coral-sway-slow {
+  animation: coral-sway 6s ease-in-out infinite 1s;
+}
+
+.animate-bubble-1 { animation: bubble-rise 4s ease-in infinite; }
+.animate-bubble-2 { animation: bubble-rise 5s ease-in infinite 1.5s; }
+.animate-bubble-3 { animation: bubble-rise 6s ease-in infinite 0.8s; }
+.animate-bubble-4 { animation: bubble-rise 4.5s ease-in infinite 2.5s; }
+.animate-bubble-5 { animation: bubble-rise 5.5s ease-in infinite 3.5s; }
+
+.animate-float-particle {
+  animation: float-particle 6s ease-in-out infinite;
+}
+.animate-float-particle-slow {
+  animation: float-particle 9s ease-in-out infinite 2s;
+}
+
+.animate-caustics {
+  animation: caustics 8s ease-in-out infinite;
+}
+.animate-caustics-slow {
+  animation: caustics 12s ease-in-out infinite 3s;
+}
+
+/* Emoji animations for stats cards and section headers */
+/* Fish: gentle forward drift (only rightward, never backwards) */
+@keyframes emoji-swim {
+  0% { transform: translateX(0) translateY(0); }
+  30% { transform: translateX(4px) translateY(-2px); }
+  60% { transform: translateX(6px) translateY(1px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+/* Coral: sway in place with water current (no translation) */
+@keyframes emoji-sway {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(3deg) scale(1.02); }
+  75% { transform: rotate(-3deg) scale(0.98); }
+}
+/* Shrimp: gentle side-to-side scuttle */
+@keyframes emoji-wiggle {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20% { transform: translateX(2px) rotate(2deg); }
+  40% { transform: translateX(0) rotate(-1deg); }
+  60% { transform: translateX(1px) rotate(1deg); }
+  80% { transform: translateX(-1px) rotate(-1deg); }
+}
+
+.animate-emoji-swim {
+  display: inline-block;
+  animation: emoji-swim 3s ease-in-out infinite;
+}
+.animate-emoji-sway {
+  display: inline-block;
+  animation: emoji-sway 4s ease-in-out infinite;
+}
+.animate-emoji-wiggle {
+  display: inline-block;
+  animation: emoji-wiggle 2.5s ease-in-out infinite;
+}

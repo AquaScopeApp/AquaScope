@@ -1,0 +1,38 @@
+{
+  "title": "Testes ICP da água",
+  "subtitle": "Envie PDFs do laboratório ATI para rastrear automaticamente oligoelementos e qualidade da água",
+  "uploadNew": "Enviar novo teste",
+  "selectTank": "Selecionar aquário",
+  "allTanks": "Todos os aquários",
+  "uploading": "Enviando...",
+  "uploadATI": "Enviar PDF ATI",
+  "processing": "Processando...",
+  "uploadHelp": "Envie o PDF do teste ICP da ATI Aquaristik para extração automática de dados",
+  "testHistory": "Histórico de testes",
+  "tests": "testes",
+  "loading": "Carregando...",
+  "noTests": "Nenhum teste ICP. Envie seu primeiro teste!",
+  "uploadSuccess": "Teste ICP enviado com sucesso",
+  "uploadSuccessMulti": "testes ICP enviados com sucesso",
+  "uploadFailed": "Falha ao enviar:",
+  "confirmDelete": "Tem certeza de que deseja excluir este teste ICP?",
+  "deleteFailed": "Falha ao excluir teste",
+  "selectTest": "Selecione um teste da lista para ver os detalhes",
+  "testId": "ID do teste:",
+  "waterType": {
+    "saltwater": "Água salgada",
+    "roWater": "Água de osmose"
+  },
+  "scores": {
+    "major": "Elementos principais",
+    "minor": "Elementos menores",
+    "pollutants": "Poluentes",
+    "base": "Elementos base"
+  },
+  "tabs": {
+    "major": "Principais",
+    "minor": "Menores",
+    "pollutants": "Poluentes"
+  },
+  "notes": "Notas"
+}

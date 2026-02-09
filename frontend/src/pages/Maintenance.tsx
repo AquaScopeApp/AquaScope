@@ -5,12 +5,15 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { maintenanceApi, tanksApi } from '../api/client'
 import type { MaintenanceReminder, Tank } from '../types'
 import ReminderCard from '../components/maintenance/ReminderCard'
 import ReminderForm from '../components/maintenance/ReminderForm'
 
 export default function Maintenance() {
+  const { t } = useTranslation('maintenance')
+  const { t: tc } = useTranslation('common')
   const [reminders, setReminders] = useState<MaintenanceReminder[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -55,7 +58,7 @@ export default function Maintenance() {
   }
 
   const handleDeleteReminder = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this reminder?')) {
+    if (!confirm(t('confirmDelete'))) {
       return
     }
     try {
@@ -63,7 +66,7 @@ export default function Maintenance() {
       loadData()
     } catch (error) {
       console.error('Failed to delete reminder:', error)
-      alert('Failed to delete reminder')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -112,9 +115,9 @@ export default function Maintenance() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Maintenance Schedule</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Track recurring maintenance tasks for your reef aquarium
+            {t('subtitle')}
           </p>
         </div>
 
@@ -125,7 +128,7 @@ export default function Maintenance() {
           }}
           className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
         >
-          {showForm ? 'Cancel' : 'Add Reminder'}
+          {showForm ? tc('actions.cancel') : t('addReminder')}
         </button>
       </div>
 
@@ -134,7 +137,7 @@ export default function Maintenance() {
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-red-600 font-medium">Overdue</p>
+              <p className="text-sm text-red-600 font-medium">{t('overdue')}</p>
               <p className="text-2xl font-bold text-red-900">{overdueReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -146,7 +149,7 @@ export default function Maintenance() {
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-yellow-600 font-medium">Due Soon (7 days)</p>
+              <p className="text-sm text-yellow-600 font-medium">{t('dueSoon')}</p>
               <p className="text-2xl font-bold text-yellow-900">{dueSoonReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
@@ -158,7 +161,7 @@ export default function Maintenance() {
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-600 font-medium">Upcoming</p>
+              <p className="text-sm text-green-600 font-medium">{t('upcoming')}</p>
               <p className="text-2xl font-bold text-green-900">{upcomingReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -195,15 +198,15 @@ export default function Maintenance() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No maintenance reminders yet</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noReminders')}</h3>
           <p className="text-gray-600 mb-6">
-            Set up recurring reminders for water changes, equipment cleaning, and other tasks
+            {t('noRemindersDescription')}
           </p>
           <button
             onClick={() => setShowForm(true)}
             className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
           >
-            Create First Reminder
+            {t('createFirst')}
           </button>
         </div>
       ) : (
@@ -213,7 +216,7 @@ export default function Maintenance() {
             <div>
               <h2 className="text-xl font-semibold text-red-900 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                Overdue ({overdueReminders.length})
+                {t('overdue')} ({overdueReminders.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {overdueReminders.map((reminder) => (
@@ -235,7 +238,7 @@ export default function Maintenance() {
             <div>
               <h2 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
-                Due Soon ({dueSoonReminders.length})
+                {t('dueSoon')} ({dueSoonReminders.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {dueSoonReminders.map((reminder) => (
@@ -257,7 +260,7 @@ export default function Maintenance() {
             <div>
               <h2 className="text-xl font-semibold text-green-900 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                Upcoming ({upcomingReminders.length})
+                {t('upcoming')} ({upcomingReminders.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {upcomingReminders.map((reminder) => (
@@ -279,7 +282,7 @@ export default function Maintenance() {
             <div>
               <h2 className="text-xl font-semibold text-gray-600 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-gray-400 rounded-full mr-2"></span>
-                Inactive ({inactiveReminders.length})
+                {t('inactive')} ({inactiveReminders.length})
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {inactiveReminders.map((reminder) => (

@@ -56,6 +56,13 @@
     "noIcpTests": "Aucun test ICP",
     "noMaintenance": "Aucun rappel de maintenance"
   },
+  "myTanks": "Mes aquariums",
+  "manageSystems": "Gérez vos systèmes d'aquariums récifaux",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet aquarium ? Toutes les données associées seront perdues.",
+  "deleteFailed": "Échec de la suppression de l'aquarium",
+  "noTanksYet": "Aucun aquarium pour le moment",
+  "getStarted": "Commencez par ajouter votre premier aquarium récifal",
+  "addFirstTank": "Ajoutez votre premier aquarium",
   "imageUpload": {
     "title": "Télécharger une image d'aquarium",
     "dragDrop": "Cliquez pour télécharger ou glissez-déposez",

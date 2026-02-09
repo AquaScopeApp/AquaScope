@@ -11,6 +11,7 @@ import { useAuth } from '../hooks/useAuth'
 import Footer from './Footer'
 import VersionBanner from './VersionBanner'
 import LanguageSelector from './LanguageSelector'
+import AquariumScene from './AquariumScene'
 
 export default function Layout(): JSX.Element {
   const location = useLocation()
@@ -127,7 +128,10 @@ export default function Layout(): JSX.Element {
 
           {/* Main Content */}
           <main className="flex-1">
-            <Outlet />
+            <AquariumScene />
+            <div className="mt-6">
+              <Outlet />
+            </div>
           </main>
         </div>
       </div>

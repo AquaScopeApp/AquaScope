@@ -1,0 +1,16 @@
+{
+  "title": "Fotos",
+  "subtitle": "Fotogalerie und Zeitachse des Aquariums",
+  "uploadPhoto": "Foto hochladen",
+  "filterByTank": "Nach Aquarium filtern",
+  "allTanks": "Alle Aquarien",
+  "totalPhotos": "Fotos gesamt",
+  "thisMonth": "Diesen Monat",
+  "tanksWithPhotos": "Aquarien mit Fotos",
+  "noPhotos": "Noch keine Fotos",
+  "startUploading": "Laden Sie Ihr erstes Foto hoch, um Ihre Zeitachse zu starten",
+  "confirmDelete": "Sind Sie sicher, dass Sie dieses Foto löschen möchten?",
+  "deleteFailed": "Foto konnte nicht gelöscht werden",
+  "updateFailed": "Foto konnte nicht aktualisiert werden",
+  "loading": "Fotos werden geladen..."
+}

@@ -1,0 +1,33 @@
+{
+  "title": "Equipamento",
+  "subtitle": "Rastreie e gerencie o equipamento do seu aquário",
+  "addEquipment": "Adicionar equipamento",
+  "editEquipment": "Editar equipamento",
+  "filterByTank": "Filtrar por aquário",
+  "filterByType": "Filtrar por tipo",
+  "filterByStatus": "Filtrar por estado",
+  "allTanks": "Todos os aquários",
+  "allTypes": "Todos os tipos",
+  "allStatus": "Todos os estados",
+  "purchased": "Comprado:",
+  "price": "Preço:",
+  "noEquipment": "Nenhum equipamento encontrado. Adicione seu primeiro equipamento para começar!",
+  "confirmDelete": "Tem certeza de que deseja excluir este equipamento?",
+  "saveFailed": "Falha ao salvar o equipamento",
+  "deleteFailed": "Falha ao excluir o equipamento",
+  "updateEquipment": "Atualizar equipamento",
+  "loading": "Carregando equipamento...",
+  "form": {
+    "name": "Nome",
+    "type": "Tipo de equipamento",
+    "brand": "Marca",
+    "model": "Modelo",
+    "status": "Estado",
+    "tank": "Aquário",
+    "selectTank": "Selecionar aquário",
+    "purchaseDate": "Data de compra",
+    "price": "Preço",
+    "condition": "Condição",
+    "notes": "Notas"
+  }
+}

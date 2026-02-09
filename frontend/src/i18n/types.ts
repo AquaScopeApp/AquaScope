@@ -14,6 +14,11 @@ declare module 'react-i18next' {
       dashboard: typeof import('../../public/locales/en/dashboard.json')
       parameters: typeof import('../../public/locales/en/parameters.json')
       maintenance: typeof import('../../public/locales/en/maintenance.json')
+      notes: typeof import('../../public/locales/en/notes.json')
+      photos: typeof import('../../public/locales/en/photos.json')
+      equipment: typeof import('../../public/locales/en/equipment.json')
+      livestock: typeof import('../../public/locales/en/livestock.json')
+      icptests: typeof import('../../public/locales/en/icptests.json')
     }
   }
 }

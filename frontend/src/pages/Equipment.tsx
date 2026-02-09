@@ -9,6 +9,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { equipmentApi, tanksApi } from '../api/client'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
@@ -46,6 +47,8 @@ const STATUSES = [
 ]
 
 export default function EquipmentPage() {
+  const { t } = useTranslation('equipment')
+  const { t: tc } = useTranslation('common')
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -115,7 +118,7 @@ export default function EquipmentPage() {
       loadData()
     } catch (error) {
       console.error('Failed to save equipment:', error)
-      alert('Failed to save equipment')
+      alert(t('saveFailed'))
     }
   }
 
@@ -138,14 +141,14 @@ export default function EquipmentPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this equipment?')) return
+    if (!confirm(t('confirmDelete'))) return
 
     try {
       await equipmentApi.delete(id)
       loadData()
     } catch (error) {
       console.error('Failed to delete equipment:', error)
-      alert('Failed to delete equipment')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -185,7 +188,7 @@ export default function EquipmentPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">Loading equipment...</div>
+        <div className="text-gray-600">{t('loading')}</div>
       </div>
     )
   }
@@ -195,8 +198,8 @@ export default function EquipmentPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Equipment</h1>
-          <p className="text-gray-600 mt-1">Track and manage your aquarium equipment</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => {
@@ -206,7 +209,7 @@ export default function EquipmentPage() {
           }}
           className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
         >
-          Add Equipment
+          {t('addEquipment')}
         </button>
       </div>
 
@@ -214,13 +217,13 @@ export default function EquipmentPage() {
       <div className="bg-white rounded-lg shadow p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Tank</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByTank')}</label>
             <select
               value={selectedTank}
               onChange={(e) => setSelectedTank(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             >
-              <option value="">All Tanks</option>
+              <option value="">{t('allTanks')}</option>
               {tanks.map((tank) => (
                 <option key={tank.id} value={tank.id}>
                   {tank.name}
@@ -230,13 +233,13 @@ export default function EquipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByType')}</label>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             >
-              <option value="">All Types</option>
+              <option value="">{t('allTypes')}</option>
               {EQUIPMENT_TYPES.map((type) => (
                 <option key={type} value={type}>
                   {formatType(type)}
@@ -246,13 +249,13 @@ export default function EquipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByStatus')}</label>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             >
-              <option value="">All Status</option>
+              <option value="">{t('allStatus')}</option>
               {STATUSES.map((status) => (
                 <option key={status} value={status}>
                   {formatStatus(status)}
@@ -325,13 +328,13 @@ export default function EquipmentPage() {
 
             {item.purchase_date && (
               <div className="text-xs text-gray-500 mb-1">
-                Purchased: {new Date(item.purchase_date).toLocaleDateString()}
+                {t('purchased')} {new Date(item.purchase_date).toLocaleDateString()}
               </div>
             )}
 
             {item.purchase_price && (
               <div className="text-xs text-gray-500 mb-1">
-                Price: {item.purchase_price}
+                {t('price')} {item.purchase_price}
               </div>
             )}
 
@@ -345,7 +348,7 @@ export default function EquipmentPage() {
 
         {equipment.length === 0 && (
           <div className="col-span-full text-center py-12 text-gray-500">
-            No equipment found. Add your first piece of equipment to get started!
+            {t('noEquipment')}
           </div>
         )}
       </div>
@@ -356,14 +359,14 @@ export default function EquipmentPage() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                {editingId ? 'Edit Equipment' : 'Add Equipment'}
+                {editingId ? t('editEquipment') : t('addEquipment')}
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Name <span className="text-red-500">*</span>
+                      {t('form.name')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -377,7 +380,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Tank <span className="text-red-500">*</span>
+                      {t('form.tank')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.tank_id}
@@ -395,7 +398,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Type <span className="text-red-500">*</span>
+                      {t('form.type')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.equipment_type}
@@ -413,7 +416,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Manufacturer
+                      {t('form.brand')}
                     </label>
                     <input
                       type="text"
@@ -426,7 +429,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Model
+                      {t('form.model')}
                     </label>
                     <input
                       type="text"
@@ -439,7 +442,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Purchase Date
+                      {t('form.purchaseDate')}
                     </label>
                     <input
                       type="date"
@@ -451,7 +454,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Purchase Price
+                      {t('form.price')}
                     </label>
                     <input
                       type="text"
@@ -464,7 +467,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Condition
+                      {t('form.condition')}
                     </label>
                     <select
                       value={formData.condition || 'good'}
@@ -481,7 +484,7 @@ export default function EquipmentPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Status
+                      {t('form.status')}
                     </label>
                     <select
                       value={formData.status || 'active'}
@@ -498,7 +501,7 @@ export default function EquipmentPage() {
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Notes
+                      {t('form.notes')}
                     </label>
                     <textarea
                       value={formData.notes || ''}
@@ -520,13 +523,13 @@ export default function EquipmentPage() {
                     }}
                     className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
                   >
-                    Cancel
+                    {tc('actions.cancel')}
                   </button>
                   <button
                     type="submit"
                     className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
                   >
-                    {editingId ? 'Update' : 'Add'} Equipment
+                    {editingId ? t('updateEquipment') : t('addEquipment')}
                   </button>
                 </div>
               </form>

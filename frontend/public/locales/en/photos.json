@@ -1,0 +1,16 @@
+{
+  "title": "Photos",
+  "subtitle": "Tank photo gallery and timeline",
+  "uploadPhoto": "Upload Photo",
+  "filterByTank": "Filter by Tank",
+  "allTanks": "All Tanks",
+  "totalPhotos": "Total Photos",
+  "thisMonth": "This Month",
+  "tanksWithPhotos": "Tanks with Photos",
+  "noPhotos": "No photos yet",
+  "startUploading": "Upload your first photo to start building your tank timeline",
+  "confirmDelete": "Are you sure you want to delete this photo?",
+  "deleteFailed": "Failed to delete photo",
+  "updateFailed": "Failed to update photo",
+  "loading": "Loading photos..."
+}

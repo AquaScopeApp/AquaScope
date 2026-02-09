@@ -219,7 +219,7 @@ export default function Livestock() {
               <p className="text-sm text-blue-600 font-medium">{t('types.fish')}</p>
               <p className="text-2xl font-bold text-blue-900">{totalFish}</p>
             </div>
-            <span className="text-4xl">🐠</span>
+            <span className="text-4xl animate-emoji-swim">🐠</span>
           </div>
         </div>
 
@@ -229,7 +229,7 @@ export default function Livestock() {
               <p className="text-sm text-purple-600 font-medium">{t('types.corals')}</p>
               <p className="text-2xl font-bold text-purple-900">{totalCorals}</p>
             </div>
-            <span className="text-4xl">🪸</span>
+            <span className="text-4xl animate-emoji-sway">🪸</span>
           </div>
         </div>
 
@@ -239,7 +239,7 @@ export default function Livestock() {
               <p className="text-sm text-orange-600 font-medium">{t('types.invertebrates')}</p>
               <p className="text-2xl font-bold text-orange-900">{totalInverts}</p>
             </div>
-            <span className="text-4xl">🦐</span>
+            <span className="text-4xl animate-emoji-wiggle">🦐</span>
           </div>
         </div>
       </div>
@@ -265,12 +265,7 @@ export default function Livestock() {
 
       {/* Active Livestock Lists */}
       {alive.length === 0 && past.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <div className="text-gray-400 mb-4">
-            <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-          </div>
+        <div className="bg-white rounded-lg shadow p-8 text-center">
           <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noLivestock')}</h3>
           <p className="text-gray-600 mb-6">
             {t('startTracking')}

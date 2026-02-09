@@ -7,7 +7,7 @@
 import { useTranslation } from 'react-i18next'
 
 export default function Footer(): JSX.Element {
-  const version = import.meta.env.VITE_APP_VERSION || 'v1.3.0'
+  const version = import.meta.env.VITE_APP_VERSION || 'v1.5.0'
   const githubUrl = 'https://github.com/eprifti/reeflab'
   const { t } = useTranslation('common')
 

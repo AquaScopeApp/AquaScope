@@ -9,10 +9,13 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { icpTestsApi, tanksApi } from '../api/client'
 import type { ICPTest, ICPTestSummary, Tank } from '../types'
 
 export default function ICPTestsPage() {
+  const { t } = useTranslation('icptests')
+  const { t: tc } = useTranslation('common')
   const [tests, setTests] = useState<ICPTestSummary[]>([])
   const [selectedTest, setSelectedTest] = useState<ICPTest | null>(null)
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -60,12 +63,12 @@ export default function ICPTestsPage() {
       // Show success message with water types
       const waterTypes = createdTests.map(t => t.water_type).join(', ')
       const message = createdTests.length === 1
-        ? `ICP test uploaded successfully (${waterTypes})`
-        : `${createdTests.length} ICP tests uploaded successfully (${waterTypes})`
+        ? `${t('uploadSuccess')} (${waterTypes})`
+        : `${createdTests.length} ${t('uploadSuccessMulti')} (${waterTypes})`
       alert(message)
     } catch (error: any) {
       console.error('Failed to upload ICP test:', error)
-      alert(`Failed to upload: ${error.response?.data?.detail || error.message}`)
+      alert(`${t('uploadFailed')} ${error.response?.data?.detail || error.message}`)
     } finally {
       setIsUploading(false)
       event.target.value = '' // Reset file input
@@ -82,7 +85,7 @@ export default function ICPTestsPage() {
   }
 
   const handleDelete = async (testId: string) => {
-    if (!confirm('Are you sure you want to delete this ICP test?')) return
+    if (!confirm(t('confirmDelete'))) return
 
     try {
       await icpTestsApi.delete(testId)
@@ -92,7 +95,7 @@ export default function ICPTestsPage() {
       }
     } catch (error) {
       console.error('Failed to delete test:', error)
-      alert('Failed to delete test')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -161,6 +164,12 @@ export default function ICPTestsPage() {
     return names[key] || key.toUpperCase()
   }
 
+  const getWaterTypeLabel = (waterType: string): string => {
+    if (waterType === 'saltwater') return t('waterType.saltwater')
+    if (waterType === 'ro_water') return t('waterType.roWater')
+    return waterType
+  }
+
   const renderElementGroup = (title: string, elements: Array<{ key: string; unit: string }>) => {
     if (!selectedTest) return null
 
@@ -209,22 +218,22 @@ export default function ICPTestsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">ICP Water Tests</h1>
+        <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
         <p className="text-gray-600">
-          Upload ATI lab PDFs to automatically track trace elements and water quality
+          {t('subtitle')}
         </p>
       </div>
 
       {/* Upload Section */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Upload New Test</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('uploadNew')}</h2>
         <div className="flex items-center gap-4">
           <select
             value={uploadTankId}
             onChange={(e) => setUploadTankId(e.target.value)}
             className="border rounded px-3 py-2"
           >
-            <option value="">Select Tank</option>
+            <option value="">{t('selectTank')}</option>
             {tanks.map((tank) => (
               <option key={tank.id} value={tank.id}>
                 {tank.name}
@@ -240,13 +249,13 @@ export default function ICPTestsPage() {
               disabled={isUploading || !uploadTankId}
               className="hidden"
             />
-            {isUploading ? 'Uploading...' : 'Upload ATI PDF'}
+            {isUploading ? t('uploading') : t('uploadATI')}
           </label>
 
-          {isUploading && <div className="text-sm text-gray-600">Processing...</div>}
+          {isUploading && <div className="text-sm text-gray-600">{t('processing')}</div>}
         </div>
         <p className="text-sm text-gray-500 mt-2">
-          Upload ATI Aquaristik ICP test PDF for automatic data extraction
+          {t('uploadHelp')}
         </p>
       </div>
 
@@ -257,7 +266,7 @@ export default function ICPTestsPage() {
           onChange={(e) => setSelectedTank(e.target.value)}
           className="border rounded px-3 py-2"
         >
-          <option value="">All Tanks</option>
+          <option value="">{t('allTanks')}</option>
           {tanks.map((tank) => (
             <option key={tank.id} value={tank.id}>
               {tank.name}
@@ -272,15 +281,15 @@ export default function ICPTestsPage() {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-md">
             <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">Test History</h2>
-              <p className="text-sm text-gray-600">{tests.length} tests</p>
+              <h2 className="text-lg font-semibold">{t('testHistory')}</h2>
+              <p className="text-sm text-gray-600">{tests.length} {t('tests')}</p>
             </div>
 
             {isLoading ? (
-              <div className="p-8 text-center text-gray-500">Loading...</div>
+              <div className="p-8 text-center text-gray-500">{t('loading')}</div>
             ) : tests.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                No ICP tests yet. Upload your first test!
+                {t('noTests')}
               </div>
             ) : (
               <div className="divide-y max-h-[600px] overflow-y-auto">
@@ -303,9 +312,7 @@ export default function ICPTestsPage() {
                               ? 'bg-purple-100 text-purple-700'
                               : 'bg-gray-100 text-gray-700'
                           }`}>
-                            {test.water_type === 'saltwater' ? '🌊 Saltwater' :
-                             test.water_type === 'ro_water' ? '💧 RO Water' :
-                             test.water_type}
+                            {getWaterTypeLabel(test.water_type)}
                           </span>
                         </div>
                         <div className="text-sm text-gray-600">
@@ -319,7 +326,7 @@ export default function ICPTestsPage() {
                         }}
                         className="text-red-600 hover:text-red-800 text-sm"
                       >
-                        Delete
+                        {tc('actions.delete')}
                       </button>
                     </div>
 
@@ -327,7 +334,7 @@ export default function ICPTestsPage() {
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       {test.score_major_elements != null && (
                         <div>
-                          <div className="text-gray-600">Major</div>
+                          <div className="text-gray-600">{t('tabs.major')}</div>
                           <div className="flex items-center gap-1">
                             <div
                               className={`w-2 h-2 rounded-full ${getScoreColor(
@@ -340,7 +347,7 @@ export default function ICPTestsPage() {
                       )}
                       {test.score_minor_elements != null && (
                         <div>
-                          <div className="text-gray-600">Minor</div>
+                          <div className="text-gray-600">{t('tabs.minor')}</div>
                           <div className="flex items-center gap-1">
                             <div
                               className={`w-2 h-2 rounded-full ${getScoreColor(
@@ -353,7 +360,7 @@ export default function ICPTestsPage() {
                       )}
                       {test.score_pollutants != null && (
                         <div>
-                          <div className="text-gray-600">Pollutants</div>
+                          <div className="text-gray-600">{t('tabs.pollutants')}</div>
                           <div className="flex items-center gap-1">
                             <div
                               className={`w-2 h-2 rounded-full ${getScoreColor(
@@ -388,23 +395,21 @@ export default function ICPTestsPage() {
                       ? 'bg-purple-100 text-purple-700'
                       : 'bg-gray-100 text-gray-700'
                   }`}>
-                    {selectedTest.water_type === 'saltwater' ? '🌊 Saltwater' :
-                     selectedTest.water_type === 'ro_water' ? '💧 RO Water' :
-                     selectedTest.water_type}
+                    {getWaterTypeLabel(selectedTest.water_type)}
                   </span>
                 </div>
                 {selectedTest.test_id && (
-                  <p className="text-sm text-gray-600">Test ID: {selectedTest.test_id}</p>
+                  <p className="text-sm text-gray-600">{t('testId')} {selectedTest.test_id}</p>
                 )}
               </div>
 
               {/* Quality Scores */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {[
-                  { label: 'Major Elements', key: 'score_major_elements' },
-                  { label: 'Minor Elements', key: 'score_minor_elements' },
-                  { label: 'Pollutants', key: 'score_pollutants' },
-                  { label: 'Base Elements', key: 'score_base_elements' },
+                  { label: t('scores.major'), key: 'score_major_elements' },
+                  { label: t('scores.minor'), key: 'score_minor_elements' },
+                  { label: t('scores.pollutants'), key: 'score_pollutants' },
+                  { label: t('scores.base'), key: 'score_base_elements' },
                 ].map((score) => {
                   const value = selectedTest[score.key as keyof ICPTest]
                   if (value == null) return null
@@ -433,7 +438,7 @@ export default function ICPTestsPage() {
               <div className="space-y-6">
                 {renderElementGroup('Base Elements', [
                   { key: 'salinity', unit: 'PSU' },
-                  { key: 'kh', unit: '°dKH' },
+                  { key: 'kh', unit: '\u00b0dKH' },
                 ])}
 
                 {renderElementGroup('Major Elements (mg/l)', [
@@ -449,58 +454,58 @@ export default function ICPTestsPage() {
                   { key: 'f', unit: 'mg/l' },
                 ])}
 
-                {renderElementGroup('Minor Elements (µg/l)', [
-                  { key: 'li', unit: 'µg/l' },
-                  { key: 'si', unit: 'µg/l' },
-                  { key: 'i', unit: 'µg/l' },
-                  { key: 'ba', unit: 'µg/l' },
-                  { key: 'mo', unit: 'µg/l' },
-                  { key: 'ni', unit: 'µg/l' },
-                  { key: 'mn', unit: 'µg/l' },
-                  { key: 'as', unit: 'µg/l' },
-                  { key: 'be', unit: 'µg/l' },
-                  { key: 'cr', unit: 'µg/l' },
-                  { key: 'co', unit: 'µg/l' },
-                  { key: 'fe', unit: 'µg/l' },
-                  { key: 'cu', unit: 'µg/l' },
-                  { key: 'se', unit: 'µg/l' },
-                  { key: 'ag', unit: 'µg/l' },
-                  { key: 'v', unit: 'µg/l' },
-                  { key: 'zn', unit: 'µg/l' },
-                  { key: 'sn', unit: 'µg/l' },
+                {renderElementGroup('Minor Elements (\u00b5g/l)', [
+                  { key: 'li', unit: '\u00b5g/l' },
+                  { key: 'si', unit: '\u00b5g/l' },
+                  { key: 'i', unit: '\u00b5g/l' },
+                  { key: 'ba', unit: '\u00b5g/l' },
+                  { key: 'mo', unit: '\u00b5g/l' },
+                  { key: 'ni', unit: '\u00b5g/l' },
+                  { key: 'mn', unit: '\u00b5g/l' },
+                  { key: 'as', unit: '\u00b5g/l' },
+                  { key: 'be', unit: '\u00b5g/l' },
+                  { key: 'cr', unit: '\u00b5g/l' },
+                  { key: 'co', unit: '\u00b5g/l' },
+                  { key: 'fe', unit: '\u00b5g/l' },
+                  { key: 'cu', unit: '\u00b5g/l' },
+                  { key: 'se', unit: '\u00b5g/l' },
+                  { key: 'ag', unit: '\u00b5g/l' },
+                  { key: 'v', unit: '\u00b5g/l' },
+                  { key: 'zn', unit: '\u00b5g/l' },
+                  { key: 'sn', unit: '\u00b5g/l' },
                 ])}
 
                 {renderElementGroup('Nutrients', [
                   { key: 'no3', unit: 'mg/l' },
-                  { key: 'p', unit: 'µg/l' },
+                  { key: 'p', unit: '\u00b5g/l' },
                   { key: 'po4', unit: 'mg/l' },
                 ])}
 
-                {renderElementGroup('Pollutants (µg/l)', [
-                  { key: 'al', unit: 'µg/l' },
-                  { key: 'sb', unit: 'µg/l' },
-                  { key: 'bi', unit: 'µg/l' },
-                  { key: 'pb', unit: 'µg/l' },
-                  { key: 'cd', unit: 'µg/l' },
-                  { key: 'la', unit: 'µg/l' },
-                  { key: 'tl', unit: 'µg/l' },
-                  { key: 'ti', unit: 'µg/l' },
-                  { key: 'w', unit: 'µg/l' },
-                  { key: 'hg', unit: 'µg/l' },
+                {renderElementGroup('Pollutants (\u00b5g/l)', [
+                  { key: 'al', unit: '\u00b5g/l' },
+                  { key: 'sb', unit: '\u00b5g/l' },
+                  { key: 'bi', unit: '\u00b5g/l' },
+                  { key: 'pb', unit: '\u00b5g/l' },
+                  { key: 'cd', unit: '\u00b5g/l' },
+                  { key: 'la', unit: '\u00b5g/l' },
+                  { key: 'tl', unit: '\u00b5g/l' },
+                  { key: 'ti', unit: '\u00b5g/l' },
+                  { key: 'w', unit: '\u00b5g/l' },
+                  { key: 'hg', unit: '\u00b5g/l' },
                 ])}
               </div>
 
               {/* Notes */}
               {selectedTest.notes && (
                 <div className="mt-6 p-4 bg-gray-50 rounded">
-                  <h4 className="font-semibold text-gray-700 mb-2">Notes</h4>
+                  <h4 className="font-semibold text-gray-700 mb-2">{t('notes')}</h4>
                   <p className="text-gray-700 whitespace-pre-wrap">{selectedTest.notes}</p>
                 </div>
               )}
             </div>
           ) : (
             <div className="bg-white rounded-lg shadow-md p-12 text-center text-gray-500">
-              Select a test from the list to view details
+              {t('selectTest')}
             </div>
           )}
         </div>

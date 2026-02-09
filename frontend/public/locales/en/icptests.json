@@ -1,0 +1,38 @@
+{
+  "title": "ICP Water Tests",
+  "subtitle": "Upload ATI lab PDFs to automatically track trace elements and water quality",
+  "uploadNew": "Upload New Test",
+  "selectTank": "Select Tank",
+  "allTanks": "All Tanks",
+  "uploading": "Uploading...",
+  "uploadATI": "Upload ATI PDF",
+  "processing": "Processing...",
+  "uploadHelp": "Upload ATI Aquaristik ICP test PDF for automatic data extraction",
+  "testHistory": "Test History",
+  "tests": "tests",
+  "loading": "Loading...",
+  "noTests": "No ICP tests yet. Upload your first test!",
+  "uploadSuccess": "ICP test uploaded successfully",
+  "uploadSuccessMulti": "ICP tests uploaded successfully",
+  "uploadFailed": "Failed to upload:",
+  "confirmDelete": "Are you sure you want to delete this ICP test?",
+  "deleteFailed": "Failed to delete test",
+  "selectTest": "Select a test from the list to view details",
+  "testId": "Test ID:",
+  "waterType": {
+    "saltwater": "Saltwater",
+    "roWater": "RO Water"
+  },
+  "scores": {
+    "major": "Major Elements",
+    "minor": "Minor Elements",
+    "pollutants": "Pollutants",
+    "base": "Base Elements"
+  },
+  "tabs": {
+    "major": "Major",
+    "minor": "Minor",
+    "pollutants": "Pollutants"
+  },
+  "notes": "Notes"
+}

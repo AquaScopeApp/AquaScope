@@ -1,0 +1,17 @@
+{
+  "title": "Notas",
+  "subtitle": "Diario y observaciones del acuario",
+  "newNote": "Nueva nota",
+  "filterByTank": "Filtrar por acuario",
+  "allTanks": "Todos los acuarios",
+  "totalNotes": "Total de notas",
+  "thisMonth": "Este mes",
+  "avgPerWeek": "Promedio por semana",
+  "noNotes": "Sin notas todavía",
+  "startDocumenting": "Comienza a documentar tu viaje de arrecife con observaciones y notas",
+  "createFirst": "Crear primera nota",
+  "confirmDelete": "¿Estás seguro de que quieres eliminar esta nota?",
+  "saveFailed": "Error al guardar la nota",
+  "deleteFailed": "Error al eliminar la nota",
+  "loading": "Cargando notas..."
+}

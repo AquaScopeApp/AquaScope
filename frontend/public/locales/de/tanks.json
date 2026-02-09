@@ -56,6 +56,13 @@
     "noIcpTests": "Noch keine ICP-Tests",
     "noMaintenance": "Noch keine Wartungserinnerungen"
   },
+  "myTanks": "Meine Aquarien",
+  "manageSystems": "Verwalten Sie Ihre Riffaquarien-Systeme",
+  "confirmDelete": "Sind Sie sicher, dass Sie dieses Aquarium löschen möchten? Alle zugehörigen Daten gehen verloren.",
+  "deleteFailed": "Aquarium konnte nicht gelöscht werden",
+  "noTanksYet": "Noch keine Aquarien",
+  "getStarted": "Beginnen Sie, indem Sie Ihr erstes Riffaquarium hinzufügen",
+  "addFirstTank": "Fügen Sie Ihr erstes Aquarium hinzu",
   "imageUpload": {
     "title": "Aquarium-Bild hochladen",
     "dragDrop": "Klicken oder per Drag & Drop hochladen",
