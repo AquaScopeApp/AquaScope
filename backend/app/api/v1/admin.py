@@ -1067,24 +1067,31 @@ def download_file(
 @router.get("/storage/download-all")
 def download_all_files(
     admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db),
 ):
-    """Download all uploaded files as a ZIP archive."""
+    """Download all uploaded files plus database export as a ZIP archive."""
+    import json
+
     upload_dir = Path(settings.UPLOAD_DIR)
-    if not upload_dir.exists():
-        raise HTTPException(status_code=404, detail="No uploads directory")
 
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for root, _dirs, files in os.walk(upload_dir):
-            for fname in files:
-                full_path = Path(root) / fname
-                arcname = str(full_path.relative_to(upload_dir))
-                zf.write(full_path, arcname)
+        # Add all uploaded files
+        if upload_dir.exists():
+            for root, _dirs, files in os.walk(upload_dir):
+                for fname in files:
+                    full_path = Path(root) / fname
+                    arcname = "uploads/" + str(full_path.relative_to(upload_dir))
+                    zf.write(full_path, arcname)
+
+        # Add database export as JSON
+        db_export = export_full_database(admin=admin, db=db)
+        zf.writestr("database.json", json.dumps(db_export, indent=2, default=str))
 
     buf.seek(0)
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     return StreamingResponse(
         buf,
         media_type="application/zip",
-        headers={"Content-Disposition": f'attachment; filename="aquascope_uploads_{timestamp}.zip"'},
+        headers={"Content-Disposition": f'attachment; filename="aquascope_backup_{timestamp}.zip"'},
     )

@@ -26,6 +26,34 @@
 
 > **Created by [Edi Prifti](https://github.com/eprifti)** with love for the aquarium keeping community
 
+---
+
+## Why AquaScope?
+
+Aquarium keeping is incredibly rewarding — but it's also an expensive hobby. Between tanks, livestock, equipment, tests, and consumables, costs add up fast. When I looked for tools to log parameters and track long-term trends, the options were disappointing: paid subscriptions, locked "pro" features, closed ecosystems, or abandoned projects.
+
+As a developer and aquarist, I decided to build what I couldn't find.
+
+**The philosophy is simple:**
+
+- **Free forever** — no subscriptions, no paid tiers
+- **Fully open-source** — transparent, hackable, auditable
+- **Your data stays yours** — self-hosted, no cloud dependency
+- **Built by an aquarist, for aquarists** — from reef to freshwater to brackish
+- **Modular & extensible** — adapt it to DIY monitoring, sensors, or research
+
+> The hobby is already costly enough — logging and understanding your aquarium shouldn't be.
+
+<p align="center">
+  <img src="data/images/all_ecosystems_banner_horizontal.png" alt="Freshwater, Saltwater & Brackish — all supported" width="900" />
+  <br />
+  <em>Freshwater &bull; Saltwater &bull; Brackish — all ecosystems, one tool</em>
+</p>
+
+AquaScope will remain open and free. Pull requests, issues, ideas, and discussions are always welcome.
+
+---
+
 ## Demo & Support
 
 - **GitHub Repository**: [github.com/eprifti/AquaScope](https://github.com/eprifti/AquaScope)
@@ -449,7 +477,7 @@ For issues and questions:
 - Data visualization with Recharts
 - Excel/CSV import for historical data
 - GitHub Actions CI/CD pipeline with automated tests
-- Comprehensive unit and integration tests (141 tests)
+- Comprehensive unit and integration tests (590+ tests, 79% backend coverage)
 - Multi-language support (EN, FR, ES, DE, IT, PT)
 - Default aquarium images for each water type
 - Custom logo and branding
