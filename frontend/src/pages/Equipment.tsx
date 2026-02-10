@@ -106,10 +106,20 @@ export default function EquipmentPage() {
     e.preventDefault()
 
     try {
+      // Sanitize empty strings to null for optional fields (Pydantic rejects "" for date types)
+      const submitData = {
+        ...formData,
+        manufacturer: formData.manufacturer || null,
+        model: formData.model || null,
+        purchase_date: formData.purchase_date || null,
+        purchase_price: formData.purchase_price || null,
+        notes: formData.notes || null,
+      }
+
       if (editingId) {
-        await equipmentApi.update(editingId, formData)
+        await equipmentApi.update(editingId, submitData)
       } else {
-        await equipmentApi.create(formData)
+        await equipmentApi.create(submitData)
       }
 
       setShowForm(false)
@@ -149,6 +159,18 @@ export default function EquipmentPage() {
     } catch (error) {
       console.error('Failed to delete equipment:', error)
       alert(t('deleteFailed'))
+    }
+  }
+
+  const handleConvertToConsumable = async (id: string, name: string) => {
+    if (!confirm(t('confirmConvertToConsumable', { name, defaultValue: `Move "${name}" to Consumables?` }))) return
+
+    try {
+      await equipmentApi.convertToConsumable(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to convert to consumable:', error)
+      alert(t('convertFailed', { defaultValue: 'Failed to convert' }))
     }
   }
 
@@ -277,6 +299,15 @@ export default function EquipmentPage() {
                 <p className="text-xs text-gray-500 mt-1">{getTankName(item.tank_id)}</p>
               </div>
               <div className="flex space-x-1">
+                <button
+                  onClick={() => handleConvertToConsumable(item.id, item.name)}
+                  className="p-1 text-amber-600 hover:bg-amber-50 rounded"
+                  title={t('moveToConsumable', { defaultValue: 'Move to Consumables' })}
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                </button>
                 <button
                   onClick={() => handleEdit(item)}
                   className="p-1 text-ocean-600 hover:bg-ocean-50 rounded"

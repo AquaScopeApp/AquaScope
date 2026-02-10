@@ -59,8 +59,9 @@ import type {
   ApiError,
 } from '../types'
 
-// API base URL - use environment variable or default to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// API base URL - empty string means same origin (nginx proxy in Docker)
+// For local dev: set VITE_API_URL=http://localhost:8000
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? ''
 const API_V1 = `${API_BASE_URL}/api/v1`
 
 // ============================================================================
@@ -599,6 +600,15 @@ export const equipmentApi = {
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/equipment/${id}`)
   },
+
+  convertToConsumable: async (id: string, consumableType = 'other'): Promise<Consumable> => {
+    const response = await apiClient.post<Consumable>(
+      `/equipment/${id}/convert-to-consumable`,
+      null,
+      { params: { consumable_type: consumableType } }
+    )
+    return response.data
+  },
 }
 
 // ============================================================================
@@ -641,6 +651,15 @@ export const consumablesApi = {
 
   listUsage: async (id: string): Promise<ConsumableUsage[]> => {
     const response = await apiClient.get<ConsumableUsage[]>(`/consumables/${id}/usage`)
+    return response.data
+  },
+
+  convertToEquipment: async (id: string, equipmentType?: string): Promise<Equipment> => {
+    const response = await apiClient.post<Equipment>(
+      `/consumables/${id}/convert-to-equipment`,
+      null,
+      { params: equipmentType ? { equipment_type: equipmentType } : undefined }
+    )
     return response.data
   },
 }

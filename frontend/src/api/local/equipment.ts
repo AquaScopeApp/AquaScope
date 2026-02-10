@@ -2,7 +2,7 @@
  * Local Equipment API
  */
 
-import type { Equipment, EquipmentCreate, EquipmentUpdate } from '../../types'
+import type { Equipment, EquipmentCreate, EquipmentUpdate, Consumable } from '../../types'
 import { db, generateId, now, getLocalUserId, parseJSON } from './helpers'
 
 function rowToEquipment(row: any): Equipment {
@@ -105,5 +105,28 @@ export const equipmentApi = {
 
   delete: async (id: string): Promise<void> => {
     await db.execute('DELETE FROM equipment WHERE id = ?', [id])
+  },
+
+  convertToConsumable: async (id: string, consumableType = 'other'): Promise<Consumable> => {
+    const equipment = await db.queryOne('SELECT * FROM equipment WHERE id = ?', [id])
+    if (!equipment) throw new Error('Equipment not found')
+
+    const cId = generateId()
+    const timestamp = now()
+
+    await db.execute(
+      `INSERT INTO consumables (id, tank_id, user_id, name, consumable_type, brand, product_name,
+       purchase_date, purchase_price, status, notes, usage_count, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)`,
+      [cId, equipment.tank_id, equipment.user_id, equipment.name, consumableType,
+       equipment.manufacturer, equipment.model,
+       equipment.purchase_date, equipment.purchase_price,
+       'active', equipment.notes, timestamp, timestamp]
+    )
+
+    await db.execute('DELETE FROM equipment WHERE id = ?', [id])
+
+    const row = await db.queryOne('SELECT * FROM consumables WHERE id = ?', [cId])
+    return row as Consumable
   },
 }

@@ -4,7 +4,7 @@
  * Grid display with lightbox modal for viewing full-size images
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { format } from 'date-fns'
 import { Photo, Tank } from '../../types'
 import { photosApi } from '../../api'
@@ -14,15 +14,19 @@ interface PhotoGalleryProps {
   tanks: Tank[]
   onDelete: (id: string) => void
   onUpdate: (id: string, description: string, takenAt: string) => void
+  onRefresh?: () => void
 }
 
-export default function PhotoGallery({ photos, tanks, onDelete, onUpdate }: PhotoGalleryProps) {
+export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefresh }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [editDescription, setEditDescription] = useState('')
   const [editTakenAt, setEditTakenAt] = useState('')
   const [thumbnailUrls, setThumbnailUrls] = useState<Record<string, string>>({})
   const [fullImageUrl, setFullImageUrl] = useState<string>('')
+  const [isLoadingFullImage, setIsLoadingFullImage] = useState(false)
+  const [fullImageError, setFullImageError] = useState(false)
+  const fullImageUrlRef = useRef<string>('')
   const [isPinning, setIsPinning] = useState(false)
 
   const getTankName = (tankId: string) => {
@@ -54,25 +58,48 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate }: Phot
   // Load full image URL when photo is selected
   useEffect(() => {
     if (selectedPhoto) {
+      let cancelled = false
+      setIsLoadingFullImage(true)
+      setFullImageError(false)
+      setFullImageUrl('')
+
       const loadFullImage = async () => {
         try {
           const url = await photosApi.getFileBlobUrl(selectedPhoto.id, false)
-          setFullImageUrl(url)
+          if (!cancelled) {
+            setFullImageUrl(url)
+            fullImageUrlRef.current = url
+            // isLoadingFullImage stays true until img.onLoad fires
+          } else {
+            URL.revokeObjectURL(url)
+          }
         } catch (error) {
           console.error(`Failed to load full image for photo ${selectedPhoto.id}:`, error)
+          if (!cancelled) {
+            setIsLoadingFullImage(false)
+            setFullImageError(true)
+            // Fallback: use the thumbnail URL if available
+            const thumbUrl = thumbnailUrls[selectedPhoto.id]
+            if (thumbUrl) {
+              setFullImageUrl(thumbUrl)
+            }
+          }
         }
       }
 
       loadFullImage()
 
-      // Cleanup: revoke blob URL when photo is deselected
       return () => {
-        if (fullImageUrl) {
-          URL.revokeObjectURL(fullImageUrl)
+        cancelled = true
+        if (fullImageUrlRef.current) {
+          URL.revokeObjectURL(fullImageUrlRef.current)
+          fullImageUrlRef.current = ''
         }
       }
     } else {
       setFullImageUrl('')
+      setIsLoadingFullImage(false)
+      setFullImageError(false)
     }
   }, [selectedPhoto])
 
@@ -84,7 +111,11 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate }: Phot
 
   const handleSaveEdit = () => {
     if (selectedPhoto) {
-      onUpdate(selectedPhoto.id, editDescription, editTakenAt)
+      // Ensure taken_at is a full datetime string (backend expects datetime, not date-only)
+      const takenAt = editTakenAt && !editTakenAt.includes('T')
+        ? `${editTakenAt}T00:00:00`
+        : editTakenAt
+      onUpdate(selectedPhoto.id, editDescription, takenAt)
       setIsEditing(false)
       setSelectedPhoto(null)
     }
@@ -132,8 +163,8 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate }: Phot
         ...selectedPhoto,
         is_tank_display: !selectedPhoto.is_tank_display,
       })
-      // Trigger a refresh by calling onUpdate with same values
-      onUpdate(selectedPhoto.id, selectedPhoto.description || '', selectedPhoto.taken_at.split('T')[0])
+      // Refresh the photo list
+      onRefresh?.()
     } catch (error) {
       console.error('Failed to toggle pin status:', error)
       alert('Failed to update pin status. Please try again.')
@@ -293,12 +324,39 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate }: Phot
             </div>
 
             {/* Image */}
-            <div className="flex-1 flex items-center justify-center relative">
-              <img
-                src={fullImageUrl}
-                alt={selectedPhoto.description || 'Tank photo'}
-                className="max-w-full max-h-full object-contain"
-              />
+            <div className="flex-1 flex items-center justify-center relative min-h-0 overflow-hidden">
+              {isLoadingFullImage && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
+                  <div className="animate-spin h-10 w-10 border-3 border-white border-t-transparent rounded-full mb-3" />
+                  <span className="text-sm text-gray-300">Loading full image...</span>
+                </div>
+              )}
+              {fullImageUrl && (
+                <img
+                  src={fullImageUrl}
+                  alt={selectedPhoto.description || 'Tank photo'}
+                  className="max-w-full max-h-full object-contain"
+                  onLoad={() => setIsLoadingFullImage(false)}
+                  onError={() => {
+                    console.error('Image element failed to render blob URL')
+                    setFullImageError(true)
+                    setFullImageUrl('')
+                    // Fallback: try thumbnail
+                    const thumbUrl = thumbnailUrls[selectedPhoto.id]
+                    if (thumbUrl) {
+                      setFullImageUrl(thumbUrl)
+                    }
+                  }}
+                />
+              )}
+              {fullImageError && !fullImageUrl && (
+                <div className="text-center text-gray-400">
+                  <svg className="w-16 h-16 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p>Failed to load full image</p>
+                </div>
+              )}
 
               {/* Navigation Arrows */}
               {photos.length > 1 && (

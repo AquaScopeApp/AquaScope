@@ -145,7 +145,8 @@ async def upload_photo(
             os.remove(temp_heic_path)
         else:
             # Conversion failed, save as HEIC anyway
-            os.remove(str(file_path)) if os.exists(str(file_path)) else None
+            if os.path.exists(str(file_path)):
+                os.remove(str(file_path))
             os.rename(temp_heic_path, file_path)
     else:
         # Save normal image file

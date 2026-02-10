@@ -12,15 +12,15 @@ EMAIL="demo@reeflab.io"
 PASS="demo1234"
 USER="DemoUser"
 
-echo "=== ReefLab Demo Seed ==="
+echo "=== AquaScope Demo Seed ==="
 
 # ── Register & Login ──────────────────────────────────────────────
-echo "[1/9] Registering demo user..."
+echo "[1/11] Registering demo user..."
 curl -sf -X POST "$API/auth/register" \
   -H "Content-Type: application/json" \
   -d "{\"email\":\"$EMAIL\",\"username\":\"$USER\",\"password\":\"$PASS\"}" > /dev/null 2>&1 || true
 
-echo "[1/9] Logging in..."
+echo "[1/11] Logging in..."
 TOKEN=$(curl -sf -X POST "$API/auth/login" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=$EMAIL&password=$PASS" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
@@ -41,7 +41,7 @@ post_quiet() {
 }
 
 # ── Create Tanks ──────────────────────────────────────────────────
-echo "[2/9] Creating tanks..."
+echo "[2/11] Creating tanks..."
 
 SALT_TANK=$(post "$API/tanks/" '{
   "name": "Coral Paradise",
@@ -66,7 +66,7 @@ FRESH_TANK=$(post "$API/tanks/" '{
 echo "  Freshwater tank: $FRESH_TANK"
 
 # ── Tank Events ───────────────────────────────────────────────────
-echo "[3/9] Adding tank events..."
+echo "[3/11] Adding tank events..."
 
 # Saltwater events
 post_quiet "$API/tanks/$SALT_TANK/events" '{"title":"Initial cycle complete","event_date":"2024-04-20","event_type":"milestone","description":"Ammonia and nitrite at 0 for 7 days"}'
@@ -82,7 +82,7 @@ post_quiet "$API/tanks/$FRESH_TANK/events" '{"title":"Planted new swords","event
 post_quiet "$API/tanks/$FRESH_TANK/events" '{"title":"CO2 system installed","event_date":"2025-03-01","event_type":"equipment","description":"Pressurized CO2 with inline diffuser"}'
 
 # ── Livestock ─────────────────────────────────────────────────────
-echo "[4/9] Adding livestock..."
+echo "[4/11] Adding livestock..."
 
 # Saltwater livestock (with WoRMS, iNaturalist IDs and photo URLs)
 post_quiet "$API/livestock/" "{\"tank_id\":\"$SALT_TANK\",\"species_name\":\"Acropora millepora\",\"common_name\":\"Millepora Acro\",\"type\":\"coral\",\"quantity\":3,\"added_date\":\"2024-05-15\",\"notes\":\"Purple/green coloration, mid-tank placement\",\"worms_id\":\"207023\",\"inaturalist_id\":\"93299\",\"cached_photo_url\":\"https://inaturalist-open-data.s3.amazonaws.com/photos/105111643/medium.jpg\"}"
@@ -104,10 +104,10 @@ post_quiet "$API/livestock/" "{\"tank_id\":\"$FRESH_TANK\",\"species_name\":\"Ot
 post_quiet "$API/livestock/" "{\"tank_id\":\"$FRESH_TANK\",\"species_name\":\"Caridina multidentata\",\"common_name\":\"Amano Shrimp\",\"type\":\"invertebrate\",\"quantity\":10,\"added_date\":\"2024-11-20\",\"notes\":\"Best algae eaters in the tank\",\"worms_id\":\"586329\",\"inaturalist_id\":\"434771\",\"cached_photo_url\":\"https://static.inaturalist.org/photos/163242662/medium.jpg\"}"
 
 # ── Equipment ─────────────────────────────────────────────────────
-echo "[5/9] Adding equipment..."
+echo "[5/11] Adding equipment..."
 
 # Saltwater equipment
-post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Radion G6 Pro\",\"equipment_type\":\"lighting\",\"manufacturer\":\"EcoTech Marine\",\"model\":\"G6 Pro\",\"purchase_date\":\"2024-11-10\",\"purchase_price\":\"899.00\",\"condition\":\"excellent\",\"status\":\"active\",\"notes\":\"Running AB+ schedule at 60% intensity\"}"
+post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Radion G6 Pro\",\"equipment_type\":\"light\",\"manufacturer\":\"EcoTech Marine\",\"model\":\"G6 Pro\",\"purchase_date\":\"2024-11-10\",\"purchase_price\":\"899.00\",\"condition\":\"excellent\",\"status\":\"active\",\"notes\":\"Running AB+ schedule at 60% intensity\"}"
 post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Vectra M2\",\"equipment_type\":\"pump\",\"manufacturer\":\"EcoTech Marine\",\"model\":\"Vectra M2\",\"purchase_date\":\"2024-03-01\",\"purchase_price\":\"449.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Return pump, running at 70%\"}"
 post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Nyos Quantum 160\",\"equipment_type\":\"skimmer\",\"manufacturer\":\"Nyos\",\"model\":\"Quantum 160\",\"purchase_date\":\"2024-03-01\",\"purchase_price\":\"650.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Wet skim setting, cleaned weekly\"}"
 post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"MP40 Vortech\",\"equipment_type\":\"wavemaker\",\"manufacturer\":\"EcoTech Marine\",\"model\":\"MP40w\",\"purchase_date\":\"2024-03-01\",\"purchase_price\":\"549.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"2 units in anti-sync reef crest mode\"}"
@@ -116,12 +116,102 @@ post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Apex Contro
 
 # Freshwater equipment
 post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Fluval FX4\",\"equipment_type\":\"filter\",\"manufacturer\":\"Fluval\",\"model\":\"FX4\",\"purchase_date\":\"2024-09-01\",\"purchase_price\":\"299.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Canister filter with bio media, cleaned monthly\"}"
-post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Fluval Plant 3.0\",\"equipment_type\":\"lighting\",\"manufacturer\":\"Fluval\",\"model\":\"Plant Spectrum 3.0 46W\",\"purchase_date\":\"2024-09-01\",\"purchase_price\":\"189.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Custom schedule: 8h photoperiod with ramp\"}"
-post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"CO2Art Pro-Elite\",\"equipment_type\":\"co2_system\",\"manufacturer\":\"CO2Art\",\"model\":\"Pro-Elite Regulator\",\"purchase_date\":\"2025-03-01\",\"purchase_price\":\"175.00\",\"condition\":\"excellent\",\"status\":\"active\",\"notes\":\"2 BPS via inline diffuser, pH controller shutoff\"}"
+post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Fluval Plant 3.0\",\"equipment_type\":\"light\",\"manufacturer\":\"Fluval\",\"model\":\"Plant Spectrum 3.0 46W\",\"purchase_date\":\"2024-09-01\",\"purchase_price\":\"189.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Custom schedule: 8h photoperiod with ramp\"}"
+post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"CO2Art Pro-Elite\",\"equipment_type\":\"other\",\"manufacturer\":\"CO2Art\",\"model\":\"Pro-Elite Regulator\",\"purchase_date\":\"2025-03-01\",\"purchase_price\":\"175.00\",\"condition\":\"excellent\",\"status\":\"active\",\"notes\":\"CO2 system — 2 BPS via inline diffuser, pH controller shutoff\"}"
 post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Eheim Jager 200W\",\"equipment_type\":\"heater\",\"manufacturer\":\"Eheim\",\"model\":\"Jager 200W\",\"purchase_date\":\"2024-09-01\",\"purchase_price\":\"39.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Set to 26°C\"}"
 
+# ── Consumables (from Stock matériel inventory) ──────────────────
+echo "[6/11] Adding saltwater consumables..."
+
+# Decoration
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"CORALGUM\",\"consumable_type\":\"other\",\"brand\":\"Tunze\",\"product_name\":\"112g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"12.99\",\"purchase_url\":\"https://www.zoanthus.fr/fr/bouturage/2218-tunze-coral-gum-112-g-0104740-4025167010415.html\",\"status\":\"active\",\"notes\":\"Epoxy putty-glue for secure coral frag mounting.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"AF Gel Fix\",\"consumable_type\":\"other\",\"brand\":\"Aquaforest\",\"product_name\":\"20g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"19.90\",\"purchase_url\":\"https://aquaforest.eu/en/products/seawater/aquascaping/af-gel-fix/\",\"status\":\"active\",\"notes\":\"Fast-drying gel for precise coral gluing. Bonds in 10 seconds.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Afix Glue\",\"consumable_type\":\"other\",\"brand\":\"Aquaforest\",\"product_name\":\"110g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"12.13\",\"status\":\"active\",\"notes\":\"Two-component paste for fixing hard corals and rocks.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"CoraFix ThermoFrag\",\"consumable_type\":\"other\",\"brand\":\"Grotech\",\"product_name\":\"200g\",\"quantity_on_hand\":3,\"quantity_unit\":\"units\",\"purchase_price\":\"19.99\",\"status\":\"active\",\"notes\":\"Thermoplastic biopolymer resin for coral fragging. Melting point 44°C.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"CoraFix SuperFast\",\"consumable_type\":\"other\",\"brand\":\"Grotech\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"27.00\",\"status\":\"active\"}"
+
+# Food
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"ZOO-TONIC\",\"consumable_type\":\"food\",\"brand\":\"Tropic Marin\",\"product_name\":\"50ml\",\"quantity_on_hand\":4,\"quantity_unit\":\"units\",\"purchase_price\":\"19.90\",\"purchase_url\":\"https://www.tropic-marin-smartinfo.com/zootonic?lang=en\",\"status\":\"active\",\"notes\":\"Plankton replacement for filter feeders — amino acids, fatty acids, vitamins.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"ZOO-TONIC (small)\",\"consumable_type\":\"food\",\"brand\":\"Tropic Marin\",\"product_name\":\"50ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"12.80\",\"status\":\"active\",\"notes\":\"Plankton replacement (smaller bottle).\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Druide Sponge Coraux\",\"consumable_type\":\"food\",\"product_name\":\"50ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"17.00\",\"status\":\"active\",\"notes\":\"Boosts growth of ornamental sponges and gorgonians.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"LIQUIZELL\",\"consumable_type\":\"food\",\"brand\":\"Hobby\",\"product_name\":\"20ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"8.89\",\"status\":\"active\",\"notes\":\"Breeding food for artemia nauplii and invertebrates.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Artemia\",\"consumable_type\":\"food\",\"brand\":\"Hobby\",\"product_name\":\"20ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"6.98\",\"status\":\"active\",\"notes\":\"Artemia eggs for hatching — ideal live food for fry.\"}"
+
+# Gear
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Magnetic Brush\",\"consumable_type\":\"other\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"83.00\",\"status\":\"active\",\"notes\":\"Magnetic glass cleaner with observation mirror.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"NanoStream\",\"consumable_type\":\"other\",\"brand\":\"Tunze\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"64.40\",\"status\":\"active\",\"notes\":\"Compact propeller pump — 4500 l/h at only 5W.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Super Flow Pump 1500\",\"consumable_type\":\"other\",\"brand\":\"Seio\",\"product_name\":\"1500\",\"quantity_on_hand\":3,\"quantity_unit\":\"units\",\"purchase_price\":\"50.00\",\"status\":\"active\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Super Flow Pump 530\",\"consumable_type\":\"other\",\"brand\":\"Seio\",\"product_name\":\"530\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"30.00\",\"status\":\"active\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Super Flow Pump 320\",\"consumable_type\":\"other\",\"brand\":\"Seio\",\"product_name\":\"320\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"20.00\",\"status\":\"active\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Return Pump\",\"consumable_type\":\"other\",\"brand\":\"Cadrim\",\"product_name\":\"580GPH\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"30.00\",\"status\":\"active\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Return Pump\",\"consumable_type\":\"other\",\"brand\":\"Newjet\",\"product_name\":\"1200\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"45.00\",\"status\":\"active\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Jecod RW4\",\"consumable_type\":\"other\",\"brand\":\"Jebao\",\"product_name\":\"RW4\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"69.00\",\"status\":\"active\",\"notes\":\"Wavemaker pump.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Internal Filter AP-1000\",\"consumable_type\":\"other\",\"brand\":\"Hidom\",\"product_name\":\"AP-1000\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"14.00\",\"status\":\"active\",\"notes\":\"Internal filter with spray bar and venturi adapter.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"ATO Refill System\",\"consumable_type\":\"other\",\"brand\":\"Jebao\",\"product_name\":\"Jebao-150\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"35.00\",\"status\":\"active\",\"notes\":\"Auto top-off water level controller.\"}"
+
+# Medication
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Coral Rx Pro\",\"consumable_type\":\"medication\",\"brand\":\"Coral Dip\",\"product_name\":\"30ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"23.99\",\"status\":\"active\",\"notes\":\"Eliminates acropora flatworms, montipora nudibranch, and zoanthid parasites.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"AIPTASIA-X\",\"consumable_type\":\"medication\",\"brand\":\"Red Sea\",\"product_name\":\"60ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"18.90\",\"status\":\"active\",\"notes\":\"Aiptasia elimination — sticky formula triggers ingestion and implosion.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"EXIT\",\"consumable_type\":\"medication\",\"brand\":\"eSHa\",\"product_name\":\"20ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"6.45\",\"status\":\"active\",\"notes\":\"Treats white spot disease (Ich) and Oodinium.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"OODINEX\",\"consumable_type\":\"medication\",\"brand\":\"eSHa\",\"product_name\":\"20ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"7.49\",\"status\":\"active\",\"notes\":\"Treats 8 common reef diseases.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Aiptasia X Refill\",\"consumable_type\":\"medication\",\"brand\":\"Red Sea\",\"product_name\":\"415ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"74.00\",\"status\":\"active\",\"notes\":\"Large refill for Aiptasia-X treatment system.\"}"
+
+# Water treatment / Additives
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"ELIMI-NP\",\"consumable_type\":\"additive\",\"brand\":\"Tropic Marin\",\"product_name\":\"50ml\",\"quantity_on_hand\":5,\"quantity_unit\":\"units\",\"purchase_price\":\"19.90\",\"purchase_url\":\"https://www.tropic-marin-smartinfo.com/elimi-np?lang=en\",\"status\":\"active\",\"notes\":\"Carbon dosing concentrate for nitrate/phosphate reduction.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"PRO-CORAL IODINE\",\"consumable_type\":\"additive\",\"brand\":\"Tropic Marin\",\"product_name\":\"50ml\",\"quantity_on_hand\":5,\"quantity_unit\":\"units\",\"purchase_price\":\"12.00\",\"status\":\"active\",\"notes\":\"Iodine supplement — essential for crustacean molting and coralline algae.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Nitribiotic\",\"consumable_type\":\"additive\",\"brand\":\"Tropic Marin\",\"product_name\":\"50ml\",\"quantity_on_hand\":3,\"quantity_unit\":\"units\",\"purchase_price\":\"12.00\",\"status\":\"active\",\"notes\":\"Probiotic + nitrifying bacteria — activates nitrification cycle.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"ELIMI-NP (large)\",\"consumable_type\":\"additive\",\"brand\":\"Tropic Marin\",\"product_name\":\"200ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"13.90\",\"status\":\"active\",\"notes\":\"Carbon dosing concentrate (larger bottle).\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"AF Protect Dip\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"50ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"15.90\",\"status\":\"active\",\"notes\":\"Coral quarantine dip — reduces tissue necrosis, bleaching, and brown jelly.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"KH Alkalinity Test\",\"consumable_type\":\"test_kit\",\"brand\":\"Tropic Marin\",\"product_name\":\"100 tests\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"11.90\",\"status\":\"active\",\"notes\":\"KH/alkalinity test kit — measures buffering capacity.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"CareBacter\",\"consumable_type\":\"additive\",\"brand\":\"Tunze\",\"product_name\":\"40ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"27.40\",\"status\":\"active\",\"notes\":\"Bacteria on Maerl gravel substrate — keeps aquarium clean.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"NitraPhos Minus\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"250ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"9.89\",\"status\":\"active\",\"notes\":\"Activates nutrient-consuming bacteria — converts nitrate/phosphate to biomass.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Nitrate Plus\",\"consumable_type\":\"additive\",\"brand\":\"Colombo\",\"product_name\":\"500ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"11.90\",\"status\":\"active\",\"notes\":\"Replenishes nitrate levels in coral-heavy tanks with nitrate deficiency.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Phosguard\",\"consumable_type\":\"additive\",\"brand\":\"Seachem\",\"product_name\":\"1l\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"30.59\",\"status\":\"active\",\"notes\":\"Phosphate/silicate removal media for marine and freshwater.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Calcium\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"850g\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"9.89\",\"status\":\"active\",\"notes\":\"Calcium supplement — maintains 380-460 mg/l for coral growth.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Magnesium\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"750g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"6.75\",\"status\":\"active\",\"notes\":\"Magnesium supplement — ideal range 1180-1460 mg/l.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Carbon\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"1l\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"11.25\",\"status\":\"active\",\"notes\":\"Activated carbon — removes unwanted chemical compounds.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Zeo Mix\",\"consumable_type\":\"additive\",\"brand\":\"Aquaforest\",\"product_name\":\"1l\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"10.00\",\"status\":\"active\",\"notes\":\"Zeolite blend — replace every 6 weeks for optimal filtration.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Reef Crystals\",\"consumable_type\":\"additive\",\"brand\":\"Aquarium Systems\",\"product_name\":\"4 kg\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"45.00\",\"status\":\"active\",\"notes\":\"Enriched reef salt — extra calcium, vitamins, and trace elements.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Osmoseur\",\"consumable_type\":\"additive\",\"brand\":\"Aquavie\",\"product_name\":\"380l/j\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"89.70\",\"status\":\"active\",\"notes\":\"RO unit — produces high-quality osmosis water from tap water.\"}"
+
+# ── Freshwater Consumables ────────────────────────────────────────
+echo "[7/11] Adding freshwater consumables..."
+
+# Plant fertilizers
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Flourish Comprehensive\",\"consumable_type\":\"supplement\",\"brand\":\"Seachem\",\"product_name\":\"500ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"14.99\",\"status\":\"active\",\"notes\":\"Comprehensive plant supplement — micro and macro nutrients. Dose 5ml per 250L twice weekly.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Flourish Excel\",\"consumable_type\":\"supplement\",\"brand\":\"Seachem\",\"product_name\":\"500ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"16.99\",\"status\":\"active\",\"notes\":\"Liquid carbon supplement — bioavailable organic carbon for plant growth. Alternative to CO2 injection.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Flourish Iron\",\"consumable_type\":\"supplement\",\"brand\":\"Seachem\",\"product_name\":\"250ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"9.99\",\"status\":\"active\",\"notes\":\"Ferrous iron supplement for plants showing chlorosis. Dose 5ml per 200L every other day.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Tropica Specialised Nutrition\",\"consumable_type\":\"supplement\",\"brand\":\"Tropica\",\"product_name\":\"300ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"19.50\",\"status\":\"active\",\"notes\":\"Complete liquid fertilizer with N, P, K, Fe, and micronutrients for demanding plants.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Root Tabs\",\"consumable_type\":\"supplement\",\"brand\":\"Seachem\",\"product_name\":\"40 tabs\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"12.99\",\"status\":\"active\",\"notes\":\"Substrate fertilizer tablets for root-feeding plants like swords and crypts. Replace every 3 months.\"}"
+
+# Water conditioners
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Prime\",\"consumable_type\":\"additive\",\"brand\":\"Seachem\",\"product_name\":\"500ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"14.99\",\"status\":\"active\",\"notes\":\"Complete water conditioner — removes chlorine, chloramine, detoxifies ammonia, nitrite, nitrate.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"GH/KH+\",\"consumable_type\":\"additive\",\"brand\":\"SaltyShrimp\",\"product_name\":\"230g\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"18.90\",\"status\":\"active\",\"notes\":\"Remineralizer for RO water. Target GH 5-6, KH 2-3 for soft water biotope.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Indian Almond Leaves\",\"consumable_type\":\"additive\",\"brand\":\"Catappa Canada\",\"product_name\":\"50 leaves\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"24.99\",\"status\":\"active\",\"notes\":\"Releases tannins and humic acids. Anti-fungal and anti-bacterial. Add 2-3 per 100L.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Stability\",\"consumable_type\":\"additive\",\"brand\":\"Seachem\",\"product_name\":\"250ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"11.99\",\"status\":\"active\",\"notes\":\"Beneficial bacteria supplement for establishing and maintaining biological filtration.\"}"
+
+# Food
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Bug Bites Tropical\",\"consumable_type\":\"food\",\"brand\":\"Fluval\",\"product_name\":\"125g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"8.99\",\"status\":\"active\",\"notes\":\"Black soldier fly larvae based formula. Perfect for tetras, apistos, and corydoras.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Bug Bites Bottom Feeder\",\"consumable_type\":\"food\",\"brand\":\"Fluval\",\"product_name\":\"130g\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"8.99\",\"status\":\"active\",\"notes\":\"Sinking granules for corydoras and bottom dwellers. Rich in protein.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Frozen Bloodworms\",\"consumable_type\":\"food\",\"brand\":\"Hikari\",\"product_name\":\"100g\",\"quantity_on_hand\":3,\"quantity_unit\":\"units\",\"purchase_price\":\"7.49\",\"status\":\"active\",\"notes\":\"UV sterilized frozen bloodworms. Weekly treat for all fish. Thaw before feeding.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Algae Wafers\",\"consumable_type\":\"food\",\"brand\":\"Hikari\",\"product_name\":\"82g\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"6.99\",\"status\":\"active\",\"notes\":\"Sinking wafers for otocinclus and shrimp. Supplement when algae levels are low.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Shrimp King Complete\",\"consumable_type\":\"food\",\"brand\":\"Dennerle\",\"product_name\":\"45g\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"9.99\",\"status\":\"active\",\"notes\":\"Complete feed for Amano shrimp with moringa, spinach, and walnut leaves.\"}"
+
+# Test kits
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Freshwater Master Kit\",\"consumable_type\":\"test_kit\",\"brand\":\"API\",\"product_name\":\"800 tests\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"29.99\",\"status\":\"active\",\"notes\":\"Liquid test kit: pH, ammonia, nitrite, nitrate. More accurate than strips.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"GH & KH Test Kit\",\"consumable_type\":\"test_kit\",\"brand\":\"API\",\"product_name\":\"180 tests\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"12.99\",\"status\":\"active\",\"notes\":\"General and carbonate hardness test. Essential for soft water biotope monitoring.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"CO2 Drop Checker\",\"consumable_type\":\"test_kit\",\"brand\":\"CO2Art\",\"product_name\":\"with 4dKH solution\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"14.99\",\"status\":\"active\",\"notes\":\"Continuous CO2 monitoring. Green = 30ppm (ideal), blue = too low, yellow = too high.\"}"
+
+# Filter media
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Purigen\",\"consumable_type\":\"filter_media\",\"brand\":\"Seachem\",\"product_name\":\"250ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"24.99\",\"status\":\"active\",\"notes\":\"Premium synthetic adsorbent — removes dissolved organics, keeps water crystal clear. Regenerate with bleach.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Filter Floss Pads\",\"consumable_type\":\"filter_media\",\"brand\":\"Fluval\",\"product_name\":\"6 pack\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"8.99\",\"status\":\"active\",\"notes\":\"Mechanical filtration pads for FX4. Replace monthly, rinse in tank water.\"}"
+
+# Medication
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"ParaGuard\",\"consumable_type\":\"medication\",\"brand\":\"Seachem\",\"product_name\":\"250ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"11.99\",\"status\":\"active\",\"notes\":\"Aldehyde-based external parasiticide. Safe for sensitive fish. Treats ich, velvet, fungus.\"}"
+post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Pimafix\",\"consumable_type\":\"medication\",\"brand\":\"API\",\"product_name\":\"237ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"10.49\",\"status\":\"active\",\"notes\":\"Natural antifungal remedy from West Indian Bay Tree. Safe for scaleless fish and shrimp.\"}"
+
 # ── Maintenance Reminders ─────────────────────────────────────────
-echo "[6/9] Adding maintenance reminders..."
+echo "[8/11] Adding maintenance reminders..."
 
 # Saltwater maintenance
 post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$SALT_TANK\",\"title\":\"10% Water Change\",\"description\":\"Red Sea Coral Pro salt mix, match temp and salinity\",\"reminder_type\":\"water_change\",\"frequency_days\":7,\"next_due\":\"2026-02-15\"}"
@@ -137,7 +227,7 @@ post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$FRESH_TANK\",\"title\":
 post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$FRESH_TANK\",\"title\":\"Refill CO2 Cylinder\",\"description\":\"Check CO2 pressure gauge, refill when below 400 PSI\",\"reminder_type\":\"dosing_refill\",\"frequency_days\":60,\"next_due\":\"2026-04-01\"}"
 
 # ── Notes ─────────────────────────────────────────────────────────
-echo "[7/9] Adding notes..."
+echo "[9/11] Adding notes..."
 
 # Saltwater notes
 post_quiet "$API/notes/" "{\"tank_id\":\"$SALT_TANK\",\"content\":\"Noticed slight STN on the base of the green Acropora millepora. Increased flow in that area by adjusting the MP40 to pulse mode. Will monitor closely over the next week. Dipped in CoralRx as a precaution.\"}"
@@ -152,7 +242,7 @@ post_quiet "$API/notes/" "{\"tank_id\":\"$FRESH_TANK\",\"content\":\"CO2 drop ch
 post_quiet "$API/notes/" "{\"tank_id\":\"$FRESH_TANK\",\"content\":\"Rummy-nose tetras all showing deep red noses - good indicator of water quality. Corydoras are active and foraging during the day which is a great sign.\"}"
 
 # ── Parameters (historical data) ──────────────────────────────────
-echo "[8/9] Submitting parameter readings..."
+echo "[10/11] Submitting parameter readings..."
 
 # Saltwater parameters - 6 months of data (biweekly)
 for d in 2024-10-01 2024-10-15 2024-11-01 2024-11-15 2024-12-01 2024-12-15 \
@@ -205,19 +295,43 @@ for d in 2024-11-01 2024-11-08 2024-11-15 2024-11-22 2024-11-29 \
   post_quiet "$API/parameters/" "{\"tank_id\":\"$FRESH_TANK\",\"timestamp\":\"${d}T10:00:00\",\"temperature\":$temp,\"ph\":$ph,\"gh\":$gh,\"alkalinity_kh\":$kh,\"nitrate\":$no3,\"phosphate\":$po4,\"ammonia\":$nh3,\"nitrite\":$no2}"
 done
 
-echo "[9/9] Done!"
+# ── ICP Tests (saltwater only) ────────────────────────────────────
+echo "[11/11] Adding ICP test results..."
+
+# ICP Test 1: August 2024 — first test after cycle, mostly good
+post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2024-08-15\",\"lab_name\":\"ATI\",\"test_id\":\"ATI-2024-08-001\",\"water_type\":\"saltwater\",\"sample_date\":\"2024-08-10\",\"received_date\":\"2024-08-13\",\"evaluated_date\":\"2024-08-15\",\"score_major_elements\":88,\"score_minor_elements\":72,\"score_pollutants\":95,\"score_base_elements\":90,\"score_overall\":86,\"salinity\":35.2,\"salinity_status\":\"ok\",\"kh\":7.8,\"kh_status\":\"low\",\"cl\":20100,\"cl_status\":\"ok\",\"na\":10800,\"na_status\":\"ok\",\"mg\":1340,\"mg_status\":\"ok\",\"s\":930,\"s_status\":\"ok\",\"ca\":425,\"ca_status\":\"ok\",\"k\":405,\"k_status\":\"ok\",\"br\":68,\"br_status\":\"ok\",\"sr\":8.4,\"sr_status\":\"ok\",\"b\":4.8,\"b_status\":\"ok\",\"f\":1.3,\"f_status\":\"ok\",\"li\":180,\"li_status\":\"ok\",\"si\":120,\"si_status\":\"ok\",\"i\":52,\"i_status\":\"low\",\"ba\":8,\"ba_status\":\"ok\",\"mo\":10,\"mo_status\":\"ok\",\"ni\":1.2,\"ni_status\":\"ok\",\"mn\":0.5,\"mn_status\":\"ok\",\"fe\":2.1,\"fe_status\":\"ok\",\"cu\":1.8,\"cu_status\":\"ok\",\"zn\":4.2,\"zn_status\":\"ok\",\"sn\":3.5,\"sn_status\":\"high\",\"no3\":3.2,\"no3_status\":\"ok\",\"po4\":0.04,\"po4_status\":\"ok\",\"al\":5,\"al_status\":\"ok\",\"pb\":0,\"pb_status\":\"ok\",\"notes\":\"First ICP test after cycle. Slight tin contamination detected — likely from heater element. Iodine low, started dosing Tropic Marin iodine.\"}"
+
+# ICP Test 2: January 2025 — improved after adjustments
+post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2025-01-20\",\"lab_name\":\"ATI\",\"test_id\":\"ATI-2025-01-042\",\"water_type\":\"saltwater\",\"sample_date\":\"2025-01-15\",\"received_date\":\"2025-01-18\",\"evaluated_date\":\"2025-01-20\",\"score_major_elements\":94,\"score_minor_elements\":88,\"score_pollutants\":98,\"score_base_elements\":95,\"score_overall\":94,\"salinity\":35.0,\"salinity_status\":\"ok\",\"kh\":8.4,\"kh_status\":\"ok\",\"cl\":19800,\"cl_status\":\"ok\",\"na\":10700,\"na_status\":\"ok\",\"mg\":1360,\"mg_status\":\"ok\",\"s\":920,\"s_status\":\"ok\",\"ca\":435,\"ca_status\":\"ok\",\"k\":398,\"k_status\":\"ok\",\"br\":67,\"br_status\":\"ok\",\"sr\":8.6,\"sr_status\":\"ok\",\"b\":4.6,\"b_status\":\"ok\",\"f\":1.2,\"f_status\":\"ok\",\"li\":175,\"li_status\":\"ok\",\"si\":85,\"si_status\":\"ok\",\"i\":60,\"i_status\":\"ok\",\"ba\":7,\"ba_status\":\"ok\",\"mo\":11,\"mo_status\":\"ok\",\"ni\":0.8,\"ni_status\":\"ok\",\"mn\":0.4,\"mn_status\":\"ok\",\"fe\":1.8,\"fe_status\":\"ok\",\"cu\":1.2,\"cu_status\":\"ok\",\"zn\":3.8,\"zn_status\":\"ok\",\"sn\":1.2,\"sn_status\":\"ok\",\"no3\":2.8,\"no3_status\":\"ok\",\"po4\":0.03,\"po4_status\":\"ok\",\"al\":3,\"al_status\":\"ok\",\"pb\":0,\"pb_status\":\"ok\",\"notes\":\"Significant improvement. Tin levels normalized after heater replacement. Iodine back to optimal with regular dosing. All corals showing excellent polyp extension.\"}"
+
+# ICP Test 3: July 2025 — stable mature system
+post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2025-07-10\",\"lab_name\":\"ATI\",\"test_id\":\"ATI-2025-07-089\",\"water_type\":\"saltwater\",\"sample_date\":\"2025-07-05\",\"received_date\":\"2025-07-08\",\"evaluated_date\":\"2025-07-10\",\"score_major_elements\":96,\"score_minor_elements\":92,\"score_pollutants\":100,\"score_base_elements\":97,\"score_overall\":96,\"salinity\":35.1,\"salinity_status\":\"ok\",\"kh\":8.8,\"kh_status\":\"ok\",\"cl\":19900,\"cl_status\":\"ok\",\"na\":10750,\"na_status\":\"ok\",\"mg\":1380,\"mg_status\":\"ok\",\"s\":925,\"s_status\":\"ok\",\"ca\":440,\"ca_status\":\"ok\",\"k\":400,\"k_status\":\"ok\",\"br\":68,\"br_status\":\"ok\",\"sr\":8.8,\"sr_status\":\"ok\",\"b\":4.5,\"b_status\":\"ok\",\"f\":1.3,\"f_status\":\"ok\",\"li\":178,\"li_status\":\"ok\",\"si\":60,\"si_status\":\"ok\",\"i\":58,\"i_status\":\"ok\",\"ba\":6,\"ba_status\":\"ok\",\"mo\":12,\"mo_status\":\"ok\",\"ni\":0.6,\"ni_status\":\"ok\",\"mn\":0.3,\"mn_status\":\"ok\",\"fe\":1.5,\"fe_status\":\"ok\",\"cu\":0.9,\"cu_status\":\"ok\",\"zn\":3.2,\"zn_status\":\"ok\",\"sn\":0.5,\"sn_status\":\"ok\",\"no3\":4.1,\"no3_status\":\"ok\",\"po4\":0.035,\"po4_status\":\"ok\",\"al\":2,\"al_status\":\"ok\",\"pb\":0,\"pb_status\":\"ok\",\"notes\":\"Mature system — all elements stable and within ideal range. Zero pollutants. Coral growth is excellent, Acropora encrusting onto surrounding rocks.\"}"
+
 echo ""
-echo "=== Demo Data Summary ==="
+echo "=== AquaScope Demo Seed Complete ==="
+echo ""
 echo "User:       $EMAIL / $PASS"
 echo "Saltwater:  Coral Paradise (SPS Dominant, 500L)"
 echo "Freshwater: Rio Negro Biotope (Amazonian, 300L)"
 echo ""
-echo "Each tank has:"
-echo "  - Tank events (milestones, equipment changes)"
-echo "  - Livestock (fish, corals, invertebrates)"
-echo "  - Equipment (lights, pumps, filters, dosers)"
-echo "  - Maintenance reminders (water changes, cleaning)"
-echo "  - Notes (observations, adjustments)"
-echo "  - Parameter history (months of readings)"
+echo "Modules seeded per tank:"
+echo "  Coral Paradise (saltwater):"
+echo "    - 5 tank events"
+echo "    - 9 livestock (4 corals, 3 fish, 2 invertebrates)"
+echo "    - 6 equipment (light, pump, skimmer, wavemaker, doser, controller)"
+echo "    - 5 maintenance reminders"
+echo "    - 4 notes"
+echo "    - 33 parameter readings (biweekly, Oct 2024 - Feb 2026)"
+echo "    - 41 consumables (additives, food, medication, gear)"
+echo "    - 3 ICP tests (Aug 2024, Jan 2025, Jul 2025)"
+echo ""
+echo "  Rio Negro Biotope (freshwater):"
+echo "    - 4 tank events"
+echo "    - 6 livestock (4 fish, 1 invertebrate, 1 cichlid)"
+echo "    - 4 equipment (filter, light, CO2, heater)"
+echo "    - 4 maintenance reminders"
+echo "    - 4 notes"
+echo "    - 67 parameter readings (weekly, Nov 2024 - Feb 2026)"
+echo "    - 21 consumables (fertilizers, food, water conditioners, test kits, filter media, medication)"
 echo ""
 echo "Login at http://localhost with $EMAIL / $PASS"

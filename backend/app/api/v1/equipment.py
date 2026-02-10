@@ -11,8 +11,10 @@ from uuid import UUID
 from app.database import get_db
 from app.models.user import User
 from app.models.equipment import Equipment
+from app.models.consumable import Consumable
 from app.models.tank import Tank
 from app.schemas.equipment import EquipmentCreate, EquipmentUpdate, EquipmentResponse
+from app.schemas.consumable import ConsumableResponse
 from app.api.deps import get_current_user
 
 router = APIRouter()
@@ -167,3 +169,49 @@ def delete_equipment(
     db.commit()
 
     return None
+
+
+# ============================================================================
+# Conversion Endpoints
+# ============================================================================
+
+
+@router.post("/{equipment_id}/convert-to-consumable", response_model=ConsumableResponse)
+def convert_to_consumable(
+    equipment_id: UUID,
+    consumable_type: str = Query("other", description="The consumable type to assign"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Convert equipment to a consumable. Creates consumable and deletes the equipment."""
+    equipment = db.query(Equipment).filter(
+        Equipment.id == equipment_id,
+        Equipment.user_id == current_user.id
+    ).first()
+
+    if not equipment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Equipment not found"
+        )
+
+    new_consumable = Consumable(
+        tank_id=equipment.tank_id,
+        user_id=current_user.id,
+        name=equipment.name,
+        consumable_type=consumable_type,
+        brand=equipment.manufacturer,
+        product_name=equipment.model,
+        purchase_date=equipment.purchase_date,
+        purchase_price=equipment.purchase_price,
+        status='active',
+        notes=equipment.notes,
+    )
+
+    db.add(new_consumable)
+    db.delete(equipment)
+    db.commit()
+    db.refresh(new_consumable)
+
+    new_consumable.usage_count = 0
+    return new_consumable
