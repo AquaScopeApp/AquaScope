@@ -45,7 +45,7 @@ As a developer and aquarist, I decided to build what I couldn't find.
 > The hobby is already costly enough — logging and understanding your aquarium shouldn't be.
 
 <p align="center">
-  <img src="data/images/all_ecosystems_banner_horizontal.png" alt="Freshwater, Saltwater & Brackish — all supported" width="900" />
+  <img src="docs/images/ecosystems_banner.png" alt="Freshwater, Saltwater & Brackish — all supported" width="900" />
   <br />
   <em>Freshwater &bull; Saltwater &bull; Brackish — all ecosystems, one tool</em>
 </p>
