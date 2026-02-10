@@ -1,107 +1,115 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <!-- Ocean gradient for the circle background -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#0284c7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0369a1;stop-opacity:1" />
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#1e40af" />
     </linearGradient>
-    <!-- Water shimmer -->
-    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:rgba(255,255,255,0.0)" />
-      <stop offset="50%" style="stop-color:rgba(255,255,255,0.15)" />
-      <stop offset="100%" style="stop-color:rgba(255,255,255,0.0)" />
+    <linearGradient id="lens" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.05)" />
     </linearGradient>
-    <!-- Coral gradient -->
-    <linearGradient id="coralGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" style="stop-color:#e84393;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#fd79a8;stop-opacity:1" />
+    <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.0)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0.18)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.0)" />
     </linearGradient>
-    <!-- Green coral gradient -->
-    <linearGradient id="coralGreen" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" style="stop-color:#00b894;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#55efc4;stop-opacity:1" />
+    <linearGradient id="coralPink" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#f9a8d4" />
     </linearGradient>
+    <linearGradient id="coralTeal" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#5eead4" />
+    </linearGradient>
+    <clipPath id="circleClip">
+      <circle cx="256" cy="256" r="240" />
+    </clipPath>
   </defs>
 
-  <!-- Circle background -->
+  <!-- Background circle -->
   <circle cx="256" cy="256" r="248" fill="url(#bgGrad)" />
-  <circle cx="256" cy="256" r="248" fill="url(#shimmer)" />
 
-  <!-- Subtle inner ring -->
-  <circle cx="256" cy="256" r="236" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+  <!-- Clipped content -->
+  <g clip-path="url(#circleClip)">
+    <!-- Water shimmer waves -->
+    <path d="M0,200 Q128,180 256,200 Q384,220 512,200 L512,520 L0,520 Z" fill="rgba(255,255,255,0.04)" />
+    <path d="M0,240 Q128,220 256,240 Q384,260 512,240 L512,520 L0,520 Z" fill="rgba(255,255,255,0.03)" />
 
-  <!-- Bubbles (decorative) -->
-  <circle cx="140" cy="120" r="12" fill="white" opacity="0.12" />
-  <circle cx="120" cy="145" r="7" fill="white" opacity="0.1" />
-  <circle cx="380" cy="100" r="9" fill="white" opacity="0.1" />
-  <circle cx="395" cy="130" r="5" fill="white" opacity="0.08" />
+    <!-- Light rays from surface -->
+    <polygon points="120,0 155,0 260,510 220,510" fill="rgba(255,255,255,0.05)" />
+    <polygon points="340,0 380,0 440,510 395,510" fill="rgba(255,255,255,0.04)" />
 
-  <!-- Branching coral left (pink) -->
-  <g transform="translate(130, 380)">
-    <path d="M0 0 Q-10 -50 -25 -90 Q-30 -105 -35 -115" stroke="url(#coralGrad)" stroke-width="12" fill="none" stroke-linecap="round" />
-    <path d="M0 0 Q5 -55 0 -100 Q-2 -115 -5 -125" stroke="url(#coralGrad)" stroke-width="11" fill="none" stroke-linecap="round" />
-    <path d="M0 0 Q15 -45 30 -85 Q35 -95 40 -105" stroke="#fd79a8" stroke-width="10" fill="none" stroke-linecap="round" />
-    <!-- Branch tips -->
-    <path d="M-25 -90 Q-35 -100 -45 -105" stroke="#fd79a8" stroke-width="8" fill="none" stroke-linecap="round" />
-    <path d="M0 -100 Q10 -115 15 -125" stroke="#fd79a8" stroke-width="7" fill="none" stroke-linecap="round" />
-    <!-- Polyp tips -->
-    <circle cx="-35" cy="-118" r="7" fill="#fab1d0" />
-    <circle cx="-45" cy="-108" r="6" fill="#fab1d0" />
-    <circle cx="-5" cy="-128" r="7" fill="#fab1d0" />
-    <circle cx="15" cy="-128" r="6" fill="#fab1d0" />
-    <circle cx="40" cy="-108" r="7" fill="#fab1d0" />
+    <!-- Sandy bottom -->
+    <ellipse cx="256" cy="440" rx="240" ry="35" fill="#fbbf24" opacity="0.12" />
+
+    <!-- Coral left - branching pink -->
+    <g transform="translate(100, 420)">
+      <path d="M0,0 Q-8,-40 -18,-75 Q-22,-90 -26,-100" stroke="url(#coralPink)" stroke-width="7" fill="none" stroke-linecap="round" />
+      <path d="M0,0 Q5,-45 2,-80 Q0,-95 -3,-105" stroke="url(#coralPink)" stroke-width="6" fill="none" stroke-linecap="round" />
+      <path d="M0,0 Q12,-35 22,-65 Q26,-78 30,-88" stroke="#f9a8d4" stroke-width="5" fill="none" stroke-linecap="round" />
+      <circle cx="-26" cy="-103" r="5" fill="#fbcfe8" />
+      <circle cx="-3" cy="-108" r="5" fill="#fbcfe8" />
+      <circle cx="30" cy="-91" r="5" fill="#fbcfe8" />
+    </g>
+
+    <!-- Coral right - teal sea fan -->
+    <g transform="translate(410, 420)">
+      <path d="M0,0 Q-6,-45 -12,-80 Q-14,-95 -16,-105" stroke="url(#coralTeal)" stroke-width="6" fill="none" stroke-linecap="round" />
+      <path d="M0,0 Q6,-50 12,-85 Q14,-100 16,-110" stroke="url(#coralTeal)" stroke-width="6" fill="none" stroke-linecap="round" />
+      <path d="M-12,-80 Q-22,-88 -30,-92" stroke="#5eead4" stroke-width="4" fill="none" stroke-linecap="round" />
+      <path d="M12,-85 Q22,-92 30,-95" stroke="#5eead4" stroke-width="4" fill="none" stroke-linecap="round" />
+      <circle cx="-16" cy="-108" r="4" fill="#99f6e4" />
+      <circle cx="16" cy="-113" r="4" fill="#99f6e4" />
+      <circle cx="-30" cy="-95" r="3.5" fill="#99f6e4" />
+      <circle cx="30" cy="-98" r="3.5" fill="#99f6e4" />
+    </g>
+
+    <!-- Decorative small coral accents -->
+    <ellipse cx="175" cy="415" rx="18" ry="10" fill="#f59e0b" opacity="0.35" />
+    <ellipse cx="340" cy="425" rx="14" ry="8" fill="#f43f5e" opacity="0.3" />
   </g>
 
-  <!-- Green sea fan coral right -->
-  <g transform="translate(380, 380)">
-    <path d="M0 0 Q-8 -50 -15 -95 Q-18 -110 -20 -120" stroke="url(#coralGreen)" stroke-width="10" fill="none" stroke-linecap="round" />
-    <path d="M0 0 Q8 -55 15 -100 Q18 -115 20 -125" stroke="url(#coralGreen)" stroke-width="10" fill="none" stroke-linecap="round" />
-    <!-- Branches -->
-    <path d="M-15 -95 Q-25 -100 -35 -105" stroke="#55efc4" stroke-width="7" fill="none" stroke-linecap="round" />
-    <path d="M-15 -95 Q-10 -110 -5 -118" stroke="#55efc4" stroke-width="6" fill="none" stroke-linecap="round" />
-    <path d="M15 -100 Q10 -115 5 -122" stroke="#55efc4" stroke-width="6" fill="none" stroke-linecap="round" />
-    <path d="M15 -100 Q25 -108 35 -112" stroke="#55efc4" stroke-width="7" fill="none" stroke-linecap="round" />
-    <!-- Tips -->
-    <circle cx="-20" cy="-123" r="6" fill="#55efc4" />
-    <circle cx="-35" cy="-108" r="5" fill="#55efc4" />
-    <circle cx="-5" cy="-121" r="5" fill="#55efc4" />
-    <circle cx="5" cy="-125" r="5" fill="#55efc4" />
-    <circle cx="20" cy="-128" r="6" fill="#55efc4" />
-    <circle cx="35" cy="-115" r="5" fill="#55efc4" />
+  <!-- Magnifying glass / scope element -->
+  <g transform="translate(256, 215)">
+    <!-- Lens circle -->
+    <circle cx="0" cy="0" r="82" fill="url(#lens)" stroke="rgba(255,255,255,0.5)" stroke-width="5" />
+    <circle cx="0" cy="0" r="72" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" />
+
+    <!-- Fish inside lens (focal point) -->
+    <g transform="translate(-5, -5)">
+      <!-- Tropical fish body -->
+      <ellipse cx="0" cy="0" rx="36" ry="20" fill="#f97316" />
+      <!-- Belly highlight -->
+      <ellipse cx="0" cy="5" rx="28" ry="10" fill="#fdba74" opacity="0.5" />
+      <!-- White stripes (clownfish-like) -->
+      <path d="M-10,-18 Q-10,0 -10,18" stroke="white" stroke-width="6" fill="none" opacity="0.9" />
+      <path d="M10,-16 Q10,0 10,16" stroke="white" stroke-width="5" fill="none" opacity="0.7" />
+      <!-- Tail -->
+      <path d="M-36,0 L-50,-14 L-50,14 Z" fill="#ea580c" />
+      <!-- Dorsal fin -->
+      <path d="M-8,-20 Q5,-30 14,-20" fill="#f97316" opacity="0.85" />
+      <!-- Eye -->
+      <circle cx="18" cy="-5" r="6" fill="white" />
+      <circle cx="19.5" cy="-5" r="3.5" fill="#1e293b" />
+      <circle cx="20.5" cy="-6.5" r="1.2" fill="white" />
+    </g>
+
+    <!-- Scope handle -->
+    <line x1="58" y1="58" x2="100" y2="100" stroke="rgba(255,255,255,0.5)" stroke-width="8" stroke-linecap="round" />
+    <line x1="60" y1="60" x2="98" y2="98" stroke="rgba(255,255,255,0.3)" stroke-width="5" stroke-linecap="round" />
   </g>
 
-  <!-- Clownfish (center focal point) -->
-  <g transform="translate(256, 210)">
-    <!-- Body -->
-    <ellipse cx="0" cy="0" rx="52" ry="30" fill="#f39c12" />
-    <!-- White stripes -->
-    <path d="M-16 -28 Q-16 0 -16 28" stroke="white" stroke-width="9" fill="none" />
-    <path d="M16 -24 Q16 0 16 24" stroke="white" stroke-width="9" fill="none" />
-    <!-- Tail -->
-    <path d="M-52 0 L-70 -20 L-70 20 Z" fill="#e67e22" />
-    <!-- Eye -->
-    <circle cx="28" cy="-8" r="8" fill="white" />
-    <circle cx="30" cy="-8" r="5" fill="#2d3436" />
-    <circle cx="31.5" cy="-9.5" r="1.5" fill="white" />
-    <!-- Dorsal fin -->
-    <path d="M-10 -30 Q8 -45 20 -30" fill="#f39c12" opacity="0.9" />
-    <!-- Pectoral fin -->
-    <path d="M5 15 Q15 28 -5 25" fill="#f39c12" opacity="0.8" />
-    <!-- Black outlines on white stripes -->
-    <path d="M-20 -28 Q-20 0 -20 28" stroke="#2d3436" stroke-width="1.5" fill="none" opacity="0.3" />
-    <path d="M-12 -28 Q-12 0 -12 28" stroke="#2d3436" stroke-width="1.5" fill="none" opacity="0.3" />
-    <path d="M12 -24 Q12 0 12 24" stroke="#2d3436" stroke-width="1.5" fill="none" opacity="0.3" />
-    <path d="M20 -24 Q20 0 20 24" stroke="#2d3436" stroke-width="1.5" fill="none" opacity="0.3" />
-  </g>
+  <!-- Subtle ring -->
+  <circle cx="256" cy="256" r="240" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
 
-  <!-- "RL" text (compact monogram) -->
-  <g transform="translate(256, 345)">
-    <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="900" fill="white" text-anchor="middle" letter-spacing="4" opacity="0.95">
-      ReefLab
-    </text>
-  </g>
+  <!-- Bubbles -->
+  <circle cx="150" cy="130" r="8" fill="white" opacity="0.1" />
+  <circle cx="135" cy="155" r="5" fill="white" opacity="0.08" />
+  <circle cx="370" cy="110" r="6" fill="white" opacity="0.08" />
 
-  <!-- Sand bottom arc -->
-  <ellipse cx="256" cy="420" rx="220" ry="25" fill="#e8d5a3" opacity="0.3" />
+  <!-- App name -->
+  <g transform="translate(256, 370)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="54" font-weight="800" fill="white" text-anchor="middle" letter-spacing="2" opacity="0.95">AquaScope</text>
+  </g>
 </svg>

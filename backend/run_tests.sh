@@ -1,9 +1,9 @@
 #!/bin/bash
-# Test runner script for ReefLab backend
+# Test runner script for AquaScope backend
 
 set -e
 
-echo "Running ReefLab Backend Tests..."
+echo "Running AquaScope Backend Tests..."
 echo "================================"
 
 # Run all tests with coverage

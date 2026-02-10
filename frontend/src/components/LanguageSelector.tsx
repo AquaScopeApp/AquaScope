@@ -20,7 +20,7 @@ export default function LanguageSelector(): JSX.Element {
 
   const changeLanguage = (lng: string): void => {
     i18n.changeLanguage(lng)
-    localStorage.setItem('reeflab_language', lng)
+    localStorage.setItem('aquascope_language', lng)
   }
 
   return (

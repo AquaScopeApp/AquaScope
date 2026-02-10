@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import type { TankEvent, Equipment, Livestock, Photo, Note, ICPTestSummary } from '../../types'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { photosApi } from '../../api/client'
 
 interface TankOverviewProps {
@@ -26,6 +27,8 @@ export default function TankOverview({
   notes,
   icpTests,
 }: TankOverviewProps) {
+  const { t } = useTranslation('tanks')
+  const { t: tc } = useTranslation('common')
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({})
 
   // Get recent items (last 3 of each)
@@ -75,22 +78,22 @@ export default function TankOverview({
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">🐟</div>
           <div className="text-2xl font-bold text-ocean-600">{livestock.length}</div>
-          <div className="text-xs text-gray-600 font-medium">Livestock</div>
+          <div className="text-xs text-gray-600 font-medium">{t('stats.livestockCount')}</div>
         </div>
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">⚙️</div>
           <div className="text-2xl font-bold text-ocean-600">{equipment.length}</div>
-          <div className="text-xs text-gray-600 font-medium">Equipment</div>
+          <div className="text-xs text-gray-600 font-medium">{t('stats.equipmentCount')}</div>
         </div>
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">📷</div>
           <div className="text-2xl font-bold text-ocean-600">{photos.length}</div>
-          <div className="text-xs text-gray-600 font-medium">Photos</div>
+          <div className="text-xs text-gray-600 font-medium">{t('stats.photoCount')}</div>
         </div>
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">📝</div>
           <div className="text-2xl font-bold text-ocean-600">{notes.length}</div>
-          <div className="text-xs text-gray-600 font-medium">Notes</div>
+          <div className="text-xs text-gray-600 font-medium">{t('stats.noteCount')}</div>
         </div>
       </div>
 
@@ -98,12 +101,12 @@ export default function TankOverview({
       {latestICPTest && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Latest ICP Test</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('latestIcpTest')}</h3>
             <Link
               to="/icp-tests"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
             >
-              View All →
+              {t('viewAll')} →
             </Link>
           </div>
           <div className="flex items-center justify-between">
@@ -120,7 +123,7 @@ export default function TankOverview({
                 <div className="text-3xl font-bold text-ocean-600">
                   {latestICPTest.score_overall}
                 </div>
-                <div className="text-xs text-gray-600">Overall Score</div>
+                <div className="text-xs text-gray-600">{t('overallScore')}</div>
               </div>
             )}
           </div>
@@ -131,9 +134,9 @@ export default function TankOverview({
       {recentEvents.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Events</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('recentEvents')}</h3>
             <button className="text-sm text-ocean-600 hover:text-ocean-700 font-medium">
-              View All →
+              {t('viewAll')} →
             </button>
           </div>
           <div className="space-y-3">
@@ -156,12 +159,12 @@ export default function TankOverview({
       {recentPhotos.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Photos</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('recentPhotos')}</h3>
             <Link
               to="/photos"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
             >
-              View All →
+              {t('viewAll')} →
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -174,7 +177,7 @@ export default function TankOverview({
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
                 ) : (
-                  <div className="text-ocean-400">Loading...</div>
+                  <div className="text-ocean-400">{tc('common.loading')}</div>
                 )}
               </div>
             ))}
@@ -186,12 +189,12 @@ export default function TankOverview({
       {recentNotes.length > 0 && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Notes</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('recentNotes')}</h3>
             <Link
               to="/notes"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
             >
-              View All →
+              {t('viewAll')} →
             </Link>
           </div>
           <div className="space-y-3">
@@ -214,10 +217,10 @@ export default function TankOverview({
             <span className="text-6xl">🐠</span>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Start building your tank's story
+            {t('emptyState.startStory')}
           </h3>
           <p className="text-gray-600 mb-6">
-            Add events, photos, and notes to track your reef's progress
+            {t('emptyState.addContent')}
           </p>
         </div>
       )}

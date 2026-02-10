@@ -3,31 +3,31 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: reeflab-postgres
+    container_name: aquascope-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-reeflab}
+      POSTGRES_USER: ${POSTGRES_USER:-aquascope}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      POSTGRES_DB: ${POSTGRES_DB:-reeflab}
+      POSTGRES_DB: ${POSTGRES_DB:-aquascope}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reeflab}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aquascope}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   influxdb:
     image: influxdb:2.7-alpine
-    container_name: reeflab-influxdb
+    container_name: aquascope-influxdb
     restart: unless-stopped
     environment:
       DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_ADMIN_USER:-admin}
       DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_ADMIN_PASSWORD:-changeme123}
-      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG:-reeflab}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_ORG:-aquascope}
       DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_BUCKET:-reef_parameters}
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_ADMIN_TOKEN:-my-super-secret-admin-token}
     volumes:
@@ -45,13 +45,13 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: reeflab-backend
+    container_name: aquascope-backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-reeflab}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-reeflab}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-aquascope}:${POSTGRES_PASSWORD:-changeme}@postgres:5432/${POSTGRES_DB:-aquascope}
       INFLUXDB_URL: ${INFLUXDB_URL:-http://influxdb:8086}
       INFLUXDB_TOKEN: ${INFLUXDB_ADMIN_TOKEN:-my-super-secret-admin-token}
-      INFLUXDB_ORG: ${INFLUXDB_ORG:-reeflab}
+      INFLUXDB_ORG: ${INFLUXDB_ORG:-aquascope}
       INFLUXDB_BUCKET: ${INFLUXDB_BUCKET:-reef_parameters}
       SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-this-in-production}
       ALGORITHM: ${ALGORITHM:-HS256}
@@ -76,7 +76,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
-    container_name: reeflab-frontend
+    container_name: aquascope-frontend
     restart: unless-stopped
     ports:
       - "80:80"
@@ -89,8 +89,11 @@ volumes:
   postgres_data:
     driver: local
   influxdb_data:
-    driver: local
+    external: true
+    name: reeflab_influxdb_data
   influxdb_config:
-    driver: local
+    external: true
+    name: reeflab_influxdb_config
   backend_uploads:
-    driver: local
+    external: true
+    name: reeflab_backend_uploads

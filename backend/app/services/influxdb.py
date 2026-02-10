@@ -288,6 +288,77 @@ class InfluxDBService:
             print(f"Error deleting from InfluxDB: {e}")
             raise
 
+    def export_user_parameters(self, user_id: str) -> List[Dict[str, Any]]:
+        """
+        Export ALL parameter readings for a user (no time limit).
+
+        Used by admin export to include complete InfluxDB history.
+
+        Args:
+            user_id: UUID of the user
+
+        Returns:
+            List of dicts with keys: time, tank_id, parameter_type, value
+        """
+        query = f'''
+        from(bucket: "{self.bucket}")
+            |> range(start: 0)
+            |> filter(fn: (r) => r["_measurement"] == "reef_parameters")
+            |> filter(fn: (r) => r["user_id"] == "{user_id}")
+            |> filter(fn: (r) => r["_field"] == "value")
+        '''
+
+        try:
+            result = self.query_api.query(query=query)
+            records = []
+            for table in result:
+                for record in table.records:
+                    records.append({
+                        "time": record.get_time().isoformat(),
+                        "tank_id": record.values.get("tank_id"),
+                        "parameter_type": record.values.get("parameter_type"),
+                        "value": record.get_value()
+                    })
+            return records
+        except Exception as e:
+            print(f"Error exporting user parameters from InfluxDB: {e}")
+            return []
+
+    def export_tank_parameters(self, user_id: str, tank_id: str) -> List[Dict[str, Any]]:
+        """
+        Export ALL parameter readings for a specific tank (no time limit).
+
+        Args:
+            user_id: UUID of the user
+            tank_id: UUID of the tank
+
+        Returns:
+            List of dicts with keys: time, parameter_type, value
+        """
+        query = f'''
+        from(bucket: "{self.bucket}")
+            |> range(start: 0)
+            |> filter(fn: (r) => r["_measurement"] == "reef_parameters")
+            |> filter(fn: (r) => r["user_id"] == "{user_id}")
+            |> filter(fn: (r) => r["tank_id"] == "{tank_id}")
+            |> filter(fn: (r) => r["_field"] == "value")
+        '''
+
+        try:
+            result = self.query_api.query(query=query)
+            records = []
+            for table in result:
+                for record in table.records:
+                    records.append({
+                        "time": record.get_time().isoformat(),
+                        "parameter_type": record.values.get("parameter_type"),
+                        "value": record.get_value()
+                    })
+            return records
+        except Exception as e:
+            print(f"Error exporting tank parameters from InfluxDB: {e}")
+            return []
+
     def close(self):
         """Close InfluxDB client connection"""
         self.client.close()

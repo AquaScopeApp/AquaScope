@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "ReefLab",
-    "tagline": "Sistema de Gestión de Acuario de Arrecife"
+    "name": "AquaScope",
+    "tagline": "Una ventana a tus acuarios"
   },
   "navigation": {
     "dashboard": "Panel",
@@ -56,7 +56,7 @@
   "footer": {
     "createdBy": "Creado por",
     "withLove": "con",
-    "forCommunity": "para la comunidad de acuaristas de arrecife",
+    "forCommunity": "para la comunidad de acuaristas",
     "builtWith": "Construido con",
     "copyright": "Todos los derechos reservados",
     "links": "Enlaces",
@@ -64,11 +64,11 @@
     "reportIssues": "Reportar problemas",
     "documentation": "Documentación",
     "supportProject": "Apoyar el proyecto",
-    "helpKeepGoing": "Ayuda a mantener el desarrollo de ReefLab",
+    "helpKeepGoing": "Ayuda a mantener el desarrollo de AquaScope",
     "githubSponsors": "GitHub Sponsors",
     "buyMeCoffee": "Invítame un café",
     "openSource": "Código abierto bajo licencia MIT",
-    "reefDescription": "Sistema completo de gestión de acuarios de arrecife"
+    "reefDescription": "Sistema completo de gestión de acuarios"
   },
   "auth": {
     "signIn": "Iniciar sesión",
@@ -89,7 +89,7 @@
     "registrationFailed": "Error en el registro. Inténtalo de nuevo.",
     "passwordsDontMatch": "Las contraseñas no coinciden",
     "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
-    "reefManagement": "Gestión de Acuario de Arrecife",
+    "reefManagement": "Gestión de Acuario",
     "trackYourReef": "Controla los parámetros, mantenimiento y animales de tu acuario"
   },
   "layout": {

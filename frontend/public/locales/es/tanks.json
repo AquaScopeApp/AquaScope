@@ -3,18 +3,42 @@
   "addTank": "Agregar acuario",
   "editTank": "Editar acuario",
   "deleteTank": "Eliminar acuario",
+  "createTank": "Crear nuevo acuario",
+  "updateTank": "Actualizar acuario",
+  "saving": "Guardando...",
   "tankDetails": "Detalles del acuario",
   "quickActions": "Acciones rápidas",
   "statistics": "Estadísticas",
+  "notSet": "No definido",
+  "runningFor": "Funcionando desde hace {{age}}",
+  "recentEvents": "Eventos recientes",
+  "recentPhotos": "Fotos recientes",
+  "recentNotes": "Notas recientes",
+  "viewAll": "Ver todo",
+  "viewParameters": "Ver parámetros",
+  "latestIcpTest": "Última prueba ICP",
+  "overallScore": "Puntuación general",
+  "tankNotFound": "Acuario no encontrado",
+  "returnToList": "Volver a la lista de acuarios",
+  "detailsAndManagement": "Detalles y gestión del acuario",
+  "items": "elementos",
+  "score": "Puntuación",
   "fields": {
     "name": "Nombre del acuario",
     "description": "Descripción",
-    "displayVolume": "Volumen de visualización",
-    "sumpVolume": "Volumen de sumidero",
+    "displayVolume": "Acuario principal",
+    "sumpVolume": "Sumidero",
     "totalVolume": "Volumen total",
+    "totalSystem": "Sistema total",
     "setupDate": "Fecha de instalación",
     "image": "Imagen del acuario",
-    "liters": "L"
+    "liters": "L",
+    "waterType": "Tipo de agua",
+    "aquariumSubtype": "Subtipo de acuario",
+    "aquariumType": "Tipo de acuario",
+    "systemVolume": "Volumen del sistema (Litros)",
+    "selectSubtype": "-- Seleccionar subtipo --",
+    "setupDateHint": "¿Cuándo instaló este acuario?"
   },
   "stats": {
     "daysRunning_one": "{{count}} día funcionando",
@@ -43,7 +67,8 @@
     "addEvent": "Agregar evento",
     "manageEquipment": "Gestionar equipo",
     "manageLivestock": "Gestionar animales",
-    "changeImage": "Cambiar imagen"
+    "changeImage": "Cambiar imagen",
+    "addTest": "Agregar prueba"
   },
   "emptyState": {
     "noTanks": "Sin acuarios",
@@ -54,7 +79,15 @@
     "noPhotos": "Sin fotos",
     "noNotes": "Sin notas",
     "noIcpTests": "Sin pruebas ICP",
-    "noMaintenance": "Sin recordatorios de mantenimiento"
+    "noMaintenance": "Sin recordatorios de mantenimiento",
+    "goToEquipment": "Ve a la página de Equipo para agregar dispositivos",
+    "goToLivestock": "Ve a la página de Animales para agregar peces y corales",
+    "goToPhotos": "Ve a la página de Fotos para subir imágenes",
+    "goToNotes": "Ve a la página de Notas para agregar observaciones",
+    "goToIcpTests": "Ve a la página de Pruebas ICP para subir resultados",
+    "goToMaintenance": "Ve a la página de Mantenimiento para configurar recordatorios",
+    "startStory": "Comienza a construir la historia de tu acuario",
+    "addContent": "Agrega eventos, fotos y notas para seguir el progreso de tu acuario"
   },
   "myTanks": "Mis acuarios",
   "manageSystems": "Gestiona tus sistemas de acuarios de arrecife",
@@ -69,5 +102,42 @@
     "fileTypes": "PNG, JPG, GIF hasta 10 MB",
     "uploading": "Subiendo...",
     "changeImage": "Cambiar imagen"
+  },
+  "waterType": {
+    "freshwater": "Agua dulce",
+    "saltwater": "Agua salada",
+    "brackish": "Agua salobre"
+  },
+  "subtype": {
+    "sps_dominant": "Dominancia SPS",
+    "lps_dominant": "Dominancia LPS",
+    "soft_coral": "Coral blando",
+    "mixed_reef": "Arrecife mixto",
+    "fish_only": "Solo peces",
+    "fowlr": "FOWLR",
+    "amazonian": "Amazónico",
+    "tanganyika": "Tanganyika",
+    "malawi": "Malawi",
+    "planted": "Plantado",
+    "community": "Comunitario",
+    "discus": "Disco",
+    "shrimp": "Camarones",
+    "goldfish": "Peces dorados",
+    "axolotl": "Axolotl",
+    "mangrove": "Manglar",
+    "brackish_community": "Comunitario salobre"
+  },
+  "maintenance": {
+    "reminders": "Recordatorios de mantenimiento",
+    "overdue": "Atrasado:",
+    "next": "Siguiente:",
+    "everyDays": "Cada {{count}} días",
+    "active": "activos"
+  },
+  "parameterRanges": {
+    "title": "Rangos de parámetros",
+    "resetDefaults": "Restablecer",
+    "customizeRanges": "Personalizar rangos",
+    "rangesNote": "Los rangos de parámetros se establecerán según su tipo de acuario. Puede personalizarlos más tarde."
   }
 }

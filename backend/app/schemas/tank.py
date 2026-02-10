@@ -45,6 +45,8 @@ class TankEventResponse(TankEventBase):
 class TankBase(BaseModel):
     """Base tank schema with common fields"""
     name: str = Field(..., min_length=1, max_length=100)
+    water_type: str = Field("saltwater", description="freshwater, saltwater, or brackish")
+    aquarium_subtype: Optional[str] = Field(None, description="e.g. sps_dominant, amazonian, tanganyika")
     display_volume_liters: Optional[float] = Field(None, gt=0)
     sump_volume_liters: Optional[float] = Field(None, gt=0)
     description: Optional[str] = None
@@ -60,6 +62,8 @@ class TankCreate(TankBase):
 class TankUpdate(BaseModel):
     """Schema for updating a tank (all fields optional)"""
     name: Optional[str] = Field(None, min_length=1, max_length=100)
+    water_type: Optional[str] = Field(None, description="freshwater, saltwater, or brackish")
+    aquarium_subtype: Optional[str] = Field(None, description="e.g. sps_dominant, amazonian, tanganyika")
     display_volume_liters: Optional[float] = Field(None, gt=0)
     sump_volume_liters: Optional[float] = Field(None, gt=0)
     description: Optional[str] = None

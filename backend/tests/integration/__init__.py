@@ -1,1 +1,1 @@
-"""Integration tests for ReefLab API endpoints"""
+"""Integration tests for AquaScope API endpoints"""

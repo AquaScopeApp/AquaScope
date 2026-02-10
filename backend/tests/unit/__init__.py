@@ -1,1 +1,1 @@
-"""Unit tests for ReefLab"""
+"""Unit tests for AquaScope"""

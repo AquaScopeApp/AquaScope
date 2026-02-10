@@ -29,7 +29,7 @@ from app.core.config import settings
 from app.database import Base
 
 # Import all models so Alembic can detect them
-from app.models import User, Tank, Note, Photo, MaintenanceReminder, Livestock
+from app.models import User, Tank, Note, Photo, MaintenanceReminder, Livestock, Equipment, ICPTest, ParameterRange
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

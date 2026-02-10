@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   tanksApi,
   equipmentApi,
@@ -22,6 +23,7 @@ import TankTabs from '../components/tanks/TankTabs'
 export default function TankDetail() {
   const { tankId } = useParams<{ tankId: string }>()
   const navigate = useNavigate()
+  const { t } = useTranslation('tanks')
 
   const [tank, setTank] = useState<Tank | null>(null)
   const [events, setEvents] = useState<TankEvent[]>([])
@@ -124,9 +126,9 @@ export default function TankDetail() {
   if (!tank) {
     return (
       <div className="bg-white rounded-lg shadow p-12 text-center">
-        <h3 className="text-lg font-medium text-gray-900 mb-2">Tank not found</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">{t('tankNotFound')}</h3>
         <Link to="/tanks" className="text-ocean-600 hover:text-ocean-700">
-          Return to tank list
+          {t('returnToList')}
         </Link>
       </div>
     )
@@ -147,7 +149,7 @@ export default function TankDetail() {
         </button>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{tank.name}</h1>
-          <p className="text-gray-600 mt-1">Tank Details & Management</p>
+          <p className="text-gray-600 mt-1">{t('detailsAndManagement')}</p>
         </div>
       </div>
 

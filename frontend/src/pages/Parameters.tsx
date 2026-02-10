@@ -6,8 +6,9 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { tanksApi, parametersApi } from '../api/client'
-import { PARAMETER_ORDER, PARAMETER_RANGES, RATIO_ORDER } from '../config/parameterRanges'
+import { tanksApi, parametersApi, parameterRangesApi } from '../api/client'
+import { PARAMETER_RANGES, RATIO_ORDER, buildParameterRangesMap, getActiveParameterOrder } from '../config/parameterRanges'
+import type { ParameterRange } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'
 import ParameterForm from '../components/parameters/ParameterForm'
 import type { Tank, ParameterReading } from '../types'
@@ -19,6 +20,7 @@ export default function Parameters() {
   const [selectedTank, setSelectedTank] = useState<string | null>(null)
   const [parameters, setParameters] = useState<Record<string, ParameterReading[]>>({})
   const [ratios, setRatios] = useState<Record<string, ParameterReading[]>>({})
+  const [customRanges, setCustomRanges] = useState<Record<string, ParameterRange> | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | '365d' | 'all'>('365d')
   const [showForm, setShowForm] = useState(false)
@@ -39,6 +41,7 @@ export default function Parameters() {
 
   useEffect(() => {
     if (selectedTank) {
+      loadRanges()
       loadParameters()
     }
   }, [selectedTank, dateRange])
@@ -61,6 +64,25 @@ export default function Parameters() {
       setIsLoading(false)
     }
   }
+
+  const loadRanges = async () => {
+    if (!selectedTank) return
+    try {
+      const apiRanges = await parameterRangesApi.getForTank(selectedTank)
+      if (apiRanges.length > 0) {
+        setCustomRanges(buildParameterRangesMap(apiRanges))
+      } else {
+        setCustomRanges(null) // Fall back to defaults
+      }
+    } catch (error) {
+      console.error('Failed to load parameter ranges:', error)
+      setCustomRanges(null)
+    }
+  }
+
+  // Active ranges: custom from API or default
+  const activeRanges = customRanges || PARAMETER_RANGES
+  const activeParamOrder = getActiveParameterOrder(activeRanges)
 
   const loadParameters = async () => {
     if (!selectedTank) return
@@ -91,7 +113,7 @@ export default function Parameters() {
       const parameterData: Record<string, ParameterReading[]> = {}
 
       await Promise.all(
-        PARAMETER_ORDER.map(async (paramType) => {
+        activeParamOrder.map(async (paramType) => {
           try {
             const data = await parametersApi.query({
               tank_id: selectedTank,
@@ -403,6 +425,7 @@ export default function Parameters() {
           tankId={selectedTank}
           onSubmit={handleSubmitParameters}
           onSuccess={handleFormSuccess}
+          customRanges={customRanges || undefined}
         />
       )}
 
@@ -463,7 +486,7 @@ export default function Parameters() {
                     .filter(({ paramType }) => {
                       // Filter by search term
                       if (!tableFilter) return true
-                      const range = PARAMETER_RANGES[paramType]
+                      const range = activeRanges[paramType]
                       const paramName = range?.name || paramType
                       return paramName.toLowerCase().includes(tableFilter.toLowerCase()) ||
                              paramType.toLowerCase().includes(tableFilter.toLowerCase())
@@ -481,7 +504,7 @@ export default function Parameters() {
                   return (
                     <>
                       {paginatedRows.map(({ paramType, reading }) => {
-                    const range = PARAMETER_RANGES[paramType]
+                    const range = activeRanges[paramType]
                     const isEditing = editingReading?.paramType === paramType &&
                                      editingReading?.reading.timestamp === reading.timestamp
                     return (
@@ -664,12 +687,13 @@ export default function Parameters() {
       {/* Parameter Charts */}
       {!isLoading && selectedTank && (
         <div className="space-y-6">
-          {PARAMETER_ORDER.map((paramType) => (
+          {activeParamOrder.map((paramType) => (
             <ParameterChart
               key={paramType}
               parameterType={paramType}
               data={parameters[paramType] || []}
               height={300}
+              customRanges={customRanges || undefined}
             />
           ))}
 
@@ -683,6 +707,7 @@ export default function Parameters() {
                   parameterType={ratioType}
                   data={ratioData}
                   height={300}
+                  customRanges={customRanges || undefined}
                 />
               )
             }
@@ -694,7 +719,7 @@ export default function Parameters() {
       {/* No Data Message */}
       {!isLoading &&
         selectedTank &&
-        PARAMETER_ORDER.every((p) => (parameters[p] || []).length === 0) && (
+        activeParamOrder.every((p) => (parameters[p] || []).length === 0) && (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <div className="text-gray-400 mb-4">
               <svg

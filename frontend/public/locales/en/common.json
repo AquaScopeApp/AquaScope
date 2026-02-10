@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "ReefLab",
-    "tagline": "Reef Aquarium Management System"
+    "name": "AquaScope",
+    "tagline": "A window into your tanks"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -56,7 +56,7 @@
   "footer": {
     "createdBy": "Created by",
     "withLove": "with",
-    "forCommunity": "for the reef keeping community",
+    "forCommunity": "for the aquarium keeping community",
     "builtWith": "Built with",
     "copyright": "All rights reserved",
     "links": "Links",
@@ -64,11 +64,11 @@
     "reportIssues": "Report Issues",
     "documentation": "Documentation",
     "supportProject": "Support the Project",
-    "helpKeepGoing": "Help keep ReefLab development going",
+    "helpKeepGoing": "Help keep AquaScope development going",
     "githubSponsors": "GitHub Sponsors",
     "buyMeCoffee": "Buy me a coffee",
     "openSource": "Open source under MIT License",
-    "reefDescription": "Comprehensive reef aquarium management system"
+    "reefDescription": "Comprehensive aquarium management system"
   },
   "auth": {
     "signIn": "Sign in",
@@ -89,8 +89,8 @@
     "registrationFailed": "Registration failed. Please try again.",
     "passwordsDontMatch": "Passwords do not match",
     "passwordTooShort": "Password must be at least 8 characters long",
-    "reefManagement": "Reef Aquarium Management",
-    "trackYourReef": "Track your reef parameters, maintenance, and livestock"
+    "reefManagement": "Aquarium Management",
+    "trackYourReef": "Track your aquarium parameters, maintenance, and livestock"
   },
   "layout": {
     "admin": "Admin",

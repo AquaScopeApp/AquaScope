@@ -23,7 +23,7 @@ if settings.BACKEND_CORS_ORIGINS:
 async def root():
     """Health check endpoint"""
     return {
-        "message": "ReefLab API",
+        "message": "AquaScope API",
         "version": "0.1.0",
         "status": "healthy"
     }
@@ -36,10 +36,11 @@ async def health():
 
 
 # API routes
-from app.api.v1 import auth, tanks, parameters, notes, photos, maintenance, livestock, equipment, icp_tests, admin
+from app.api.v1 import auth, tanks, parameters, notes, photos, maintenance, livestock, equipment, icp_tests, admin, parameter_ranges
 
 app.include_router(auth.router, prefix=f"{settings.API_V1_STR}/auth", tags=["authentication"])
 app.include_router(tanks.router, prefix=f"{settings.API_V1_STR}/tanks", tags=["tanks"])
+app.include_router(parameter_ranges.router, prefix=f"{settings.API_V1_STR}/tanks", tags=["parameter-ranges"])
 app.include_router(parameters.router, prefix=f"{settings.API_V1_STR}/parameters", tags=["parameters"])
 app.include_router(notes.router, prefix=f"{settings.API_V1_STR}/notes", tags=["notes"])
 app.include_router(photos.router, prefix=f"{settings.API_V1_STR}/photos", tags=["photos"])

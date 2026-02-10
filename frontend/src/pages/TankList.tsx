@@ -3,6 +3,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { tanksApi } from '../api/client'
 import type { Tank } from '../types'
@@ -12,6 +13,7 @@ import TankForm from '../components/tanks/TankForm'
 export default function TankList() {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
+  const location = useLocation()
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -20,6 +22,14 @@ export default function TankList() {
   useEffect(() => {
     loadTanks()
   }, [])
+
+  // Auto-show form when navigated from Dashboard with showForm state
+  useEffect(() => {
+    if ((location.state as any)?.showForm) {
+      setShowForm(true)
+      window.history.replaceState({}, document.title)
+    }
+  }, [location.state])
 
   const loadTanks = async () => {
     setIsLoading(true)

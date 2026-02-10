@@ -17,7 +17,7 @@ export default function Footer(): JSX.Element {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Credits */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">ReefLab</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">AquaScope</h3>
             <p className="text-sm text-gray-600">
               {t('footer.reefDescription')}
             </p>

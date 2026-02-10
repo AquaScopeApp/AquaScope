@@ -2,9 +2,24 @@ import '@testing-library/jest-dom'
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 
+// Mock localStorage (Node 21+ built-in localStorage conflicts with jsdom)
+const localStorageMock = (() => {
+  let store: Record<string, string> = {}
+  return {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => { store[key] = String(value) },
+    removeItem: (key: string) => { delete store[key] },
+    clear: () => { store = {} },
+    get length() { return Object.keys(store).length },
+    key: (i: number) => Object.keys(store)[i] ?? null,
+  }
+})()
+Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true })
+
 // Cleanup after each test
 afterEach(() => {
   cleanup()
+  localStorageMock.clear()
 })
 
 // Mock window.matchMedia

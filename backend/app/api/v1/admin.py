@@ -3,22 +3,29 @@ Admin API Endpoints
 
 Admin-only endpoints for user management and system monitoring.
 """
-from typing import List
+import os
+from typing import List, Optional
 from uuid import UUID
+from pathlib import Path
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func, text
 
+from app.core.config import settings
+
 from app.database import get_db
 from app.models.user import User
-from app.models.tank import Tank
+from app.models.tank import Tank, TankEvent
 from app.models.note import Note
 from app.models.photo import Photo
 from app.models.livestock import Livestock
 from app.models.maintenance import MaintenanceReminder
 from app.models.equipment import Equipment
-from app.schemas.user import UserResponse, UserUpdate, SystemStats
+from app.models.icp_test import ICPTest
+from app.models.parameter_range import ParameterRange
+from app.schemas.user import UserResponse, UserUpdate, UserWithStats, SystemStats
 from app.api.deps import get_current_admin_user
 
 router = APIRouter()
@@ -269,13 +276,30 @@ def export_user_data(
     photos = db.query(Photo).filter(Photo.user_id == user_id).all()
     livestock = db.query(Livestock).filter(Livestock.user_id == user_id).all()
     reminders = db.query(MaintenanceReminder).filter(MaintenanceReminder.user_id == user_id).all()
+    equipment = db.query(Equipment).filter(Equipment.user_id == user_id).all()
+    icp_tests = db.query(ICPTest).filter(ICPTest.user_id == user_id).all()
+    events = db.query(TankEvent).filter(TankEvent.user_id == user_id).all()
+
+    # Get parameter ranges for all user tanks
+    tank_ids = [t.id for t in tanks]
+    param_ranges = db.query(ParameterRange).filter(ParameterRange.tank_id.in_(tank_ids)).all() if tank_ids else []
+
+    # Get InfluxDB parameter readings
+    try:
+        from app.services.influxdb import influxdb_service
+        parameters = influxdb_service.export_user_parameters(str(user_id))
+    except Exception:
+        parameters = []
 
     # Convert to dict
-    from app.schemas.tank import TankResponse
+    from app.schemas.tank import TankResponse, TankEventResponse
     from app.schemas.note import NoteResponse
     from app.schemas.photo import PhotoResponse
     from app.schemas.livestock import LivestockResponse
     from app.schemas.maintenance import MaintenanceReminderResponse
+    from app.schemas.equipment import EquipmentResponse
+    from app.schemas.icp_test import ICPTestResponse
+    from app.schemas.parameter_range import ParameterRangeResponse
 
     export_data = {
         "user": {
@@ -288,8 +312,13 @@ def export_user_data(
         "photos": [PhotoResponse.model_validate(p).model_dump(mode='json') for p in photos],
         "livestock": [LivestockResponse.model_validate(l).model_dump(mode='json') for l in livestock],
         "reminders": [MaintenanceReminderResponse.model_validate(r).model_dump(mode='json') for r in reminders],
+        "equipment": [EquipmentResponse.model_validate(e).model_dump(mode='json') for e in equipment],
+        "icp_tests": [ICPTestResponse.model_validate(t).model_dump(mode='json') for t in icp_tests],
+        "events": [TankEventResponse.model_validate(e).model_dump(mode='json') for e in events],
+        "parameter_ranges": [ParameterRangeResponse.model_validate(r).model_dump(mode='json') for r in param_ranges],
+        "parameters": parameters,
         "exported_at": datetime.utcnow().isoformat(),
-        "version": "1.0"
+        "version": "1.1"
     }
 
     return export_data
@@ -618,3 +647,393 @@ async def import_full_database(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Database import failed: {str(e)}"
         )
+
+
+@router.get("/users-with-stats", response_model=List[UserWithStats])
+def list_users_with_stats(
+    skip: int = 0,
+    limit: int = 100,
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """
+    List all users with per-user record counts and data size (admin only).
+
+    Returns users with tank_count, livestock_count, equipment_count,
+    photo_count, note_count, reminder_count, total_records, and data_size_mb.
+    """
+    users = db.query(User).offset(skip).limit(limit).all()
+
+    results = []
+    for u in users:
+        tank_count = db.query(func.count(Tank.id)).filter(Tank.user_id == u.id).scalar() or 0
+        livestock_count = db.query(func.count(Livestock.id)).filter(Livestock.user_id == u.id).scalar() or 0
+        equipment_count = db.query(func.count(Equipment.id)).filter(Equipment.user_id == u.id).scalar() or 0
+        photo_count = db.query(func.count(Photo.id)).filter(Photo.user_id == u.id).scalar() or 0
+        note_count = db.query(func.count(Note.id)).filter(Note.user_id == u.id).scalar() or 0
+        reminder_count = db.query(func.count(MaintenanceReminder.id)).filter(
+            MaintenanceReminder.user_id == u.id
+        ).scalar() or 0
+
+        total = tank_count + livestock_count + equipment_count + photo_count + note_count + reminder_count
+
+        # Calculate per-user data size in MB: PostgreSQL rows + files on disk
+        try:
+            # 1. PostgreSQL row sizes
+            size_query = text("""
+                SELECT (
+                    COALESCE((SELECT SUM(pg_column_size(t.*)) FROM tanks t WHERE t.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(n.*)) FROM notes n WHERE n.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(p.*)) FROM photos p WHERE p.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(l.*)) FROM livestock l WHERE l.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(m.*)) FROM maintenance_reminders m WHERE m.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(e.*)) FROM equipment e WHERE e.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(i.*)) FROM icp_tests i WHERE i.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(te.*)) FROM tank_events te WHERE te.user_id = :uid), 0) +
+                    COALESCE((SELECT SUM(pg_column_size(pr.*)) FROM parameter_ranges pr
+                        WHERE pr.tank_id IN (SELECT id FROM tanks WHERE user_id = :uid)), 0)
+                ) as size_bytes
+            """)
+            size_result = db.execute(size_query, {"uid": str(u.id)}).fetchone()
+            db_bytes = float(size_result[0]) if size_result else 0.0
+
+            # 2. Photo + thumbnail files on disk
+            user_upload_dir = Path(settings.UPLOAD_DIR) / str(u.id)
+            file_bytes = 0.0
+            if user_upload_dir.exists():
+                for f in user_upload_dir.rglob("*"):
+                    if f.is_file():
+                        file_bytes += f.stat().st_size
+
+            # 3. ICP test PDF files
+            icp_pdfs = db.query(ICPTest.pdf_path).filter(
+                ICPTest.user_id == u.id, ICPTest.pdf_path.isnot(None)
+            ).all()
+            for (pdf_path,) in icp_pdfs:
+                p = Path(pdf_path)
+                if not p.is_absolute():
+                    p = Path("/app") / p
+                if p.exists():
+                    file_bytes += p.stat().st_size
+
+            data_size_mb = round((db_bytes + file_bytes) / 1024.0 / 1024.0, 3)
+        except Exception:
+            data_size_mb = 0.0
+
+        results.append(UserWithStats(
+            id=u.id,
+            email=u.email,
+            username=u.username,
+            is_admin=u.is_admin,
+            created_at=u.created_at,
+            updated_at=u.updated_at,
+            tank_count=tank_count,
+            livestock_count=livestock_count,
+            equipment_count=equipment_count,
+            photo_count=photo_count,
+            note_count=note_count,
+            reminder_count=reminder_count,
+            total_records=total,
+            data_size_mb=data_size_mb,
+        ))
+
+    return results
+
+
+@router.get("/export/{user_id}/tank/{tank_id}")
+def export_tank_data(
+    user_id: UUID,
+    tank_id: UUID,
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Export all data for a specific tank as JSON (admin only).
+
+    Includes tank info, notes, photos, livestock, equipment,
+    maintenance reminders, events, ICP tests, parameter ranges,
+    and InfluxDB parameter readings.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == user_id).first()
+    if not tank:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tank not found")
+
+    from app.schemas.tank import TankResponse, TankEventResponse
+    from app.schemas.note import NoteResponse
+    from app.schemas.photo import PhotoResponse
+    from app.schemas.livestock import LivestockResponse
+    from app.schemas.maintenance import MaintenanceReminderResponse
+    from app.schemas.equipment import EquipmentResponse
+    from app.schemas.icp_test import ICPTestResponse
+    from app.schemas.parameter_range import ParameterRangeResponse
+
+    notes = db.query(Note).filter(Note.tank_id == tank_id).all()
+    photos = db.query(Photo).filter(Photo.tank_id == tank_id).all()
+    livestock = db.query(Livestock).filter(Livestock.tank_id == tank_id).all()
+    equipment = db.query(Equipment).filter(Equipment.tank_id == tank_id).all()
+    reminders = db.query(MaintenanceReminder).filter(MaintenanceReminder.tank_id == tank_id).all()
+    events = db.query(TankEvent).filter(TankEvent.tank_id == tank_id).all()
+    icp_tests = db.query(ICPTest).filter(ICPTest.tank_id == tank_id).all()
+    param_ranges = db.query(ParameterRange).filter(ParameterRange.tank_id == tank_id).all()
+
+    # Get InfluxDB parameter readings
+    try:
+        from app.services.influxdb import influxdb_service
+        parameters = influxdb_service.export_tank_parameters(str(user_id), str(tank_id))
+    except Exception:
+        parameters = []
+
+    return {
+        "user": {"email": user.email, "username": user.username},
+        "tank": TankResponse.model_validate(tank).model_dump(mode='json'),
+        "notes": [NoteResponse.model_validate(n).model_dump(mode='json') for n in notes],
+        "photos": [PhotoResponse.model_validate(p).model_dump(mode='json') for p in photos],
+        "livestock": [LivestockResponse.model_validate(l).model_dump(mode='json') for l in livestock],
+        "equipment": [EquipmentResponse.model_validate(e).model_dump(mode='json') for e in equipment],
+        "reminders": [MaintenanceReminderResponse.model_validate(r).model_dump(mode='json') for r in reminders],
+        "events": [TankEventResponse.model_validate(e).model_dump(mode='json') for e in events],
+        "icp_tests": [ICPTestResponse.model_validate(t).model_dump(mode='json') for t in icp_tests],
+        "parameter_ranges": [ParameterRangeResponse.model_validate(r).model_dump(mode='json') for r in param_ranges],
+        "parameters": parameters,
+        "exported_at": datetime.utcnow().isoformat(),
+        "version": "1.0"
+    }
+
+
+# ============================================================================
+# Storage Management Endpoints
+# ============================================================================
+
+def _get_all_known_paths(db: Session) -> set:
+    """Get all file paths referenced in the database."""
+    known = set()
+
+    # Photo file paths and thumbnails
+    photos = db.query(Photo.file_path, Photo.thumbnail_path).all()
+    for file_path, thumb_path in photos:
+        if file_path:
+            known.add(file_path)
+        if thumb_path:
+            known.add(thumb_path)
+
+    # Tank image URLs
+    tanks = db.query(Tank.image_url).filter(Tank.image_url.isnot(None)).all()
+    for (image_url,) in tanks:
+        if image_url:
+            known.add(image_url)
+
+    # ICP test PDFs
+    icp_tests = db.query(ICPTest.pdf_path).filter(ICPTest.pdf_path.isnot(None)).all()
+    for (pdf_path,) in icp_tests:
+        if pdf_path:
+            known.add(pdf_path)
+
+    return known
+
+
+def _categorize_file(rel_path: str) -> str:
+    """Categorize a file based on its path."""
+    if "tank-images" in rel_path:
+        return "tank-images"
+    if "icp_tests" in rel_path:
+        return "icp-tests"
+    if "thumb_" in rel_path:
+        return "thumbnails"
+    return "photos"
+
+
+@router.get("/storage/stats")
+def get_storage_stats(
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """Get storage usage statistics."""
+    upload_dir = Path(settings.UPLOAD_DIR)
+    if not upload_dir.exists():
+        return {
+            "total_size_bytes": 0,
+            "total_files": 0,
+            "categories": {},
+            "per_user": [],
+            "orphan_count": 0,
+            "orphan_size_bytes": 0,
+        }
+
+    known_paths = _get_all_known_paths(db)
+    categories: dict = {}
+    per_user: dict = {}
+    orphan_count = 0
+    orphan_size_bytes = 0
+    total_size = 0
+    total_files = 0
+
+    for root, _dirs, files in os.walk(upload_dir):
+        for fname in files:
+            full_path = Path(root) / fname
+            rel_path = "/" + str(full_path.relative_to(upload_dir.parent.parent))
+            size = full_path.stat().st_size
+            total_size += size
+            total_files += 1
+
+            category = _categorize_file(str(full_path.relative_to(upload_dir)))
+            if category not in categories:
+                categories[category] = {"count": 0, "size_bytes": 0}
+            categories[category]["count"] += 1
+            categories[category]["size_bytes"] += size
+
+            # Determine user
+            try:
+                rel_to_uploads = full_path.relative_to(upload_dir)
+                parts = rel_to_uploads.parts
+                if parts and parts[0] not in ("tank-images", "icp_tests"):
+                    user_id = parts[0]
+                    if user_id not in per_user:
+                        user = db.query(User).filter(User.id == user_id).first()
+                        per_user[user_id] = {
+                            "user_id": user_id,
+                            "email": user.email if user else "unknown",
+                            "count": 0,
+                            "size_bytes": 0,
+                        }
+                    per_user[user_id]["count"] += 1
+                    per_user[user_id]["size_bytes"] += size
+            except (ValueError, IndexError):
+                pass
+
+            # Check orphan status
+            is_known = any(
+                rel_path.endswith(p.lstrip("/")) or p.lstrip("/") in str(full_path)
+                for p in known_paths
+            )
+            if not is_known:
+                orphan_count += 1
+                orphan_size_bytes += size
+
+    return {
+        "total_size_bytes": total_size,
+        "total_files": total_files,
+        "categories": categories,
+        "per_user": list(per_user.values()),
+        "orphan_count": orphan_count,
+        "orphan_size_bytes": orphan_size_bytes,
+    }
+
+
+@router.get("/storage/files")
+def list_storage_files(
+    user_id: Optional[str] = Query(None),
+    category: Optional[str] = Query(None),
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """Browse uploaded files with optional filters."""
+    upload_dir = Path(settings.UPLOAD_DIR)
+    if not upload_dir.exists():
+        return []
+
+    known_paths = _get_all_known_paths(db)
+    files = []
+
+    for root, _dirs, filenames in os.walk(upload_dir):
+        for fname in filenames:
+            full_path = Path(root) / fname
+            rel_to_uploads = str(full_path.relative_to(upload_dir))
+            file_category = _categorize_file(rel_to_uploads)
+
+            # Apply category filter
+            if category and file_category != category:
+                continue
+
+            # Apply user_id filter
+            parts = Path(rel_to_uploads).parts
+            file_user_id = None
+            if parts and parts[0] not in ("tank-images", "icp_tests"):
+                file_user_id = parts[0]
+            if user_id and file_user_id != user_id:
+                continue
+
+            stat = full_path.stat()
+            rel_path = "/" + str(full_path.relative_to(upload_dir.parent.parent))
+
+            is_known = any(
+                rel_path.endswith(p.lstrip("/")) or p.lstrip("/") in str(full_path)
+                for p in known_paths
+            )
+
+            # Look up owner
+            owner_email = None
+            if file_user_id:
+                user = db.query(User).filter(User.id == file_user_id).first()
+                owner_email = user.email if user else None
+
+            # Look up linked tank
+            tank_name = None
+            if file_category == "tank-images":
+                tank = db.query(Tank).filter(Tank.image_url.contains(fname)).first()
+                if tank:
+                    tank_name = tank.name
+            elif file_user_id and len(parts) >= 2:
+                tank_id = parts[1] if parts[1] != fname else None
+                if tank_id:
+                    tank = db.query(Tank).filter(Tank.id == tank_id).first()
+                    if tank:
+                        tank_name = tank.name
+
+            files.append({
+                "name": fname,
+                "path": rel_to_uploads,
+                "size_bytes": stat.st_size,
+                "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                "category": file_category,
+                "user_id": file_user_id,
+                "owner_email": owner_email,
+                "tank_name": tank_name,
+                "is_orphan": not is_known,
+            })
+
+    files.sort(key=lambda f: f["modified"], reverse=True)
+    return files
+
+
+@router.delete("/storage/orphans")
+def delete_orphan_files(
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db)
+):
+    """Find and delete files on disk with no matching database record."""
+    upload_dir = Path(settings.UPLOAD_DIR)
+    if not upload_dir.exists():
+        return {"deleted": 0, "freed_bytes": 0}
+
+    known_paths = _get_all_known_paths(db)
+    deleted = 0
+    freed_bytes = 0
+
+    for root, _dirs, filenames in os.walk(upload_dir):
+        for fname in filenames:
+            full_path = Path(root) / fname
+            rel_path = "/" + str(full_path.relative_to(upload_dir.parent.parent))
+
+            is_known = any(
+                rel_path.endswith(p.lstrip("/")) or p.lstrip("/") in str(full_path)
+                for p in known_paths
+            )
+
+            if not is_known:
+                size = full_path.stat().st_size
+                full_path.unlink()
+                deleted += 1
+                freed_bytes += size
+
+    # Clean up empty directories
+    for root, dirs, files in os.walk(upload_dir, topdown=False):
+        for d in dirs:
+            dir_path = Path(root) / d
+            if not any(dir_path.iterdir()):
+                dir_path.rmdir()
+
+    return {"deleted": deleted, "freed_bytes": freed_bytes}

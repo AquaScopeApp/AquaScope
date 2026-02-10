@@ -38,6 +38,10 @@ class ParameterSubmission(BaseModel):
     salinity: Optional[float] = Field(None, ge=0, description="Salinity in ppt or SG")
     temperature: Optional[float] = Field(None, ge=-10, le=50, description="Temperature in °C")
     ph: Optional[float] = Field(None, ge=0, le=14, description="pH level")
+    # Freshwater parameters
+    gh: Optional[float] = Field(None, ge=0, description="General Hardness in dGH")
+    ammonia: Optional[float] = Field(None, ge=0, description="Ammonia (NH3/NH4) in ppm")
+    nitrite: Optional[float] = Field(None, ge=0, description="Nitrite (NO2) in ppm")
 
 
 class ParameterQuery(BaseModel):

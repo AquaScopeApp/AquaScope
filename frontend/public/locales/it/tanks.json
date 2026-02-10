@@ -3,18 +3,42 @@
   "addTank": "Aggiungi vasca",
   "editTank": "Modifica vasca",
   "deleteTank": "Elimina vasca",
+  "createTank": "Crea nuova vasca",
+  "updateTank": "Aggiorna vasca",
+  "saving": "Salvataggio...",
   "tankDetails": "Dettagli vasca",
   "quickActions": "Azioni rapide",
   "statistics": "Statistiche",
+  "notSet": "Non impostato",
+  "runningFor": "Attivo da {{age}}",
+  "recentEvents": "Eventi recenti",
+  "recentPhotos": "Foto recenti",
+  "recentNotes": "Note recenti",
+  "viewAll": "Vedi tutto",
+  "viewParameters": "Vedi parametri",
+  "latestIcpTest": "Ultimo test ICP",
+  "overallScore": "Punteggio complessivo",
+  "tankNotFound": "Vasca non trovata",
+  "returnToList": "Torna alla lista delle vasche",
+  "detailsAndManagement": "Dettagli e gestione vasca",
+  "items": "elementi",
+  "score": "Punteggio",
   "fields": {
     "name": "Nome vasca",
     "description": "Descrizione",
-    "displayVolume": "Volume vasca principale",
-    "sumpVolume": "Volume sump",
+    "displayVolume": "Vasca principale",
+    "sumpVolume": "Sump",
     "totalVolume": "Volume totale",
+    "totalSystem": "Sistema totale",
     "setupDate": "Data di avvio",
     "image": "Immagine vasca",
-    "liters": "L"
+    "liters": "L",
+    "waterType": "Tipo di acqua",
+    "aquariumSubtype": "Sottotipo di acquario",
+    "aquariumType": "Tipo di acquario",
+    "systemVolume": "Volume del sistema (Litri)",
+    "selectSubtype": "-- Seleziona sottotipo --",
+    "setupDateHint": "Quando hai avviato questa vasca?"
   },
   "stats": {
     "daysRunning_one": "{{count}} giorno attivo",
@@ -43,7 +67,8 @@
     "addEvent": "Aggiungi evento",
     "manageEquipment": "Gestisci attrezzatura",
     "manageLivestock": "Gestisci animali",
-    "changeImage": "Cambia immagine"
+    "changeImage": "Cambia immagine",
+    "addTest": "Aggiungi test"
   },
   "emptyState": {
     "noTanks": "Nessuna vasca",
@@ -54,7 +79,15 @@
     "noPhotos": "Nessuna foto",
     "noNotes": "Nessuna nota",
     "noIcpTests": "Nessun test ICP",
-    "noMaintenance": "Nessun promemoria di manutenzione"
+    "noMaintenance": "Nessun promemoria di manutenzione",
+    "goToEquipment": "Vai alla pagina Attrezzatura per aggiungere dispositivi",
+    "goToLivestock": "Vai alla pagina Animali per aggiungere pesci e coralli",
+    "goToPhotos": "Vai alla pagina Foto per caricare immagini",
+    "goToNotes": "Vai alla pagina Note per aggiungere osservazioni",
+    "goToIcpTests": "Vai alla pagina Test ICP per caricare risultati",
+    "goToMaintenance": "Vai alla pagina Manutenzione per configurare promemoria",
+    "startStory": "Inizia a costruire la storia della tua vasca",
+    "addContent": "Aggiungi eventi, foto e note per monitorare i progressi del tuo acquario"
   },
   "myTanks": "Le mie vasche",
   "manageSystems": "Gestisci i tuoi sistemi di acquari reef",
@@ -69,5 +102,42 @@
     "fileTypes": "PNG, JPG, GIF fino a 10 MB",
     "uploading": "Caricamento...",
     "changeImage": "Cambia immagine"
+  },
+  "waterType": {
+    "freshwater": "Acqua dolce",
+    "saltwater": "Acqua salata",
+    "brackish": "Acqua salmastra"
+  },
+  "subtype": {
+    "sps_dominant": "Dominanza SPS",
+    "lps_dominant": "Dominanza LPS",
+    "soft_coral": "Coralli molli",
+    "mixed_reef": "Barriera mista",
+    "fish_only": "Solo pesci",
+    "fowlr": "FOWLR",
+    "amazonian": "Amazzonico",
+    "tanganyika": "Tanganyika",
+    "malawi": "Malawi",
+    "planted": "Piantumato",
+    "community": "Comunitario",
+    "discus": "Discus",
+    "shrimp": "Gamberetti",
+    "goldfish": "Pesci rossi",
+    "axolotl": "Axolotl",
+    "mangrove": "Mangrovie",
+    "brackish_community": "Comunitario salmastro"
+  },
+  "maintenance": {
+    "reminders": "Promemoria di manutenzione",
+    "overdue": "In ritardo:",
+    "next": "Prossimo:",
+    "everyDays": "Ogni {{count}} giorni",
+    "active": "attivi"
+  },
+  "parameterRanges": {
+    "title": "Intervalli parametri",
+    "resetDefaults": "Ripristina predefiniti",
+    "customizeRanges": "Personalizza intervalli",
+    "rangesNote": "Gli intervalli dei parametri verranno impostati in base al tipo di acquario. È possibile personalizzarli in seguito."
   }
 }

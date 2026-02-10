@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { TankEvent, Equipment, Livestock, Photo, Note, MaintenanceReminder, ICPTestSummary } from '../../types'
 import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
@@ -46,6 +47,8 @@ export default function TankTabs({
   onDeleteEvent,
   onRefresh,
 }: TankTabsProps) {
+  const { t } = useTranslation('tanks')
+  const { t: tc } = useTranslation('common')
   const [activeTab, setActiveTab] = useState<TabId>('overview')
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({})
   const [livestockThumbnails, setLivestockThumbnails] = useState<Record<string, string>>({})
@@ -99,14 +102,14 @@ export default function TankTabs({
   }, [livestock])
 
   const tabs: Tab[] = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'events', label: 'Events', icon: '📅', count: events.length },
-    { id: 'equipment', label: 'Equipment', icon: '⚙️', count: equipment.length },
-    { id: 'livestock', label: 'Livestock', icon: '🐟', count: livestock.length },
-    { id: 'photos', label: 'Photos', icon: '📷', count: photos.length },
-    { id: 'notes', label: 'Notes', icon: '📝', count: notes.length },
-    { id: 'icp', label: 'ICP Tests', icon: '🔬', count: icpTests.length },
-    { id: 'maintenance', label: 'Maintenance', icon: '🔧', count: maintenance.filter(m => m.is_active).length },
+    { id: 'overview', label: t('tabs.overview'), icon: '📊' },
+    { id: 'events', label: t('tabs.events'), icon: '📅', count: events.length },
+    { id: 'equipment', label: t('tabs.equipment'), icon: '⚙️', count: equipment.length },
+    { id: 'livestock', label: t('tabs.livestock'), icon: '🐟', count: livestock.length },
+    { id: 'photos', label: t('tabs.photos'), icon: '📷', count: photos.length },
+    { id: 'notes', label: t('tabs.notes'), icon: '📝', count: notes.length },
+    { id: 'icp', label: t('tabs.icpTests'), icon: '🔬', count: icpTests.length },
+    { id: 'maintenance', label: t('tabs.maintenance'), icon: '🔧', count: maintenance.filter(m => m.is_active).length },
   ]
 
   const renderTabContent = () => {
@@ -138,15 +141,15 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Equipment</h3>
-              <span className="text-sm text-gray-500">{equipment.length} items</span>
+              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.equipment')}</h3>
+              <span className="text-sm text-gray-500">{equipment.length} {t('items')}</span>
             </div>
             {equipment.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">⚙️</div>
-                <p className="text-gray-600">No equipment added yet</p>
+                <p className="text-gray-600">{t('emptyState.noEquipment')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the Equipment page to add devices
+                  {t('emptyState.goToEquipment')}
                 </p>
               </div>
             ) : (
@@ -181,15 +184,15 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Livestock</h3>
-              <span className="text-sm text-gray-500">{livestock.length} items</span>
+              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.livestock')}</h3>
+              <span className="text-sm text-gray-500">{livestock.length} {t('items')}</span>
             </div>
             {livestock.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🐟</div>
-                <p className="text-gray-600">No livestock added yet</p>
+                <p className="text-gray-600">{t('emptyState.noLivestock')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the Livestock page to add fish and corals
+                  {t('emptyState.goToLivestock')}
                 </p>
               </div>
             ) : (
@@ -255,15 +258,15 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Photos</h3>
-              <span className="text-sm text-gray-500">{photos.length} photos</span>
+              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.photos')}</h3>
+              <span className="text-sm text-gray-500">{photos.length} {t('stats.photoCount').toLowerCase()}</span>
             </div>
             {photos.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">📷</div>
-                <p className="text-gray-600">No photos yet</p>
+                <p className="text-gray-600">{t('emptyState.noPhotos')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the Photos page to upload images
+                  {t('emptyState.goToPhotos')}
                 </p>
               </div>
             ) : (
@@ -289,7 +292,7 @@ export default function TankTabs({
                         )}
                       </>
                     ) : (
-                      <div className="text-ocean-400 text-sm">Loading...</div>
+                      <div className="text-ocean-400 text-sm">{tc('common.loading')}</div>
                     )}
                   </div>
                 ))}
@@ -302,15 +305,15 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Notes</h3>
-              <span className="text-sm text-gray-500">{notes.length} notes</span>
+              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.notes')}</h3>
+              <span className="text-sm text-gray-500">{notes.length} {t('stats.noteCount').toLowerCase()}</span>
             </div>
             {notes.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">📝</div>
-                <p className="text-gray-600">No notes yet</p>
+                <p className="text-gray-600">{t('emptyState.noNotes')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the Notes page to add observations
+                  {t('emptyState.goToNotes')}
                 </p>
               </div>
             ) : (
@@ -335,15 +338,15 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">ICP Tests</h3>
-              <span className="text-sm text-gray-500">{icpTests.length} tests</span>
+              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.icpTests')}</h3>
+              <span className="text-sm text-gray-500">{icpTests.length} {t('stats.icpTestCount').toLowerCase()}</span>
             </div>
             {icpTests.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🔬</div>
-                <p className="text-gray-600">No ICP tests yet</p>
+                <p className="text-gray-600">{t('emptyState.noIcpTests')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the ICP Tests page to upload results
+                  {t('emptyState.goToIcpTests')}
                 </p>
               </div>
             ) : (
@@ -364,7 +367,7 @@ export default function TankTabs({
                         <div className="text-2xl font-bold text-ocean-600">
                           {test.score_overall}
                         </div>
-                        <div className="text-xs text-gray-600">Score</div>
+                        <div className="text-xs text-gray-600">{t('score')}</div>
                       </div>
                     )}
                   </div>
@@ -378,17 +381,17 @@ export default function TankTabs({
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Maintenance Reminders</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{t('maintenance.reminders')}</h3>
               <span className="text-sm text-gray-500">
-                {maintenance.filter(m => m.is_active).length} active
+                {maintenance.filter(m => m.is_active).length} {t('maintenance.active')}
               </span>
             </div>
             {maintenance.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🔧</div>
-                <p className="text-gray-600">No maintenance reminders yet</p>
+                <p className="text-gray-600">{t('emptyState.noMaintenance')}</p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Go to the Maintenance page to set up reminders
+                  {t('emptyState.goToMaintenance')}
                 </p>
               </div>
             ) : (
@@ -408,12 +411,12 @@ export default function TankTabs({
                         <div className="flex-1">
                           <div className="font-medium text-gray-900">{reminder.title}</div>
                           <div className="text-sm text-gray-600 mt-1">
-                            Every {reminder.frequency_days} days
+                            {t('maintenance.everyDays', { count: reminder.frequency_days })}
                           </div>
                           <div className={`text-sm mt-2 ${
                             isOverdue ? 'text-red-600 font-medium' : 'text-gray-600'
                           }`}>
-                            {isOverdue ? 'Overdue: ' : 'Next: '}
+                            {isOverdue ? t('maintenance.overdue') + ' ' : t('maintenance.next') + ' '}
                             {new Date(reminder.next_due).toLocaleDateString()}
                           </div>
                         </div>

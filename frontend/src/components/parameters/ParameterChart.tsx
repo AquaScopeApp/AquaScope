@@ -19,20 +19,24 @@ import {
 } from 'recharts'
 import { format } from 'date-fns'
 import { PARAMETER_RANGES, getParameterStatus, getStatusColor } from '../../config/parameterRanges'
+import type { ParameterRange } from '../../config/parameterRanges'
 import type { ParameterReading } from '../../types'
 
 interface ParameterChartProps {
   parameterType: string
   data: ParameterReading[]
   height?: number
+  customRanges?: Record<string, ParameterRange>
 }
 
 export default function ParameterChart({
   parameterType,
   data,
   height = 300,
+  customRanges,
 }: ParameterChartProps) {
-  const range = PARAMETER_RANGES[parameterType]
+  const ranges = customRanges || PARAMETER_RANGES
+  const range = ranges[parameterType]
 
   // Transform data for recharts
   const chartData = useMemo(() => {
@@ -48,7 +52,7 @@ export default function ParameterChart({
   // Get current value and status
   const latestReading = chartData[chartData.length - 1]
   const status = latestReading
-    ? getParameterStatus(parameterType, latestReading.value)
+    ? getParameterStatus(parameterType, latestReading.value, ranges)
     : 'optimal'
 
   if (!range) {

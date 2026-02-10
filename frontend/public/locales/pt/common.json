@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "ReefLab",
-    "tagline": "Sistema de Gestão de Aquário de Recife"
+    "name": "AquaScope",
+    "tagline": "Uma janela para os seus aquários"
   },
   "navigation": {
     "dashboard": "Painel",
@@ -56,7 +56,7 @@
   "footer": {
     "createdBy": "Criado por",
     "withLove": "com",
-    "forCommunity": "para a comunidade de aquarismo marinho",
+    "forCommunity": "para a comunidade de aquarismo",
     "builtWith": "Desenvolvido com",
     "copyright": "Todos os direitos reservados",
     "links": "Links",
@@ -64,11 +64,11 @@
     "reportIssues": "Reportar problemas",
     "documentation": "Documentação",
     "supportProject": "Apoie o projeto",
-    "helpKeepGoing": "Ajude a manter o desenvolvimento do ReefLab",
+    "helpKeepGoing": "Ajude a manter o desenvolvimento do AquaScope",
     "githubSponsors": "GitHub Sponsors",
     "buyMeCoffee": "Pague-me um café",
     "openSource": "Código aberto sob licença MIT",
-    "reefDescription": "Sistema completo de gestão de aquários de recife"
+    "reefDescription": "Sistema completo de gestão de aquários"
   },
   "auth": {
     "signIn": "Entrar",
@@ -89,7 +89,7 @@
     "registrationFailed": "Falha no registro. Tente novamente.",
     "passwordsDontMatch": "As senhas não coincidem",
     "passwordTooShort": "A senha deve ter pelo menos 8 caracteres",
-    "reefManagement": "Gestão de Aquário de Recife",
+    "reefManagement": "Gestão de Aquário",
     "trackYourReef": "Acompanhe os parâmetros, manutenção e animais do seu aquário"
   },
   "layout": {

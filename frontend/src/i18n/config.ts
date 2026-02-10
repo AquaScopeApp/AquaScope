@@ -1,7 +1,7 @@
 /**
  * i18n Configuration
  *
- * Multi-language support for ReefLab using i18next
+ * Multi-language support for AquaScope using i18next
  */
 
 import i18n from 'i18next'
@@ -31,7 +31,7 @@ i18n
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
-      lookupLocalStorage: 'reeflab_language',
+      lookupLocalStorage: 'aquascope_language',
     },
 
     ns: ['common', 'tanks', 'dashboard', 'parameters', 'maintenance', 'livestock', 'icptests', 'notes', 'photos', 'equipment'],

@@ -1,5 +1,5 @@
 /**
- * TypeScript Type Definitions for ReefLab
+ * TypeScript Type Definitions for AquaScope
  *
  * These types match the backend Pydantic schemas for type-safe API communication.
  */
@@ -35,6 +35,17 @@ export interface SystemStats {
   total_equipment: number
   database_size_mb: number | null
   active_users_last_30_days: number
+}
+
+export interface UserWithStats extends User {
+  tank_count: number
+  livestock_count: number
+  equipment_count: number
+  photo_count: number
+  note_count: number
+  reminder_count: number
+  total_records: number
+  data_size_mb: number
 }
 
 export interface UserDataSummary {
@@ -99,6 +110,8 @@ export interface Tank {
   id: string
   user_id: string
   name: string
+  water_type: string           // 'freshwater' | 'saltwater' | 'brackish'
+  aquarium_subtype: string | null
   display_volume_liters: number | null
   sump_volume_liters: number | null
   total_volume_liters: number
@@ -112,6 +125,8 @@ export interface Tank {
 
 export interface TankCreate {
   name: string
+  water_type?: string
+  aquarium_subtype?: string | null
   display_volume_liters?: number | null
   sump_volume_liters?: number | null
   description?: string | null
@@ -121,6 +136,8 @@ export interface TankCreate {
 
 export interface TankUpdate {
   name?: string
+  water_type?: string
+  aquarium_subtype?: string | null
   display_volume_liters?: number | null
   sump_volume_liters?: number | null
   description?: string | null
@@ -143,6 +160,30 @@ export interface ParameterSubmission {
   salinity?: number | null
   temperature?: number | null
   ph?: number | null
+  // Freshwater parameters
+  gh?: number | null
+  ammonia?: number | null
+  nitrite?: number | null
+}
+
+// ============================================================================
+// Parameter Range Types
+// ============================================================================
+
+export interface ParameterRangeConfig {
+  parameter_type: string
+  name: string
+  unit: string
+  min_value: number
+  max_value: number
+  ideal_value: number | null
+}
+
+export interface ParameterRangeResponse extends ParameterRangeConfig {
+  id: string
+  tank_id: string
+  created_at: string
+  updated_at: string
 }
 
 export interface ParameterReading {
@@ -566,4 +607,34 @@ export interface DashboardStats {
   overdueReminders: number
   recentPhotos: number
   latestParameters?: LatestParameters
+}
+
+// ============================================================================
+// Storage Types
+// ============================================================================
+
+export interface StorageStats {
+  total_size_bytes: number
+  total_files: number
+  categories: Record<string, { count: number; size_bytes: number }>
+  per_user: Array<{
+    user_id: string
+    email: string
+    count: number
+    size_bytes: number
+  }>
+  orphan_count: number
+  orphan_size_bytes: number
+}
+
+export interface StorageFile {
+  name: string
+  path: string
+  size_bytes: number
+  modified: string
+  category: string
+  user_id: string | null
+  owner_email: string | null
+  tank_name: string | null
+  is_orphan: boolean
 }

@@ -3,18 +3,42 @@
   "addTank": "Add Tank",
   "editTank": "Edit Tank",
   "deleteTank": "Delete Tank",
+  "createTank": "Create New Tank",
+  "updateTank": "Update Tank",
+  "saving": "Saving...",
   "tankDetails": "Tank Details",
   "quickActions": "Quick Actions",
   "statistics": "Statistics",
+  "notSet": "Not set",
+  "runningFor": "Running for {{age}}",
+  "recentEvents": "Recent Events",
+  "recentPhotos": "Recent Photos",
+  "recentNotes": "Recent Notes",
+  "viewAll": "View All",
+  "viewParameters": "View Parameters",
+  "latestIcpTest": "Latest ICP Test",
+  "overallScore": "Overall Score",
+  "tankNotFound": "Tank not found",
+  "returnToList": "Return to tank list",
+  "detailsAndManagement": "Tank Details & Management",
+  "items": "items",
+  "score": "Score",
   "fields": {
     "name": "Tank Name",
     "description": "Description",
-    "displayVolume": "Display Volume",
-    "sumpVolume": "Sump Volume",
+    "displayVolume": "Display Tank",
+    "sumpVolume": "Sump",
     "totalVolume": "Total Volume",
+    "totalSystem": "Total System",
     "setupDate": "Setup Date",
     "image": "Tank Image",
-    "liters": "L"
+    "liters": "L",
+    "waterType": "Water Type",
+    "aquariumSubtype": "Aquarium Subtype",
+    "aquariumType": "Aquarium Type",
+    "systemVolume": "System Volume (Liters)",
+    "selectSubtype": "-- Select subtype --",
+    "setupDateHint": "When did you first set up this tank?"
   },
   "stats": {
     "daysRunning_one": "{{count}} day running",
@@ -43,7 +67,8 @@
     "addEvent": "Add Event",
     "manageEquipment": "Manage Equipment",
     "manageLivestock": "Manage Livestock",
-    "changeImage": "Change Image"
+    "changeImage": "Change Image",
+    "addTest": "Add Test"
   },
   "emptyState": {
     "noTanks": "No tanks yet",
@@ -54,7 +79,15 @@
     "noPhotos": "No photos yet",
     "noNotes": "No notes yet",
     "noIcpTests": "No ICP tests yet",
-    "noMaintenance": "No maintenance reminders yet"
+    "noMaintenance": "No maintenance reminders yet",
+    "goToEquipment": "Go to the Equipment page to add devices",
+    "goToLivestock": "Go to the Livestock page to add fish and corals",
+    "goToPhotos": "Go to the Photos page to upload images",
+    "goToNotes": "Go to the Notes page to add observations",
+    "goToIcpTests": "Go to the ICP Tests page to upload results",
+    "goToMaintenance": "Go to the Maintenance page to set up reminders",
+    "startStory": "Start building your tank's story",
+    "addContent": "Add events, photos, and notes to track your aquarium's progress"
   },
   "myTanks": "My Tanks",
   "manageSystems": "Manage your reef aquarium systems",
@@ -69,5 +102,42 @@
     "fileTypes": "PNG, JPG, GIF up to 10MB",
     "uploading": "Uploading...",
     "changeImage": "Change image"
+  },
+  "waterType": {
+    "freshwater": "Freshwater",
+    "saltwater": "Saltwater",
+    "brackish": "Brackish"
+  },
+  "subtype": {
+    "sps_dominant": "SPS Dominant",
+    "lps_dominant": "LPS Dominant",
+    "soft_coral": "Soft Coral",
+    "mixed_reef": "Mixed Reef",
+    "fish_only": "Fish Only",
+    "fowlr": "FOWLR",
+    "amazonian": "Amazonian",
+    "tanganyika": "Tanganyika",
+    "malawi": "Malawi",
+    "planted": "Planted",
+    "community": "Community",
+    "discus": "Discus",
+    "shrimp": "Shrimp",
+    "goldfish": "Goldfish",
+    "axolotl": "Axolotl",
+    "mangrove": "Mangrove",
+    "brackish_community": "Brackish Community"
+  },
+  "maintenance": {
+    "reminders": "Maintenance Reminders",
+    "overdue": "Overdue:",
+    "next": "Next:",
+    "everyDays": "Every {{count}} days",
+    "active": "active"
+  },
+  "parameterRanges": {
+    "title": "Parameter Ranges",
+    "resetDefaults": "Reset to Defaults",
+    "customizeRanges": "Customize Ranges",
+    "rangesNote": "Parameter ranges will be set based on your aquarium type. You can customize them later."
   }
 }

@@ -72,7 +72,8 @@ async def submit_parameters(
     parameters = {}
     param_fields = [
         "calcium", "magnesium", "alkalinity_kh", "nitrate",
-        "phosphate", "salinity", "temperature", "ph"
+        "phosphate", "salinity", "temperature", "ph",
+        "gh", "ammonia", "nitrite"
     ]
 
     for field in param_fields:

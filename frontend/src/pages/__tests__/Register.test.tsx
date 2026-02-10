@@ -15,6 +15,32 @@ vi.mock('../../api/client', () => ({
   },
 }))
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'auth.createAccount': 'Create account',
+        'auth.creatingAccount': 'Creating account...',
+        'auth.emailAddress': 'Email address',
+        'auth.fullName': 'Full Name',
+        'auth.password': 'Password',
+        'auth.confirmPassword': 'Confirm Password',
+        'auth.passwordMinLength': 'Must be at least 8 characters',
+        'auth.alreadyHaveAccount': 'Already have an account?',
+        'auth.signInHere': 'Sign in here',
+        'auth.reefManagement': 'Aquarium Management',
+        'auth.registrationFailed': 'Registration failed',
+        'auth.passwordsDontMatch': 'Passwords do not match',
+        'auth.passwordTooShort': 'Password must be at least 8 characters long',
+      }
+      return translations[key] || key
+    },
+    i18n: { changeLanguage: vi.fn(), language: 'en' },
+  }),
+  Trans: ({ children }: any) => children,
+  initReactI18next: { type: '3rdParty', init: () => {} },
+}))
+
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
@@ -31,7 +57,7 @@ describe('Register Component', () => {
   it('renders registration form', () => {
     renderWithProviders(<Register />)
 
-    expect(screen.getByText(/create your account/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/full name/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/^password$/i)).toBeInTheDocument()
@@ -86,26 +112,21 @@ describe('Register Component', () => {
   })
 
   it('submits registration form with valid data', async () => {
-    const mockRegister = vi.mocked(apiClient.authApi.register)
-    const mockLogin = vi.mocked(apiClient.authApi.login)
-
-    mockRegister.mockResolvedValue({
+    const mockUser = {
       id: '123',
       email: 'test@example.com',
       username: 'testuser',
+      is_admin: false,
       created_at: new Date().toISOString(),
-    })
+      updated_at: new Date().toISOString(),
+    }
 
-    mockLogin.mockResolvedValue({
+    vi.mocked(apiClient.authApi.register).mockResolvedValue({
       access_token: 'mock-token',
       token_type: 'bearer',
-      user: {
-        id: '123',
-        email: 'test@example.com',
-        username: 'testuser',
-        created_at: new Date().toISOString(),
-      },
     })
+
+    vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 
     renderWithProviders(<Register />)
     const user = userEvent.setup()
@@ -123,7 +144,7 @@ describe('Register Component', () => {
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(mockRegister).toHaveBeenCalledWith({
+      expect(apiClient.authApi.register).toHaveBeenCalledWith({
         email: 'test@example.com',
         username: 'testuser',
         password: 'password123',

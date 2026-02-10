@@ -1,20 +1,20 @@
 <p align="center">
-  <img src="docs/images/banner.svg" alt="ReefLab - Reef Aquarium Management" width="900" />
+  <img src="docs/images/banner.svg" alt="AquaScope - Aquarium Management" width="900" />
 </p>
 
-<h1 align="center">ReefLab</h1>
+<h1 align="center">AquaScope</h1>
 
 <p align="center">
-  <strong>A comprehensive web application for managing reef aquarium parameters, maintenance schedules, and livestock tracking.</strong>
+  <strong>A comprehensive web application for managing aquarium parameters, maintenance schedules, and livestock tracking.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/eprifti/reeflab/actions/workflows/ci.yml"><img src="https://github.com/eprifti/reeflab/actions/workflows/ci.yml/badge.svg" alt="CI Tests" /></a>
+  <a href="https://github.com/eprifti/AquaScope/actions/workflows/ci.yml"><img src="https://github.com/eprifti/AquaScope/actions/workflows/ci.yml/badge.svg" alt="CI Tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
-  <a href="https://github.com/eprifti/reeflab/releases"><img src="https://img.shields.io/github/v/release/eprifti/reeflab?color=success" alt="Release" /></a>
-  <a href="https://github.com/eprifti/reeflab/issues"><img src="https://img.shields.io/github/issues/eprifti/reeflab?color=yellow" alt="Issues" /></a>
-  <a href="https://github.com/eprifti/reeflab/pulls"><img src="https://img.shields.io/github/issues-pr/eprifti/reeflab?color=brightgreen" alt="Pull Requests" /></a>
-  <a href="https://github.com/eprifti/reeflab/stargazers"><img src="https://img.shields.io/github/stars/eprifti/reeflab?style=social" alt="Stars" /></a>
+  <a href="https://github.com/eprifti/AquaScope/releases"><img src="https://img.shields.io/github/v/release/eprifti/AquaScope?color=success" alt="Release" /></a>
+  <a href="https://github.com/eprifti/AquaScope/issues"><img src="https://img.shields.io/github/issues/eprifti/AquaScope?color=yellow" alt="Issues" /></a>
+  <a href="https://github.com/eprifti/AquaScope/pulls"><img src="https://img.shields.io/github/issues-pr/eprifti/AquaScope?color=brightgreen" alt="Pull Requests" /></a>
+  <a href="https://github.com/eprifti/AquaScope/stargazers"><img src="https://img.shields.io/github/stars/eprifti/AquaScope?style=social" alt="Stars" /></a>
 </p>
 
 <p align="center">
@@ -24,23 +24,23 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
 </p>
 
-> **Created by [Edi Prifti](https://github.com/eprifti)** with love for the reef keeping community
+> **Created by [Edi Prifti](https://github.com/eprifti)** with love for the aquarium keeping community
 
-## ✨ Demo & Support
+## Demo & Support
 
-- **GitHub Repository**: [github.com/eprifti/reeflab](https://github.com/eprifti/reeflab)
-- **Report Issues**: [GitHub Issues](https://github.com/eprifti/reeflab/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/eprifti/reeflab/discussions)
+- **GitHub Repository**: [github.com/eprifti/AquaScope](https://github.com/eprifti/AquaScope)
+- **Report Issues**: [GitHub Issues](https://github.com/eprifti/AquaScope/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/eprifti/AquaScope/discussions)
 
 ### Support the Project
 
-If you find ReefLab useful, consider supporting its development:
+If you find AquaScope useful, consider supporting its development:
 
-- ⭐ Star the repository on GitHub
-- 💖 [Sponsor on GitHub](https://github.com/sponsors/eprifti)
-- ☕ [Buy me a coffee on Ko-fi](https://ko-fi.com/ediprifti)
-- 🐛 Report bugs and suggest features
-- 🔧 Contribute code and documentation
+- Star the repository on GitHub
+- [Sponsor on GitHub](https://github.com/sponsors/eprifti)
+- [Buy me a coffee on Ko-fi](https://ko-fi.com/ediprifti)
+- Report bugs and suggest features
+- Contribute code and documentation
 
 ## Features
 
@@ -48,12 +48,17 @@ If you find ReefLab useful, consider supporting its development:
 
 - **Tank Management Hub**: Comprehensive tank detail views with timeline, events, and statistics
   - Individual tank pages with split-view layout
-  - Tank image upload with animated fallback visualization
+  - Tank image upload with default images per water type
   - Tank events timeline for tracking changes and milestones
   - Quick actions for common tasks
   - Statistics dashboard showing equipment, livestock, photos, and test counts
 
-- **Parameter Tracking**: Log water test results (Ca, Mg, KH, NO3, PO4, Salinity, Temperature, pH)
+- **Multi Water Type Support**: Saltwater, freshwater, and brackish aquariums
+  - Dynamic parameter ranges based on water type
+  - Water-type-specific default tank images and badges
+  - Aquarium subtypes (SPS, LPS, mixed reef, planted, cichlid, etc.)
+
+- **Parameter Tracking**: Log water test results (Ca, Mg, KH, NO3, PO4, Salinity, Temperature, pH, GH, NH3, NO2)
   - InfluxDB integration for time-series data storage
   - Visualization with Recharts in the dashboard
   - Export data to Grafana for advanced analytics
@@ -70,7 +75,7 @@ If you find ReefLab useful, consider supporting its development:
   - Photo descriptions and timestamps
   - Tank-specific photo filtering
 
-- **Notes System**: Keep detailed notes and observations about your reef tank
+- **Notes System**: Keep detailed notes and observations about your tank
   - Rich text notes with timestamps
   - Tank-specific note filtering
   - Search and organize notes
@@ -82,15 +87,29 @@ If you find ReefLab useful, consider supporting its development:
   - Task templates (water changes, pump cleaning, skimmer maintenance)
 
 - **Livestock Database**: Catalog fish, corals, and invertebrates
-  - FishBase integration for species information
+  - FishBase, WoRMS, and iNaturalist integration for species information
   - Track acquisition dates and sources
   - Monitor health and status
-  - Tank-specific livestock filtering
+  - Livestock split feature (split groups by status)
 
 - **Equipment Tracking**: Manage aquarium equipment
   - Equipment inventory with manufacturers and models
   - Installation dates and status tracking
   - Tank-specific equipment filtering
+
+- **Admin Panel**: System administration dashboard
+  - User management with stats
+  - Database information
+  - Storage browser for uploaded files
+  - Orphan file cleanup
+
+- **Multi-Language Support**: Available in 6 languages
+  - English, French, Spanish, German, Italian, Portuguese
+
+- **Backup & Restore**: Full system backup and restore scripts
+  - Single-archive backup (PostgreSQL + InfluxDB + uploaded files)
+  - Manifest with record counts for verification
+  - Interactive restore with confirmation
 
 - **Multi-User Support**: Secure authentication and user-specific data management
   - JWT-based authentication
@@ -105,6 +124,7 @@ If you find ReefLab useful, consider supporting its development:
 - Tailwind CSS for modern, responsive UI
 - React Router for navigation
 - Axios for API communication
+- i18next for internationalization
 
 ### Backend
 - Python 3.11+ with FastAPI
@@ -130,8 +150,8 @@ If you find ReefLab useful, consider supporting its development:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/eprifti/reeflab.git
-cd reeflab
+git clone https://github.com/eprifti/AquaScope.git
+cd AquaScope
 ```
 
 ### 2. Configure Environment Variables
@@ -155,7 +175,7 @@ SECRET_KEY=your-secret-key-for-jwt
 ### 3. Start the Application
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start all services:
@@ -167,7 +187,7 @@ This will start all services:
 ### 4. Access the Application
 
 Open your browser and navigate to:
-- **ReefLab UI**: http://localhost
+- **AquaScope UI**: http://localhost
 - **API Documentation**: http://localhost:8000/docs
 - **InfluxDB UI**: http://localhost:8086
 
@@ -177,6 +197,36 @@ Open your browser and navigate to:
 2. Log in with your credentials
 3. Create your first tank
 4. Start logging parameters!
+
+### 6. Load Demo Data (Optional)
+
+Seed the database with two fully configured aquariums (saltwater SPS reef + freshwater Amazonian biotope) including livestock, equipment, maintenance schedules, notes, and months of parameter history:
+
+```bash
+bash scripts/seed_demo.sh
+```
+
+Then log in with:
+- **Email**: `demo@reeflab.io`
+- **Password**: `demo1234`
+
+## Backup & Restore
+
+### Create a Backup
+
+```bash
+./scripts/backup.sh [output_directory]
+```
+
+Creates a timestamped `.tar.gz` archive containing PostgreSQL dump, InfluxDB backup, and all uploaded files with a manifest.
+
+### Restore from Backup
+
+```bash
+./scripts/restore.sh <backup_file.tar.gz>
+```
+
+Restores all data from a backup archive with interactive confirmation.
 
 ## Grafana Integration
 
@@ -235,7 +285,7 @@ The frontend will be available at http://localhost:3000 with hot-reload enabled.
 
 ### Testing
 
-ReefLab includes comprehensive unit and integration tests for both backend and frontend.
+AquaScope includes comprehensive unit and integration tests for both backend and frontend.
 
 **Backend Tests (Pytest)**:
 ```bash
@@ -254,11 +304,9 @@ npm run test:ui         # Run with interactive UI
 npm run test:coverage   # Run with coverage report
 ```
 
-For detailed testing documentation, see [TESTING.md](docs/TESTING.md).
-
 ### Continuous Integration
 
-ReefLab uses GitHub Actions for automated testing and quality assurance. Every push and pull request triggers:
+AquaScope uses GitHub Actions for automated testing and quality assurance. Every push and pull request triggers:
 
 1. **Backend Tests**: Pytest suite with PostgreSQL service container
 2. **Frontend Tests**: TypeScript type checking and Vite build verification
@@ -284,7 +332,7 @@ alembic upgrade head
 ## Project Structure
 
 ```
-reeflab/
+AquaScope/
 ├── backend/               # FastAPI backend
 │   ├── app/
 │   │   ├── api/          # API endpoints
@@ -299,8 +347,13 @@ reeflab/
 │   │   ├── components/   # React components
 │   │   ├── pages/        # Page components
 │   │   ├── api/          # API client
-│   │   └── hooks/        # Custom React hooks
+│   │   ├── hooks/        # Custom React hooks
+│   │   └── i18n/         # Internationalization config
 │   └── Dockerfile
+├── scripts/              # Utility scripts
+│   ├── backup.sh         # Full system backup
+│   ├── restore.sh        # Full system restore
+│   └── seed_demo.sh      # Demo data seeder
 ├── docker-compose.yml    # Docker orchestration
 └── README.md
 ```
@@ -318,12 +371,7 @@ Once the backend is running, visit http://localhost:8000/docs for interactive AP
 - `GET /api/v1/parameters` - Query parameter history
 - `POST /api/v1/photos` - Upload photos
 - `POST /api/v1/maintenance/reminders` - Create maintenance reminder
-
-For complete API documentation, see [docs/API.md](docs/API.md) and [docs/API_GUIDE.md](docs/API_GUIDE.md).
-
-## FishBase Integration
-
-The livestock feature integrates with the FishBase API to provide species information. When adding fish or corals, you can search the FishBase database for accurate species data.
+- `GET /api/v1/admin/storage/stats` - Admin storage statistics
 
 ## Contributing
 
@@ -351,19 +399,19 @@ This project follows conventional commits:
 
 Check Docker logs:
 ```bash
-docker-compose logs
+docker compose logs
 ```
 
 ### Database connection errors
 
 Ensure PostgreSQL is healthy:
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 Wait for the health check to pass, then restart the backend:
 ```bash
-docker-compose restart backend
+docker compose restart backend
 ```
 
 ### InfluxDB token issues
@@ -377,47 +425,36 @@ MIT License - see LICENSE file for details
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/eprifti/reeflab/issues
-- Discussions: https://github.com/eprifti/reeflab/discussions
+- GitHub Issues: https://github.com/eprifti/AquaScope/issues
+- Discussions: https://github.com/eprifti/AquaScope/discussions
 
 ## Features Status
 
-## Documentation
+### Completed (v1.6.0)
+- Tank management hub with detail views and timeline
+- Tank image upload with default images per water type
+- Multi water type support (saltwater, freshwater, brackish)
+- ICP test management with element tracking
+- Parameter tracking with InfluxDB integration
+- Equipment tracking and inventory management
+- Maintenance reminder system with automatic scheduling
+- Photo gallery with drag-and-drop upload
+- Notes/journal system
+- Livestock inventory with FishBase/WoRMS/iNaturalist integration
+- Livestock split feature (split groups by status)
+- Multi-user authentication and authorization
+- Admin panel with storage browser and user management
+- Full backup/restore scripts (PostgreSQL + InfluxDB + files)
+- Responsive UI with Tailwind CSS
+- Data visualization with Recharts
+- Excel/CSV import for historical data
+- GitHub Actions CI/CD pipeline with automated tests
+- Comprehensive unit and integration tests (141 tests)
+- Multi-language support (EN, FR, ES, DE, IT, PT)
+- Default aquarium images for each water type
+- Custom logo and branding
 
-Comprehensive documentation is available in the [docs/](docs/) folder:
-
-- **[Quick Start Guide](docs/QUICK_START.md)** - Get up and running quickly
-- **[API Documentation](docs/API.md)** - Complete API reference
-- **[API Usage Guide](docs/API_GUIDE.md)** - API integration examples
-- **[Deployment Guide](docs/DEPLOYMENT.md)** - Deployment instructions
-- **[Testing Guide](docs/TESTING.md)** - Running tests and writing new ones
-- **[ICP Testing](docs/ICP_TESTING.md)** - ICP test management features
-- **[Photo Features](docs/PHOTO_FEATURES.md)** - Photo gallery features
-- **[Changelog](docs/CHANGELOG.md)** - Version history and changes
-- **[Release Notes](docs/RELEASE_NOTES_v1.0.0.md)** - Detailed release information
-
-### ✅ Completed (v1.5.1)
-- ✅ Tank management hub with detail views and timeline
-- ✅ Tank image upload with animated fallback visualization
-- ✅ ICP test management with element tracking
-- ✅ Parameter tracking with InfluxDB integration
-- ✅ Equipment tracking and inventory management
-- ✅ Maintenance reminder system with automatic scheduling
-- ✅ Photo gallery with drag-and-drop upload
-- ✅ Notes/journal system
-- ✅ Livestock inventory with FishBase/WoRMS/iNaturalist integration
-- ✅ Livestock split feature (split groups by status)
-- ✅ Multi-user authentication and authorization
-- ✅ Responsive UI with Tailwind CSS
-- ✅ Data visualization with Recharts
-- ✅ Excel/CSV import for historical data
-- ✅ GitHub Actions CI/CD pipeline with automated tests
-- ✅ Comprehensive unit and integration tests (121 tests, 60% coverage)
-- ✅ Multi-language support (EN, FR, ES, DE, IT, PT)
-- ✅ Animated aquarium scene with fish, corals, and bottom dwellers
-- ✅ Custom logo and branding
-
-### 🎯 Roadmap
+### Roadmap
 
 - [ ] Email notifications for maintenance reminders
 - [ ] Mobile responsive design improvements
@@ -435,16 +472,16 @@ Comprehensive documentation is available in the [docs/](docs/) folder:
 
 ## Credits & Acknowledgments
 
-**ReefLab** is created and maintained by **[Edi Prifti](https://github.com/eprifti)**.
+**AquaScope** is created and maintained by **[Edi Prifti](https://github.com/eprifti)**.
 
 Built with:
-- ❤️ Passion for reef keeping and open-source software
-- 🤖 [Claude Sonnet 4.5](https://claude.ai) by Anthropic
-- 🌊 Inspiration from the amazing reef keeping community
+- Passion for aquarium keeping and open-source software
+- [Claude](https://claude.ai) by Anthropic
+- Inspiration from the amazing aquarium keeping community
 
 ### Technologies
 
-Special thanks to the open-source projects that make ReefLab possible:
+Special thanks to the open-source projects that make AquaScope possible:
 - [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
 - [React](https://react.dev/) - UI library
 - [PostgreSQL](https://www.postgresql.org/) - Relational database
@@ -455,23 +492,23 @@ Special thanks to the open-source projects that make ReefLab possible:
 ### Contributing
 
 Contributions are welcome! Whether it's:
-- 🐛 Bug reports and fixes
-- ✨ New features
-- 📝 Documentation improvements
-- 🎨 UI/UX enhancements
-- 🧪 Test coverage
+- Bug reports and fixes
+- New features
+- Documentation improvements
+- UI/UX enhancements
+- Test coverage
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ### Support
 
-If you find ReefLab useful:
-- ⭐ Star the repository
-- 💖 [Sponsor on GitHub](https://github.com/sponsors/eprifti)
-- ☕ [Buy me a coffee](https://ko-fi.com/ediprifti)
-- 📢 Share with other reef keepers
-- 🐛 Report bugs and suggest features
+If you find AquaScope useful:
+- Star the repository
+- [Sponsor on GitHub](https://github.com/sponsors/eprifti)
+- [Buy me a coffee](https://ko-fi.com/ediprifti)
+- Share with other aquarium keepers
+- Report bugs and suggest features
 
 ---
 
-Made with ❤️ for the reef keeping community
+Made with love for the aquarium keeping community

@@ -122,6 +122,18 @@ class UserUpdate(BaseModel):
     is_admin: Optional[bool] = None
 
 
+class UserWithStats(UserResponse):
+    """User response with per-user data counts and storage size for admin listing."""
+    tank_count: int = 0
+    livestock_count: int = 0
+    equipment_count: int = 0
+    photo_count: int = 0
+    note_count: int = 0
+    reminder_count: int = 0
+    total_records: int = 0
+    data_size_mb: float = 0.0
+
+
 class SystemStats(BaseModel):
     """
     System statistics for admin dashboard.

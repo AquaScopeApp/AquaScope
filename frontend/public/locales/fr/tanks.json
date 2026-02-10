@@ -3,18 +3,42 @@
   "addTank": "Ajouter un aquarium",
   "editTank": "Modifier l'aquarium",
   "deleteTank": "Supprimer l'aquarium",
+  "createTank": "Créer un nouvel aquarium",
+  "updateTank": "Mettre à jour l'aquarium",
+  "saving": "Enregistrement...",
   "tankDetails": "Détails de l'aquarium",
   "quickActions": "Actions rapides",
   "statistics": "Statistiques",
+  "notSet": "Non défini",
+  "runningFor": "En fonctionnement depuis {{age}}",
+  "recentEvents": "Événements récents",
+  "recentPhotos": "Photos récentes",
+  "recentNotes": "Notes récentes",
+  "viewAll": "Voir tout",
+  "viewParameters": "Voir les paramètres",
+  "latestIcpTest": "Dernier test ICP",
+  "overallScore": "Score global",
+  "tankNotFound": "Aquarium introuvable",
+  "returnToList": "Retour à la liste des aquariums",
+  "detailsAndManagement": "Détails et gestion de l'aquarium",
+  "items": "éléments",
+  "score": "Score",
   "fields": {
     "name": "Nom de l'aquarium",
     "description": "Description",
-    "displayVolume": "Volume d'affichage",
-    "sumpVolume": "Volume de décantation",
+    "displayVolume": "Bac principal",
+    "sumpVolume": "Décantation",
     "totalVolume": "Volume total",
+    "totalSystem": "Système total",
     "setupDate": "Date d'installation",
     "image": "Image de l'aquarium",
-    "liters": "L"
+    "liters": "L",
+    "waterType": "Type d'eau",
+    "aquariumSubtype": "Sous-type d'aquarium",
+    "aquariumType": "Type d'aquarium",
+    "systemVolume": "Volume du système (Litres)",
+    "selectSubtype": "-- Sélectionner le sous-type --",
+    "setupDateHint": "Quand avez-vous installé cet aquarium ?"
   },
   "stats": {
     "daysRunning_one": "{{count}} jour de fonctionnement",
@@ -43,7 +67,8 @@
     "addEvent": "Ajouter un événement",
     "manageEquipment": "Gérer l'équipement",
     "manageLivestock": "Gérer les animaux",
-    "changeImage": "Changer l'image"
+    "changeImage": "Changer l'image",
+    "addTest": "Ajouter un test"
   },
   "emptyState": {
     "noTanks": "Aucun aquarium",
@@ -54,7 +79,15 @@
     "noPhotos": "Aucune photo",
     "noNotes": "Aucune note",
     "noIcpTests": "Aucun test ICP",
-    "noMaintenance": "Aucun rappel de maintenance"
+    "noMaintenance": "Aucun rappel de maintenance",
+    "goToEquipment": "Accédez à la page Équipement pour ajouter des appareils",
+    "goToLivestock": "Accédez à la page Animaux pour ajouter poissons et coraux",
+    "goToPhotos": "Accédez à la page Photos pour télécharger des images",
+    "goToNotes": "Accédez à la page Notes pour ajouter des observations",
+    "goToIcpTests": "Accédez à la page Tests ICP pour télécharger des résultats",
+    "goToMaintenance": "Accédez à la page Maintenance pour configurer des rappels",
+    "startStory": "Commencez à construire l'histoire de votre aquarium",
+    "addContent": "Ajoutez des événements, photos et notes pour suivre la progression de votre aquarium"
   },
   "myTanks": "Mes aquariums",
   "manageSystems": "Gérez vos systèmes d'aquariums récifaux",
@@ -69,5 +102,42 @@
     "fileTypes": "PNG, JPG, GIF jusqu'à 10 Mo",
     "uploading": "Téléchargement en cours...",
     "changeImage": "Changer l'image"
+  },
+  "waterType": {
+    "freshwater": "Eau douce",
+    "saltwater": "Eau de mer",
+    "brackish": "Eau saumâtre"
+  },
+  "subtype": {
+    "sps_dominant": "Dominance SPS",
+    "lps_dominant": "Dominance LPS",
+    "soft_coral": "Coraux mous",
+    "mixed_reef": "Récif mixte",
+    "fish_only": "Poissons uniquement",
+    "fowlr": "FOWLR",
+    "amazonian": "Amazonien",
+    "tanganyika": "Tanganyika",
+    "malawi": "Malawi",
+    "planted": "Planté",
+    "community": "Communautaire",
+    "discus": "Discus",
+    "shrimp": "Crevettes",
+    "goldfish": "Poissons rouges",
+    "axolotl": "Axolotl",
+    "mangrove": "Mangrove",
+    "brackish_community": "Communautaire saumâtre"
+  },
+  "maintenance": {
+    "reminders": "Rappels de maintenance",
+    "overdue": "En retard :",
+    "next": "Prochain :",
+    "everyDays": "Tous les {{count}} jours",
+    "active": "actifs"
+  },
+  "parameterRanges": {
+    "title": "Plages de paramètres",
+    "resetDefaults": "Réinitialiser",
+    "customizeRanges": "Personnaliser les plages",
+    "rangesNote": "Les plages de paramètres seront définies en fonction de votre type d'aquarium. Vous pouvez les personnaliser ultérieurement."
   }
 }

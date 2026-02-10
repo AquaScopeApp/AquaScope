@@ -11,6 +11,8 @@ Design Decisions:
 - Foreign key to User: Implements multi-tenancy and data isolation
 - Description and image: Rich tank information and visual identification
 - Events: Track major milestones and changes
+- Water type and subtype: Support for freshwater, saltwater, and brackish aquariums
+- Parameter ranges: Per-tank customizable parameter ranges
 
 Why separate tanks from users?
 - Hobbyists often maintain multiple tanks (display, quarantine, frag tanks)
@@ -37,6 +39,10 @@ class Tank(Base):
     display_volume_liters = Column(Float, nullable=True)
     sump_volume_liters = Column(Float, nullable=True)
 
+    # Aquarium type
+    water_type = Column(String, nullable=False, default="saltwater")  # freshwater, saltwater, brackish
+    aquarium_subtype = Column(String, nullable=True)  # sps_dominant, amazonian, tanganyika, etc.
+
     # Rich information
     description = Column(Text, nullable=True)
     image_url = Column(String, nullable=True)  # URL or path to tank image
@@ -54,6 +60,7 @@ class Tank(Base):
     events = relationship("TankEvent", back_populates="tank", cascade="all, delete-orphan")
     equipment = relationship("Equipment", back_populates="tank", cascade="all, delete-orphan")
     icp_tests = relationship("ICPTest", back_populates="tank", cascade="all, delete-orphan")
+    parameter_ranges = relationship("ParameterRange", cascade="all, delete-orphan")
 
     @property
     def total_volume_liters(self) -> float:

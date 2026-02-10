@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "ReefLab",
-    "tagline": "Riffaquarium-Managementsystem"
+    "name": "AquaScope",
+    "tagline": "Ein Fenster in Ihre Aquarien"
   },
   "navigation": {
     "dashboard": "Übersicht",
@@ -56,7 +56,7 @@
   "footer": {
     "createdBy": "Erstellt von",
     "withLove": "mit",
-    "forCommunity": "für die Riffaquaristik-Gemeinschaft",
+    "forCommunity": "für die Aquaristik-Gemeinschaft",
     "builtWith": "Entwickelt mit",
     "copyright": "Alle Rechte vorbehalten",
     "links": "Links",
@@ -64,11 +64,11 @@
     "reportIssues": "Probleme melden",
     "documentation": "Dokumentation",
     "supportProject": "Projekt unterstützen",
-    "helpKeepGoing": "Helfen Sie, die Entwicklung von ReefLab voranzutreiben",
+    "helpKeepGoing": "Helfen Sie, die Entwicklung von AquaScope voranzutreiben",
     "githubSponsors": "GitHub Sponsors",
     "buyMeCoffee": "Einen Kaffee ausgeben",
     "openSource": "Open Source unter MIT-Lizenz",
-    "reefDescription": "Umfassendes Riffaquarium-Managementsystem"
+    "reefDescription": "Umfassendes Aquarium-Managementsystem"
   },
   "auth": {
     "signIn": "Anmelden",
@@ -89,8 +89,8 @@
     "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
     "passwordsDontMatch": "Passwörter stimmen nicht überein",
     "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
-    "reefManagement": "Riffaquarium-Management",
-    "trackYourReef": "Verfolgen Sie Ihre Riffparameter, Wartung und Ihren Tierbestand"
+    "reefManagement": "Aquarium-Management",
+    "trackYourReef": "Verfolgen Sie Ihre Aquariumparameter, Wartung und Ihren Tierbestand"
   },
   "layout": {
     "admin": "Admin",

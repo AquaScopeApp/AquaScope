@@ -6,7 +6,7 @@ from pydantic import field_validator
 
 class Settings(BaseSettings):
     # API Configuration
-    PROJECT_NAME: str = "ReefLab"
+    PROJECT_NAME: str = "AquaScope"
     API_V1_STR: str = "/api/v1"
 
     # Database

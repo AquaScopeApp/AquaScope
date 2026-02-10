@@ -1,7 +1,7 @@
 /**
  * API Client
  *
- * Axios instance configured for ReefLab API with:
+ * Axios instance configured for AquaScope API with:
  * - Base URL configuration
  * - Authentication token injection
  * - Response/error interceptors
@@ -15,6 +15,7 @@ import type {
   RegisterData,
   User,
   UserUpdate,
+  UserWithStats,
   SystemStats,
   UserDataSummary,
   Tank,
@@ -27,6 +28,8 @@ import type {
   ParameterSubmissionResponse,
   ParameterReading,
   LatestParameters,
+  ParameterRangeConfig,
+  ParameterRangeResponse,
   Note,
   NoteCreate,
   NoteUpdate,
@@ -45,6 +48,8 @@ import type {
   ICPTestCreate,
   ICPTestUpdate,
   ICPTestSummary,
+  StorageStats,
+  StorageFile,
   ApiError,
 } from '../types'
 
@@ -70,7 +75,7 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('reeflab_token')
+    const token = localStorage.getItem('aquascope_token')
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -90,8 +95,8 @@ apiClient.interceptors.response.use(
   (error: AxiosError<ApiError>) => {
     if (error.response?.status === 401) {
       // Token expired or invalid - clear auth and redirect to login
-      localStorage.removeItem('reeflab_token')
-      localStorage.removeItem('reeflab_user')
+      localStorage.removeItem('aquascope_token')
+      localStorage.removeItem('aquascope_user')
       window.location.href = '/login'
     }
     return Promise.reject(error)
@@ -620,6 +625,37 @@ export const icpTestsApi = {
 }
 
 // ============================================================================
+// Parameter Ranges API
+// ============================================================================
+
+export const parameterRangesApi = {
+  getForTank: async (tankId: string): Promise<ParameterRangeResponse[]> => {
+    const response = await apiClient.get<ParameterRangeResponse[]>(
+      `/tanks/${tankId}/parameter-ranges`
+    )
+    return response.data
+  },
+
+  updateForTank: async (
+    tankId: string,
+    ranges: ParameterRangeConfig[]
+  ): Promise<ParameterRangeResponse[]> => {
+    const response = await apiClient.put<ParameterRangeResponse[]>(
+      `/tanks/${tankId}/parameter-ranges`,
+      { ranges }
+    )
+    return response.data
+  },
+
+  resetDefaults: async (tankId: string): Promise<ParameterRangeResponse[]> => {
+    const response = await apiClient.post<ParameterRangeResponse[]>(
+      `/tanks/${tankId}/parameter-ranges/reset-defaults`
+    )
+    return response.data
+  },
+}
+
+// ============================================================================
 // Admin API
 // ============================================================================
 
@@ -674,6 +710,35 @@ export const adminApi = {
     const response = await apiClient.post('/admin/database/import', data, {
       params: { replace },
     })
+    return response.data
+  },
+
+  listUsersWithStats: async (skip = 0, limit = 100): Promise<UserWithStats[]> => {
+    const response = await apiClient.get<UserWithStats[]>('/admin/users-with-stats', {
+      params: { skip, limit },
+    })
+    return response.data
+  },
+
+  exportTankData: async (userId: string, tankId: string): Promise<any> => {
+    const response = await apiClient.get(`/admin/export/${userId}/tank/${tankId}`)
+    return response.data
+  },
+
+  getStorageStats: async (): Promise<StorageStats> => {
+    const response = await apiClient.get<StorageStats>('/admin/storage/stats')
+    return response.data
+  },
+
+  getStorageFiles: async (userId?: string, category?: string): Promise<StorageFile[]> => {
+    const response = await apiClient.get<StorageFile[]>('/admin/storage/files', {
+      params: { user_id: userId, category },
+    })
+    return response.data
+  },
+
+  deleteOrphans: async (): Promise<{ deleted: number; freed_bytes: number }> => {
+    const response = await apiClient.delete<{ deleted: number; freed_bytes: number }>('/admin/storage/orphans')
     return response.data
   },
 }

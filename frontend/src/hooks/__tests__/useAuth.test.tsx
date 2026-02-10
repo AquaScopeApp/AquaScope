@@ -37,7 +37,9 @@ describe('useAuth', () => {
       id: '123',
       email: 'test@example.com',
       username: 'testuser',
+      is_admin: false,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
     const mockToken = 'mock-jwt-token'
@@ -45,20 +47,21 @@ describe('useAuth', () => {
     vi.mocked(apiClient.authApi.login).mockResolvedValue({
       access_token: mockToken,
       token_type: 'bearer',
-      user: mockUser,
     })
+
+    vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 
     const { result } = renderHook(() => useAuth(), { wrapper })
 
-    await result.current.login('test@example.com', 'password123')
+    await result.current.login({ username: 'test@example.com', password: 'password123' })
 
     await waitFor(() => {
       expect(result.current.user).toEqual(mockUser)
       expect(result.current.isAuthenticated).toBe(true)
     })
 
-    expect(localStorage.getItem('reeflab_token')).toBe(mockToken)
-    expect(localStorage.getItem('reeflab_user')).toBe(JSON.stringify(mockUser))
+    expect(localStorage.getItem('aquascope_token')).toBe(mockToken)
+    expect(localStorage.getItem('aquascope_user')).toBe(JSON.stringify(mockUser))
   })
 
   it('should register successfully', async () => {
@@ -66,17 +69,19 @@ describe('useAuth', () => {
       id: '123',
       email: 'new@example.com',
       username: 'newuser',
+      is_admin: false,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
     const mockToken = 'mock-jwt-token'
 
-    vi.mocked(apiClient.authApi.register).mockResolvedValue(mockUser)
-    vi.mocked(apiClient.authApi.login).mockResolvedValue({
+    vi.mocked(apiClient.authApi.register).mockResolvedValue({
       access_token: mockToken,
       token_type: 'bearer',
-      user: mockUser,
     })
+
+    vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 
     const { result } = renderHook(() => useAuth(), { wrapper })
 
@@ -93,20 +98,28 @@ describe('useAuth', () => {
   })
 
   it('should logout successfully', async () => {
-    // Setup: login first
     const mockUser = {
       id: '123',
       email: 'test@example.com',
       username: 'testuser',
+      is_admin: false,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
-    localStorage.setItem('reeflab_token', 'mock-token')
-    localStorage.setItem('reeflab_user', JSON.stringify(mockUser))
+    localStorage.setItem('aquascope_token', 'mock-token')
+    localStorage.setItem('aquascope_user', JSON.stringify(mockUser))
+
+    vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 
     const { result } = renderHook(() => useAuth(), { wrapper })
 
-    // Logout
+    // Wait for initialization to complete
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
+    // Now logout
     result.current.logout()
 
     await waitFor(() => {
@@ -114,8 +127,8 @@ describe('useAuth', () => {
       expect(result.current.isAuthenticated).toBe(false)
     })
 
-    expect(localStorage.getItem('reeflab_token')).toBeNull()
-    expect(localStorage.getItem('reeflab_user')).toBeNull()
+    expect(localStorage.getItem('aquascope_token')).toBeNull()
+    expect(localStorage.getItem('aquascope_user')).toBeNull()
   })
 
   it('should restore user from localStorage on init', async () => {
@@ -123,11 +136,13 @@ describe('useAuth', () => {
       id: '123',
       email: 'test@example.com',
       username: 'testuser',
+      is_admin: false,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
-    localStorage.setItem('reeflab_token', 'mock-token')
-    localStorage.setItem('reeflab_user', JSON.stringify(mockUser))
+    localStorage.setItem('aquascope_token', 'mock-token')
+    localStorage.setItem('aquascope_user', JSON.stringify(mockUser))
 
     vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 

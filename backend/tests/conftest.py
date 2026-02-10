@@ -1,5 +1,5 @@
 """
-Pytest configuration and fixtures for ReefLab tests
+Pytest configuration and fixtures for AquaScope tests
 """
 import pytest
 from typing import Generator

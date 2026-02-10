@@ -6,7 +6,8 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { PARAMETER_RANGES, PARAMETER_ORDER } from '../../config/parameterRanges'
+import { PARAMETER_RANGES, PARAMETER_ORDER, getActiveParameterOrder } from '../../config/parameterRanges'
+import type { ParameterRange } from '../../config/parameterRanges'
 
 interface ParameterFormData {
   calcium?: number
@@ -17,6 +18,9 @@ interface ParameterFormData {
   salinity?: number
   temperature?: number
   ph?: number
+  gh?: number
+  ammonia?: number
+  nitrite?: number
   timestamp: string
 }
 
@@ -24,13 +28,17 @@ interface ParameterFormProps {
   tankId: string
   onSubmit: (data: ParameterFormData) => Promise<void>
   onSuccess?: () => void
+  customRanges?: Record<string, ParameterRange>
 }
 
 export default function ParameterForm({
   tankId: _tankId, // Prefixed with _ to indicate intentionally unused
   onSubmit,
   onSuccess,
+  customRanges,
 }: ParameterFormProps) {
+  const ranges = customRanges || PARAMETER_RANGES
+  const activeParams = customRanges ? getActiveParameterOrder(ranges) : PARAMETER_ORDER
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -56,7 +64,7 @@ export default function ParameterForm({
       }, {} as ParameterFormData)
 
       // Check if at least one parameter is provided
-      const hasParameters = PARAMETER_ORDER.some(
+      const hasParameters = activeParams.some(
         (param) => filteredData[param as keyof ParameterFormData] !== undefined
       )
 
@@ -124,8 +132,9 @@ export default function ParameterForm({
 
         {/* Parameter Inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {PARAMETER_ORDER.map((paramType) => {
-            const range = PARAMETER_RANGES[paramType]
+          {activeParams.map((paramType) => {
+            const range = ranges[paramType]
+            if (!range) return null
             return (
               <div key={paramType}>
                 <label

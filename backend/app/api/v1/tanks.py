@@ -21,6 +21,7 @@ from app.schemas.tank import (
     TankEventCreate, TankEventUpdate, TankEventResponse
 )
 from app.api.deps import get_current_user
+from app.api.v1.parameter_ranges import populate_default_ranges
 
 router = APIRouter()
 
@@ -41,6 +42,11 @@ def create_tank(
         user_id=current_user.id
     )
     db.add(tank)
+    db.flush()  # Get tank.id before populating ranges
+
+    # Auto-populate default parameter ranges
+    populate_default_ranges(tank, db)
+
     db.commit()
     db.refresh(tank)
     return tank

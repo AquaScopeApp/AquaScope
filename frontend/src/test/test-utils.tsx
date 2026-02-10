@@ -1,5 +1,5 @@
 /**
- * Test utilities for ReefLab frontend tests
+ * Test utilities for AquaScope frontend tests
  */
 import { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'

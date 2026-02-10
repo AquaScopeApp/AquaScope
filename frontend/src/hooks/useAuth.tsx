@@ -48,8 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Initialize auth state from localStorage
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedToken = localStorage.getItem('reeflab_token')
-      const storedUser = localStorage.getItem('reeflab_user')
+      const storedToken = localStorage.getItem('aquascope_token')
+      const storedUser = localStorage.getItem('aquascope_user')
 
       if (storedToken && storedUser) {
         try {
@@ -59,12 +59,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
           // Verify token is still valid by fetching current user
           const currentUser = await authApi.getCurrentUser()
           setUser(currentUser)
-          localStorage.setItem('reeflab_user', JSON.stringify(currentUser))
+          localStorage.setItem('aquascope_user', JSON.stringify(currentUser))
         } catch (error) {
           // Token invalid - clear auth
           console.error('Auth initialization failed:', error)
-          localStorage.removeItem('reeflab_token')
-          localStorage.removeItem('reeflab_user')
+          localStorage.removeItem('aquascope_token')
+          localStorage.removeItem('aquascope_user')
           setToken(null)
           setUser(null)
         }
@@ -83,12 +83,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const authToken = await authApi.login(credentials)
 
       // Store token
-      localStorage.setItem('reeflab_token', authToken.access_token)
+      localStorage.setItem('aquascope_token', authToken.access_token)
       setToken(authToken.access_token)
 
       // Fetch user data
       const currentUser = await authApi.getCurrentUser()
-      localStorage.setItem('reeflab_user', JSON.stringify(currentUser))
+      localStorage.setItem('aquascope_user', JSON.stringify(currentUser))
       setUser(currentUser)
     } catch (error) {
       console.error('Login failed:', error)
@@ -103,12 +103,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const authToken = await authApi.register(data)
 
       // Store token
-      localStorage.setItem('reeflab_token', authToken.access_token)
+      localStorage.setItem('aquascope_token', authToken.access_token)
       setToken(authToken.access_token)
 
       // Fetch user data
       const currentUser = await authApi.getCurrentUser()
-      localStorage.setItem('reeflab_user', JSON.stringify(currentUser))
+      localStorage.setItem('aquascope_user', JSON.stringify(currentUser))
       setUser(currentUser)
     } catch (error) {
       console.error('Registration failed:', error)
@@ -118,8 +118,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Logout method
   const logout = () => {
-    localStorage.removeItem('reeflab_token')
-    localStorage.removeItem('reeflab_user')
+    localStorage.removeItem('aquascope_token')
+    localStorage.removeItem('aquascope_user')
     setToken(null)
     setUser(null)
   }
@@ -130,7 +130,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     try {
       const currentUser = await authApi.getCurrentUser()
-      localStorage.setItem('reeflab_user', JSON.stringify(currentUser))
+      localStorage.setItem('aquascope_user', JSON.stringify(currentUser))
       setUser(currentUser)
     } catch (error) {
       console.error('Failed to refresh user:', error)

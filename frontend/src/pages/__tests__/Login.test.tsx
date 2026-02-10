@@ -14,6 +14,29 @@ vi.mock('../../api/client', () => ({
   },
 }))
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        'auth.signIn': 'Sign in',
+        'auth.signingIn': 'Signing in...',
+        'auth.signInToAccount': 'Sign in to your account',
+        'auth.emailAddress': 'Email address',
+        'auth.password': 'Password',
+        'auth.dontHaveAccount': "Don't have an account?",
+        'auth.createOneHere': 'Create one here',
+        'auth.reefManagement': 'Aquarium Management',
+        'auth.trackYourReef': 'Track your aquarium parameters',
+        'auth.loginFailed': 'Login failed. Please check your credentials.',
+      }
+      return translations[key] || key
+    },
+    i18n: { changeLanguage: vi.fn(), language: 'en' },
+  }),
+  Trans: ({ children }: any) => children,
+  initReactI18next: { type: '3rdParty', init: () => {} },
+}))
+
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
@@ -30,7 +53,7 @@ describe('Login Component', () => {
   it('renders login form', () => {
     renderWithProviders(<Login />)
 
-    expect(screen.getByText('ReefLab')).toBeInTheDocument()
+    expect(screen.getByText('AquaScope')).toBeInTheDocument()
     expect(screen.getByLabelText(/email address/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
@@ -43,23 +66,26 @@ describe('Login Component', () => {
     const submitButton = screen.getByRole('button', { name: /sign in/i })
     await user.click(submitButton)
 
-    // HTML5 validation will prevent submission
     const emailInput = screen.getByLabelText(/email address/i)
     expect(emailInput).toBeRequired()
   })
 
   it('submits login form with valid credentials', async () => {
-    const mockLogin = vi.mocked(apiClient.authApi.login)
-    mockLogin.mockResolvedValue({
+    const mockUser = {
+      id: '123',
+      email: 'test@example.com',
+      username: 'testuser',
+      is_admin: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+
+    vi.mocked(apiClient.authApi.login).mockResolvedValue({
       access_token: 'mock-token',
       token_type: 'bearer',
-      user: {
-        id: '123',
-        email: 'test@example.com',
-        username: 'testuser',
-        created_at: new Date().toISOString(),
-      },
     })
+
+    vi.mocked(apiClient.authApi.getCurrentUser).mockResolvedValue(mockUser)
 
     renderWithProviders(<Login />)
     const user = userEvent.setup()
@@ -73,13 +99,15 @@ describe('Login Component', () => {
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123')
+      expect(apiClient.authApi.login).toHaveBeenCalledWith({
+        username: 'test@example.com',
+        password: 'password123',
+      })
     })
   })
 
   it('displays error message on login failure', async () => {
-    const mockLogin = vi.mocked(apiClient.authApi.login)
-    mockLogin.mockRejectedValue({
+    vi.mocked(apiClient.authApi.login).mockRejectedValue({
       response: {
         data: {
           detail: 'Invalid credentials',
@@ -106,7 +134,7 @@ describe('Login Component', () => {
   it('has link to register page', () => {
     renderWithProviders(<Login />)
 
-    const registerLink = screen.getByText(/create an account/i)
+    const registerLink = screen.getByText(/create one here/i)
     expect(registerLink).toBeInTheDocument()
     expect(registerLink.closest('a')).toHaveAttribute('href', '/register')
   })

@@ -51,8 +51,8 @@ export default function Register() {
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <img src="/logo.svg" alt="ReefLab" className="h-28 w-28 mx-auto mb-4" />
-          <h1 className="text-4xl font-bold text-ocean-900 mb-2">ReefLab</h1>
+          <img src="/logo.svg" alt="AquaScope" className="h-28 w-28 mx-auto mb-4" />
+          <h1 className="text-4xl font-bold text-ocean-900 mb-2">AquaScope</h1>
           <p className="text-ocean-700">{t('auth.reefManagement')}</p>
         </div>
 

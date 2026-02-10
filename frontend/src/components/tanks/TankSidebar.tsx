@@ -6,9 +6,11 @@
 
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import type { Tank } from '../../types'
 import TankStats from './TankStats'
 import TankImageUpload from './TankImageUpload'
+import DefaultTankAnimation from './DefaultTankAnimation'
 import { tanksApi } from '../../api/client'
 
 interface TankSidebarProps {
@@ -29,6 +31,8 @@ interface TankSidebarProps {
 }
 
 export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
+  const { t } = useTranslation('tanks')
+  const { t: tc } = useTranslation('common')
   const [imageError, setImageError] = useState(false)
   const [showImageUpload, setShowImageUpload] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -86,9 +90,9 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
               onError={() => setImageError(true)}
             />
           ) : tank.image_url && !imageUrl ? (
-            <div className="text-ocean-400">Loading...</div>
+            <div className="text-ocean-400">{tc('common.loading')}</div>
           ) : (
-            <span className="text-6xl">🐠</span>
+            <DefaultTankAnimation waterType={tank.water_type} />
           )}
           {/* Upload overlay on hover */}
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center">
@@ -96,7 +100,7 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
               className="opacity-0 group-hover:opacity-100 transition-opacity px-4 py-2 bg-white text-ocean-600 rounded-md font-medium hover:bg-ocean-50"
               onClick={() => setShowImageUpload(true)}
             >
-              📷 Change Image
+              {`📷 ${t('actions.changeImage')}`}
             </button>
           </div>
 
@@ -125,7 +129,7 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
               <button
                 onClick={onEdit}
                 className="p-1 text-gray-400 hover:text-ocean-600 transition"
-                title="Edit tank"
+                title={t('editTank')}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
@@ -138,6 +142,24 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
               </button>
             )}
           </div>
+          {(tank.water_type || tank.aquarium_subtype) && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {tank.water_type && (
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                  tank.water_type === 'saltwater' ? 'bg-blue-100 text-blue-700' :
+                  tank.water_type === 'freshwater' ? 'bg-emerald-100 text-emerald-700' :
+                  'bg-teal-100 text-teal-700'
+                }`}>
+                  {t(`waterType.${tank.water_type}`)}
+                </span>
+              )}
+              {tank.aquarium_subtype && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                  {t(`subtype.${tank.aquarium_subtype}`)}
+                </span>
+              )}
+            </div>
+          )}
           {tank.description && (
             <p className="text-gray-600 text-sm">{tank.description}</p>
           )}
@@ -147,18 +169,18 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
         <div className="space-y-2 text-sm">
           {tank.display_volume_liters && (
             <div className="flex justify-between">
-              <span className="text-gray-600">Display:</span>
+              <span className="text-gray-600">{t('fields.displayVolume')}:</span>
               <span className="font-medium">{tank.display_volume_liters}L</span>
             </div>
           )}
           {tank.sump_volume_liters && (
             <div className="flex justify-between">
-              <span className="text-gray-600">Sump:</span>
+              <span className="text-gray-600">{t('fields.sumpVolume')}:</span>
               <span className="font-medium">{tank.sump_volume_liters}L</span>
             </div>
           )}
           <div className="flex justify-between pt-2 border-t">
-            <span className="text-gray-600 font-medium">Total:</span>
+            <span className="text-gray-600 font-medium">{t('fields.totalVolume')}:</span>
             <span className="font-bold text-ocean-600">{tank.total_volume_liters}L</span>
           </div>
         </div>
@@ -166,14 +188,14 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
         {/* Setup Date & Days Running */}
         {tank.setup_date && (
           <div className="pt-4 border-t">
-            <div className="text-sm text-gray-600">Setup Date</div>
+            <div className="text-sm text-gray-600">{t('fields.setupDate')}</div>
             <div className="font-medium">
               {new Date(tank.setup_date).toLocaleDateString()}
             </div>
             {daysUp > 0 && (
               <div className="mt-2">
                 <span className="inline-block px-3 py-1 bg-ocean-600 text-white text-sm font-semibold rounded-full">
-                  {daysUp} days running
+                  {t('stats.daysRunning', { count: daysUp })}
                 </span>
               </div>
             )}
@@ -185,7 +207,7 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
       {stats && (
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
-            Statistics
+            {t('statistics')}
           </h3>
           <TankStats stats={stats} />
         </div>
@@ -194,40 +216,40 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
       {/* Quick Actions Card */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
-          Quick Actions
+          {t('quickActions')}
         </h3>
         <div className="space-y-2">
           <Link
             to={`/parameters?tank=${tank.id}`}
             className="block w-full px-4 py-2 bg-ocean-600 text-white text-center rounded-md hover:bg-ocean-700 transition font-medium"
           >
-            📊 Log Parameters
+            {`📊 ${t('actions.logParameters')}`}
           </Link>
           <Link
             to="/photos"
             className="block w-full px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-md hover:bg-gray-200 transition font-medium"
           >
-            📷 Upload Photo
+            {`📷 ${t('actions.uploadPhoto')}`}
           </Link>
           {onAddEvent && (
             <button
               onClick={onAddEvent}
               className="block w-full px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-md hover:bg-gray-200 transition font-medium"
             >
-              📅 Add Event
+              {`📅 ${t('actions.addEvent')}`}
             </button>
           )}
           <Link
             to={`/equipment`}
             className="block w-full px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-md hover:bg-gray-200 transition font-medium"
           >
-            ⚙️ Manage Equipment
+            {`⚙️ ${t('actions.manageEquipment')}`}
           </Link>
           <Link
             to={`/livestock`}
             className="block w-full px-4 py-2 bg-gray-100 text-gray-700 text-center rounded-md hover:bg-gray-200 transition font-medium"
           >
-            🐟 Manage Livestock
+            {`🐟 ${t('actions.manageLivestock')}`}
           </Link>
         </div>
       </div>

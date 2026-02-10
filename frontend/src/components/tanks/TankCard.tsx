@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
@@ -18,14 +19,16 @@ interface TankCardProps {
 }
 
 export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
+  const { t } = useTranslation('tanks')
+  const { t: tc } = useTranslation('common')
   const navigate = useNavigate()
   const [imageError, setImageError] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'Not set'
+    if (!dateString) return t('notSet')
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString(undefined, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -101,10 +104,10 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
           />
         ) : tank.image_url && !imageUrl ? (
           <div className="flex items-center justify-center h-full bg-gradient-to-b from-ocean-100 to-ocean-200">
-            <div className="text-ocean-400 text-sm">Loading...</div>
+            <div className="text-ocean-400 text-sm">{tc('common.loading')}</div>
           </div>
         ) : (
-          <DefaultTankAnimation />
+          <DefaultTankAnimation waterType={tank.water_type} />
         )}
         <div className="absolute top-3 right-3 flex space-x-2">
           <button
@@ -113,7 +116,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
               onEdit(tank)
             }}
             className="p-2 bg-white text-ocean-600 hover:bg-ocean-50 rounded-md transition-colors shadow-sm"
-            title="Edit tank"
+            title={t('editTank')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -130,7 +133,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
               onDelete(tank.id)
             }}
             className="p-2 bg-white text-red-600 hover:bg-red-50 rounded-md transition-colors shadow-sm"
-            title="Delete tank"
+            title={t('deleteTank')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -146,10 +149,17 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
 
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
-        <h3 className="text-xl font-semibold text-gray-900">{tank.name}</h3>
+        <div className="flex items-start justify-between">
+          <h3 className="text-xl font-semibold text-gray-900">{tank.name}</h3>
+          {tank.aquarium_subtype && (
+            <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full capitalize whitespace-nowrap ml-2">
+              {t(`subtype.${tank.aquarium_subtype}`, { defaultValue: tank.aquarium_subtype.replace(/_/g, ' ') })}
+            </span>
+          )}
+        </div>
         {age && (
           <p className="text-sm text-gray-500 mt-1">
-            Running for {age}
+            {t('runningFor', { age })}
           </p>
         )}
         {tank.description && (
@@ -164,22 +174,22 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
         {/* Volumes */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Display Tank</span>
+            <span className="text-gray-600">{t('fields.displayVolume')}</span>
             <span className="font-medium text-gray-900">
-              {tank.display_volume_liters ? `${tank.display_volume_liters} L` : '-'}
+              {tank.display_volume_liters ? `${tank.display_volume_liters} ${t('fields.liters')}` : '-'}
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Sump</span>
+            <span className="text-gray-600">{t('fields.sumpVolume')}</span>
             <span className="font-medium text-gray-900">
-              {tank.sump_volume_liters ? `${tank.sump_volume_liters} L` : '-'}
+              {tank.sump_volume_liters ? `${tank.sump_volume_liters} ${t('fields.liters')}` : '-'}
             </span>
           </div>
           {tank.total_volume_liters > 0 && (
             <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
-              <span className="text-gray-700 font-medium">Total System</span>
+              <span className="text-gray-700 font-medium">{t('fields.totalSystem')}</span>
               <span className="font-semibold text-ocean-600">
-                {tank.total_volume_liters.toFixed(1)} L
+                {tank.total_volume_liters.toFixed(1)} {t('fields.liters')}
               </span>
             </div>
           )}
@@ -187,7 +197,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
 
         {/* Setup Date */}
         <div className="flex items-center justify-between text-sm pt-2">
-          <span className="text-gray-600">Setup Date</span>
+          <span className="text-gray-600">{t('fields.setupDate')}</span>
           <span className="text-gray-900">
             {formatDate(tank.setup_date)}
           </span>
@@ -197,7 +207,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
         {recentEvents.length > 0 && (
           <div className="pt-3 border-t border-gray-100">
             <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">
-              Recent Events
+              {t('recentEvents')}
             </h4>
             <div className="space-y-2">
               {recentEvents.map((event) => (
@@ -206,7 +216,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
                   <div className="flex-1 min-w-0">
                     <p className="text-gray-900 font-medium truncate">{event.title}</p>
                     <p className="text-gray-500">
-                      {new Date(event.event_date).toLocaleDateString('en-US', {
+                      {new Date(event.event_date).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
@@ -230,7 +240,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
             }}
             className="text-ocean-600 hover:text-ocean-700 font-medium transition-colors"
           >
-            View Parameters
+            {t('viewParameters')}
           </button>
           <button
             onClick={(e) => {
@@ -239,7 +249,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
             }}
             className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 font-medium transition-colors"
           >
-            Add Test
+            {t('actions.addTest')}
           </button>
         </div>
       </div>

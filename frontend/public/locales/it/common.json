@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "ReefLab",
-    "tagline": "Sistema di Gestione Acquario di Barriera"
+    "name": "AquaScope",
+    "tagline": "Una finestra sui tuoi acquari"
   },
   "navigation": {
     "dashboard": "Pannello",
@@ -56,7 +56,7 @@
   "footer": {
     "createdBy": "Creato da",
     "withLove": "con",
-    "forCommunity": "per la comunità degli acquariofili marini",
+    "forCommunity": "per la comunità degli acquariofili",
     "builtWith": "Sviluppato con",
     "copyright": "Tutti i diritti riservati",
     "links": "Link",
@@ -64,11 +64,11 @@
     "reportIssues": "Segnala problemi",
     "documentation": "Documentazione",
     "supportProject": "Supporta il progetto",
-    "helpKeepGoing": "Aiuta a mantenere attivo lo sviluppo di ReefLab",
+    "helpKeepGoing": "Aiuta a mantenere attivo lo sviluppo di AquaScope",
     "githubSponsors": "GitHub Sponsors",
     "buyMeCoffee": "Offrimi un caffè",
     "openSource": "Open source sotto licenza MIT",
-    "reefDescription": "Sistema completo di gestione per acquari di barriera"
+    "reefDescription": "Sistema completo di gestione per acquari"
   },
   "auth": {
     "signIn": "Accedi",
@@ -89,7 +89,7 @@
     "registrationFailed": "Registrazione fallita. Riprova.",
     "passwordsDontMatch": "Le password non coincidono",
     "passwordTooShort": "La password deve essere lunga almeno 8 caratteri",
-    "reefManagement": "Gestione Acquario di Barriera",
+    "reefManagement": "Gestione Acquario",
     "trackYourReef": "Monitora i parametri, la manutenzione e gli animali del tuo acquario"
   },
   "layout": {

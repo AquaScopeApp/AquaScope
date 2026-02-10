@@ -3,18 +3,42 @@
   "addTank": "Adicionar aquário",
   "editTank": "Editar aquário",
   "deleteTank": "Excluir aquário",
+  "createTank": "Criar novo aquário",
+  "updateTank": "Atualizar aquário",
+  "saving": "Salvando...",
   "tankDetails": "Detalhes do aquário",
   "quickActions": "Ações rápidas",
   "statistics": "Estatísticas",
+  "notSet": "Não definido",
+  "runningFor": "Ativo há {{age}}",
+  "recentEvents": "Eventos recentes",
+  "recentPhotos": "Fotos recentes",
+  "recentNotes": "Notas recentes",
+  "viewAll": "Ver tudo",
+  "viewParameters": "Ver parâmetros",
+  "latestIcpTest": "Último teste ICP",
+  "overallScore": "Pontuação geral",
+  "tankNotFound": "Aquário não encontrado",
+  "returnToList": "Voltar à lista de aquários",
+  "detailsAndManagement": "Detalhes e gestão do aquário",
+  "items": "itens",
+  "score": "Pontuação",
   "fields": {
     "name": "Nome do aquário",
     "description": "Descrição",
-    "displayVolume": "Volume do aquário principal",
-    "sumpVolume": "Volume do sump",
+    "displayVolume": "Aquário principal",
+    "sumpVolume": "Sump",
     "totalVolume": "Volume total",
+    "totalSystem": "Sistema total",
     "setupDate": "Data de montagem",
     "image": "Imagem do aquário",
-    "liters": "L"
+    "liters": "L",
+    "waterType": "Tipo de água",
+    "aquariumSubtype": "Subtipo de aquário",
+    "aquariumType": "Tipo de aquário",
+    "systemVolume": "Volume do sistema (Litros)",
+    "selectSubtype": "-- Selecionar subtipo --",
+    "setupDateHint": "Quando montou este aquário?"
   },
   "stats": {
     "daysRunning_one": "{{count}} dia ativo",
@@ -43,7 +67,8 @@
     "addEvent": "Adicionar evento",
     "manageEquipment": "Gerenciar equipamento",
     "manageLivestock": "Gerenciar animais",
-    "changeImage": "Alterar imagem"
+    "changeImage": "Alterar imagem",
+    "addTest": "Adicionar teste"
   },
   "emptyState": {
     "noTanks": "Nenhum aquário",
@@ -54,7 +79,15 @@
     "noPhotos": "Nenhuma foto",
     "noNotes": "Nenhuma nota",
     "noIcpTests": "Nenhum teste ICP",
-    "noMaintenance": "Nenhum lembrete de manutenção"
+    "noMaintenance": "Nenhum lembrete de manutenção",
+    "goToEquipment": "Vá à página de Equipamento para adicionar dispositivos",
+    "goToLivestock": "Vá à página de Animais para adicionar peixes e corais",
+    "goToPhotos": "Vá à página de Fotos para enviar imagens",
+    "goToNotes": "Vá à página de Notas para adicionar observações",
+    "goToIcpTests": "Vá à página de Testes ICP para enviar resultados",
+    "goToMaintenance": "Vá à página de Manutenção para configurar lembretes",
+    "startStory": "Comece a construir a história do seu aquário",
+    "addContent": "Adicione eventos, fotos e notas para acompanhar o progresso do seu aquário"
   },
   "myTanks": "Meus aquários",
   "manageSystems": "Gerencie seus sistemas de aquários de recife",
@@ -69,5 +102,42 @@
     "fileTypes": "PNG, JPG, GIF até 10 MB",
     "uploading": "Enviando...",
     "changeImage": "Alterar imagem"
+  },
+  "waterType": {
+    "freshwater": "Água doce",
+    "saltwater": "Água salgada",
+    "brackish": "Água salobra"
+  },
+  "subtype": {
+    "sps_dominant": "Dominância SPS",
+    "lps_dominant": "Dominância LPS",
+    "soft_coral": "Coral mole",
+    "mixed_reef": "Recife misto",
+    "fish_only": "Só peixes",
+    "fowlr": "FOWLR",
+    "amazonian": "Amazônico",
+    "tanganyika": "Tanganyika",
+    "malawi": "Malawi",
+    "planted": "Plantado",
+    "community": "Comunitário",
+    "discus": "Disco",
+    "shrimp": "Camarões",
+    "goldfish": "Peixe dourado",
+    "axolotl": "Axolotl",
+    "mangrove": "Mangue",
+    "brackish_community": "Comunitário salobro"
+  },
+  "maintenance": {
+    "reminders": "Lembretes de manutenção",
+    "overdue": "Atrasado:",
+    "next": "Próximo:",
+    "everyDays": "A cada {{count}} dias",
+    "active": "ativos"
+  },
+  "parameterRanges": {
+    "title": "Faixas de parâmetros",
+    "resetDefaults": "Redefinir padrões",
+    "customizeRanges": "Personalizar faixas",
+    "rangesNote": "As faixas de parâmetros serão definidas com base no tipo de aquário. Pode personalizá-las mais tarde."
   }
 }
