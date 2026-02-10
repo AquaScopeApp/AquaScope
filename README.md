@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.svg" alt="AquaScope - Aquarium Management" width="900" />
+  <img src="docs/images/logo.png" alt="AquaScope" width="180" />
 </p>
 
 <h1 align="center">AquaScope</h1>
