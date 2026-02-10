@@ -35,6 +35,7 @@ export default function Admin() {
   const [storageFiles, setStorageFiles] = useState<StorageFile[]>([])
   const [storageFilter, setStorageFilter] = useState<string>('')
   const [isDeletingOrphans, setIsDeletingOrphans] = useState(false)
+  const [isDownloadingAll, setIsDownloadingAll] = useState(false)
 
   // Redirect non-admin users
   if (!user?.is_admin) {
@@ -889,6 +890,31 @@ export default function Admin() {
             </div>
           )}
 
+          {/* Download All */}
+          {storageStats && storageStats.total_files > 0 && (
+            <div className="flex justify-end">
+              <button
+                onClick={async () => {
+                  setIsDownloadingAll(true)
+                  try {
+                    await adminApi.downloadAllFiles()
+                  } catch (err) {
+                    console.error('Download failed:', err)
+                  } finally {
+                    setIsDownloadingAll(false)
+                  }
+                }}
+                disabled={isDownloadingAll}
+                className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 disabled:opacity-50 flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                {isDownloadingAll ? 'Downloading...' : `Download All (${(storageStats.total_size_bytes / 1024 / 1024).toFixed(1)} MB)`}
+              </button>
+            </div>
+          )}
+
           {/* File browser */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b flex items-center justify-between">
@@ -919,6 +945,7 @@ export default function Admin() {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tank</th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Size</th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -950,11 +977,33 @@ export default function Admin() {
                           </span>
                         )}
                       </td>
+                      <td className="px-4 py-3 text-right">
+                        <a
+                          href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/admin/storage/download/${file.path}`}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            const token = localStorage.getItem('aquascope_token')
+                            const url = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/v1/admin/storage/download/${file.path}`
+                            fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+                              .then(res => res.blob())
+                              .then(blob => {
+                                const a = document.createElement('a')
+                                a.href = URL.createObjectURL(blob)
+                                a.download = file.name
+                                a.click()
+                                URL.revokeObjectURL(a.href)
+                              })
+                          }}
+                          className="text-ocean-600 hover:text-ocean-700 text-xs font-medium"
+                        >
+                          Download
+                        </a>
+                      </td>
                     </tr>
                   ))}
                   {storageFiles.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan={7} className="px-4 py-8 text-center text-gray-500">
                         No files found
                       </td>
                     </tr>

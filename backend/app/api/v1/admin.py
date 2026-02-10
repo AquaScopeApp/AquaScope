@@ -3,13 +3,15 @@ Admin API Endpoints
 
 Admin-only endpoints for user management and system monitoring.
 """
+import io
 import os
+import zipfile
 from typing import List, Optional
 from uuid import UUID
 from pathlib import Path
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func, text
 
@@ -1037,3 +1039,52 @@ def delete_orphan_files(
                 dir_path.rmdir()
 
     return {"deleted": deleted, "freed_bytes": freed_bytes}
+
+
+@router.get("/storage/download/{file_path:path}")
+def download_file(
+    file_path: str,
+    admin: User = Depends(get_current_admin_user),
+):
+    """Download a single file from storage."""
+    upload_dir = Path(settings.UPLOAD_DIR)
+    full_path = (upload_dir / file_path).resolve()
+
+    # Prevent path traversal
+    if not str(full_path).startswith(str(upload_dir.resolve())):
+        raise HTTPException(status_code=400, detail="Invalid file path")
+
+    if not full_path.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(
+        path=str(full_path),
+        filename=full_path.name,
+        media_type="application/octet-stream",
+    )
+
+
+@router.get("/storage/download-all")
+def download_all_files(
+    admin: User = Depends(get_current_admin_user),
+):
+    """Download all uploaded files as a ZIP archive."""
+    upload_dir = Path(settings.UPLOAD_DIR)
+    if not upload_dir.exists():
+        raise HTTPException(status_code=404, detail="No uploads directory")
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for root, _dirs, files in os.walk(upload_dir):
+            for fname in files:
+                full_path = Path(root) / fname
+                arcname = str(full_path.relative_to(upload_dir))
+                zf.write(full_path, arcname)
+
+    buf.seek(0)
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    return StreamingResponse(
+        buf,
+        media_type="application/zip",
+        headers={"Content-Disposition": f'attachment; filename="aquascope_uploads_{timestamp}.zip"'},
+    )

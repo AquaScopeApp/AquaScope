@@ -741,6 +741,22 @@ export const adminApi = {
     const response = await apiClient.delete<{ deleted: number; freed_bytes: number }>('/admin/storage/orphans')
     return response.data
   },
+
+  downloadAllFiles: async (): Promise<void> => {
+    const response = await apiClient.get('/admin/storage/download-all', {
+      responseType: 'blob',
+    })
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    const disposition = response.headers['content-disposition']
+    const filename = disposition?.match(/filename="(.+)"/)?.[1] || 'aquascope_uploads.zip'
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
+  },
 }
 
 // ============================================================================
