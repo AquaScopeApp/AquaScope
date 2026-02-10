@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Note, Tank } from '../types'
-import { notesApi, tanksApi } from '../api/client'
+import { notesApi, tanksApi } from '../api'
 import NoteCard from '../components/notes/NoteCard'
 import NoteEditor from '../components/notes/NoteEditor'
 

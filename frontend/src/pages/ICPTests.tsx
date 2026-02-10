@@ -10,7 +10,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { icpTestsApi, tanksApi } from '../api/client'
+import { icpTestsApi, tanksApi } from '../api'
 import type { ICPTest, ICPTestSummary, Tank } from '../types'
 
 export default function ICPTestsPage() {

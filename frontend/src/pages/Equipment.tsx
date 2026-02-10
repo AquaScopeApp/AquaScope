@@ -10,7 +10,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { equipmentApi, tanksApi } from '../api/client'
+import { equipmentApi, tanksApi } from '../api'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
 const EQUIPMENT_TYPES = [

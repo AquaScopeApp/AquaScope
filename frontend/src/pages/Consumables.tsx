@@ -11,7 +11,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { consumablesApi, tanksApi } from '../api/client'
+import { consumablesApi, tanksApi } from '../api'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
 
 const CONSUMABLE_TYPES = [

@@ -5,9 +5,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { renderWithProviders, userEvent } from '../../test/test-utils'
 import Register from '../Register'
-import * as apiClient from '../../api/client'
+import * as apiClient from '../../api'
 
-vi.mock('../../api/client', () => ({
+vi.mock('../../api', () => ({
   authApi: {
     register: vi.fn(),
     login: vi.fn(),

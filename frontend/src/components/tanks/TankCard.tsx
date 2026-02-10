@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
-import { tanksApi } from '../../api/client'
+import { tanksApi } from '../../api'
 import DefaultTankAnimation from './DefaultTankAnimation'
 
 interface TankCardProps {

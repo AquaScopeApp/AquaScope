@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Photo, Tank } from '../types'
-import { photosApi, tanksApi } from '../api/client'
+import { photosApi, tanksApi } from '../api'
 import PhotoGallery from '../components/photos/PhotoGallery'
 import PhotoUpload from '../components/photos/PhotoUpload'
 

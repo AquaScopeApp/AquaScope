@@ -15,7 +15,7 @@ import {
   notesApi,
   maintenanceApi,
   icpTestsApi,
-} from '../api/client'
+} from '../api'
 import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, MaintenanceReminder, ICPTestSummary } from '../types'
 import TankSidebar from '../components/tanks/TankSidebar'
 import TankTabs from '../components/tanks/TankTabs'

@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Livestock, Tank, LivestockCreate, LivestockStatus } from '../../types'
-import { livestockApi } from '../../api/client'
+import { livestockApi } from '../../api'
 
 interface LivestockFormProps {
   tanks: Tank[]

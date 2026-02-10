@@ -43,7 +43,7 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
-vi.mock('../../api/client', () => ({
+vi.mock('../../api', () => ({
   tanksApi: {
     list: vi.fn(),
     getImageBlobUrl: vi.fn().mockResolvedValue('blob:test-url'),
@@ -73,7 +73,7 @@ import {
   livestockApi,
   photosApi,
   notesApi,
-} from '../../api/client'
+} from '../../api'
 
 globalThis.URL.createObjectURL = vi.fn(() => 'blob:test-url')
 globalThis.URL.revokeObjectURL = vi.fn()

@@ -1,5 +1,7 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
+import { isLocalMode } from './platform'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import Layout from './components/Layout'
 import OfflineBanner from './components/OfflineBanner'
@@ -20,23 +22,32 @@ import Photos from './pages/Photos'
 import Notes from './pages/Notes'
 import Admin from './pages/Admin'
 
+const Welcome = lazy(() => import('./pages/Welcome'))
+
+const local = isLocalMode()
+
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <OfflineBanner />
+        {!local && <OfflineBanner />}
         <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          {/* Public Routes — only in web mode */}
+          {!local && <Route path="/login" element={<Login />} />}
+          {!local && <Route path="/register" element={<Register />} />}
 
-          {/* Protected Routes */}
+          {/* Welcome/onboarding — only in local mode */}
+          {local && (
+            <Route path="/welcome" element={
+              <Suspense fallback={null}><Welcome /></Suspense>
+            } />
+          )}
+
+          {/* Main app routes — wrapped in ProtectedRoute for web, direct for local */}
           <Route
             path="/"
             element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
+              local ? <Layout /> : <ProtectedRoute><Layout /></ProtectedRoute>
             }
           >
             <Route index element={<Navigate to="/dashboard" replace />} />
@@ -56,7 +67,7 @@ function App() {
             <Route path="icp-tests" element={<ICPTests />} />
             <Route path="photos" element={<Photos />} />
             <Route path="notes" element={<Notes />} />
-            <Route path="admin" element={<Admin />} />
+            {!local && <Route path="admin" element={<Admin />} />}
           </Route>
 
           {/* Catch all */}

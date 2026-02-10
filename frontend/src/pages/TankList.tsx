@@ -5,7 +5,7 @@
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { tanksApi } from '../api/client'
+import { tanksApi } from '../api'
 import type { Tank } from '../types'
 import TankCard from '../components/tanks/TankCard'
 import TankForm from '../components/tanks/TankForm'

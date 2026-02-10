@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
-import { tanksApi, maintenanceApi, equipmentApi, livestockApi, photosApi, notesApi } from '../api/client'
+import { tanksApi, maintenanceApi, equipmentApi, livestockApi, photosApi, notesApi } from '../api'
 import type { Tank, MaintenanceReminder } from '../types'
 
 interface TankSummary {

@@ -11,7 +11,7 @@ import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
 import TankTimelineVisual, { CATEGORY_LABELS } from './TankTimelineVisual'
 import { buildTimelineEntries, CATEGORY_COLORS } from '../../utils/timeline'
-import { photosApi, livestockApi } from '../../api/client'
+import { photosApi, livestockApi } from '../../api'
 
 interface TankTabsProps {
   tank: Tank

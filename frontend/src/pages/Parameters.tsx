@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { tanksApi, parametersApi, parameterRangesApi } from '../api/client'
+import { tanksApi, parametersApi, parameterRangesApi } from '../api'
 import { PARAMETER_RANGES, RATIO_ORDER, buildParameterRangesMap, getActiveParameterOrder } from '../config/parameterRanges'
 import type { ParameterRange } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'

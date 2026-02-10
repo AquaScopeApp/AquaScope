@@ -10,11 +10,14 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
+import { isLocalMode } from '../platform'
 import Footer from './Footer'
 import VersionBanner from './VersionBanner'
 import LanguageSelector from './LanguageSelector'
 import AquariumScene from './AquariumScene'
 import InstallPrompt from './InstallPrompt'
+
+const local = isLocalMode()
 
 export default function Layout(): JSX.Element {
   const location = useLocation()
@@ -66,8 +69,8 @@ export default function Layout(): JSX.Element {
           )
         })}
 
-        {/* Admin Link (only for admins) */}
-        {user?.is_admin && (
+        {/* Admin Link (only for admins, hidden in local mode) */}
+        {!local && user?.is_admin && (
           <>
             <div className="my-2 border-t border-gray-300" />
             <Link
@@ -88,20 +91,22 @@ export default function Layout(): JSX.Element {
         )}
       </nav>
 
-      {/* API Documentation Link */}
-      <div className="mt-8 p-4 bg-blue-50 rounded-md">
-        <p className="text-xs font-medium text-blue-900 mb-1">
-          {t('layout.developer')}
-        </p>
-        <a
-          href="http://localhost:8000/docs"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-xs text-blue-600 hover:text-blue-700"
-        >
-          {t('layout.apiDocumentation')}
-        </a>
-      </div>
+      {/* API Documentation Link — hidden in local mode */}
+      {!local && (
+        <div className="mt-8 p-4 bg-blue-50 rounded-md">
+          <p className="text-xs font-medium text-blue-900 mb-1">
+            {t('layout.developer')}
+          </p>
+          <a
+            href="http://localhost:8000/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-blue-600 hover:text-blue-700"
+          >
+            {t('layout.apiDocumentation')}
+          </a>
+        </div>
+      )}
     </>
   )
 
@@ -134,14 +139,16 @@ export default function Layout(): JSX.Element {
             <div className="flex items-center space-x-4">
               <LanguageSelector />
               <span className="text-sm text-gray-700 hidden sm:inline">
-                {user?.username}
+                {local ? 'My AquaScope' : user?.username}
               </span>
-              <button
-                onClick={logout}
-                className="text-sm text-gray-600 hover:text-gray-900"
-              >
-                {t('actions.logout')}
-              </button>
+              {!local && (
+                <button
+                  onClick={logout}
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  {t('actions.logout')}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -192,7 +199,7 @@ export default function Layout(): JSX.Element {
 
           {/* Main Content */}
           <main className="flex-1 min-w-0">
-            <InstallPrompt />
+            {!local && <InstallPrompt />}
             <AquariumScene />
             <div className="mt-6">
               <Outlet />

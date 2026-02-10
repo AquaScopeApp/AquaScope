@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Livestock, Tank } from '../../types'
 import { formatDistanceToNow, formatDistance } from 'date-fns'
-import { livestockApi } from '../../api/client'
+import { livestockApi } from '../../api'
 
 interface LivestockCardProps {
   livestock: Livestock

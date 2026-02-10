@@ -4,10 +4,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 import pkg from './package.json' with { type: 'json' }
 
+const isCapacitorBuild = process.env.CAPACITOR_BUILD === 'true'
+
 export default defineConfig({
   plugins: [
     react(),
-    VitePWA({
+    // Skip PWA plugin for Capacitor builds (native app doesn't need a service worker)
+    ...(!isCapacitorBuild ? [VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.svg',
@@ -119,7 +122,7 @@ export default defineConfig({
           },
         ],
       },
-    }),
+    })] : []),
   ],
   define: {
     __APP_VERSION__: JSON.stringify(`v${pkg.version}`),

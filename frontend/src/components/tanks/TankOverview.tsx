@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, ICPTestSummary } from '../../types'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { photosApi } from '../../api/client'
+import { photosApi } from '../../api'
 import TankTimelineVisual from './TankTimelineVisual'
 import { buildTimelineEntries } from '../../utils/timeline'
 

@@ -11,7 +11,7 @@ import type { Tank } from '../../types'
 import TankStats from './TankStats'
 import TankImageUpload from './TankImageUpload'
 import DefaultTankAnimation from './DefaultTankAnimation'
-import { tanksApi } from '../../api/client'
+import { tanksApi } from '../../api'
 
 interface TankSidebarProps {
   tank: Tank

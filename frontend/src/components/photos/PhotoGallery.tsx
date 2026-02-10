@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { Photo, Tank } from '../../types'
-import { photosApi } from '../../api/client'
+import { photosApi } from '../../api'
 
 interface PhotoGalleryProps {
   photos: Photo[]
