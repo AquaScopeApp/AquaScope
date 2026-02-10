@@ -97,5 +97,16 @@
     "admin": "Admin",
     "developer": "Developer",
     "apiDocumentation": "API Documentation →"
+  },
+  "pwa": {
+    "installTitle": "Install AquaScope",
+    "installDescription": "Add AquaScope to your home screen for quick access",
+    "installButton": "Install",
+    "later": "Later",
+    "offlineMessage": "You are offline. Changes will sync when you reconnect.",
+    "syncingMessage": "Syncing {{count}} pending change(s)...",
+    "syncFailedMessage": "{{count}} change(s) failed to sync. Will retry automatically.",
+    "updateAvailable": "A new version of AquaScope is available. Reload to update?",
+    "offlineReady": "AquaScope is ready for offline use."
   }
 }

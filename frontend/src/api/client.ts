@@ -8,7 +8,8 @@
  * - Type-safe request methods
  */
 
-import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { enqueueRequest } from '../services/offlineQueue'
 import type {
   AuthToken,
   LoginCredentials,
@@ -97,13 +98,37 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
+  async (error: AxiosError<ApiError>) => {
     if (error.response?.status === 401) {
       // Token expired or invalid - clear auth and redirect to login
       localStorage.removeItem('aquascope_token')
       localStorage.removeItem('aquascope_user')
       window.location.href = '/login'
+      return Promise.reject(error)
     }
+
+    // Offline queue: enqueue failed write operations when offline
+    const config = error.config
+    if (
+      config &&
+      !error.response &&
+      ['post', 'put', 'delete', 'patch'].includes(config.method || '') &&
+      !config.url?.includes('/auth/') &&
+      config.headers?.['Content-Type'] !== 'multipart/form-data'
+    ) {
+      const headers: Record<string, string> = {}
+      if (config.headers) {
+        for (const [key, value] of Object.entries(config.headers)) {
+          if (typeof value === 'string') headers[key] = value
+        }
+      }
+      const fullUrl = config.baseURL
+        ? `${config.baseURL}${config.url}`
+        : config.url || ''
+      await enqueueRequest(fullUrl, config.method!.toUpperCase(), headers, config.data ?? null)
+      return { data: { queued: true }, status: 202, statusText: 'Queued', headers: {}, config } as AxiosResponse
+    }
+
     return Promise.reject(error)
   }
 )

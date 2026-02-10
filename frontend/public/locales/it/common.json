@@ -97,5 +97,16 @@
     "admin": "Admin",
     "developer": "Sviluppatore",
     "apiDocumentation": "Documentazione API →"
+  },
+  "pwa": {
+    "installTitle": "Installa AquaScope",
+    "installDescription": "Aggiungi AquaScope alla schermata iniziale per un accesso rapido",
+    "installButton": "Installa",
+    "later": "Dopo",
+    "offlineMessage": "Sei offline. Le modifiche verranno sincronizzate alla riconnessione.",
+    "syncingMessage": "Sincronizzazione di {{count}} modifica/e in sospeso...",
+    "syncFailedMessage": "{{count}} modifica/e non sincronizzate. Nuovo tentativo automatico.",
+    "updateAvailable": "È disponibile una nuova versione di AquaScope. Ricaricare per aggiornare?",
+    "offlineReady": "AquaScope è pronto per l'uso offline."
   }
 }

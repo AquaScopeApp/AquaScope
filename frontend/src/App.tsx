@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './hooks/useAuth'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import Layout from './components/Layout'
+import OfflineBanner from './components/OfflineBanner'
 import './i18n/config' // Initialize i18n
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -23,6 +24,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <OfflineBanner />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />

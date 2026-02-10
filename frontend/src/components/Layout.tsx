@@ -2,9 +2,11 @@
  * Layout Component
  *
  * Main application layout with navigation sidebar and header.
+ * Desktop: fixed sidebar. Mobile: hamburger menu with slide-over drawer.
  * Wraps all authenticated pages.
  */
 
+import { useState, useEffect } from 'react'
 import { Link, useLocation, Outlet } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
@@ -12,11 +14,18 @@ import Footer from './Footer'
 import VersionBanner from './VersionBanner'
 import LanguageSelector from './LanguageSelector'
 import AquariumScene from './AquariumScene'
+import InstallPrompt from './InstallPrompt'
 
 export default function Layout(): JSX.Element {
   const location = useLocation()
   const { user, logout } = useAuth()
   const { t } = useTranslation('common')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
 
   const navigation = [
     { name: t('navigation.dashboard'), href: '/dashboard', icon: '🏠' },
@@ -33,13 +42,87 @@ export default function Layout(): JSX.Element {
 
   const isActive = (path: string) => location.pathname.startsWith(path)
 
+  const sidebarContent = (
+    <>
+      <nav className="space-y-1">
+        {navigation.map((item) => {
+          const active = isActive(item.href)
+          return (
+            <Link
+              key={item.name}
+              to={item.href}
+              className={`
+                flex items-center px-4 py-2 text-sm font-medium rounded-md
+                ${
+                  active
+                    ? 'bg-ocean-50 text-ocean-700'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }
+              `}
+            >
+              <span className="mr-3">{item.icon}</span>
+              {item.name}
+            </Link>
+          )
+        })}
+
+        {/* Admin Link (only for admins) */}
+        {user?.is_admin && (
+          <>
+            <div className="my-2 border-t border-gray-300" />
+            <Link
+              to="/admin"
+              className={`
+                flex items-center px-4 py-2 text-sm font-medium rounded-md
+                ${
+                  isActive('/admin')
+                    ? 'bg-red-50 text-red-700'
+                    : 'text-red-600 hover:bg-red-50'
+                }
+              `}
+            >
+              <span className="mr-3">⚙️</span>
+              {t('layout.admin')}
+            </Link>
+          </>
+        )}
+      </nav>
+
+      {/* API Documentation Link */}
+      <div className="mt-8 p-4 bg-blue-50 rounded-md">
+        <p className="text-xs font-medium text-blue-900 mb-1">
+          {t('layout.developer')}
+        </p>
+        <a
+          href="http://localhost:8000/docs"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:text-blue-700"
+        >
+          {t('layout.apiDocumentation')}
+        </a>
+      </div>
+    </>
+  )
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
+      <nav className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
+              {/* Hamburger button — mobile only */}
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="lg:hidden mr-3 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                aria-label="Open menu"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              </button>
+
               <Link to="/dashboard" className="flex items-center space-x-2">
                 <img src="/logo-128.png" alt="AquaScope" className="h-8 w-8" />
                 <span className="text-2xl font-bold text-ocean-600">
@@ -50,7 +133,7 @@ export default function Layout(): JSX.Element {
 
             <div className="flex items-center space-x-4">
               <LanguageSelector />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-gray-700 hidden sm:inline">
                 {user?.username}
               </span>
               <button
@@ -64,72 +147,52 @@ export default function Layout(): JSX.Element {
         </div>
       </nav>
 
+      {/* Mobile slide-over drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/30"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Drawer panel */}
+          <div className="fixed inset-y-0 left-0 w-72 bg-white shadow-xl overflow-y-auto">
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200">
+              <Link to="/dashboard" className="flex items-center space-x-2" onClick={() => setMobileMenuOpen(false)}>
+                <img src="/logo-128.png" alt="AquaScope" className="h-8 w-8" />
+                <span className="text-xl font-bold text-ocean-600">AquaScope</span>
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                aria-label="Close menu"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Drawer content */}
+            <div className="p-4">
+              {sidebarContent}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
-          {/* Sidebar Navigation */}
-          <aside className="w-64 flex-shrink-0">
-            <nav className="space-y-1">
-              {navigation.map((item) => {
-                const active = isActive(item.href)
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`
-                      flex items-center px-4 py-2 text-sm font-medium rounded-md
-                      ${
-                        active
-                          ? 'bg-ocean-50 text-ocean-700'
-                          : 'text-gray-700 hover:bg-gray-50'
-                      }
-                    `}
-                  >
-                    <span className="mr-3">{item.icon}</span>
-                    {item.name}
-                  </Link>
-                )
-              })}
-
-              {/* Admin Link (only for admins) */}
-              {user?.is_admin && (
-                <>
-                  <div className="my-2 border-t border-gray-300" />
-                  <Link
-                    to="/admin"
-                    className={`
-                      flex items-center px-4 py-2 text-sm font-medium rounded-md
-                      ${
-                        isActive('/admin')
-                          ? 'bg-red-50 text-red-700'
-                          : 'text-red-600 hover:bg-red-50'
-                      }
-                    `}
-                  >
-                    <span className="mr-3">⚙️</span>
-                    {t('layout.admin')}
-                  </Link>
-                </>
-              )}
-            </nav>
-
-            {/* API Documentation Link */}
-            <div className="mt-8 p-4 bg-blue-50 rounded-md">
-              <p className="text-xs font-medium text-blue-900 mb-1">
-                {t('layout.developer')}
-              </p>
-              <a
-                href="http://localhost:8000/docs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-blue-600 hover:text-blue-700"
-              >
-                {t('layout.apiDocumentation')}
-              </a>
-            </div>
+          {/* Desktop Sidebar — hidden on mobile */}
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            {sidebarContent}
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 min-w-0">
+            <InstallPrompt />
             <AquariumScene />
             <div className="mt-6">
               <Outlet />
