@@ -41,6 +41,10 @@
     "medication": "Medicamento",
     "other": "Outro"
   },
+  "depletion": {
+    "remaining": "Restante",
+    "stockLevel": "Nível de estoque"
+  },
   "form": {
     "name": "Nome",
     "type": "Tipo de consumível",

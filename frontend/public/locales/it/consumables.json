@@ -41,6 +41,10 @@
     "medication": "Medicinale",
     "other": "Altro"
   },
+  "depletion": {
+    "remaining": "Rimanente",
+    "stockLevel": "Livello scorte"
+  },
   "form": {
     "name": "Nome",
     "type": "Tipo di consumabile",

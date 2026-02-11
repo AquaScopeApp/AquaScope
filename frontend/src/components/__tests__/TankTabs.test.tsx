@@ -278,12 +278,9 @@ describe('TankTabs Component', () => {
     // Equipment names are rendered
     expect(screen.getByText('Protein Skimmer')).toBeInTheDocument()
     expect(screen.getByText('Heater')).toBeInTheDocument()
-    // Equipment types are rendered
-    expect(screen.getByText('filtration')).toBeInTheDocument()
-    expect(screen.getByText('heating')).toBeInTheDocument()
-    // Manufacturers are rendered
-    expect(screen.getByText('Aqua Medic')).toBeInTheDocument()
-    expect(screen.getByText('Eheim')).toBeInTheDocument()
+    // Equipment type + manufacturer are rendered in combined subtitle
+    expect(screen.getByText('filtration · Aqua Medic')).toBeInTheDocument()
+    expect(screen.getByText('heating · Eheim')).toBeInTheDocument()
   })
 
   it('shows empty state for tabs with no data', async () => {

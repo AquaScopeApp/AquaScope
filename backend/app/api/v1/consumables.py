@@ -65,8 +65,9 @@ def create_consumable(
     db.commit()
     db.refresh(db_consumable)
 
-    # Add usage_count
+    # Add usage_count and total_used
     db_consumable.usage_count = 0
+    db_consumable.total_used = 0
     return db_consumable
 
 
@@ -105,9 +106,10 @@ def list_consumables(
 
     consumables_list = query.order_by(Consumable.name).all()
 
-    # Add usage_count for each consumable
+    # Add usage_count and total_used for each consumable
     for c in consumables_list:
         c.usage_count = len(c.usage_records)
+        c.total_used = sum(u.quantity_used for u in c.usage_records)
 
     return consumables_list
 
@@ -131,6 +133,7 @@ def get_consumable(
         )
 
     consumable.usage_count = len(consumable.usage_records)
+    consumable.total_used = sum(u.quantity_used for u in consumable.usage_records)
     return consumable
 
 
@@ -161,6 +164,7 @@ def update_consumable(
     db.refresh(consumable)
 
     consumable.usage_count = len(consumable.usage_records)
+    consumable.total_used = sum(u.quantity_used for u in consumable.usage_records)
     return consumable
 
 
@@ -202,6 +206,7 @@ def archive_consumable(
     db.commit()
     db.refresh(consumable)
     consumable.usage_count = len(consumable.usage_records)
+    consumable.total_used = sum(u.quantity_used for u in consumable.usage_records)
     return consumable
 
 
@@ -219,6 +224,7 @@ def unarchive_consumable(
     db.commit()
     db.refresh(consumable)
     consumable.usage_count = len(consumable.usage_records)
+    consumable.total_used = sum(u.quantity_used for u in consumable.usage_records)
     return consumable
 
 

@@ -431,6 +431,7 @@ export interface Consumable {
   status: string
   notes: string | null
   usage_count: number
+  total_used: number
   is_archived: boolean
   created_at: string
   updated_at: string

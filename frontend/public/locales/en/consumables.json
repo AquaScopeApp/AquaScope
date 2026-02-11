@@ -41,6 +41,10 @@
     "medication": "Medication",
     "other": "Other"
   },
+  "depletion": {
+    "remaining": "Remaining",
+    "stockLevel": "Stock level"
+  },
   "form": {
     "name": "Name",
     "type": "Consumable Type",

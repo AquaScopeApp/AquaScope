@@ -41,6 +41,10 @@
     "medication": "Medikament",
     "other": "Sonstiges"
   },
+  "depletion": {
+    "remaining": "Verbleibend",
+    "stockLevel": "Lagerbestand"
+  },
   "form": {
     "name": "Name",
     "type": "Typ",

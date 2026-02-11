@@ -41,6 +41,10 @@
     "medication": "Médicament",
     "other": "Autre"
   },
+  "depletion": {
+    "remaining": "Restant",
+    "stockLevel": "Niveau de stock"
+  },
   "form": {
     "name": "Nom",
     "type": "Type de consommable",

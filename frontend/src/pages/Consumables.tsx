@@ -487,6 +487,27 @@ export default function ConsumablesPage() {
                 )}
               </div>
 
+              {/* Depletion progress bar */}
+              {item.quantity_on_hand !== null && item.total_used > 0 && (() => {
+                const initial = item.quantity_on_hand + item.total_used
+                const pct = Math.round((item.quantity_on_hand / initial) * 100)
+                const barColor = pct > 50 ? 'bg-green-500' : pct > 25 ? 'bg-yellow-500' : pct > 10 ? 'bg-orange-500' : 'bg-red-500'
+                return (
+                  <div className="mb-2">
+                    <div className="flex justify-between text-xs text-gray-500 mb-1">
+                      <span>{t('depletion.remaining')}</span>
+                      <span>{pct}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full transition-all ${barColor}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                )
+              })()}
+
               {/* Expiration warning */}
               {expInfo && (
                 <div className={`text-xs font-medium mb-1 ${expInfo.color}`}>

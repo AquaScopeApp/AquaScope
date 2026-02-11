@@ -27,6 +27,7 @@ function rowToConsumable(row: any): Consumable {
     status: row.status,
     notes: row.notes || null,
     usage_count: row.usage_count || 0,
+    total_used: row.total_used || 0,
     created_at: row.created_at,
     updated_at: row.updated_at,
     is_archived: !!row.is_archived,
@@ -49,23 +50,26 @@ function rowToUsage(row: any): ConsumableUsage {
 export const consumablesApi = {
   list: async (params?: { tank_id?: string; consumable_type?: string; status?: string; include_archived?: boolean }): Promise<Consumable[]> => {
     const userId = getLocalUserId()
-    const conditions = ['user_id = ?']
+    const conditions = ['c.user_id = ?']
     const values: any[] = [userId]
 
-    if (!params?.include_archived) { conditions.push('(is_archived = 0 OR is_archived IS NULL)') }
-    if (params?.tank_id) { conditions.push('tank_id = ?'); values.push(params.tank_id) }
-    if (params?.consumable_type) { conditions.push('consumable_type = ?'); values.push(params.consumable_type) }
-    if (params?.status) { conditions.push('status = ?'); values.push(params.status) }
+    if (!params?.include_archived) { conditions.push('(c.is_archived = 0 OR c.is_archived IS NULL)') }
+    if (params?.tank_id) { conditions.push('c.tank_id = ?'); values.push(params.tank_id) }
+    if (params?.consumable_type) { conditions.push('c.consumable_type = ?'); values.push(params.consumable_type) }
+    if (params?.status) { conditions.push('c.status = ?'); values.push(params.status) }
 
     const rows = await db.query(
-      `SELECT * FROM consumables WHERE ${conditions.join(' AND ')} ORDER BY created_at DESC`,
+      `SELECT c.*, COALESCE((SELECT SUM(quantity_used) FROM consumable_usage WHERE consumable_id = c.id), 0) as total_used
+       FROM consumables c WHERE ${conditions.join(' AND ')} ORDER BY c.created_at DESC`,
       values
     )
     return rows.map(rowToConsumable)
   },
 
   get: async (id: string): Promise<Consumable> => {
-    const row = await db.queryOne('SELECT * FROM consumables WHERE id = ?', [id])
+    const row = await db.queryOne(
+      `SELECT c.*, COALESCE((SELECT SUM(quantity_used) FROM consumable_usage WHERE consumable_id = c.id), 0) as total_used
+       FROM consumables c WHERE c.id = ?`, [id])
     if (!row) throw new Error('Consumable not found')
     return rowToConsumable(row)
   },

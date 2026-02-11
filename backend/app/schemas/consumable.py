@@ -48,6 +48,7 @@ class ConsumableResponse(ConsumableBase):
     tank_id: UUID
     user_id: UUID
     usage_count: int = 0
+    total_used: float = 0
     is_archived: bool = False
     created_at: datetime
     updated_at: datetime
