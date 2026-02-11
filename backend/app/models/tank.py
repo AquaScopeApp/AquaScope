@@ -55,7 +55,7 @@ class Tank(Base):
     is_archived = Column(Boolean, default=False, nullable=False, index=True)
 
     # Relationships
-    owner = relationship("User", back_populates="tanks")
+    owner = relationship("User", back_populates="tanks", foreign_keys=[user_id])
     notes = relationship("Note", back_populates="tank", cascade="all, delete-orphan")
     photos = relationship("Photo", back_populates="tank", cascade="all, delete-orphan")
     maintenance_reminders = relationship("MaintenanceReminder", back_populates="tank", cascade="all, delete-orphan")
