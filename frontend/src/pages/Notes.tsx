@@ -11,9 +11,12 @@ import { Note, Tank } from '../types'
 import { notesApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import Pagination from '../components/common/Pagination'
 import { useAuth } from '../hooks/useAuth'
 import NoteCard from '../components/notes/NoteCard'
 import NoteEditor from '../components/notes/NoteEditor'
+
+const NOTES_PER_PAGE = 20
 
 export default function Notes() {
   const { t } = useTranslation('notes')
@@ -25,9 +28,11 @@ export default function Notes() {
   const [editingNote, setEditingNote] = useState<Note | null>(null)
   const [searchParams] = useSearchParams()
   const [selectedTankId, setSelectedTankId] = useState<string>(searchParams.get('tank') || '')
-  useScrollToItem(notes)
+  const [currentPage, setCurrentPage] = useState(1)
+  useScrollToItem(notes, NOTES_PER_PAGE, setCurrentPage)
 
   useEffect(() => {
+    setCurrentPage(1)
     loadData()
   }, [selectedTankId])
 
@@ -198,18 +203,29 @@ export default function Notes() {
           </button>
         </div>
       ) : (
-        <div className="space-y-2">
-          {notes.map((note) => (
-            <div key={note.id} id={`card-${note.id}`}>
-              <NoteCard
-                note={note}
-                tanks={tanks}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className="space-y-2">
+            {notes
+              .slice((currentPage - 1) * NOTES_PER_PAGE, currentPage * NOTES_PER_PAGE)
+              .map((note) => (
+                <div key={note.id} id={`card-${note.id}`}>
+                  <NoteCard
+                    note={note}
+                    tanks={tanks}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </div>
+              ))}
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(notes.length / NOTES_PER_PAGE)}
+            totalItems={notes.length}
+            itemsPerPage={NOTES_PER_PAGE}
+            onPageChange={setCurrentPage}
+          />
+        </>
       )}
     </div>
   )

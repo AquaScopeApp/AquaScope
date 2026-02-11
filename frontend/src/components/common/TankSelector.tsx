@@ -8,7 +8,7 @@
  * When only one tank exists, auto-selects it and hides the "All" option.
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { tanksApi } from '../../api'
 import type { Tank } from '../../types'
 
@@ -40,13 +40,17 @@ export default function TankSelector({
   defaultTankId,
 }: TankSelectorProps) {
   const [thumbUrl, setThumbUrl] = useState<string | null>(null)
+  const hasAutoSelected = useRef(false)
 
-  // Auto-select: single tank first, then default tank
+  // Auto-select: single tank first, then default tank — only on initial mount
   const singleTank = tanks.length === 1
   useEffect(() => {
+    if (hasAutoSelected.current) return
     if (singleTank && (!value || value === 'all')) {
+      hasAutoSelected.current = true
       onChange(tanks[0].id)
     } else if (defaultTankId && (!value || value === 'all') && tanks.some(t => t.id === defaultTankId)) {
+      hasAutoSelected.current = true
       onChange(defaultTankId)
     }
   }, [singleTank, tanks, value, onChange, defaultTankId])

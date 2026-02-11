@@ -260,10 +260,6 @@ export default function ConsumablesPage() {
     })
   }
 
-  const getTankName = (tankId: string) => {
-    return tanks.find((t) => t.id === tankId)?.name || 'Unknown Tank'
-  }
-
   const formatType = (type: string) => {
     return t(`types.${type}`, type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '))
   }
@@ -399,159 +395,93 @@ export default function ConsumablesPage() {
         const totalPages = Math.ceil(consumables.length / ITEMS_PER_PAGE)
         const paged = consumables.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
         return (<>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {paged.map((item) => {
           const expInfo = getExpirationInfo(item.expiration_date)
+          const depletionPct = item.quantity_on_hand !== null && item.total_used > 0
+            ? Math.round((item.quantity_on_hand / (item.quantity_on_hand + item.total_used)) * 100)
+            : null
+          const depletionColor = depletionPct !== null
+            ? (depletionPct > 50 ? 'bg-green-500' : depletionPct > 25 ? 'bg-yellow-500' : depletionPct > 10 ? 'bg-orange-500' : 'bg-red-500')
+            : ''
           return (
-            <div key={item.id} id={`card-${item.id}`} className={`bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
-              <div className="flex items-start justify-between mb-3">
+            <div key={item.id} id={`card-${item.id}`} className={`bg-white rounded-lg shadow border border-gray-200 overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
+              {/* Top row: name + badges + actions */}
+              <div className="flex items-start p-3 gap-2">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-gray-900 truncate">
-                    {item.name}
+                  <h3 className="font-semibold text-gray-900 text-sm leading-tight truncate">{item.name}</h3>
+                  {(item.brand || item.product_name) && (
+                    <p className="text-xs text-gray-500 truncate">
+                      {item.brand}{item.brand && item.product_name ? ' · ' : ''}{item.product_name}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-1 flex-wrap mt-1">
+                    <span className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-full ${getStatusColor(item.status)}`}>
+                      {formatStatus(item.status)}
+                    </span>
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 text-gray-600">
+                      {formatType(item.consumable_type)}
+                    </span>
                     {item.is_archived && (
-                      <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">{tc('archivedStatus')}</span>
+                      <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-200 text-gray-700">{tc('archivedStatus')}</span>
                     )}
-                  </h3>
-                  <p className="text-sm text-gray-600">{formatType(item.consumable_type)}</p>
-                  <p className="text-xs text-gray-500 mt-1">{getTankName(item.tank_id)}</p>
+                  </div>
                 </div>
-                <div className="flex space-x-1">
+                <div className="flex space-x-0.5 flex-shrink-0">
                   {item.is_archived ? (
-                    <button
-                      onClick={() => handleUnarchive(item.id)}
-                      className="p-1 text-green-600 hover:bg-green-50 rounded"
-                      title={tc('actions.unarchive')}
-                    >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" />
-                      </svg>
+                    <button onClick={() => handleUnarchive(item.id)} className="p-1 text-green-600 hover:bg-green-100 rounded" title={tc('actions.unarchive')}>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" /></svg>
                     </button>
                   ) : (
-                    <button
-                      onClick={() => handleArchive(item.id)}
-                      className="p-1 text-gray-500 hover:bg-gray-50 rounded"
-                      title={tc('actions.archive')}
-                    >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                      </svg>
+                    <button onClick={() => handleArchive(item.id)} className="p-1 text-gray-500 hover:bg-gray-100 rounded" title={tc('actions.archive')}>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     </button>
                   )}
-                  <button
-                    onClick={() => handleConvertToEquipment(item.id, item.name)}
-                    className="p-1 text-amber-600 hover:bg-amber-50 rounded"
-                    title={t('moveToEquipment', { defaultValue: 'Move to Equipment' })}
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                    </svg>
+                  <button onClick={() => handleConvertToEquipment(item.id, item.name)} className="p-1 text-amber-600 hover:bg-amber-100 rounded" title={t('moveToEquipment', { defaultValue: 'Move to Equipment' })}>
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                   </button>
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="p-1 text-ocean-600 hover:bg-ocean-50 rounded"
-                    title="Edit"
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
+                  <button onClick={() => handleEdit(item)} className="p-1 text-gray-600 hover:bg-gray-200 rounded" title={tc('actions.edit')}>
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                   </button>
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="p-1 text-red-600 hover:bg-red-50 rounded"
-                    title="Delete"
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
+                  <button onClick={() => handleDelete(item.id)} className="p-1 text-red-600 hover:bg-red-100 rounded" title={tc('actions.delete')}>
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                   </button>
                 </div>
               </div>
 
-              {/* Brand */}
-              {(item.brand || item.product_name) && (
-                <div className="text-sm text-gray-700 mb-2">
-                  <span className="font-medium">{item.brand}</span>
-                  {item.product_name && <span className="ml-1">{item.product_name}</span>}
-                </div>
-              )}
-
-              {/* Status + Quantity badges */}
-              <div className="mb-2 flex flex-wrap gap-2">
-                <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status)}`}>
-                  {formatStatus(item.status)}
-                </span>
+              {/* Condensed info row */}
+              <div className="px-3 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600">
                 {item.quantity_on_hand !== null && (
-                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                    {item.quantity_on_hand} {item.quantity_unit || ''}
-                  </span>
+                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">📦</span><span className="font-medium text-gray-700">{item.quantity_on_hand} {item.quantity_unit || ''}</span></span>
+                )}
+                {item.purchase_price && (
+                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">💰</span><span className="font-medium text-gray-700">{displayPrice(item.purchase_price)}</span></span>
+                )}
+                {item.purchase_date && (
+                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">📅</span><span>{new Date(item.purchase_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })}</span></span>
+                )}
+                {expInfo && (
+                  <span className={`inline-flex items-center gap-0.5 font-medium ${expInfo.color}`}><span>⏰</span><span>{expInfo.label}</span></span>
+                )}
+                {item.purchase_url && (
+                  <a href={item.purchase_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 text-ocean-600 hover:text-ocean-700"><span>🛒</span><span className="underline">{t('buyAgain')}</span></a>
                 )}
               </div>
 
-              {/* Depletion progress bar */}
-              {item.quantity_on_hand !== null && item.total_used > 0 && (() => {
-                const initial = item.quantity_on_hand + item.total_used
-                const pct = Math.round((item.quantity_on_hand / initial) * 100)
-                const barColor = pct > 50 ? 'bg-green-500' : pct > 25 ? 'bg-yellow-500' : pct > 10 ? 'bg-orange-500' : 'bg-red-500'
-                return (
-                  <div className="mb-2">
-                    <div className="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>{t('depletion.remaining')}</span>
-                      <span>{pct}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full transition-all ${barColor}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                )
-              })()}
-
-              {/* Expiration warning */}
-              {expInfo && (
-                <div className={`text-xs font-medium mb-1 ${expInfo.color}`}>
-                  {expInfo.label}
-                </div>
-              )}
-
-              {/* Purchase info */}
-              {item.purchase_date && (
-                <div className="text-xs text-gray-500 mb-1">
-                  {t('purchased')} {new Date(item.purchase_date).toLocaleDateString()}
-                </div>
-              )}
-              {item.purchase_price && (
-                <div className="text-xs text-gray-500 mb-1">
-                  {t('price')} {displayPrice(item.purchase_price)}
-                </div>
-              )}
-
-              {/* Purchase URL */}
-              {item.purchase_url && (
-                <div className="mb-2">
-                  <a
-                    href={item.purchase_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-ocean-600 hover:text-ocean-700 font-medium break-all"
-                  >
-                    {t('buyAgain')} &rarr;
-                  </a>
+              {/* Depletion bar */}
+              {depletionPct !== null && (
+                <div className="px-3 pb-2">
+                  <div className="flex justify-between text-[10px] text-gray-500 mb-0.5"><span>{t('depletion.remaining')}</span><span>{depletionPct}%</span></div>
+                  <div className="w-full bg-gray-200 rounded-full h-1.5"><div className={`h-1.5 rounded-full transition-all ${depletionColor}`} style={{ width: `${depletionPct}%` }} /></div>
                 </div>
               )}
 
               {/* Notes */}
               {item.notes && (
-                <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200 break-words">
-                  <div className={expandedNotes.has(item.id) ? '' : 'line-clamp-3'}>
-                    {item.notes}
-                  </div>
+                <div className="px-3 pb-2">
+                  <div className={`text-[11px] text-gray-500 italic ${expandedNotes.has(item.id) ? '' : 'line-clamp-2'}`}>{item.notes}</div>
                   {item.notes.length > 120 && (
-                    <button
-                      onClick={() => toggleNotes(item.id)}
-                      className="text-xs text-ocean-600 hover:text-ocean-700 mt-1"
-                    >
+                    <button onClick={() => toggleNotes(item.id)} className="text-[10px] text-ocean-600 hover:text-ocean-700 mt-0.5">
                       {expandedNotes.has(item.id) ? tc('showLess', { defaultValue: 'Show less' }) : tc('showMore', { defaultValue: 'Show more' })}
                     </button>
                   )}
@@ -559,30 +489,16 @@ export default function ConsumablesPage() {
               )}
 
               {/* Usage actions */}
-              <div className="mt-3 pt-3 border-t border-gray-200 flex gap-2">
+              <div className="px-3 pb-2 flex gap-2">
                 <button
                   onClick={() => {
-                    if (loggingUsageId === item.id) {
-                      setLoggingUsageId(null)
-                    } else {
-                      setLoggingUsageId(item.id)
-                      setUsageData({
-                        quantity_used: '',
-                        quantity_unit: item.quantity_unit || '',
-                        usage_date: new Date().toISOString().split('T')[0],
-                        notes: '',
-                      })
-                    }
+                    if (loggingUsageId === item.id) { setLoggingUsageId(null) }
+                    else { setLoggingUsageId(item.id); setUsageData({ quantity_used: '', quantity_unit: item.quantity_unit || '', usage_date: new Date().toISOString().split('T')[0], notes: '' }) }
                   }}
-                  className="text-xs px-3 py-1 bg-ocean-50 text-ocean-700 rounded hover:bg-ocean-100 font-medium"
-                >
-                  {t('logUsage')}
-                </button>
+                  className="text-[10px] px-2 py-0.5 bg-ocean-50 text-ocean-700 rounded hover:bg-ocean-100 font-medium"
+                >{t('logUsage')}</button>
                 {item.usage_count > 0 && (
-                  <button
-                    onClick={() => handleViewUsage(item.id)}
-                    className="text-xs px-3 py-1 bg-gray-50 text-gray-700 rounded hover:bg-gray-100 font-medium"
-                  >
+                  <button onClick={() => handleViewUsage(item.id)} className="text-[10px] px-2 py-0.5 bg-gray-50 text-gray-700 rounded hover:bg-gray-100 font-medium">
                     {t('usageHistory')} ({item.usage_count})
                   </button>
                 )}
@@ -590,54 +506,29 @@ export default function ConsumablesPage() {
 
               {/* Inline usage form */}
               {loggingUsageId === item.id && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-md space-y-2">
+                <div className="p-3 bg-gray-50 border-t border-gray-200 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
-                    <input
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      placeholder={t('form.quantityUsed')}
-                      value={usageData.quantity_used}
+                    <input type="number" step="0.01" min="0" placeholder={t('form.quantityUsed')} value={usageData.quantity_used}
                       onChange={(e) => setUsageData({ ...usageData, quantity_used: e.target.value })}
-                      className="px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500"
-                    />
-                    <select
-                      value={usageData.quantity_unit}
-                      onChange={(e) => setUsageData({ ...usageData, quantity_unit: e.target.value })}
-                      className="px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500"
-                    >
+                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500" />
+                    <select value={usageData.quantity_unit} onChange={(e) => setUsageData({ ...usageData, quantity_unit: e.target.value })}
+                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500">
                       <option value="">{t('form.unit')}</option>
-                      {QUANTITY_UNITS.map((u) => (
-                        <option key={u} value={u}>{u}</option>
-                      ))}
+                      {QUANTITY_UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
                     </select>
                   </div>
-                  <input
-                    type="date"
-                    value={usageData.usage_date}
-                    onChange={(e) => setUsageData({ ...usageData, usage_date: e.target.value })}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500"
-                  />
+                  <input type="date" value={usageData.usage_date} onChange={(e) => setUsageData({ ...usageData, usage_date: e.target.value })}
+                    className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500" />
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => handleLogUsage(item.id)}
-                      className="flex-1 text-xs px-3 py-1.5 bg-ocean-600 text-white rounded hover:bg-ocean-700 font-medium"
-                    >
-                      {tc('actions.save')}
-                    </button>
-                    <button
-                      onClick={() => setLoggingUsageId(null)}
-                      className="text-xs px-3 py-1.5 border border-gray-300 text-gray-700 rounded hover:bg-gray-50"
-                    >
-                      {tc('actions.cancel')}
-                    </button>
+                    <button onClick={() => handleLogUsage(item.id)} className="flex-1 text-xs px-2 py-1 bg-ocean-600 text-white rounded hover:bg-ocean-700 font-medium">{tc('actions.save')}</button>
+                    <button onClick={() => setLoggingUsageId(null)} className="text-xs px-2 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50">{tc('actions.cancel')}</button>
                   </div>
                 </div>
               )}
 
               {/* Usage history */}
               {viewingUsageId === item.id && (
-                <div className="mt-3 p-3 bg-gray-50 rounded-md">
+                <div className="p-3 bg-gray-50 border-t border-gray-200">
                   <h4 className="text-xs font-semibold text-gray-700 mb-2">{t('usageHistory')}</h4>
                   {usageHistory.length === 0 ? (
                     <p className="text-xs text-gray-500">{t('noUsage')}</p>

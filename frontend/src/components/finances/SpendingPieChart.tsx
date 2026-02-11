@@ -1,7 +1,7 @@
 /**
  * Spending Pie Chart
  *
- * Donut chart showing spending breakdown by category (equipment, consumables, livestock, ICP tests).
+ * Donut chart showing spending breakdown by category with amount labels.
  */
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
@@ -19,6 +19,31 @@ const COLORS: Record<string, string> = {
 interface Props {
   data: CategorySpending[]
   currency?: string
+}
+
+const RADIAN = Math.PI / 180
+
+const renderCustomLabel = (
+  { cx, cy, midAngle, outerRadius, value, name }: any,
+  currency: string,
+) => {
+  const radius = outerRadius + 24
+  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="#374151"
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central"
+      fontSize={11}
+      fontWeight={500}
+    >
+      {`${name}: ${formatPrice(value, currency)}`}
+    </text>
+  )
 }
 
 export default function SpendingPieChart({ data, currency = 'EUR' }: Props) {
@@ -41,16 +66,18 @@ export default function SpendingPieChart({ data, currency = 'EUR' }: Props) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
+    <ResponsiveContainer width="100%" height={320}>
       <PieChart>
         <Pie
           data={chartData}
           cx="50%"
           cy="50%"
-          innerRadius={60}
-          outerRadius={100}
+          innerRadius={55}
+          outerRadius={90}
           paddingAngle={2}
           dataKey="value"
+          label={(props) => renderCustomLabel(props, currency)}
+          labelLine={false}
         >
           {chartData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />

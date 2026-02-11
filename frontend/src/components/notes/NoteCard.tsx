@@ -19,7 +19,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
   const [expanded, setExpanded] = useState(false)
   const tank = tanks.find((t) => t.id === note.tank_id)
 
-  const isLong = note.content.length > 180 || note.content.split('\n').length > 3
+  const isLong = note.content.length > 250 || note.content.split('\n').length > 4
   const wasEdited = note.updated_at !== note.created_at
 
   return (
@@ -34,7 +34,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
             {format(new Date(note.created_at), 'd')}
           </div>
           <div className="text-[10px] text-gray-500 uppercase leading-tight">
-            {format(new Date(note.created_at), 'MMM')}
+            {format(new Date(note.created_at), 'MMM yy')}
           </div>
         </div>
 
@@ -57,7 +57,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
           </div>
 
           {/* Note text */}
-          <div className={`text-sm text-gray-700 whitespace-pre-wrap ${!expanded && isLong ? 'line-clamp-2' : ''}`}>
+          <div className={`text-sm text-gray-700 whitespace-pre-wrap ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
             {note.content}
           </div>
 
