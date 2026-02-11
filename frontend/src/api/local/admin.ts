@@ -138,6 +138,14 @@ export const adminApi = {
     // Not applicable in local mode
   },
 
+  selectiveExport: async (): Promise<void> => {
+    // Not applicable in local mode
+  },
+
+  importZip: async (): Promise<{ message: string; imported: Record<string, number>; note?: string }> => {
+    return { message: 'Not available in local mode', imported: {} }
+  },
+
   getModuleSettings: async (): Promise<Record<string, boolean>> => {
     // In local mode, all modules are enabled by default
     return {

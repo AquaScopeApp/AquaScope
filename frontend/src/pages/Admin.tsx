@@ -40,6 +40,18 @@ export default function Admin() {
   const [storageFilter, setStorageFilter] = useState<string>('')
   const [isDeletingOrphans, setIsDeletingOrphans] = useState(false)
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
+  const [allTanks, setAllTanks] = useState<Tank[]>([])
+  const [exportUserIds, setExportUserIds] = useState<Set<string>>(new Set())
+  const [exportTankIds, setExportTankIds] = useState<Set<string>>(new Set())
+  const [exportDataTypes, setExportDataTypes] = useState<Set<string>>(new Set([
+    'tanks', 'notes', 'photos', 'livestock', 'equipment', 'maintenance',
+    'icp_tests', 'consumables', 'budgets', 'events', 'parameter_ranges', 'parameters', 'settings'
+  ]))
+  const [exportIncludeFiles, setExportIncludeFiles] = useState(true)
+  const [isExporting, setIsExporting] = useState(false)
+  const [isImporting, setIsImporting] = useState(false)
+  const [importReplace, setImportReplace] = useState(false)
+  const [importResult, setImportResult] = useState<{ message: string; imported: Record<string, number>; note?: string } | null>(null)
   const [moduleToggles, setModuleToggles] = useState<ModuleSettings>({ ...globalModules })
   const [savingModules, setSavingModules] = useState(false)
   const [defaultCurrency, setDefaultCurrency] = useState(globalCurrency)
@@ -66,12 +78,17 @@ export default function Admin() {
         setUsers(usersData)
       }
       if (activeTab === 'storage') {
-        const [statsData, filesData] = await Promise.all([
+        const [statsData, filesData, usersData] = await Promise.all([
           adminApi.getStorageStats(),
-          adminApi.getStorageFiles(storageFilter || undefined),
+          adminApi.getStorageFiles(undefined, storageFilter || undefined),
+          users.length ? Promise.resolve(users) : adminApi.listUsersWithStats(),
         ])
         setStorageStats(statsData)
         setStorageFiles(filesData)
+        if (!users.length) setUsers(usersData)
+        // Fetch all tanks for export selector
+        const dbExport = await adminApi.exportDatabase()
+        setAllTanks(dbExport.tanks || [])
       }
     } catch (error) {
       console.error('Failed to load admin data:', error)
@@ -921,30 +938,285 @@ export default function Admin() {
             </div>
           )}
 
-          {/* Download All */}
-          {storageStats && storageStats.total_files > 0 && (
-            <div className="flex justify-end">
-              <button
-                onClick={async () => {
-                  setIsDownloadingAll(true)
-                  try {
-                    await adminApi.downloadAllFiles()
-                  } catch (err) {
-                    console.error('Download failed:', err)
-                  } finally {
-                    setIsDownloadingAll(false)
-                  }
-                }}
-                disabled={isDownloadingAll}
-                className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 disabled:opacity-50 flex items-center gap-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {/* Export & Import */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Export Panel */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5 text-ocean-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                {isDownloadingAll ? 'Downloading...' : `Download All (${(storageStats.total_size_bytes / 1024 / 1024).toFixed(1)} MB)`}
-              </button>
+                Export Data
+              </h3>
+
+              {/* User Selection */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Users</label>
+                <div className="space-y-1 max-h-32 overflow-y-auto border rounded-md p-2">
+                  <label className="flex items-center gap-2 text-sm cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={exportUserIds.size === 0}
+                      onChange={() => setExportUserIds(new Set())}
+                      className="rounded border-gray-300 text-ocean-600"
+                    />
+                    <span className="font-medium">All users</span>
+                  </label>
+                  {users.map(u => (
+                    <label key={u.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={exportUserIds.size === 0 || exportUserIds.has(u.id)}
+                        onChange={() => {
+                          const next = new Set(exportUserIds)
+                          if (next.has(u.id)) {
+                            next.delete(u.id)
+                          } else {
+                            next.add(u.id)
+                          }
+                          setExportUserIds(next)
+                          setExportTankIds(new Set())
+                        }}
+                        className="rounded border-gray-300 text-ocean-600"
+                      />
+                      {u.email} <span className="text-gray-400">({u.tank_count} tanks)</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tank Selection */}
+              {allTanks.length > 0 && (
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tanks</label>
+                  <div className="space-y-1 max-h-32 overflow-y-auto border rounded-md p-2">
+                    <label className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={exportTankIds.size === 0}
+                        onChange={() => setExportTankIds(new Set())}
+                        className="rounded border-gray-300 text-ocean-600"
+                      />
+                      <span className="font-medium">All tanks</span>
+                    </label>
+                    {allTanks
+                      .filter(t => exportUserIds.size === 0 || exportUserIds.has(t.user_id))
+                      .map(t => (
+                        <label key={t.id} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={exportTankIds.size === 0 || exportTankIds.has(t.id)}
+                            onChange={() => {
+                              const next = new Set(exportTankIds)
+                              if (next.has(t.id)) next.delete(t.id)
+                              else next.add(t.id)
+                              setExportTankIds(next)
+                            }}
+                            className="rounded border-gray-300 text-ocean-600"
+                          />
+                          {t.name} <span className="text-gray-400 capitalize">({t.water_type})</span>
+                        </label>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Data Types */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Data types</label>
+                <div className="grid grid-cols-2 gap-1">
+                  {[
+                    { key: 'tanks', label: 'Tanks' },
+                    { key: 'notes', label: 'Notes' },
+                    { key: 'photos', label: 'Photos' },
+                    { key: 'livestock', label: 'Livestock' },
+                    { key: 'equipment', label: 'Equipment' },
+                    { key: 'maintenance', label: 'Maintenance' },
+                    { key: 'icp_tests', label: 'ICP Tests' },
+                    { key: 'consumables', label: 'Consumables' },
+                    { key: 'budgets', label: 'Budgets' },
+                    { key: 'events', label: 'Events' },
+                    { key: 'parameter_ranges', label: 'Param Ranges' },
+                    { key: 'parameters', label: 'Parameters' },
+                    { key: 'settings', label: 'Settings' },
+                  ].map(dt => (
+                    <label key={dt.key} className="flex items-center gap-2 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={exportDataTypes.has(dt.key)}
+                        onChange={() => {
+                          const next = new Set(exportDataTypes)
+                          if (next.has(dt.key)) next.delete(dt.key)
+                          else next.add(dt.key)
+                          setExportDataTypes(next)
+                        }}
+                        className="rounded border-gray-300 text-ocean-600"
+                      />
+                      {dt.label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Include files toggle */}
+              <label className="flex items-center gap-2 text-sm mb-4 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={exportIncludeFiles}
+                  onChange={(e) => setExportIncludeFiles(e.target.checked)}
+                  className="rounded border-gray-300 text-ocean-600"
+                />
+                <span>Include uploaded files (photos, PDFs, images)</span>
+              </label>
+
+              {/* Export buttons */}
+              <div className="flex gap-2">
+                <button
+                  onClick={async () => {
+                    setIsExporting(true)
+                    try {
+                      await adminApi.selectiveExport({
+                        user_ids: exportUserIds.size > 0 ? Array.from(exportUserIds) : null,
+                        tank_ids: exportTankIds.size > 0 ? Array.from(exportTankIds) : null,
+                        data_types: exportDataTypes.size < 13 ? Array.from(exportDataTypes) : null,
+                        include_files: exportIncludeFiles,
+                      })
+                    } catch (err) {
+                      console.error('Export failed:', err)
+                      alert('Export failed')
+                    } finally {
+                      setIsExporting(false)
+                    }
+                  }}
+                  disabled={isExporting || exportDataTypes.size === 0}
+                  className="flex-1 px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isExporting ? 'Exporting...' : 'Export ZIP'}
+                </button>
+                {storageStats && (
+                  <button
+                    onClick={async () => {
+                      setIsDownloadingAll(true)
+                      try {
+                        await adminApi.downloadAllFiles()
+                      } catch (err) {
+                        console.error('Download failed:', err)
+                      } finally {
+                        setIsDownloadingAll(false)
+                      }
+                    }}
+                    disabled={isDownloadingAll}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 text-sm"
+                    title="Download everything without filters"
+                  >
+                    {isDownloadingAll ? 'Downloading...' : 'Download All'}
+                  </button>
+                )}
+              </div>
             </div>
-          )}
+
+            {/* Import Panel */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                Import from ZIP
+              </h3>
+
+              <p className="text-sm text-gray-600 mb-4">
+                Upload a ZIP file previously exported from AquaScope. The ZIP should contain
+                a <code className="bg-gray-100 px-1 rounded">database.json</code> and
+                optionally an <code className="bg-gray-100 px-1 rounded">uploads/</code> folder.
+              </p>
+
+              {/* Replace mode toggle */}
+              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <label className="flex items-center gap-2 text-sm cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={importReplace}
+                    onChange={(e) => setImportReplace(e.target.checked)}
+                    className="rounded border-amber-400 text-amber-600"
+                  />
+                  <span className="font-medium text-amber-800">Replace mode</span>
+                </label>
+                <p className="text-xs text-amber-600 mt-1 ml-6">
+                  {importReplace
+                    ? 'WARNING: Existing data for imported users will be deleted before import!'
+                    : 'Data will be added alongside existing records (duplicates may occur).'}
+                </p>
+              </div>
+
+              {/* File upload */}
+              <div
+                className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-ocean-400 transition-colors cursor-pointer"
+                onClick={() => {
+                  const input = document.createElement('input')
+                  input.type = 'file'
+                  input.accept = '.zip'
+                  input.onchange = async (e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0]
+                    if (!file) return
+                    if (importReplace && !confirm('Replace mode is ON. This will delete existing data for imported users before importing. Continue?')) return
+                    setIsImporting(true)
+                    setImportResult(null)
+                    try {
+                      const result = await adminApi.importZip(file, importReplace)
+                      setImportResult(result)
+                      loadData()
+                    } catch (err: any) {
+                      const detail = err?.response?.data?.detail || 'Import failed'
+                      setImportResult({ message: detail, imported: {} })
+                    } finally {
+                      setIsImporting(false)
+                    }
+                  }
+                  input.click()
+                }}
+              >
+                {isImporting ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-600"></div>
+                    <span className="text-sm text-gray-600">Importing...</span>
+                  </div>
+                ) : (
+                  <>
+                    <svg className="w-10 h-10 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <p className="text-sm text-gray-600">Click to select a ZIP file</p>
+                    <p className="text-xs text-gray-400 mt-1">AquaScope export ZIP</p>
+                  </>
+                )}
+              </div>
+
+              {/* Import result */}
+              {importResult && (
+                <div className={`mt-4 p-4 rounded-lg text-sm ${
+                  importResult.message.includes('failed') ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'
+                }`}>
+                  <p className={`font-medium ${importResult.message.includes('failed') ? 'text-red-800' : 'text-green-800'}`}>
+                    {importResult.message}
+                  </p>
+                  {Object.keys(importResult.imported).length > 0 && (
+                    <div className="mt-2 grid grid-cols-3 gap-1">
+                      {Object.entries(importResult.imported)
+                        .filter(([, v]) => v > 0)
+                        .map(([k, v]) => (
+                          <span key={k} className="text-xs text-gray-600">
+                            {k}: <span className="font-medium">{v}</span>
+                          </span>
+                        ))}
+                    </div>
+                  )}
+                  {importResult.note && (
+                    <p className="mt-2 text-xs text-amber-700">{importResult.note}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* File browser */}
           <div className="bg-white rounded-lg shadow">

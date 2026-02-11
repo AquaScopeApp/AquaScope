@@ -971,6 +971,42 @@ export const adminApi = {
     link.remove()
     window.URL.revokeObjectURL(url)
   },
+
+  selectiveExport: async (options: {
+    user_ids?: string[] | null
+    tank_ids?: string[] | null
+    data_types?: string[] | null
+    include_files?: boolean
+  }): Promise<void> => {
+    const response = await apiClient.post('/admin/storage/export', options, {
+      responseType: 'blob',
+    })
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    const disposition = response.headers['content-disposition']
+    const filename = disposition?.match(/filename="(.+)"/)?.[1] || 'aquascope_export.zip'
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
+  },
+
+  importZip: async (file: File, replace?: boolean): Promise<{
+    message: string
+    imported: Record<string, number>
+    note?: string
+  }> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await apiClient.post(
+      `/admin/storage/import-zip${replace ? '?replace=true' : ''}`,
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    )
+    return response.data
+  },
 }
 
 // ============================================================================
