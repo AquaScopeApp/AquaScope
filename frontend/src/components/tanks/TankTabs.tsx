@@ -4,7 +4,7 @@
  * Tabbed interface for viewing tank-specific data (events, equipment, livestock, etc.)
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory } from '../../types'
 import TankOverview from './TankOverview'
@@ -12,6 +12,12 @@ import TankTimeline from './TankTimeline'
 import TankTimelineVisual, { CATEGORY_LABELS } from './TankTimelineVisual'
 import { buildTimelineEntries, CATEGORY_COLORS } from '../../utils/timeline'
 import { photosApi, livestockApi } from '../../api'
+import Pagination from '../common/Pagination'
+
+const EQUIPMENT_PER_PAGE = 10
+const LIVESTOCK_PER_PAGE = 10
+const PHOTOS_PER_PAGE = 12
+const NOTES_PER_PAGE = 10
 
 interface TankTabsProps {
   tank: Tank
@@ -58,6 +64,17 @@ export default function TankTabs({
   const [activeTab, setActiveTab] = useState<TabId>('overview')
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({})
   const [livestockThumbnails, setLivestockThumbnails] = useState<Record<string, string>>({})
+
+  // Pagination state per tab
+  const [equipPage, setEquipPage] = useState(1)
+  const [livestockPage, setLivestockPage] = useState(1)
+  const [photosPage, setPhotosPage] = useState(1)
+  const [notesPage, setNotesPage] = useState(1)
+
+  // Filter state per tab
+  const [equipTypeFilter, setEquipTypeFilter] = useState('')
+  const [livestockTypeFilter, setLivestockTypeFilter] = useState('')
+  const [livestockStatusFilter, setLivestockStatusFilter] = useState('')
 
   // Shared category filter for Events tab (timeline + event list)
   const [hiddenCategories, setHiddenCategories] = useState<Set<TimelineCategory>>(new Set())
@@ -138,6 +155,14 @@ export default function TankTabs({
     { id: 'maintenance', label: t('tabs.maintenance'), icon: '🔧', count: maintenance.filter(m => m.is_active).length },
   ]
 
+  // Unique equipment types for filter dropdown
+  const equipmentTypes = useMemo(() => [...new Set(equipment.map(e => e.equipment_type))].sort(), [equipment])
+  const livestockTypes = useMemo(() => [...new Set(livestock.map(l => l.type))].sort(), [livestock])
+
+  // Reset page when filter changes
+  useEffect(() => { setEquipPage(1) }, [equipTypeFilter])
+  useEffect(() => { setLivestockPage(1) }, [livestockTypeFilter, livestockStatusFilter])
+
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -213,14 +238,34 @@ export default function TankTabs({
         )
       }
 
-      case 'equipment':
+      case 'equipment': {
+        const filteredEquip = equipTypeFilter
+          ? equipment.filter(e => e.equipment_type === equipTypeFilter)
+          : equipment
+        const equipTotalPages = Math.ceil(filteredEquip.length / EQUIPMENT_PER_PAGE)
+        const pagedEquip = filteredEquip.slice((equipPage - 1) * EQUIPMENT_PER_PAGE, equipPage * EQUIPMENT_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">{t('tabs.equipment')}</h3>
-              <span className="text-sm text-gray-500">{equipment.length} {t('items')}</span>
+              <div className="flex items-center gap-3">
+                {equipmentTypes.length > 1 && (
+                  <select
+                    value={equipTypeFilter}
+                    onChange={(e) => setEquipTypeFilter(e.target.value)}
+                    className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                  >
+                    <option value="">{tc('all', { defaultValue: 'All' })} ({equipment.length})</option>
+                    {equipmentTypes.map(t => (
+                      <option key={t} value={t}>{t} ({equipment.filter(e => e.equipment_type === t).length})</option>
+                    ))}
+                  </select>
+                )}
+                <span className="text-sm text-gray-500">{filteredEquip.length} {t('items')}</span>
+              </div>
             </div>
-            {equipment.length === 0 ? (
+            {filteredEquip.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">⚙️</div>
                 <p className="text-gray-600">{t('emptyState.noEquipment')}</p>
@@ -230,7 +275,7 @@ export default function TankTabs({
               </div>
             ) : (
               <div className="space-y-3">
-                {equipment.map((item) => (
+                {pagedEquip.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
@@ -253,17 +298,49 @@ export default function TankTabs({
                 ))}
               </div>
             )}
+            <Pagination currentPage={equipPage} totalPages={equipTotalPages} totalItems={filteredEquip.length} itemsPerPage={EQUIPMENT_PER_PAGE} onPageChange={setEquipPage} />
           </div>
         )
+      }
 
-      case 'livestock':
+      case 'livestock': {
+        const filteredLivestock = livestock
+          .filter(l => !livestockTypeFilter || l.type === livestockTypeFilter)
+          .filter(l => !livestockStatusFilter || l.status === livestockStatusFilter)
+        const livestockTotalPages = Math.ceil(filteredLivestock.length / LIVESTOCK_PER_PAGE)
+        const pagedLivestock = filteredLivestock.slice((livestockPage - 1) * LIVESTOCK_PER_PAGE, livestockPage * LIVESTOCK_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">{t('tabs.livestock')}</h3>
-              <span className="text-sm text-gray-500">{livestock.length} {t('items')}</span>
+              <div className="flex items-center gap-3">
+                {livestockTypes.length > 1 && (
+                  <select
+                    value={livestockTypeFilter}
+                    onChange={(e) => setLivestockTypeFilter(e.target.value)}
+                    className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                  >
+                    <option value="">{tc('all', { defaultValue: 'All' })} ({livestock.length})</option>
+                    {livestockTypes.map(t => (
+                      <option key={t} value={t}>{t} ({livestock.filter(l => l.type === t).length})</option>
+                    ))}
+                  </select>
+                )}
+                <select
+                  value={livestockStatusFilter}
+                  onChange={(e) => setLivestockStatusFilter(e.target.value)}
+                  className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                >
+                  <option value="">{tc('allStatus', { defaultValue: 'All Status' })}</option>
+                  <option value="alive">{tc('alive', { defaultValue: 'Alive' })}</option>
+                  <option value="dead">{tc('dead', { defaultValue: 'Dead' })}</option>
+                  <option value="removed">{tc('removed', { defaultValue: 'Removed' })}</option>
+                </select>
+                <span className="text-sm text-gray-500">{filteredLivestock.length} {t('items')}</span>
+              </div>
             </div>
-            {livestock.length === 0 ? (
+            {filteredLivestock.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-4xl mb-4">🐟</div>
                 <p className="text-gray-600">{t('emptyState.noLivestock')}</p>
@@ -273,7 +350,7 @@ export default function TankTabs({
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {livestock.map((item) => {
+                {pagedLivestock.map((item) => {
                   const thumbnail = livestockThumbnails[item.id]
                   const getIcon = () => {
                     switch (item.type) {
@@ -289,7 +366,6 @@ export default function TankTabs({
                       key={item.id}
                       className="bg-gradient-to-br from-ocean-50 to-white rounded-lg border border-ocean-100 overflow-hidden"
                     >
-                      {/* Thumbnail if available */}
                       {thumbnail && item.type === 'fish' && (
                         <div className="h-24 bg-gradient-to-b from-blue-100 to-blue-50 flex items-center justify-center p-2">
                           <img
@@ -299,8 +375,6 @@ export default function TankTabs({
                           />
                         </div>
                       )}
-
-                      {/* Info */}
                       <div className="p-4">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -310,13 +384,19 @@ export default function TankTabs({
                             {item.common_name && (
                               <div className="text-sm text-gray-600 italic">{item.species_name}</div>
                             )}
-                            <div className="mt-2">
+                            <div className="mt-2 flex gap-1">
                               <span className="inline-block px-2 py-1 bg-ocean-100 text-ocean-700 rounded text-xs font-medium capitalize">
                                 {item.type}
                               </span>
+                              <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                                item.status === 'alive' ? 'bg-green-100 text-green-700' :
+                                item.status === 'dead' ? 'bg-red-100 text-red-700' :
+                                'bg-gray-100 text-gray-700'
+                              }`}>
+                                {item.status}
+                              </span>
                             </div>
                           </div>
-                          {/* Only show emoji if no thumbnail */}
                           {!(thumbnail && item.type === 'fish') && (
                             <div className="text-2xl">{getIcon()}</div>
                           )}
@@ -327,10 +407,15 @@ export default function TankTabs({
                 })}
               </div>
             )}
+            <Pagination currentPage={livestockPage} totalPages={livestockTotalPages} totalItems={filteredLivestock.length} itemsPerPage={LIVESTOCK_PER_PAGE} onPageChange={setLivestockPage} />
           </div>
         )
+      }
 
-      case 'photos':
+      case 'photos': {
+        const photosTotalPages = Math.ceil(photos.length / PHOTOS_PER_PAGE)
+        const pagedPhotos = photos.slice((photosPage - 1) * PHOTOS_PER_PAGE, photosPage * PHOTOS_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
@@ -347,7 +432,7 @@ export default function TankTabs({
               </div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {photos.map((photo) => (
+                {pagedPhotos.map((photo) => (
                   <div
                     key={photo.id}
                     className="aspect-square bg-ocean-100 rounded-lg overflow-hidden group relative flex items-center justify-center"
@@ -374,10 +459,15 @@ export default function TankTabs({
                 ))}
               </div>
             )}
+            <Pagination currentPage={photosPage} totalPages={photosTotalPages} totalItems={photos.length} itemsPerPage={PHOTOS_PER_PAGE} onPageChange={setPhotosPage} />
           </div>
         )
+      }
 
-      case 'notes':
+      case 'notes': {
+        const notesTotalPages = Math.ceil(notes.length / NOTES_PER_PAGE)
+        const pagedNotes = notes.slice((notesPage - 1) * NOTES_PER_PAGE, notesPage * NOTES_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
@@ -394,7 +484,7 @@ export default function TankTabs({
               </div>
             ) : (
               <div className="space-y-4">
-                {notes.map((note) => (
+                {pagedNotes.map((note) => (
                   <div
                     key={note.id}
                     className="p-4 bg-gray-50 rounded-lg"
@@ -407,8 +497,10 @@ export default function TankTabs({
                 ))}
               </div>
             )}
+            <Pagination currentPage={notesPage} totalPages={notesTotalPages} totalItems={notes.length} itemsPerPage={NOTES_PER_PAGE} onPageChange={setNotesPage} />
           </div>
         )
+      }
 
       case 'icp':
         return (
