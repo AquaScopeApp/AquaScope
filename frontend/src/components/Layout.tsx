@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import { useModuleSettings } from '../hooks/useModuleSettings'
 import { isLocalMode } from '../platform'
+import { authApi } from '../api'
 import type { ModuleSettings } from '../types'
 import Footer from './Footer'
 import VersionBanner from './VersionBanner'
@@ -23,10 +24,55 @@ const local = isLocalMode()
 
 export default function Layout(): JSX.Element {
   const location = useLocation()
-  const { user, logout } = useAuth()
+  const { user, logout, refreshUser } = useAuth()
   const { isEnabled } = useModuleSettings()
   const { t } = useTranslation('common')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [avatarSrc, setAvatarSrc] = useState<string | null>(null)
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false)
+
+  // Load avatar blob
+  useEffect(() => {
+    if (!local && user?.avatar_url) {
+      const loadAvatar = async () => {
+        try {
+          const response = await fetch(`/api/v1/auth/me/avatar`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('aquascope_token')}` },
+          })
+          if (response.ok) {
+            const blob = await response.blob()
+            setAvatarSrc(URL.createObjectURL(blob))
+          }
+        } catch { /* ignore */ }
+      }
+      loadAvatar()
+    } else {
+      setAvatarSrc(null)
+    }
+  }, [user?.avatar_url])
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    try {
+      await authApi.uploadAvatar(file)
+      await refreshUser()
+      setShowAvatarMenu(false)
+    } catch (error) {
+      console.error('Failed to upload avatar:', error)
+    }
+  }
+
+  const handleAvatarDelete = async () => {
+    try {
+      await authApi.deleteAvatar()
+      await refreshUser()
+      setAvatarSrc(null)
+      setShowAvatarMenu(false)
+    } catch (error) {
+      console.error('Failed to delete avatar:', error)
+    }
+  }
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -143,18 +189,57 @@ export default function Layout(): JSX.Element {
               </Link>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <LanguageSelector />
-              <span className="text-sm text-gray-700 hidden sm:inline">
-                {local ? 'My AquaScope' : user?.username}
-              </span>
               {!local && (
-                <button
-                  onClick={logout}
-                  className="text-sm text-gray-600 hover:text-gray-900"
-                >
-                  {t('actions.logout')}
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowAvatarMenu(!showAvatarMenu)}
+                    className="flex items-center space-x-2 focus:outline-none"
+                  >
+                    {avatarSrc ? (
+                      <img src={avatarSrc} alt={user?.username} className="w-8 h-8 rounded-full object-cover border-2 border-gray-200" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-ocean-100 text-ocean-600 flex items-center justify-center text-sm font-bold border-2 border-gray-200">
+                        {(user?.username || '?')[0].toUpperCase()}
+                      </div>
+                    )}
+                    <span className="text-sm text-gray-700 hidden sm:inline">{user?.username}</span>
+                  </button>
+
+                  {showAvatarMenu && (
+                    <>
+                      <div className="fixed inset-0 z-40" onClick={() => setShowAvatarMenu(false)} />
+                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 py-1">
+                        <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+                          <span className="mr-2">📷</span>
+                          {user?.avatar_url ? t('changeAvatar') : t('uploadAvatar')}
+                          <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+                        </label>
+                        {user?.avatar_url && (
+                          <button
+                            onClick={handleAvatarDelete}
+                            className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                          >
+                            <span className="mr-2">🗑️</span>
+                            {t('removeAvatar')}
+                          </button>
+                        )}
+                        <div className="border-t border-gray-100 my-1" />
+                        <button
+                          onClick={() => { logout(); setShowAvatarMenu(false) }}
+                          className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                        >
+                          <span className="mr-2">🚪</span>
+                          {t('actions.logout')}
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+              {local && (
+                <span className="text-sm text-gray-700 hidden sm:inline">My AquaScope</span>
               )}
             </div>
           </div>

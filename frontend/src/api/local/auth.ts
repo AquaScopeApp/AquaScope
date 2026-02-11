@@ -54,4 +54,16 @@ export const authApi = {
 
     return user
   },
+
+  uploadAvatar: async (_file: File): Promise<User> => {
+    return authApi.getCurrentUser()
+  },
+
+  deleteAvatar: async (): Promise<User> => {
+    return authApi.getCurrentUser()
+  },
+
+  getAvatarUrl: (): string => {
+    return ''
+  },
 }

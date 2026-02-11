@@ -99,6 +99,9 @@
     "reefManagement": "Gestion d'Aquarium",
     "trackYourReef": "Suivez vos paramètres, maintenance et animaux de votre aquarium"
   },
+  "uploadAvatar": "Télécharger un avatar",
+  "changeAvatar": "Changer l'avatar",
+  "removeAvatar": "Supprimer l'avatar",
   "layout": {
     "admin": "Admin",
     "developer": "Développeur",

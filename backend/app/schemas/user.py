@@ -68,6 +68,7 @@ class UserResponse(UserBase):
     id: UUID
     is_admin: bool
     default_tank_id: Optional[UUID] = None
+    avatar_url: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 

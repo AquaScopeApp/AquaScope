@@ -182,6 +182,26 @@ export const authApi = {
     const response = await apiClient.get<User>('/auth/me')
     return response.data
   },
+
+  uploadAvatar: async (file: File): Promise<User> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await apiClient.post<User>('/auth/me/avatar', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    return response.data
+  },
+
+  deleteAvatar: async (): Promise<User> => {
+    const response = await apiClient.delete<User>('/auth/me/avatar')
+    return response.data
+  },
+
+  getAvatarUrl: (): string => {
+    const token = localStorage.getItem('aquascope_token')
+    const baseUrl = apiClient.defaults.baseURL || ''
+    return `${baseUrl}/auth/me/avatar?token=${token}`
+  },
 }
 
 // ============================================================================

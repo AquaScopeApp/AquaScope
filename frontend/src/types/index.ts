@@ -14,6 +14,7 @@ export interface User {
   username: string
   is_admin: boolean
   default_tank_id?: string | null
+  avatar_url?: string | null
   created_at: string
   updated_at: string
 }

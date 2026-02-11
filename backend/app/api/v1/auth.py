@@ -52,7 +52,12 @@ Future Enhancements:
 - Rate limiting for login attempts
 """
 from datetime import timedelta
-from fastapi import APIRouter, Depends, HTTPException, status
+import os
+import uuid
+from pathlib import Path
+
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi.responses import FileResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -235,3 +240,76 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     ```
     """
     return current_user
+
+
+ALLOWED_AVATAR_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+MAX_AVATAR_SIZE = 5 * 1024 * 1024  # 5MB
+
+
+@router.post("/me/avatar", response_model=UserResponse)
+async def upload_avatar(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Upload or replace the current user's avatar image."""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No file provided")
+
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in ALLOWED_AVATAR_EXTENSIONS:
+        raise HTTPException(status_code=400, detail=f"File type {ext} not allowed. Use: {', '.join(ALLOWED_AVATAR_EXTENSIONS)}")
+
+    contents = await file.read()
+    if len(contents) > MAX_AVATAR_SIZE:
+        raise HTTPException(status_code=400, detail="File too large. Maximum 5MB.")
+
+    upload_dir = Path(settings.UPLOAD_DIR) / "avatars"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+
+    # Delete old avatar file if exists
+    if current_user.avatar_url:
+        old_path = Path("/app") / current_user.avatar_url.lstrip("/")
+        if old_path.exists():
+            old_path.unlink()
+
+    unique_filename = f"{uuid.uuid4()}{ext}"
+    file_path = upload_dir / unique_filename
+    with open(file_path, "wb") as f:
+        f.write(contents)
+
+    current_user.avatar_url = f"/uploads/avatars/{unique_filename}"
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
+
+@router.delete("/me/avatar", response_model=UserResponse)
+async def delete_avatar(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Remove the current user's avatar."""
+    if current_user.avatar_url:
+        old_path = Path("/app") / current_user.avatar_url.lstrip("/")
+        if old_path.exists():
+            old_path.unlink()
+        current_user.avatar_url = None
+        db.commit()
+        db.refresh(current_user)
+    return current_user
+
+
+@router.get("/me/avatar")
+async def get_avatar(
+    current_user: User = Depends(get_current_user),
+):
+    """Serve the current user's avatar image."""
+    if not current_user.avatar_url:
+        raise HTTPException(status_code=404, detail="No avatar set")
+
+    file_path = Path("/app") / current_user.avatar_url.lstrip("/")
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Avatar file not found")
+
+    return FileResponse(str(file_path))
