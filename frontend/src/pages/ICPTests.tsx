@@ -13,6 +13,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icpTestsApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
+import TankSelector from '../components/common/TankSelector'
 import type { ICPTest, ICPTestSummary, Tank } from '../types'
 
 export default function ICPTestsPage() {
@@ -265,18 +266,12 @@ export default function ICPTestsPage() {
 
       {/* Filter */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <select
+        <TankSelector
+          tanks={tanks}
           value={selectedTank}
-          onChange={(e) => setSelectedTank(e.target.value)}
-          className="border rounded px-3 py-2"
-        >
-          <option value="">{t('allTanks')}</option>
-          {tanks.map((tank) => (
-            <option key={tank.id} value={tank.id}>
-              {tank.name}
-            </option>
-          ))}
-        </select>
+          onChange={setSelectedTank}
+          allLabel={t('allTanks')}
+        />
       </div>
 
       {/* Tests List and Detail View */}

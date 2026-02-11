@@ -16,6 +16,7 @@ import { parsePrice, formatPrice } from '../utils/price'
 import { useCurrency } from '../hooks/useCurrency'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import Pagination from '../components/common/Pagination'
+import TankSelector from '../components/common/TankSelector'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
 const ITEMS_PER_PAGE = 12
@@ -310,19 +311,13 @@ export default function EquipmentPage() {
       <div className="bg-white rounded-lg shadow p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByTank')}</label>
-            <select
+            <TankSelector
+              tanks={tanks}
               value={selectedTank}
-              onChange={(e) => setSelectedTank(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
-            >
-              <option value="">{t('allTanks')}</option>
-              {tanks.map((tank) => (
-                <option key={tank.id} value={tank.id}>
-                  {tank.name}
-                </option>
-              ))}
-            </select>
+              onChange={setSelectedTank}
+              allLabel={t('allTanks')}
+              label={t('filterByTank')}
+            />
           </div>
 
           <div>

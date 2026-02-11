@@ -5,21 +5,25 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { maintenanceApi, tanksApi } from '../api'
 import type { MaintenanceReminder, Tank } from '../types'
 import { useScrollToItem } from '../hooks/useScrollToItem'
+import TankSelector from '../components/common/TankSelector'
 import ReminderCard from '../components/maintenance/ReminderCard'
 import ReminderForm from '../components/maintenance/ReminderForm'
 
 export default function Maintenance() {
   const { t } = useTranslation('maintenance')
   const { t: tc } = useTranslation('common')
+  const [searchParams] = useSearchParams()
   const [reminders, setReminders] = useState<MaintenanceReminder[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingReminder, setEditingReminder] = useState<MaintenanceReminder | null>(null)
+  const [selectedTank, setSelectedTank] = useState<string>(searchParams.get('tank') || '')
   useScrollToItem(reminders)
 
   useEffect(() => {
@@ -81,28 +85,33 @@ export default function Maintenance() {
     setEditingReminder(null)
   }
 
+  // Filter by selected tank
+  const filtered = selectedTank
+    ? reminders.filter(r => r.tank_id === selectedTank)
+    : reminders
+
   // Categorize reminders
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
-  const overdueReminders = reminders.filter(r => {
+  const overdueReminders = filtered.filter(r => {
     const dueDate = new Date(r.next_due)
     return dueDate < today && r.is_active
   })
 
-  const dueSoonReminders = reminders.filter(r => {
+  const dueSoonReminders = filtered.filter(r => {
     const dueDate = new Date(r.next_due)
     const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
     return daysDiff >= 0 && daysDiff <= 7 && r.is_active
   })
 
-  const upcomingReminders = reminders.filter(r => {
+  const upcomingReminders = filtered.filter(r => {
     const dueDate = new Date(r.next_due)
     const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
     return daysDiff > 7 && r.is_active
   })
 
-  const inactiveReminders = reminders.filter(r => !r.is_active)
+  const inactiveReminders = filtered.filter(r => !r.is_active)
 
   if (isLoading) {
     return (
@@ -133,6 +142,19 @@ export default function Maintenance() {
           {showForm ? tc('actions.cancel') : t('addReminder')}
         </button>
       </div>
+
+      {/* Tank Filter */}
+      {tanks.length > 1 && (
+        <div className="bg-white rounded-lg shadow p-4">
+          <TankSelector
+            tanks={tanks}
+            value={selectedTank}
+            onChange={setSelectedTank}
+            allLabel={tc('allTanks', { defaultValue: 'All Tanks' })}
+            label={t('filterByTank', { defaultValue: 'Filter by tank' })}
+          />
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

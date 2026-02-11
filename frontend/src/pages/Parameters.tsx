@@ -5,19 +5,22 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { tanksApi, parametersApi, parameterRangesApi } from '../api'
 import { PARAMETER_RANGES, RATIO_ORDER, buildParameterRangesMap, getActiveParameterOrder } from '../config/parameterRanges'
 import type { ParameterRange } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'
 import ParameterForm from '../components/parameters/ParameterForm'
+import TankSelector from '../components/common/TankSelector'
 import type { Tank, ParameterReading } from '../types'
 
 export default function Parameters() {
   const { t } = useTranslation('parameters')
   const { t: tc } = useTranslation('common')
+  const [searchParams] = useSearchParams()
   const [tanks, setTanks] = useState<Tank[]>([])
-  const [selectedTank, setSelectedTank] = useState<string | null>(null)
+  const [selectedTank, setSelectedTank] = useState<string | null>(searchParams.get('tank'))
   const [parameters, setParameters] = useState<Record<string, ParameterReading[]>>({})
   const [ratios, setRatios] = useState<Record<string, ParameterReading[]>>({})
   const [customRanges, setCustomRanges] = useState<Record<string, ParameterRange> | null>(null)
@@ -389,21 +392,14 @@ export default function Parameters() {
       {/* Tank Selector */}
       {tanks.length > 1 && (
         <div className="bg-white rounded-lg shadow p-4">
-          <label htmlFor="tank" className="block text-sm font-medium text-gray-700 mb-2">
-            {t('selectTank')}
-          </label>
-          <select
-            id="tank"
+          <TankSelector
+            tanks={tanks}
             value={selectedTank || ''}
-            onChange={(e) => setSelectedTank(e.target.value)}
-            className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
-          >
-            {tanks.map((tank) => (
-              <option key={tank.id} value={tank.id}>
-                {tank.name} {tank.total_volume_liters > 0 && `(${tank.total_volume_liters}L)`}
-              </option>
-            ))}
-          </select>
+            onChange={(v) => setSelectedTank(v || tanks[0]?.id || null)}
+            allLabel=""
+            label={t('selectTank')}
+            showAllOption={false}
+          />
         </div>
       )}
 

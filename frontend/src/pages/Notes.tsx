@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { Note, Tank } from '../types'
 import { notesApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
+import TankSelector from '../components/common/TankSelector'
 import NoteCard from '../components/notes/NoteCard'
 import NoteEditor from '../components/notes/NoteEditor'
 
@@ -119,22 +120,13 @@ export default function Notes() {
       {/* Tank Filter */}
       {tanks.length > 1 && (
         <div className="bg-white rounded-lg shadow p-4">
-          <label htmlFor="tank-filter" className="block text-sm font-medium text-gray-700 mb-2">
-            {t('filterByTank')}
-          </label>
-          <select
-            id="tank-filter"
+          <TankSelector
+            tanks={tanks}
             value={selectedTankId}
-            onChange={(e) => setSelectedTankId(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
-          >
-            <option value="">{t('allTanks')}</option>
-            {tanks.map((tank) => (
-              <option key={tank.id} value={tank.id}>
-                {tank.name}
-              </option>
-            ))}
-          </select>
+            onChange={setSelectedTankId}
+            allLabel={t('allTanks')}
+            label={t('filterByTank')}
+          />
         </div>
       )}
 
