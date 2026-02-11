@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, ICPTestSummary } from '../../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, ICPTestSummary } from '../../types'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { photosApi } from '../../api'
@@ -17,6 +17,7 @@ interface TankOverviewProps {
   events: TankEvent[]
   equipment: Equipment[]
   livestock: Livestock[]
+  consumables: Consumable[]
   photos: Photo[]
   notes: Note[]
   icpTests: ICPTestSummary[]
@@ -27,6 +28,7 @@ export default function TankOverview({
   events,
   equipment,
   livestock,
+  consumables,
   photos,
   notes,
   icpTests,
@@ -74,7 +76,7 @@ export default function TankOverview({
   return (
     <div className="space-y-6">
       {/* Quick Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">🐟</div>
           <div className="text-2xl font-bold text-ocean-600">{livestock.length}</div>
@@ -84,6 +86,11 @@ export default function TankOverview({
           <div className="text-3xl mb-2">⚙️</div>
           <div className="text-2xl font-bold text-ocean-600">{equipment.length}</div>
           <div className="text-xs text-gray-600 font-medium">{t('stats.equipmentCount')}</div>
+        </div>
+        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+          <div className="text-3xl mb-2">🧪</div>
+          <div className="text-2xl font-bold text-ocean-600">{consumables.length}</div>
+          <div className="text-xs text-gray-600 font-medium">{t('stats.consumableCount')}</div>
         </div>
         <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
           <div className="text-3xl mb-2">📷</div>

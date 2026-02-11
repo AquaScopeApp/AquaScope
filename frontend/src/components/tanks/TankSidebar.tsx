@@ -19,6 +19,7 @@ interface TankSidebarProps {
     event_count?: number
     equipment_count?: number
     livestock_count?: number
+    consumable_count?: number
     photo_count?: number
     note_count?: number
     maintenance_count?: number

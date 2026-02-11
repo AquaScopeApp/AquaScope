@@ -45,6 +45,7 @@
     "daysRunning_other": "{{count}} Tage in Betrieb",
     "equipmentCount": "Ausrüstung",
     "livestockCount": "Tierbestand",
+    "consumableCount": "Verbrauchsmaterial",
     "photoCount": "Fotos",
     "noteCount": "Notizen",
     "maintenanceCount": "Wartung",

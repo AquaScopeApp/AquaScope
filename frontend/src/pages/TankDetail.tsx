@@ -11,12 +11,13 @@ import {
   tanksApi,
   equipmentApi,
   livestockApi,
+  consumablesApi,
   photosApi,
   notesApi,
   maintenanceApi,
   icpTestsApi,
 } from '../api'
-import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, MaintenanceReminder, ICPTestSummary } from '../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary } from '../types'
 import TankSidebar from '../components/tanks/TankSidebar'
 import TankTabs from '../components/tanks/TankTabs'
 
@@ -29,6 +30,7 @@ export default function TankDetail() {
   const [events, setEvents] = useState<TankEvent[]>([])
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [livestock, setLivestock] = useState<Livestock[]>([])
+  const [consumables, setConsumables] = useState<Consumable[]>([])
   const [photos, setPhotos] = useState<Photo[]>([])
   const [notes, setNotes] = useState<Note[]>([])
   const [maintenance, setMaintenance] = useState<MaintenanceReminder[]>([])
@@ -53,6 +55,7 @@ export default function TankDetail() {
         eventsData,
         equipmentData,
         livestockData,
+        consumablesData,
         photosData,
         notesData,
         maintenanceData,
@@ -62,6 +65,7 @@ export default function TankDetail() {
         tanksApi.listEvents(tankId).catch(() => []),
         equipmentApi.list({ tank_id: tankId }).catch(() => []),
         livestockApi.list({ tank_id: tankId }).catch(() => []),
+        consumablesApi.list({ tank_id: tankId }).catch(() => []),
         photosApi.list(tankId).catch(() => []),
         notesApi.list(tankId).catch(() => []),
         maintenanceApi.listReminders({ tank_id: tankId }).catch(() => []),
@@ -72,6 +76,7 @@ export default function TankDetail() {
       setEvents(eventsData)
       setEquipment(equipmentData)
       setLivestock(livestockData)
+      setConsumables(consumablesData)
       setPhotos(photosData)
       setNotes(notesData)
       setMaintenance(maintenanceData)
@@ -109,6 +114,7 @@ export default function TankDetail() {
     event_count: events.length,
     equipment_count: equipment.length,
     livestock_count: livestock.length,
+    consumable_count: consumables.length,
     photo_count: photos.length,
     note_count: notes.length,
     maintenance_count: maintenance.filter(r => r.is_active).length,
@@ -173,6 +179,7 @@ export default function TankDetail() {
             events={events}
             equipment={equipment}
             livestock={livestock}
+            consumables={consumables}
             photos={photos}
             notes={notes}
             maintenance={maintenance}

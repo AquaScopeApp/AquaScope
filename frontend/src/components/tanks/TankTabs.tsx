@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory } from '../../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory } from '../../types'
 import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
 import TankTimelineVisual, { CATEGORY_LABELS } from './TankTimelineVisual'
@@ -18,6 +18,7 @@ interface TankTabsProps {
   events: TankEvent[]
   equipment: Equipment[]
   livestock: Livestock[]
+  consumables: Consumable[]
   photos: Photo[]
   notes: Note[]
   maintenance: MaintenanceReminder[]
@@ -42,6 +43,7 @@ export default function TankTabs({
   events,
   equipment,
   livestock,
+  consumables,
   photos,
   notes,
   maintenance,
@@ -145,6 +147,7 @@ export default function TankTabs({
             events={events}
             equipment={equipment}
             livestock={livestock}
+            consumables={consumables}
             photos={photos}
             notes={notes}
             icpTests={icpTests}

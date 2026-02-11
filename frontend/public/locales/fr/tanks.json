@@ -45,6 +45,7 @@
     "daysRunning_other": "{{count}} jours de fonctionnement",
     "equipmentCount": "Équipement",
     "livestockCount": "Animaux",
+    "consumableCount": "Consommables",
     "photoCount": "Photos",
     "noteCount": "Notes",
     "maintenanceCount": "Maintenance",

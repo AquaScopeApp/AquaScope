@@ -11,6 +11,7 @@ interface TankStatsProps {
     event_count?: number
     equipment_count?: number
     livestock_count?: number
+    consumable_count?: number
     photo_count?: number
     note_count?: number
     maintenance_count?: number
@@ -22,9 +23,10 @@ export default function TankStats({ stats }: TankStatsProps) {
   const { t } = useTranslation('tanks')
 
   const statItems = [
-    { label: t('stats.eventCount'), value: stats.event_count || 0, icon: '📅' },
-    { label: t('stats.equipmentCount'), value: stats.equipment_count || 0, icon: '⚙️' },
     { label: t('stats.livestockCount'), value: stats.livestock_count || 0, icon: '🐟' },
+    { label: t('stats.equipmentCount'), value: stats.equipment_count || 0, icon: '⚙️' },
+    { label: t('stats.consumableCount'), value: stats.consumable_count || 0, icon: '🧪' },
+    { label: t('stats.eventCount'), value: stats.event_count || 0, icon: '📅' },
     { label: t('stats.photoCount'), value: stats.photo_count || 0, icon: '📷' },
     { label: t('stats.noteCount'), value: stats.note_count || 0, icon: '📝' },
     { label: t('stats.maintenanceCount'), value: stats.maintenance_count || 0, icon: '🔧' },
