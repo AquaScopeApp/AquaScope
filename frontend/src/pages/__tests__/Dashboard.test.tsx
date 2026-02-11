@@ -47,6 +47,8 @@ vi.mock('../../api', () => ({
   tanksApi: {
     list: vi.fn(),
     getImageBlobUrl: vi.fn().mockResolvedValue('blob:test-url'),
+    setDefault: vi.fn(),
+    unsetDefault: vi.fn(),
   },
   maintenanceApi: {
     listReminders: vi.fn(),
@@ -63,6 +65,9 @@ vi.mock('../../api', () => ({
   notesApi: {
     list: vi.fn(),
   },
+  consumablesApi: {
+    list: vi.fn(),
+  },
 }))
 
 // Import the mocked module so we can configure return values per test
@@ -73,6 +78,7 @@ import {
   livestockApi,
   photosApi,
   notesApi,
+  consumablesApi,
 } from '../../api'
 
 globalThis.URL.createObjectURL = vi.fn(() => 'blob:test-url')
@@ -141,6 +147,7 @@ function setupDefaultMocks(tanks: Tank[] = [], reminders: MaintenanceReminder[] 
   vi.mocked(livestockApi.list).mockResolvedValue([])
   vi.mocked(photosApi.list).mockResolvedValue([])
   vi.mocked(notesApi.list).mockResolvedValue([])
+  vi.mocked(consumablesApi.list).mockResolvedValue([])
 }
 
 // ---------------------------------------------------------------------------
@@ -151,10 +158,11 @@ describe('Dashboard Page', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     ;(useAuth as any).mockReturnValue({
-      user: { id: 'user-1', username: 'TestUser', email: 'test@test.com', is_admin: false },
+      user: { id: 'user-1', username: 'TestUser', email: 'test@test.com', is_admin: false, default_tank_id: null },
       isAuthenticated: true,
       isLoading: false,
       token: 'mock-token',
+      refreshUser: vi.fn(),
     })
     setupDefaultMocks()
   })
@@ -275,6 +283,7 @@ describe('Dashboard Page', () => {
       expect(livestockApi.list).toHaveBeenCalledWith({ tank_id: 'tank-1' })
       expect(photosApi.list).toHaveBeenCalledWith('tank-1')
       expect(notesApi.list).toHaveBeenCalledWith('tank-1')
+      expect(consumablesApi.list).toHaveBeenCalledWith({ tank_id: 'tank-1' })
       expect(maintenanceApi.listReminders).toHaveBeenCalledWith({ tank_id: 'tank-1' })
     })
   })
@@ -307,6 +316,7 @@ describe('Dashboard Page', () => {
     await waitFor(() => {
       expect(screen.getByText('equipment')).toBeInTheDocument()
       expect(screen.getByText('livestock')).toBeInTheDocument()
+      expect(screen.getByText('consumables')).toBeInTheDocument()
       expect(screen.getByText('photos')).toBeInTheDocument()
       expect(screen.getByText('notes')).toBeInTheDocument()
       expect(screen.getByText('maintenance')).toBeInTheDocument()

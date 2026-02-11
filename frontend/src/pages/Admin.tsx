@@ -1093,6 +1093,7 @@ export default function Admin() {
                 { key: 'equipment' as keyof ModuleSettings, label: 'Equipment', icon: '⚙️' },
                 { key: 'consumables' as keyof ModuleSettings, label: 'Consumables', icon: '🧪' },
                 { key: 'icp_tests' as keyof ModuleSettings, label: 'ICP Tests', icon: '🔬' },
+                { key: 'finances' as keyof ModuleSettings, label: 'Finances', icon: '💰' },
               ]).map((mod) => (
                 <div key={mod.key} className="flex items-center justify-between py-3 px-4 bg-white border border-gray-200 rounded-lg">
                   <div className="flex items-center space-x-3">

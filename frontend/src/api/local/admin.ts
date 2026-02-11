@@ -142,7 +142,7 @@ export const adminApi = {
     // In local mode, all modules are enabled by default
     return {
       photos: true, notes: true, livestock: true, equipment: true,
-      consumables: true, maintenance: true, icp_tests: true,
+      consumables: true, maintenance: true, icp_tests: true, finances: true,
     }
   },
 

@@ -99,6 +99,15 @@ export default function TankSelector({
       )}
 
       <div className="flex items-center gap-3">
+        {/* Tank thumbnail (before select) */}
+        {selectedTank && imgSrc && (
+          <img
+            src={imgSrc}
+            alt={selectedTank.name}
+            className="w-10 h-10 rounded-md object-cover border border-gray-200 shadow-sm flex-shrink-0"
+          />
+        )}
+
         <select
           value={value}
           onChange={e => onChange(e.target.value)}
@@ -111,15 +120,6 @@ export default function TankSelector({
             </option>
           ))}
         </select>
-
-        {/* Tank thumbnail */}
-        {selectedTank && imgSrc && (
-          <img
-            src={imgSrc}
-            alt={selectedTank.name}
-            className="w-10 h-10 rounded-md object-cover border border-gray-200 shadow-sm flex-shrink-0"
-          />
-        )}
       </div>
     </div>
   )

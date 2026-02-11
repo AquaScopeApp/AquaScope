@@ -37,6 +37,7 @@ export default function LivestockForm({
   const [addedDate, setAddedDate] = useState('')
   const [notes, setNotes] = useState('')
   const [purchasePrice, setPurchasePrice] = useState('')
+  const [removedDate, setRemovedDate] = useState('')
   const [purchaseUrl, setPurchaseUrl] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -60,6 +61,7 @@ export default function LivestockForm({
       setInaturalistId(livestock.inaturalist_id || '')
       setCachedPhotoUrl(livestock.cached_photo_url || '')
       setAddedDate(livestock.added_date || '')
+      setRemovedDate(livestock.removed_date || '')
       setNotes(livestock.notes || '')
       setPurchasePrice(livestock.purchase_price || '')
       setPurchaseUrl(livestock.purchase_url || '')
@@ -199,7 +201,7 @@ export default function LivestockForm({
     setIsSubmitting(true)
 
     try {
-      const data: LivestockCreate = {
+      const data: any = {
         tank_id: tankId,
         species_name: speciesName,
         common_name: commonName || undefined,
@@ -211,6 +213,7 @@ export default function LivestockForm({
         inaturalist_id: inaturalistId || undefined,
         cached_photo_url: cachedPhotoUrl || undefined,
         added_date: addedDate || undefined,
+        removed_date: (status === 'dead' || status === 'removed') ? (removedDate || undefined) : null,
         notes: notes || undefined,
         purchase_price: purchasePrice || undefined,
         purchase_url: purchaseUrl || undefined,
@@ -517,7 +520,7 @@ export default function LivestockForm({
               <div className="grid grid-cols-3 gap-3">
                 <button
                   type="button"
-                  onClick={() => setStatus('alive')}
+                  onClick={() => { setStatus('alive'); setRemovedDate('') }}
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'alive'
                       ? 'border-green-500 bg-green-50'
@@ -529,7 +532,7 @@ export default function LivestockForm({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setStatus('dead')}
+                  onClick={() => { setStatus('dead'); if (!removedDate) setRemovedDate(new Date().toISOString().split('T')[0]) }}
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'dead'
                       ? 'border-red-500 bg-red-50'
@@ -541,7 +544,7 @@ export default function LivestockForm({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setStatus('removed')}
+                  onClick={() => { setStatus('removed'); if (!removedDate) setRemovedDate(new Date().toISOString().split('T')[0]) }}
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'removed'
                       ? 'border-yellow-500 bg-yellow-50'
@@ -552,6 +555,22 @@ export default function LivestockForm({
                   <div className="text-sm font-medium">{t('status.removed')}</div>
                 </button>
               </div>
+
+              {/* Removed/Dead Date - shown when status is dead or removed */}
+              {(status === 'dead' || status === 'removed') && (
+                <div className="mt-3">
+                  <label htmlFor="removedDate" className="block text-sm font-medium text-gray-700 mb-2">
+                    {status === 'dead' ? t('form.deathDate') : t('form.removedDate')}
+                  </label>
+                  <input
+                    type="date"
+                    id="removedDate"
+                    value={removedDate}
+                    onChange={(e) => setRemovedDate(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  />
+                </div>
+              )}
             </div>
           )}
 

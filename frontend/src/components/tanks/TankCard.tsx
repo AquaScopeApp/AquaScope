@@ -204,7 +204,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
         </div>
       </div>
 
-      {/* Header */}
+      {/* Header + Quick Actions */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-semibold text-gray-900">{tank.name}</h3>
@@ -224,6 +224,27 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
             {tank.description}
           </p>
         )}
+        {/* Quick Actions - accessible right below the header */}
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleViewParameters()
+            }}
+            className="text-sm text-ocean-600 hover:text-ocean-700 font-medium transition-colors"
+          >
+            {t('viewParameters')}
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleAddTest()
+            }}
+            className="px-3 py-1.5 text-sm bg-ocean-600 text-white rounded-md hover:bg-ocean-700 font-medium transition-colors"
+          >
+            {t('actions.addTest')}
+          </button>
+        </div>
       </div>
 
       {/* Body */}
@@ -287,29 +308,6 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
         )}
       </div>
 
-      {/* Footer - Quick Actions */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
-        <div className="flex items-center justify-between text-sm">
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              handleViewParameters()
-            }}
-            className="text-ocean-600 hover:text-ocean-700 font-medium transition-colors"
-          >
-            {t('viewParameters')}
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              handleAddTest()
-            }}
-            className="px-4 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 font-medium transition-colors"
-          >
-            {t('actions.addTest')}
-          </button>
-        </div>
-      </div>
     </div>
   )
 }

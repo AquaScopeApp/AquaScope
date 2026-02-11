@@ -68,7 +68,10 @@ export default function Parameters() {
       const data = await tanksApi.list()
       setTanks(data)
       if (data.length > 0 && !selectedTank) {
-        setSelectedTank(data[0].id)
+        // Prefer user's default tank, then fall back to first tank
+        const defaultId = user?.default_tank_id
+        const match = defaultId ? data.find(t => t.id === defaultId) : null
+        setSelectedTank(match ? match.id : data[0].id)
       }
     } catch (error) {
       console.error('Failed to load tanks:', error)

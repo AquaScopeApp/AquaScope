@@ -31,6 +31,8 @@
     "quantityHelp": "Number of individuals of this species",
     "status": "Status",
     "dateAdded": "Date Added",
+    "deathDate": "Date of Death",
+    "removedDate": "Date Removed",
     "notes": "Notes",
     "notesPlaceholder": "Source, price, behavior observations, care notes...",
     "saving": "Saving...",
