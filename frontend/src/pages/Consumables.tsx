@@ -13,7 +13,10 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { consumablesApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
+import Pagination from '../components/common/Pagination'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
+
+const ITEMS_PER_PAGE = 12
 
 const CONSUMABLE_TYPES = [
   'salt_mix',
@@ -43,6 +46,7 @@ export default function ConsumablesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>('')
   const [showArchived, setShowArchived] = useState(false)
   const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set())
+  const [currentPage, setCurrentPage] = useState(1)
 
   // Usage log state
   const [loggingUsageId, setLoggingUsageId] = useState<string | null>(null)
@@ -68,6 +72,7 @@ export default function ConsumablesPage() {
   })
 
   useEffect(() => {
+    setCurrentPage(1)
     loadData()
   }, [selectedTank, selectedType, selectedStatus, showArchived])
 
@@ -386,8 +391,12 @@ export default function ConsumablesPage() {
       </label>
 
       {/* Consumables List */}
+      {(() => {
+        const totalPages = Math.ceil(consumables.length / ITEMS_PER_PAGE)
+        const paged = consumables.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+        return (<>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {consumables.map((item) => {
+        {paged.map((item) => {
           const expInfo = getExpirationInfo(item.expiration_date)
           return (
             <div key={item.id} className={`bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
@@ -629,6 +638,15 @@ export default function ConsumablesPage() {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={consumables.length}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={setCurrentPage}
+      />
+      </>)
+      })()}
 
       {/* Add/Edit Form Modal */}
       {showForm && (

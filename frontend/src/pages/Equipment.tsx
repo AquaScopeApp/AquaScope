@@ -12,7 +12,10 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { equipmentApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
+import Pagination from '../components/common/Pagination'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
+
+const ITEMS_PER_PAGE = 12
 
 const EQUIPMENT_TYPES = [
   'pump',
@@ -61,6 +64,7 @@ export default function EquipmentPage() {
   const [selectedCondition, setSelectedCondition] = useState<string>('')
   const [showArchived, setShowArchived] = useState(false)
   const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set())
+  const [currentPage, setCurrentPage] = useState(1)
 
   // Form state
   const [formData, setFormData] = useState<EquipmentCreate>({
@@ -79,6 +83,7 @@ export default function EquipmentPage() {
   })
 
   useEffect(() => {
+    setCurrentPage(1)
     loadData()
   }, [selectedTank, selectedType, selectedStatus, selectedCondition, showArchived])
 
@@ -376,10 +381,13 @@ export default function EquipmentPage() {
       </label>
 
       {/* Equipment List */}
+      {(() => {
+        const filtered = equipment.filter((item) => !selectedCondition || item.condition === selectedCondition)
+        const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
+        const paged = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+        return (<>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {equipment
-          .filter((item) => !selectedCondition || item.condition === selectedCondition)
-          .map((item) => (
+        {paged.map((item) => (
           <div key={item.id} className={`rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${getConditionCardStyle(item.condition)} ${item.is_archived ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
@@ -515,12 +523,21 @@ export default function EquipmentPage() {
           </div>
         ))}
 
-        {equipment.filter((item) => !selectedCondition || item.condition === selectedCondition).length === 0 && (
+        {filtered.length === 0 && (
           <div className="col-span-full text-center py-12 text-gray-500">
             {t('noEquipment')}
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={filtered.length}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={setCurrentPage}
+      />
+      </>)
+      })()}
 
       {/* Add/Edit Form Modal */}
       {showForm && (
