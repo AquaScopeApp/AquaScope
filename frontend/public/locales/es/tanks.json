@@ -22,6 +22,7 @@
   "returnToList": "Volver a la lista de acuarios",
   "detailsAndManagement": "Detalles y gestión del acuario",
   "items": "elementos",
+  "viewAll": "Ver todo",
   "score": "Puntuación",
   "fields": {
     "name": "Nombre del acuario",

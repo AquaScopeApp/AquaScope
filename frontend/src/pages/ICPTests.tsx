@@ -9,6 +9,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icpTestsApi, tanksApi } from '../api'
 import type { ICPTest, ICPTestSummary, Tank } from '../types'
@@ -21,7 +22,8 @@ export default function ICPTestsPage() {
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isUploading, setIsUploading] = useState(false)
-  const [selectedTank, setSelectedTank] = useState<string>('')
+  const [searchParams] = useSearchParams()
+  const [selectedTank, setSelectedTank] = useState<string>(searchParams.get('tank') || '')
   const [uploadTankId, setUploadTankId] = useState<string>('')
 
   useEffect(() => {

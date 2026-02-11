@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Note, Tank } from '../types'
 import { notesApi, tanksApi } from '../api'
@@ -18,7 +19,8 @@ export default function Notes() {
   const [isLoading, setIsLoading] = useState(true)
   const [showEditor, setShowEditor] = useState(false)
   const [editingNote, setEditingNote] = useState<Note | null>(null)
-  const [selectedTankId, setSelectedTankId] = useState<string>('')
+  const [searchParams] = useSearchParams()
+  const [selectedTankId, setSelectedTankId] = useState<string>(searchParams.get('tank') || '')
 
   useEffect(() => {
     loadData()

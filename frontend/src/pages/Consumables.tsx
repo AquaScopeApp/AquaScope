@@ -10,6 +10,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { consumablesApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
@@ -43,7 +44,8 @@ export default function ConsumablesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [selectedTank, setSelectedTank] = useState<string>('')
+  const [searchParams] = useSearchParams()
+  const [selectedTank, setSelectedTank] = useState<string>(searchParams.get('tank') || '')
   const [selectedType, setSelectedType] = useState<string>('')
   const [selectedStatus, setSelectedStatus] = useState<string>('')
   const [showArchived, setShowArchived] = useState(false)

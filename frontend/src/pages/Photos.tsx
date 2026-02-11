@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Photo, Tank } from '../types'
 import { photosApi, tanksApi } from '../api'
@@ -17,7 +18,8 @@ export default function Photos() {
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showUpload, setShowUpload] = useState(false)
-  const [selectedTankId, setSelectedTankId] = useState<string>('')
+  const [searchParams] = useSearchParams()
+  const [selectedTankId, setSelectedTankId] = useState<string>(searchParams.get('tank') || '')
 
   useEffect(() => {
     loadData()

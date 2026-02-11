@@ -22,6 +22,7 @@
   "returnToList": "Zurück zur Aquarienliste",
   "detailsAndManagement": "Aquarium-Details & Verwaltung",
   "items": "Einträge",
+  "viewAll": "Alle anzeigen",
   "score": "Bewertung",
   "fields": {
     "name": "Aquariumname",

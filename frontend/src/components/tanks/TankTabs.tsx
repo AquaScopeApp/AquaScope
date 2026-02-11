@@ -2,22 +2,29 @@
  * TankTabs Component
  *
  * Tabbed interface for viewing tank-specific data (events, equipment, livestock, etc.)
+ * Cards are clickable and navigate to the full module page pre-filtered by tank.
  */
 
 import { useState, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory } from '../../types'
 import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
 import TankTimelineVisual, { CATEGORY_LABELS } from './TankTimelineVisual'
 import { buildTimelineEntries, CATEGORY_COLORS } from '../../utils/timeline'
-import { photosApi, livestockApi } from '../../api'
+import { photosApi } from '../../api'
 import Pagination from '../common/Pagination'
 
-const EQUIPMENT_PER_PAGE = 10
-const LIVESTOCK_PER_PAGE = 10
+const ITEMS_PER_PAGE = 10
 const PHOTOS_PER_PAGE = 12
-const NOTES_PER_PAGE = 10
+
+// Chevron right arrow for clickable rows
+const ChevronRight = () => (
+  <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+)
 
 interface TankTabsProps {
   tank: Tank
@@ -61,15 +68,17 @@ export default function TankTabs({
 }: TankTabsProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<TabId>('overview')
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({})
-  const [livestockThumbnails, setLivestockThumbnails] = useState<Record<string, string>>({})
 
   // Pagination state per tab
   const [equipPage, setEquipPage] = useState(1)
   const [livestockPage, setLivestockPage] = useState(1)
   const [photosPage, setPhotosPage] = useState(1)
   const [notesPage, setNotesPage] = useState(1)
+  const [icpPage, setIcpPage] = useState(1)
+  const [maintenancePage, setMaintenancePage] = useState(1)
 
   // Filter state per tab
   const [equipTypeFilter, setEquipTypeFilter] = useState('')
@@ -96,6 +105,17 @@ export default function TankTabs({
     })
   }
 
+  // Navigation helpers
+  const tankParam = `?tank=${tank.id}`
+  const TAB_ROUTES: Partial<Record<TabId, string>> = {
+    equipment: `/equipment${tankParam}`,
+    livestock: `/livestock${tankParam}`,
+    photos: `/photos${tankParam}`,
+    notes: `/notes${tankParam}`,
+    icp: `/icp-tests${tankParam}`,
+    maintenance: `/maintenance${tankParam}`,
+  }
+
   // Load photo thumbnails when photos change
   useEffect(() => {
     const loadPhotoThumbnails = async () => {
@@ -120,30 +140,6 @@ export default function TankTabs({
     }
   }, [photos])
 
-  // Load livestock thumbnails from FishBase
-  useEffect(() => {
-    const loadLivestockThumbnails = async () => {
-      const thumbnails: Record<string, string> = {}
-      for (const item of livestock) {
-        if (item.type === 'fish' && item.fishbase_species_id) {
-          try {
-            const images = await livestockApi.getFishBaseSpeciesImages(item.fishbase_species_id)
-            if (images && images.length > 0) {
-              thumbnails[item.id] = images[0].ThumbPic || images[0].Pic
-            }
-          } catch (error) {
-            console.error(`Failed to load FishBase thumbnail for livestock ${item.id}:`, error)
-          }
-        }
-      }
-      setLivestockThumbnails(thumbnails)
-    }
-
-    if (livestock.length > 0) {
-      loadLivestockThumbnails()
-    }
-  }, [livestock])
-
   const tabs: Tab[] = [
     { id: 'overview', label: t('tabs.overview'), icon: '📊' },
     { id: 'events', label: t('tabs.events'), icon: '📅', count: events.length },
@@ -155,13 +151,44 @@ export default function TankTabs({
     { id: 'maintenance', label: t('tabs.maintenance'), icon: '🔧', count: maintenance.filter(m => m.is_active).length },
   ]
 
-  // Unique equipment types for filter dropdown
+  // Unique types for filter dropdowns
   const equipmentTypes = useMemo(() => [...new Set(equipment.map(e => e.equipment_type))].sort(), [equipment])
   const livestockTypes = useMemo(() => [...new Set(livestock.map(l => l.type))].sort(), [livestock])
 
   // Reset page when filter changes
   useEffect(() => { setEquipPage(1) }, [equipTypeFilter])
   useEffect(() => { setLivestockPage(1) }, [livestockTypeFilter, livestockStatusFilter])
+
+  /** Shared tab header with title, count, filters, and "View all →" link */
+  const TabHeader = ({ tabId, title, count, children }: { tabId: TabId; title: string; count: number; children?: React.ReactNode }) => (
+    <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      <div className="flex items-center gap-3">
+        {children}
+        <span className="text-sm text-gray-500">{count} {t('items')}</span>
+        {TAB_ROUTES[tabId] && (
+          <button
+            onClick={() => navigate(TAB_ROUTES[tabId]!)}
+            className="text-sm text-ocean-600 hover:text-ocean-700 font-medium whitespace-nowrap"
+          >
+            {t('viewAll', { defaultValue: 'View all' })} →
+          </button>
+        )}
+      </div>
+    </div>
+  )
+
+  /** Shared empty state */
+  const EmptyState = ({ icon, messageKey, goToKey }: { icon: string; messageKey: string; goToKey: string }) => (
+    <div className="text-center py-12">
+      <div className="text-4xl mb-4">{icon}</div>
+      <p className="text-gray-600">{t(messageKey)}</p>
+      <p className="text-sm text-gray-500 mt-2">{t(goToKey)}</p>
+    </div>
+  )
+
+  /** Shared row style for uniform cards */
+  const ROW_CLASS = 'flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors'
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -242,63 +269,59 @@ export default function TankTabs({
         const filteredEquip = equipTypeFilter
           ? equipment.filter(e => e.equipment_type === equipTypeFilter)
           : equipment
-        const equipTotalPages = Math.ceil(filteredEquip.length / EQUIPMENT_PER_PAGE)
-        const pagedEquip = filteredEquip.slice((equipPage - 1) * EQUIPMENT_PER_PAGE, equipPage * EQUIPMENT_PER_PAGE)
+        const totalPages = Math.ceil(filteredEquip.length / ITEMS_PER_PAGE)
+        const paged = filteredEquip.slice((equipPage - 1) * ITEMS_PER_PAGE, equipPage * ITEMS_PER_PAGE)
 
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.equipment')}</h3>
-              <div className="flex items-center gap-3">
-                {equipmentTypes.length > 1 && (
-                  <select
-                    value={equipTypeFilter}
-                    onChange={(e) => setEquipTypeFilter(e.target.value)}
-                    className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
-                  >
-                    <option value="">{tc('all', { defaultValue: 'All' })} ({equipment.length})</option>
-                    {equipmentTypes.map(t => (
-                      <option key={t} value={t}>{t} ({equipment.filter(e => e.equipment_type === t).length})</option>
-                    ))}
-                  </select>
-                )}
-                <span className="text-sm text-gray-500">{filteredEquip.length} {t('items')}</span>
-              </div>
-            </div>
+            <TabHeader tabId="equipment" title={t('tabs.equipment')} count={filteredEquip.length}>
+              {equipmentTypes.length > 1 && (
+                <select
+                  value={equipTypeFilter}
+                  onChange={(e) => setEquipTypeFilter(e.target.value)}
+                  className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                >
+                  <option value="">{tc('all', { defaultValue: 'All' })} ({equipment.length})</option>
+                  {equipmentTypes.map(t => (
+                    <option key={t} value={t}>{t} ({equipment.filter(e => e.equipment_type === t).length})</option>
+                  ))}
+                </select>
+              )}
+            </TabHeader>
             {filteredEquip.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">⚙️</div>
-                <p className="text-gray-600">{t('emptyState.noEquipment')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToEquipment')}
-                </p>
-              </div>
+              <EmptyState icon="⚙️" messageKey="emptyState.noEquipment" goToKey="emptyState.goToEquipment" />
             ) : (
-              <div className="space-y-3">
-                {pagedEquip.map((item) => (
+              <div className="space-y-2">
+                {paged.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    className={ROW_CLASS}
+                    onClick={() => navigate(TAB_ROUTES.equipment!)}
                   >
-                    <div>
-                      <div className="font-medium text-gray-900">{item.name}</div>
-                      <div className="text-sm text-gray-600">{item.equipment_type}</div>
-                      {item.manufacturer && (
-                        <div className="text-xs text-gray-500">{item.manufacturer}</div>
-                      )}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-xl flex-shrink-0">⚙️</span>
+                      <div className="min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{item.name}</div>
+                        <div className="text-sm text-gray-500 truncate">
+                          {item.equipment_type}{item.manufacturer ? ` · ${item.manufacturer}` : ''}
+                        </div>
+                      </div>
                     </div>
-                    <div className={`px-3 py-1 rounded text-sm font-medium ${
-                      item.status === 'active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
-                    }`}>
-                      {item.status}
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        item.status === 'active'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-gray-100 text-gray-700'
+                      }`}>
+                        {item.status}
+                      </span>
+                      <ChevronRight />
                     </div>
                   </div>
                 ))}
               </div>
             )}
-            <Pagination currentPage={equipPage} totalPages={equipTotalPages} totalItems={filteredEquip.length} itemsPerPage={EQUIPMENT_PER_PAGE} onPageChange={setEquipPage} />
+            <Pagination currentPage={equipPage} totalPages={totalPages} totalItems={filteredEquip.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setEquipPage} />
           </div>
         )
       }
@@ -307,135 +330,103 @@ export default function TankTabs({
         const filteredLivestock = livestock
           .filter(l => !livestockTypeFilter || l.type === livestockTypeFilter)
           .filter(l => !livestockStatusFilter || l.status === livestockStatusFilter)
-        const livestockTotalPages = Math.ceil(filteredLivestock.length / LIVESTOCK_PER_PAGE)
-        const pagedLivestock = filteredLivestock.slice((livestockPage - 1) * LIVESTOCK_PER_PAGE, livestockPage * LIVESTOCK_PER_PAGE)
+        const totalPages = Math.ceil(filteredLivestock.length / ITEMS_PER_PAGE)
+        const paged = filteredLivestock.slice((livestockPage - 1) * ITEMS_PER_PAGE, livestockPage * ITEMS_PER_PAGE)
+
+        const getTypeIcon = (type: string) => {
+          switch (type) {
+            case 'fish': return '🐠'
+            case 'coral': return '🪸'
+            case 'invertebrate': return '🦐'
+            default: return '🐟'
+          }
+        }
 
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.livestock')}</h3>
-              <div className="flex items-center gap-3">
-                {livestockTypes.length > 1 && (
-                  <select
-                    value={livestockTypeFilter}
-                    onChange={(e) => setLivestockTypeFilter(e.target.value)}
-                    className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
-                  >
-                    <option value="">{tc('all', { defaultValue: 'All' })} ({livestock.length})</option>
-                    {livestockTypes.map(t => (
-                      <option key={t} value={t}>{t} ({livestock.filter(l => l.type === t).length})</option>
-                    ))}
-                  </select>
-                )}
+            <TabHeader tabId="livestock" title={t('tabs.livestock')} count={filteredLivestock.length}>
+              {livestockTypes.length > 1 && (
                 <select
-                  value={livestockStatusFilter}
-                  onChange={(e) => setLivestockStatusFilter(e.target.value)}
+                  value={livestockTypeFilter}
+                  onChange={(e) => setLivestockTypeFilter(e.target.value)}
                   className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
                 >
-                  <option value="">{tc('allStatus', { defaultValue: 'All Status' })}</option>
-                  <option value="alive">{tc('alive', { defaultValue: 'Alive' })}</option>
-                  <option value="dead">{tc('dead', { defaultValue: 'Dead' })}</option>
-                  <option value="removed">{tc('removed', { defaultValue: 'Removed' })}</option>
+                  <option value="">{tc('all', { defaultValue: 'All' })} ({livestock.length})</option>
+                  {livestockTypes.map(t => (
+                    <option key={t} value={t}>{t} ({livestock.filter(l => l.type === t).length})</option>
+                  ))}
                 </select>
-                <span className="text-sm text-gray-500">{filteredLivestock.length} {t('items')}</span>
-              </div>
-            </div>
+              )}
+              <select
+                value={livestockStatusFilter}
+                onChange={(e) => setLivestockStatusFilter(e.target.value)}
+                className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+              >
+                <option value="">{tc('allStatus', { defaultValue: 'All Status' })}</option>
+                <option value="alive">{tc('alive', { defaultValue: 'Alive' })}</option>
+                <option value="dead">{tc('dead', { defaultValue: 'Dead' })}</option>
+                <option value="removed">{tc('removed', { defaultValue: 'Removed' })}</option>
+              </select>
+            </TabHeader>
             {filteredLivestock.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">🐟</div>
-                <p className="text-gray-600">{t('emptyState.noLivestock')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToLivestock')}
-                </p>
-              </div>
+              <EmptyState icon="🐟" messageKey="emptyState.noLivestock" goToKey="emptyState.goToLivestock" />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {pagedLivestock.map((item) => {
-                  const thumbnail = livestockThumbnails[item.id]
-                  const getIcon = () => {
-                    switch (item.type) {
-                      case 'fish': return '🐠'
-                      case 'coral': return '🪸'
-                      case 'invertebrate': return '🦐'
-                      default: return '🐟'
-                    }
-                  }
-
-                  return (
-                    <div
-                      key={item.id}
-                      className="bg-gradient-to-br from-ocean-50 to-white rounded-lg border border-ocean-100 overflow-hidden"
-                    >
-                      {thumbnail && item.type === 'fish' && (
-                        <div className="h-24 bg-gradient-to-b from-blue-100 to-blue-50 flex items-center justify-center p-2">
-                          <img
-                            src={thumbnail}
-                            alt={item.common_name || item.species_name}
-                            className="max-h-full max-w-full object-contain"
-                          />
+              <div className="space-y-2">
+                {paged.map((item) => (
+                  <div
+                    key={item.id}
+                    className={ROW_CLASS}
+                    onClick={() => navigate(TAB_ROUTES.livestock!)}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-xl flex-shrink-0">{getTypeIcon(item.type)}</span>
+                      <div className="min-w-0">
+                        <div className="font-medium text-gray-900 truncate">
+                          {item.common_name || item.species_name}
                         </div>
-                      )}
-                      <div className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="font-semibold text-gray-900">
-                              {item.common_name || item.species_name}
-                            </div>
-                            {item.common_name && (
-                              <div className="text-sm text-gray-600 italic">{item.species_name}</div>
-                            )}
-                            <div className="mt-2 flex gap-1">
-                              <span className="inline-block px-2 py-1 bg-ocean-100 text-ocean-700 rounded text-xs font-medium capitalize">
-                                {item.type}
-                              </span>
-                              <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                                item.status === 'alive' ? 'bg-green-100 text-green-700' :
-                                item.status === 'dead' ? 'bg-red-100 text-red-700' :
-                                'bg-gray-100 text-gray-700'
-                              }`}>
-                                {item.status}
-                              </span>
-                            </div>
-                          </div>
-                          {!(thumbnail && item.type === 'fish') && (
-                            <div className="text-2xl">{getIcon()}</div>
-                          )}
-                        </div>
+                        {item.common_name && (
+                          <div className="text-sm text-gray-500 italic truncate">{item.species_name}</div>
+                        )}
                       </div>
                     </div>
-                  )
-                })}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-ocean-100 text-ocean-700 capitalize">
+                        {item.type}
+                      </span>
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        item.status === 'alive' ? 'bg-green-100 text-green-700' :
+                        item.status === 'dead' ? 'bg-red-100 text-red-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {item.status}
+                      </span>
+                      <ChevronRight />
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
-            <Pagination currentPage={livestockPage} totalPages={livestockTotalPages} totalItems={filteredLivestock.length} itemsPerPage={LIVESTOCK_PER_PAGE} onPageChange={setLivestockPage} />
+            <Pagination currentPage={livestockPage} totalPages={totalPages} totalItems={filteredLivestock.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setLivestockPage} />
           </div>
         )
       }
 
       case 'photos': {
-        const photosTotalPages = Math.ceil(photos.length / PHOTOS_PER_PAGE)
-        const pagedPhotos = photos.slice((photosPage - 1) * PHOTOS_PER_PAGE, photosPage * PHOTOS_PER_PAGE)
+        const totalPages = Math.ceil(photos.length / PHOTOS_PER_PAGE)
+        const paged = photos.slice((photosPage - 1) * PHOTOS_PER_PAGE, photosPage * PHOTOS_PER_PAGE)
 
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.photos')}</h3>
-              <span className="text-sm text-gray-500">{photos.length} {t('stats.photoCount').toLowerCase()}</span>
-            </div>
+            <TabHeader tabId="photos" title={t('tabs.photos')} count={photos.length} />
             {photos.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">📷</div>
-                <p className="text-gray-600">{t('emptyState.noPhotos')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToPhotos')}
-                </p>
-              </div>
+              <EmptyState icon="📷" messageKey="emptyState.noPhotos" goToKey="emptyState.goToPhotos" />
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {pagedPhotos.map((photo) => (
+                {paged.map((photo) => (
                   <div
                     key={photo.id}
-                    className="aspect-square bg-ocean-100 rounded-lg overflow-hidden group relative flex items-center justify-center"
+                    className="aspect-square bg-ocean-100 rounded-lg overflow-hidden group relative flex items-center justify-center cursor-pointer"
+                    onClick={() => navigate(TAB_ROUTES.photos!)}
                   >
                     {photoUrls[photo.id] ? (
                       <>
@@ -459,146 +450,142 @@ export default function TankTabs({
                 ))}
               </div>
             )}
-            <Pagination currentPage={photosPage} totalPages={photosTotalPages} totalItems={photos.length} itemsPerPage={PHOTOS_PER_PAGE} onPageChange={setPhotosPage} />
+            <Pagination currentPage={photosPage} totalPages={totalPages} totalItems={photos.length} itemsPerPage={PHOTOS_PER_PAGE} onPageChange={setPhotosPage} />
           </div>
         )
       }
 
       case 'notes': {
-        const notesTotalPages = Math.ceil(notes.length / NOTES_PER_PAGE)
-        const pagedNotes = notes.slice((notesPage - 1) * NOTES_PER_PAGE, notesPage * NOTES_PER_PAGE)
+        const totalPages = Math.ceil(notes.length / ITEMS_PER_PAGE)
+        const paged = notes.slice((notesPage - 1) * ITEMS_PER_PAGE, notesPage * ITEMS_PER_PAGE)
 
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.notes')}</h3>
-              <span className="text-sm text-gray-500">{notes.length} {t('stats.noteCount').toLowerCase()}</span>
-            </div>
+            <TabHeader tabId="notes" title={t('tabs.notes')} count={notes.length} />
             {notes.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">📝</div>
-                <p className="text-gray-600">{t('emptyState.noNotes')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToNotes')}
-                </p>
-              </div>
+              <EmptyState icon="📝" messageKey="emptyState.noNotes" goToKey="emptyState.goToNotes" />
             ) : (
-              <div className="space-y-4">
-                {pagedNotes.map((note) => (
+              <div className="space-y-2">
+                {paged.map((note) => (
                   <div
                     key={note.id}
-                    className="p-4 bg-gray-50 rounded-lg"
+                    className={ROW_CLASS}
+                    onClick={() => navigate(TAB_ROUTES.notes!)}
                   >
-                    <div className="text-gray-800 whitespace-pre-wrap">{note.content}</div>
-                    <div className="text-xs text-gray-500 mt-2">
-                      {new Date(note.created_at).toLocaleDateString()} at {new Date(note.created_at).toLocaleTimeString()}
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <span className="text-xl flex-shrink-0">📝</span>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-gray-800 line-clamp-2">{note.content}</div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {new Date(note.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 ml-3">
+                      <ChevronRight />
                     </div>
                   </div>
                 ))}
               </div>
             )}
-            <Pagination currentPage={notesPage} totalPages={notesTotalPages} totalItems={notes.length} itemsPerPage={NOTES_PER_PAGE} onPageChange={setNotesPage} />
+            <Pagination currentPage={notesPage} totalPages={totalPages} totalItems={notes.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setNotesPage} />
           </div>
         )
       }
 
-      case 'icp':
+      case 'icp': {
+        const totalPages = Math.ceil(icpTests.length / ITEMS_PER_PAGE)
+        const paged = icpTests.slice((icpPage - 1) * ITEMS_PER_PAGE, icpPage * ITEMS_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('tabs.icpTests')}</h3>
-              <span className="text-sm text-gray-500">{icpTests.length} {t('stats.icpTestCount').toLowerCase()}</span>
-            </div>
+            <TabHeader tabId="icp" title={t('tabs.icpTests')} count={icpTests.length} />
             {icpTests.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">🔬</div>
-                <p className="text-gray-600">{t('emptyState.noIcpTests')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToIcpTests')}
-                </p>
-              </div>
+              <EmptyState icon="🔬" messageKey="emptyState.noIcpTests" goToKey="emptyState.goToIcpTests" />
             ) : (
-              <div className="space-y-3">
-                {icpTests.map((test) => (
+              <div className="space-y-2">
+                {paged.map((test) => (
                   <div
                     key={test.id}
-                    className="flex items-center justify-between p-4 bg-gradient-to-br from-ocean-50 to-white rounded-lg border border-ocean-100"
+                    className={ROW_CLASS}
+                    onClick={() => navigate(TAB_ROUTES.icp!)}
                   >
-                    <div>
-                      <div className="font-medium text-gray-900">{test.lab_name}</div>
-                      <div className="text-sm text-gray-600">
-                        {new Date(test.test_date).toLocaleDateString()}
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-xl flex-shrink-0">🔬</span>
+                      <div className="min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{test.lab_name}</div>
+                        <div className="text-sm text-gray-500">
+                          {new Date(test.test_date).toLocaleDateString()}
+                        </div>
                       </div>
                     </div>
-                    {test.score_overall && (
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-ocean-600">
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      {test.score_overall && (
+                        <span className="px-2.5 py-0.5 rounded-full text-sm font-bold bg-ocean-100 text-ocean-700">
                           {test.score_overall}
-                        </div>
-                        <div className="text-xs text-gray-600">{t('score')}</div>
-                      </div>
-                    )}
+                        </span>
+                      )}
+                      <ChevronRight />
+                    </div>
                   </div>
                 ))}
               </div>
             )}
+            <Pagination currentPage={icpPage} totalPages={totalPages} totalItems={icpTests.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setIcpPage} />
           </div>
         )
+      }
 
-      case 'maintenance':
+      case 'maintenance': {
+        const activeReminders = maintenance.filter(m => m.is_active)
+        const totalPages = Math.ceil(activeReminders.length / ITEMS_PER_PAGE)
+        const paged = activeReminders.slice((maintenancePage - 1) * ITEMS_PER_PAGE, maintenancePage * ITEMS_PER_PAGE)
+
         return (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('maintenance.reminders')}</h3>
-              <span className="text-sm text-gray-500">
-                {maintenance.filter(m => m.is_active).length} {t('maintenance.active')}
-              </span>
-            </div>
-            {maintenance.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-4xl mb-4">🔧</div>
-                <p className="text-gray-600">{t('emptyState.noMaintenance')}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  {t('emptyState.goToMaintenance')}
-                </p>
-              </div>
+            <TabHeader tabId="maintenance" title={t('maintenance.reminders')} count={activeReminders.length} />
+            {activeReminders.length === 0 ? (
+              <EmptyState icon="🔧" messageKey="emptyState.noMaintenance" goToKey="emptyState.goToMaintenance" />
             ) : (
-              <div className="space-y-3">
-                {maintenance.filter(m => m.is_active).map((reminder) => {
+              <div className="space-y-2">
+                {paged.map((reminder) => {
                   const isOverdue = new Date(reminder.next_due) < new Date()
                   return (
                     <div
                       key={reminder.id}
-                      className={`p-4 rounded-lg ${
+                      className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition-colors ${
                         isOverdue
-                          ? 'bg-red-50 border border-red-200'
-                          : 'bg-gray-50'
+                          ? 'bg-red-50 hover:bg-red-100 border border-red-200'
+                          : 'bg-gray-50 hover:bg-gray-100'
                       }`}
+                      onClick={() => navigate(TAB_ROUTES.maintenance!)}
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="font-medium text-gray-900">{reminder.title}</div>
-                          <div className="text-sm text-gray-600 mt-1">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-xl flex-shrink-0">{isOverdue ? '⚠️' : '🔧'}</span>
+                        <div className="min-w-0">
+                          <div className="font-medium text-gray-900 truncate">{reminder.title}</div>
+                          <div className="text-sm text-gray-500">
                             {t('maintenance.everyDays', { count: reminder.frequency_days })}
                           </div>
-                          <div className={`text-sm mt-2 ${
-                            isOverdue ? 'text-red-600 font-medium' : 'text-gray-600'
-                          }`}>
-                            {isOverdue ? t('maintenance.overdue') + ' ' : t('maintenance.next') + ' '}
-                            {new Date(reminder.next_due).toLocaleDateString()}
-                          </div>
                         </div>
-                        {isOverdue && (
-                          <span className="text-red-500 text-2xl">⚠️</span>
-                        )}
+                      </div>
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          isOverdue ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                        }`}>
+                          {new Date(reminder.next_due).toLocaleDateString()}
+                        </span>
+                        <ChevronRight />
                       </div>
                     </div>
                   )
                 })}
               </div>
             )}
+            <Pagination currentPage={maintenancePage} totalPages={totalPages} totalItems={activeReminders.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setMaintenancePage} />
           </div>
         )
+      }
 
       default:
         return null

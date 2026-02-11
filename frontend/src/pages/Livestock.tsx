@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { livestockApi, tanksApi } from '../api'
 import type { Livestock as LivestockType, Tank } from '../types'
@@ -21,7 +22,8 @@ export default function Livestock() {
   const [showForm, setShowForm] = useState(false)
   const [editingLivestock, setEditingLivestock] = useState<LivestockType | null>(null)
   const [filterType, setFilterType] = useState<'all' | 'fish' | 'coral' | 'invertebrate'>('all')
-  const [selectedTank, setSelectedTank] = useState<string>('all')
+  const [searchParams] = useSearchParams()
+  const [selectedTank, setSelectedTank] = useState<string>(searchParams.get('tank') || 'all')
   const [showPast, setShowPast] = useState(false)
   const [showArchived, setShowArchived] = useState(false)
 
