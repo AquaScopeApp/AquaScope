@@ -349,7 +349,7 @@ def _collect_expense_details(db: Session, user_id, tank_id=None, category=None):
             details.append(ExpenseDetail(
                 id=e.id, name=e.name, category="equipment",
                 tank_id=e.tank_id, tank_name=tank_names.get(e.tank_id, "Unknown"),
-                date=e.purchase_date, price=price,
+                date=str(e.purchase_date) if e.purchase_date else None, price=price,
                 price_raw=e.purchase_price,
                 purchase_url=getattr(e, "purchase_url", None),
             ))
@@ -363,7 +363,7 @@ def _collect_expense_details(db: Session, user_id, tank_id=None, category=None):
             details.append(ExpenseDetail(
                 id=c.id, name=c.name, category="consumables",
                 tank_id=c.tank_id, tank_name=tank_names.get(c.tank_id, "Unknown"),
-                date=c.purchase_date, price=price,
+                date=str(c.purchase_date) if c.purchase_date else None, price=price,
                 price_raw=c.purchase_price,
                 purchase_url=getattr(c, "purchase_url", None),
             ))
@@ -377,7 +377,7 @@ def _collect_expense_details(db: Session, user_id, tank_id=None, category=None):
             details.append(ExpenseDetail(
                 id=l.id, name=l.species_name, category="livestock",
                 tank_id=l.tank_id, tank_name=tank_names.get(l.tank_id, "Unknown"),
-                date=l.added_date, price=price,
+                date=str(l.added_date) if l.added_date else None, price=price,
                 price_raw=l.purchase_price,
                 purchase_url=getattr(l, "purchase_url", None),
             ))
@@ -392,12 +392,12 @@ def _collect_expense_details(db: Session, user_id, tank_id=None, category=None):
                 id=t.id, name=t.lab_name or "ICP Test",
                 category="icp_tests",
                 tank_id=t.tank_id, tank_name=tank_names.get(t.tank_id, "Unknown"),
-                date=t.test_date, price=price,
+                date=str(t.test_date) if t.test_date else None, price=price,
                 price_raw=t.cost, purchase_url=None,
             ))
 
     # Sort by date descending (nulls last)
-    details.sort(key=lambda d: d.date or datetime.min.date(), reverse=True)
+    details.sort(key=lambda d: d.date or "0000-01-01", reverse=True)
     return details
 
 

@@ -2,7 +2,6 @@
 from pydantic import BaseModel
 from uuid import UUID
 from typing import Optional, List
-from datetime import date
 
 
 class CategorySpending(BaseModel):
@@ -50,7 +49,7 @@ class ExpenseDetail(BaseModel):
     category: str
     tank_id: UUID
     tank_name: str
-    date: Optional[date] = None
+    date: Optional[str] = None
     price: Optional[float] = None
     price_raw: Optional[str] = None
     purchase_url: Optional[str] = None
