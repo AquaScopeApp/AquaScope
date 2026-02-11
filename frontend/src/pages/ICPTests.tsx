@@ -14,11 +14,13 @@ import { useTranslation } from 'react-i18next'
 import { icpTestsApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import type { ICPTest, ICPTestSummary, Tank } from '../types'
 
 export default function ICPTestsPage() {
   const { t } = useTranslation('icptests')
   const { t: tc } = useTranslation('common')
+  const { user } = useAuth()
   const [tests, setTests] = useState<ICPTestSummary[]>([])
   const [selectedTest, setSelectedTest] = useState<ICPTest | null>(null)
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -271,6 +273,7 @@ export default function ICPTestsPage() {
           value={selectedTank}
           onChange={setSelectedTank}
           allLabel={t('allTanks')}
+          defaultTankId={user?.default_tank_id || undefined}
         />
       </div>
 

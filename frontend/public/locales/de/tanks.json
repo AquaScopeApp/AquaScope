@@ -3,6 +3,8 @@
   "addTank": "Aquarium hinzufügen",
   "editTank": "Aquarium bearbeiten",
   "deleteTank": "Aquarium löschen",
+    "setDefault": "Als Standard festlegen",
+    "isDefault": "Standard",
   "createTank": "Neues Aquarium erstellen",
   "updateTank": "Aquarium aktualisieren",
   "saving": "Speichern...",

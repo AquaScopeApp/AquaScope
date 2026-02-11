@@ -11,11 +11,13 @@ import { Note, Tank } from '../types'
 import { notesApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import NoteCard from '../components/notes/NoteCard'
 import NoteEditor from '../components/notes/NoteEditor'
 
 export default function Notes() {
   const { t } = useTranslation('notes')
+  const { user } = useAuth()
   const [notes, setNotes] = useState<Note[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -126,6 +128,7 @@ export default function Notes() {
             onChange={setSelectedTankId}
             allLabel={t('allTanks')}
             label={t('filterByTank')}
+            defaultTankId={user?.default_tank_id || undefined}
           />
         </div>
       )}

@@ -13,11 +13,13 @@ import type { ParameterRange } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'
 import ParameterForm from '../components/parameters/ParameterForm'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import type { Tank, ParameterReading } from '../types'
 
 export default function Parameters() {
   const { t } = useTranslation('parameters')
   const { t: tc } = useTranslation('common')
+  const { user } = useAuth()
   const [searchParams] = useSearchParams()
   const [tanks, setTanks] = useState<Tank[]>([])
   const [selectedTank, setSelectedTank] = useState<string | null>(searchParams.get('tank'))
@@ -367,7 +369,6 @@ export default function Parameters() {
     )
   }
 
-  const selectedTankData = tanks.find((t) => t.id === selectedTank)
 
   return (
     <div className="space-y-6">
@@ -406,19 +407,8 @@ export default function Parameters() {
             allLabel=""
             label={t('selectTank')}
             showAllOption={false}
+            defaultTankId={user?.default_tank_id || undefined}
           />
-        </div>
-      )}
-
-      {/* Tank Info */}
-      {selectedTankData && (
-        <div className="bg-gradient-to-r from-ocean-50 to-ocean-100 rounded-lg p-4">
-          <h2 className="text-xl font-semibold text-ocean-900">
-            {selectedTankData.name}
-          </h2>
-          {selectedTankData.total_volume_liters > 0 && (
-            <p className="text-ocean-700">Volume: {selectedTankData.total_volume_liters}L</p>
-          )}
         </div>
       )}
 

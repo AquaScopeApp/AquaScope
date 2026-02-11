@@ -31,6 +31,7 @@ import MonthlyBarChart from '../components/finances/MonthlyBarChart'
 import BudgetProgressBar from '../components/finances/BudgetProgressBar'
 import BudgetForm from '../components/finances/BudgetForm'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import Pagination from '../components/common/Pagination'
 
 type Tab = 'summary' | 'details' | 'budgets'
@@ -48,6 +49,7 @@ export default function Finances() {
   const { t } = useTranslation('finances')
   const { t: tc } = useTranslation('common')
   const { currency } = useCurrency()
+  const { user } = useAuth()
   const fp = (amount: number) => formatPrice(amount, currency)
 
   const [searchParams] = useSearchParams()
@@ -212,6 +214,7 @@ export default function Finances() {
           value={selectedTank}
           onChange={setSelectedTank}
           allLabel={t('allTanks')}
+          defaultTankId={user?.default_tank_id || undefined}
         />
       </div>
 

@@ -18,6 +18,7 @@ import { useCurrency } from '../hooks/useCurrency'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import Pagination from '../components/common/Pagination'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
 
 const ITEMS_PER_PAGE = 12
@@ -41,6 +42,7 @@ export default function ConsumablesPage() {
   const { t } = useTranslation('consumables')
   const { t: tc } = useTranslation('common')
   const { currency } = useCurrency()
+  const { user } = useAuth()
   const [consumables, setConsumables] = useState<Consumable[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -343,6 +345,7 @@ export default function ConsumablesPage() {
               onChange={setSelectedTank}
               allLabel={t('allTanks')}
               label={t('filterByTank')}
+              defaultTankId={user?.default_tank_id || undefined}
             />
           </div>
 

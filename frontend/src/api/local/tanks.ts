@@ -181,4 +181,12 @@ export const tanksApi = {
     await db.execute('UPDATE tanks SET is_archived = 0, updated_at = ? WHERE id = ?', [now(), id])
     return tanksApi.get(id)
   },
+
+  setDefault: async (id: string): Promise<Tank> => {
+    return tanksApi.get(id)
+  },
+
+  unsetDefault: async (_id: string): Promise<void> => {
+    // No-op in local mode
+  },
 }

@@ -13,6 +13,7 @@ export interface User {
   email: string
   username: string
   is_admin: boolean
+  default_tank_id?: string | null
   created_at: string
   updated_at: string
 }

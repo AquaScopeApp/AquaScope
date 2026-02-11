@@ -155,6 +155,10 @@ def delete_tank(
             detail="Tank not found"
         )
 
+    # Clear default if this was the default tank
+    if current_user.default_tank_id == tank_id:
+        current_user.default_tank_id = None
+
     db.delete(tank)
     db.commit()
     return None
@@ -190,6 +194,35 @@ def unarchive_tank(
     db.commit()
     db.refresh(tank)
     return tank
+
+
+@router.post("/{tank_id}/set-default", response_model=TankResponse)
+def set_default_tank(
+    tank_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Set a tank as the user's default tank (pre-selected across all pages)."""
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == current_user.id).first()
+    if not tank:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tank not found")
+    current_user.default_tank_id = tank.id
+    db.commit()
+    db.refresh(tank)
+    return tank
+
+
+@router.delete("/{tank_id}/set-default", status_code=status.HTTP_204_NO_CONTENT)
+def unset_default_tank(
+    tank_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Remove a tank as the user's default."""
+    if current_user.default_tank_id == tank_id:
+        current_user.default_tank_id = None
+        db.commit()
+    return None
 
 
 # ============================================================================

@@ -10,7 +10,7 @@ Design Decisions:
 - Hashed password: Never store plain text passwords
 - Timestamps: Track account creation and updates for auditing
 """
-from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -27,11 +27,12 @@ class User(Base):
     username = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_admin = Column(Boolean, default=False, nullable=False)
+    default_tank_id = Column(GUID, ForeignKey("tanks.id", ondelete="SET NULL", use_alter=True), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Relationships - SQLAlchemy will handle cascade deletes
-    tanks = relationship("Tank", back_populates="owner", cascade="all, delete-orphan")
+    tanks = relationship("Tank", back_populates="owner", cascade="all, delete-orphan", foreign_keys="Tank.user_id")
     notes = relationship("Note", back_populates="owner", cascade="all, delete-orphan")
     photos = relationship("Photo", back_populates="owner", cascade="all, delete-orphan")
     maintenance_reminders = relationship("MaintenanceReminder", back_populates="owner", cascade="all, delete-orphan")

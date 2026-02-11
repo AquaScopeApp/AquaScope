@@ -7,12 +7,14 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { tanksApi } from '../api'
 import type { Tank } from '../types'
+import { useAuth } from '../hooks/useAuth'
 import TankCard from '../components/tanks/TankCard'
 import TankForm from '../components/tanks/TankForm'
 
 export default function TankList() {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
+  const { user, refreshUser } = useAuth()
   const location = useLocation()
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -96,6 +98,19 @@ export default function TankList() {
 
   const handleCancelEdit = () => {
     setEditingTank(null)
+  }
+
+  const handleSetDefault = async (id: string) => {
+    try {
+      if (user?.default_tank_id === id) {
+        await tanksApi.unsetDefault(id)
+      } else {
+        await tanksApi.setDefault(id)
+      }
+      await refreshUser()
+    } catch (error) {
+      console.error('Failed to set default tank:', error)
+    }
   }
 
   if (isLoading) {
@@ -195,6 +210,8 @@ export default function TankList() {
               onDelete={handleDeleteTank}
               onArchive={handleArchive}
               onUnarchive={handleUnarchive}
+              isDefault={tank.id === user?.default_tank_id}
+              onSetDefault={handleSetDefault}
             />
           ))}
         </div>

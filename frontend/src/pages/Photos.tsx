@@ -11,11 +11,13 @@ import { Photo, Tank } from '../types'
 import { photosApi, tanksApi } from '../api'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import PhotoGallery from '../components/photos/PhotoGallery'
 import PhotoUpload from '../components/photos/PhotoUpload'
 
 export default function Photos() {
   const { t } = useTranslation('photos')
+  const { user } = useAuth()
   const [photos, setPhotos] = useState<Photo[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -116,6 +118,7 @@ export default function Photos() {
             onChange={setSelectedTankId}
             allLabel={t('allTanks')}
             label={t('filterByTank')}
+            defaultTankId={user?.default_tank_id || undefined}
           />
         </div>
       )}

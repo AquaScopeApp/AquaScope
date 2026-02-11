@@ -265,6 +265,15 @@ export const tanksApi = {
     const response = await apiClient.post<Tank>(`/tanks/${id}/unarchive`)
     return response.data
   },
+
+  setDefault: async (id: string): Promise<Tank> => {
+    const response = await apiClient.post<Tank>(`/tanks/${id}/set-default`)
+    return response.data
+  },
+
+  unsetDefault: async (id: string): Promise<void> => {
+    await apiClient.delete(`/tanks/${id}/set-default`)
+  },
 }
 
 // ============================================================================

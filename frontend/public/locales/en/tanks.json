@@ -3,6 +3,8 @@
   "addTank": "Add Tank",
   "editTank": "Edit Tank",
   "deleteTank": "Delete Tank",
+    "setDefault": "Set as default",
+    "isDefault": "Default",
   "createTank": "Create New Tank",
   "updateTank": "Update Tank",
   "saving": "Saving...",

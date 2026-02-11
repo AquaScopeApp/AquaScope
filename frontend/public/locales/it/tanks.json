@@ -3,6 +3,8 @@
   "addTank": "Aggiungi vasca",
   "editTank": "Modifica vasca",
   "deleteTank": "Elimina vasca",
+    "setDefault": "Imposta come predefinito",
+    "isDefault": "Predefinito",
   "createTank": "Crea nuova vasca",
   "updateTank": "Aggiorna vasca",
   "saving": "Salvataggio...",

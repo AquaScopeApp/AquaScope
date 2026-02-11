@@ -17,6 +17,7 @@ import { useCurrency } from '../hooks/useCurrency'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import Pagination from '../components/common/Pagination'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
 const ITEMS_PER_PAGE = 12
@@ -58,6 +59,7 @@ export default function EquipmentPage() {
   const { t } = useTranslation('equipment')
   const { t: tc } = useTranslation('common')
   const { currency } = useCurrency()
+  const { user } = useAuth()
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -317,6 +319,7 @@ export default function EquipmentPage() {
               onChange={setSelectedTank}
               allLabel={t('allTanks')}
               label={t('filterByTank')}
+              defaultTankId={user?.default_tank_id || undefined}
             />
           </div>
 

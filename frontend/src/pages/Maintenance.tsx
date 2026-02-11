@@ -11,12 +11,14 @@ import { maintenanceApi, tanksApi } from '../api'
 import type { MaintenanceReminder, Tank } from '../types'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import ReminderCard from '../components/maintenance/ReminderCard'
 import ReminderForm from '../components/maintenance/ReminderForm'
 
 export default function Maintenance() {
   const { t } = useTranslation('maintenance')
   const { t: tc } = useTranslation('common')
+  const { user } = useAuth()
   const [searchParams] = useSearchParams()
   const [reminders, setReminders] = useState<MaintenanceReminder[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -152,6 +154,7 @@ export default function Maintenance() {
             onChange={setSelectedTank}
             allLabel={tc('allTanks', { defaultValue: 'All Tanks' })}
             label={t('filterByTank', { defaultValue: 'Filter by tank' })}
+            defaultTankId={user?.default_tank_id || undefined}
           />
         </div>
       )}

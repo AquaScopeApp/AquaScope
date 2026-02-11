@@ -20,6 +20,7 @@ interface TankSelectorProps {
   label?: string           // e.g. "Filter by tank" — optional label above
   className?: string       // extra wrapper classes
   showAllOption?: boolean  // default true — show "All Tanks" option (hidden when only 1 tank)
+  defaultTankId?: string   // user's default tank — auto-selected when no explicit selection
 }
 
 const DEFAULT_IMAGES: Record<string, string> = {
@@ -36,16 +37,19 @@ export default function TankSelector({
   label,
   className = '',
   showAllOption = true,
+  defaultTankId,
 }: TankSelectorProps) {
   const [thumbUrl, setThumbUrl] = useState<string | null>(null)
 
-  // Auto-select when there's only one tank and nothing is selected
+  // Auto-select: single tank first, then default tank
   const singleTank = tanks.length === 1
   useEffect(() => {
     if (singleTank && (!value || value === 'all')) {
       onChange(tanks[0].id)
+    } else if (defaultTankId && (!value || value === 'all') && tanks.some(t => t.id === defaultTankId)) {
+      onChange(defaultTankId)
     }
-  }, [singleTank, tanks, value, onChange])
+  }, [singleTank, tanks, value, onChange, defaultTankId])
 
   // Only show "All Tanks" when there are multiple tanks
   const displayAllOption = showAllOption && tanks.length > 1

@@ -12,12 +12,14 @@ import { livestockApi, tanksApi } from '../api'
 import type { Livestock as LivestockType, Tank } from '../types'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import TankSelector from '../components/common/TankSelector'
+import { useAuth } from '../hooks/useAuth'
 import LivestockCard from '../components/livestock/LivestockCard'
 import LivestockForm from '../components/livestock/LivestockForm'
 
 export default function Livestock() {
   const { t } = useTranslation('livestock')
   const { t: tc } = useTranslation('common')
+  const { user } = useAuth()
   const [livestock, setLivestock] = useState<LivestockType[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -224,6 +226,7 @@ export default function Livestock() {
               onChange={(v) => setSelectedTank(v || 'all')}
               allLabel={t('allTanks')}
               label={t('filterByTank')}
+              defaultTankId={user?.default_tank_id || undefined}
             />
           </div>
         </div>
