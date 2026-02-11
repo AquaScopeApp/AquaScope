@@ -65,11 +65,11 @@ export default function ParameterChart({
 
   if (chartData.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+      <div className="bg-white rounded-lg shadow p-4">
+        <h3 className="text-base font-semibold text-gray-900 mb-2">
           {range.name}
         </h3>
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-6 text-gray-500 text-sm">
           No data available for this parameter
         </div>
       </div>
@@ -102,20 +102,20 @@ export default function ParameterChart({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-4">
       {/* Header */}
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-base font-semibold text-gray-900">
             {range.name}
           </h3>
-          <p className="text-sm text-gray-600">{range.description}</p>
+          <p className="text-xs text-gray-600">{range.description}</p>
         </div>
 
         {latestReading && (
-          <div className={`px-3 py-2 rounded-md border ${getStatusColor(status)}`}>
+          <div className={`px-2 py-1 rounded-md border ${getStatusColor(status)}`}>
             <div className="text-xs font-medium">Current</div>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold">
               {(() => {
                 if (parameterType === 'salinity' || parameterType === 'phosphate') {
                   return latestReading.value.toFixed(3)
@@ -132,8 +132,8 @@ export default function ParameterChart({
       </div>
 
       {/* Normal Range Info */}
-      <div className="mb-4 p-3 bg-gray-50 rounded-md">
-        <div className="flex items-center justify-between text-sm">
+      <div className="mb-2 p-2 bg-gray-50 rounded-md">
+        <div className="flex items-center justify-between text-xs">
           <div>
             <span className="text-gray-600">Normal Range:</span>
             <span className="font-semibold text-gray-900 ml-2">
@@ -176,13 +176,13 @@ export default function ParameterChart({
             y={range.min}
             stroke="#f59e0b"
             strokeDasharray="3 3"
-            label={{ value: 'Min', position: 'right', fill: '#f59e0b', fontSize: 12 }}
+            label={{ value: 'Min', position: 'right', fill: '#f59e0b', fontSize: 10 }}
           />
           <ReferenceLine
             y={range.max}
             stroke="#f59e0b"
             strokeDasharray="3 3"
-            label={{ value: 'Max', position: 'right', fill: '#f59e0b', fontSize: 12 }}
+            label={{ value: 'Max', position: 'right', fill: '#f59e0b', fontSize: 10 }}
           />
 
           {/* Ideal reference line */}
@@ -191,7 +191,7 @@ export default function ParameterChart({
               y={range.ideal}
               stroke="#10b981"
               strokeDasharray="3 3"
-              label={{ value: 'Ideal', position: 'right', fill: '#10b981', fontSize: 12 }}
+              label={{ value: 'Ideal', position: 'right', fill: '#10b981', fontSize: 10 }}
             />
           )}
 
@@ -201,14 +201,14 @@ export default function ParameterChart({
             scale="time"
             type="number"
             tickFormatter={(timestamp) => format(new Date(timestamp), 'MMM dd')}
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 10 }}
             stroke="#9ca3af"
           />
           <YAxis
             domain={yDomain}
-            tick={{ fontSize: 12 }}
+            tick={{ fontSize: 10 }}
             stroke="#9ca3af"
-            label={{ value: range.unit, angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+            label={{ value: range.unit, angle: -90, position: 'insideLeft', style: { fontSize: 10 } }}
           />
 
           <Tooltip
@@ -247,7 +247,7 @@ export default function ParameterChart({
       </ResponsiveContainer>
 
       {/* Data points info */}
-      <div className="mt-4 text-xs text-gray-500 text-center">
+      <div className="mt-2 text-xs text-gray-500 text-center">
         {chartData.length} reading{chartData.length !== 1 ? 's' : ''} from{' '}
         {chartData[0].date} to {chartData[chartData.length - 1].date}
       </div>

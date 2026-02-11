@@ -42,12 +42,19 @@ export default function Parameters() {
     loadTanks()
   }, [])
 
+  // Load ranges when tank changes (must complete before loading parameters)
   useEffect(() => {
     if (selectedTank) {
       loadRanges()
+    }
+  }, [selectedTank])
+
+  // Load parameter data when ranges are ready or date range changes
+  useEffect(() => {
+    if (selectedTank) {
       loadParameters()
     }
-  }, [selectedTank, dateRange])
+  }, [selectedTank, dateRange, customRanges])
 
   // Reset pagination when filter changes
   useEffect(() => {
@@ -682,13 +689,13 @@ export default function Parameters() {
 
       {/* Parameter Charts */}
       {!isLoading && selectedTank && (
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {activeParamOrder.map((paramType) => (
             <ParameterChart
               key={paramType}
               parameterType={paramType}
               data={parameters[paramType] || []}
-              height={300}
+              height={220}
               customRanges={customRanges || undefined}
             />
           ))}
@@ -702,7 +709,7 @@ export default function Parameters() {
                   key={ratioType}
                   parameterType={ratioType}
                   data={ratioData}
-                  height={300}
+                  height={220}
                   customRanges={customRanges || undefined}
                 />
               )
