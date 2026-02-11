@@ -1210,3 +1210,48 @@ def update_module_settings(
 
     # Return updated state
     return get_module_settings(current_user=admin, db=db)
+
+
+# ============================================================================
+# General Settings (currency, etc.)
+# ============================================================================
+
+GENERAL_SETTINGS_DEFAULTS = {
+    "default_currency": "EUR",
+}
+
+
+@router.get("/settings/general")
+def get_general_settings(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Get general application settings. Any authenticated user can read."""
+    keys = list(GENERAL_SETTINGS_DEFAULTS.keys())
+    rows = db.query(AppSettings).filter(AppSettings.key.in_(keys)).all()
+    stored = {r.key: r.value for r in rows}
+
+    result = {}
+    for key, default in GENERAL_SETTINGS_DEFAULTS.items():
+        result[key] = stored.get(key, default)
+    return result
+
+
+@router.put("/settings/general")
+def update_general_settings(
+    settings: dict,
+    admin: User = Depends(get_current_admin_user),
+    db: Session = Depends(get_db),
+):
+    """Update general application settings. Admin only."""
+    for key, value in settings.items():
+        if key not in GENERAL_SETTINGS_DEFAULTS:
+            continue
+        existing = db.query(AppSettings).filter(AppSettings.key == key).first()
+        if existing:
+            existing.value = str(value)
+        else:
+            db.add(AppSettings(key=key, value=str(value)))
+
+    db.commit()
+    return get_general_settings(current_user=admin, db=db)

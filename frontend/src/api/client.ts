@@ -899,6 +899,16 @@ export const adminApi = {
     return response.data
   },
 
+  getGeneralSettings: async (): Promise<Record<string, string>> => {
+    const response = await apiClient.get<Record<string, string>>('/admin/settings/general')
+    return response.data
+  },
+
+  updateGeneralSettings: async (settings: Record<string, string>): Promise<Record<string, string>> => {
+    const response = await apiClient.put<Record<string, string>>('/admin/settings/general', settings)
+    return response.data
+  },
+
   downloadAllFiles: async (): Promise<void> => {
     const response = await apiClient.get('/admin/storage/download-all', {
       responseType: 'blob',

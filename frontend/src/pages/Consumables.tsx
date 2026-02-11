@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { consumablesApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
+import { useCurrency } from '../hooks/useCurrency'
 import Pagination from '../components/common/Pagination'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
 
@@ -36,6 +37,7 @@ const STATUSES = ['active', 'low_stock', 'depleted', 'expired']
 export default function ConsumablesPage() {
   const { t } = useTranslation('consumables')
   const { t: tc } = useTranslation('common')
+  const { currency } = useCurrency()
   const [consumables, setConsumables] = useState<Consumable[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -276,7 +278,7 @@ export default function ConsumablesPage() {
   const displayPrice = (raw: string | null) => {
     if (!raw) return null
     const parsed = parsePrice(raw)
-    return parsed !== null ? formatPrice(parsed) : raw
+    return parsed !== null ? formatPrice(parsed, currency) : raw
   }
 
   const toggleNotes = (id: string) => {

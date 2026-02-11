@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { equipmentApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
+import { useCurrency } from '../hooks/useCurrency'
 import Pagination from '../components/common/Pagination'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
@@ -53,6 +54,7 @@ const STATUSES = [
 export default function EquipmentPage() {
   const { t } = useTranslation('equipment')
   const { t: tc } = useTranslation('common')
+  const { currency } = useCurrency()
   const [equipment, setEquipment] = useState<Equipment[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -243,7 +245,7 @@ export default function EquipmentPage() {
   const displayPrice = (raw: string | null) => {
     if (!raw) return null
     const parsed = parsePrice(raw)
-    return parsed !== null ? formatPrice(parsed) : raw
+    return parsed !== null ? formatPrice(parsed, currency) : raw
   }
 
   const toggleNotes = (id: string) => {

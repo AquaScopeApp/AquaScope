@@ -24,6 +24,7 @@ import type {
   ExpenseDetailList,
 } from '../types'
 import { formatPrice } from '../utils/price'
+import { useCurrency } from '../hooks/useCurrency'
 import SpendingPieChart from '../components/finances/SpendingPieChart'
 import MonthlyBarChart from '../components/finances/MonthlyBarChart'
 import BudgetProgressBar from '../components/finances/BudgetProgressBar'
@@ -44,6 +45,8 @@ const DETAILS_PAGE_SIZE = 20
 export default function Finances() {
   const { t } = useTranslation('finances')
   const { t: tc } = useTranslation('common')
+  const { currency } = useCurrency()
+  const fp = (amount: number) => formatPrice(amount, currency)
 
   const [activeTab, setActiveTab] = useState<Tab>('summary')
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -221,7 +224,7 @@ export default function Finances() {
                   <span className="text-xs text-gray-500">{card.label}</span>
                 </div>
                 <p className="text-lg font-semibold text-gray-900">
-                  {formatPrice(card.value)}
+                  {fp(card.value)}
                 </p>
               </div>
             ))}
@@ -233,14 +236,14 @@ export default function Finances() {
               <h3 className="text-sm font-medium text-gray-700 mb-4">
                 {t('charts.categoryBreakdown')}
               </h3>
-              <SpendingPieChart data={summary?.by_category ?? []} />
+              <SpendingPieChart data={summary?.by_category ?? []} currency={currency} />
             </div>
 
             <div className="bg-white rounded-lg border border-gray-200 p-4">
               <h3 className="text-sm font-medium text-gray-700 mb-4">
                 {t('charts.monthlySpending')}
               </h3>
-              <MonthlyBarChart data={monthly} />
+              <MonthlyBarChart data={monthly} currency={currency} />
             </div>
           </div>
 
@@ -266,11 +269,11 @@ export default function Finances() {
                     {summary!.by_tank.map((row) => (
                       <tr key={row.tank_id} className="border-b border-gray-100">
                         <td className="py-2 font-medium text-gray-900">{row.tank_name}</td>
-                        <td className="py-2 text-right">{formatPrice(row.equipment)}</td>
-                        <td className="py-2 text-right">{formatPrice(row.consumables)}</td>
-                        <td className="py-2 text-right">{formatPrice(row.livestock)}</td>
-                        <td className="py-2 text-right">{formatPrice(row.icp_tests)}</td>
-                        <td className="py-2 text-right font-semibold">{formatPrice(row.total)}</td>
+                        <td className="py-2 text-right">{fp(row.equipment)}</td>
+                        <td className="py-2 text-right">{fp(row.consumables)}</td>
+                        <td className="py-2 text-right">{fp(row.livestock)}</td>
+                        <td className="py-2 text-right">{fp(row.icp_tests)}</td>
+                        <td className="py-2 text-right font-semibold">{fp(row.total)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -353,7 +356,7 @@ export default function Finances() {
                           className="hover:bg-ocean-50 px-2 py-1 rounded cursor-pointer text-gray-900"
                           title={t('details.clickToEdit', { defaultValue: 'Click to edit price' })}
                         >
-                          {item.price !== null ? formatPrice(item.price) : (item.price_raw || '—')}
+                          {item.price !== null ? fp(item.price) : (item.price_raw || '—')}
                         </button>
                       )}
                     </td>

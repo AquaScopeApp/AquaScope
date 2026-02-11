@@ -35,6 +35,8 @@ export function parsePrice(priceStr: string | null | undefined): number | null {
 
 /**
  * Format a number as a price string.
+ * The currency parameter defaults to 'EUR' for backward compatibility,
+ * but callers should prefer using the useCurrency() hook to get the app default.
  */
 export function formatPrice(amount: number, currency = 'EUR'): string {
   try {

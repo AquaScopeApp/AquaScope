@@ -150,4 +150,12 @@ export const adminApi = {
     // No-op in local mode
     return modules
   },
+
+  getGeneralSettings: async (): Promise<Record<string, string>> => {
+    return { default_currency: 'EUR' }
+  },
+
+  updateGeneralSettings: async (settings: Record<string, string>): Promise<Record<string, string>> => {
+    return settings
+  },
 }

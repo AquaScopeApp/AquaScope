@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useModuleSettings } from '../hooks/useModuleSettings'
+import { useCurrency } from '../hooks/useCurrency'
 import { Navigate } from 'react-router-dom'
 import { adminApi } from '../api'
 import { User, UserWithStats, SystemStats, UserDataSummary, Tank, StorageStats, StorageFile, ModuleSettings } from '../types'
@@ -16,6 +17,7 @@ type Tab = 'overview' | 'users' | 'database' | 'storage' | 'modules'
 export default function Admin() {
   const { user } = useAuth()
   const { modules: globalModules, refresh: refreshModules } = useModuleSettings()
+  const { currency: globalCurrency, refresh: refreshCurrency } = useCurrency()
   const [activeTab, setActiveTab] = useState<Tab>('overview')
   const [stats, setStats] = useState<SystemStats | null>(null)
   const [users, setUsers] = useState<UserWithStats[]>([])
@@ -40,6 +42,8 @@ export default function Admin() {
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
   const [moduleToggles, setModuleToggles] = useState<ModuleSettings>({ ...globalModules })
   const [savingModules, setSavingModules] = useState(false)
+  const [defaultCurrency, setDefaultCurrency] = useState(globalCurrency)
+  const [savingGeneral, setSavingGeneral] = useState(false)
 
   // Redirect non-admin users
   if (!user?.is_admin) {
@@ -1129,6 +1133,60 @@ export default function Admin() {
                 className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 disabled:opacity-50"
               >
                 {savingModules ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+
+          {/* General Settings */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">General Settings</h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Configure default settings for all users.
+            </p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Default Currency
+                </label>
+                <select
+                  value={defaultCurrency}
+                  onChange={(e) => setDefaultCurrency(e.target.value)}
+                  className="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                >
+                  <option value="EUR">EUR — Euro</option>
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="GBP">GBP — British Pound</option>
+                  <option value="CHF">CHF — Swiss Franc</option>
+                  <option value="CAD">CAD — Canadian Dollar</option>
+                  <option value="AUD">AUD — Australian Dollar</option>
+                  <option value="JPY">JPY — Japanese Yen</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Used for formatting prices across the app when displaying costs.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={async () => {
+                  setSavingGeneral(true)
+                  try {
+                    await adminApi.updateGeneralSettings({ default_currency: defaultCurrency })
+                    await refreshCurrency()
+                    alert('General settings saved!')
+                  } catch (error) {
+                    console.error('Failed to save general settings:', error)
+                    alert('Failed to save settings')
+                  } finally {
+                    setSavingGeneral(false)
+                  }
+                }}
+                disabled={savingGeneral}
+                className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 disabled:opacity-50"
+              >
+                {savingGeneral ? 'Saving...' : 'Save Settings'}
               </button>
             </div>
           </div>

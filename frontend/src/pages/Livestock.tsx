@@ -150,12 +150,12 @@ export default function Livestock() {
 
         <button
           onClick={() => {
-            setShowForm(!showForm)
+            setShowForm(true)
             setEditingLivestock(null)
           }}
           className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700"
         >
-          {showForm ? tc('actions.cancel') : t('addLivestock')}
+          {t('addLivestock')}
         </button>
       </div>
 
@@ -275,25 +275,6 @@ export default function Livestock() {
           </div>
         </div>
       </div>
-
-      {/* Add Livestock Form */}
-      {showForm && (
-        <LivestockForm
-          tanks={tanks}
-          onSubmit={handleAdd}
-          onCancel={() => setShowForm(false)}
-        />
-      )}
-
-      {/* Edit Livestock Form */}
-      {editingLivestock && (
-        <LivestockForm
-          tanks={tanks}
-          livestock={editingLivestock}
-          onSubmit={(data) => handleUpdate(editingLivestock.id, data)}
-          onCancel={handleCancelEdit}
-        />
-      )}
 
       {/* Active Livestock Lists */}
       {alive.length === 0 && past.length === 0 ? (
@@ -433,6 +414,33 @@ export default function Livestock() {
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Add Livestock Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <LivestockForm
+              tanks={tanks}
+              onSubmit={handleAdd}
+              onCancel={() => setShowForm(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Edit Livestock Modal */}
+      {editingLivestock && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <LivestockForm
+              tanks={tanks}
+              livestock={editingLivestock}
+              onSubmit={(data) => handleUpdate(editingLivestock.id, data)}
+              onCancel={handleCancelEdit}
+            />
+          </div>
         </div>
       )}
     </div>
