@@ -18,10 +18,11 @@ export default function TankList() {
   const [isLoading, setIsLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingTank, setEditingTank] = useState<Tank | null>(null)
+  const [showArchived, setShowArchived] = useState(false)
 
   useEffect(() => {
     loadTanks()
-  }, [])
+  }, [showArchived])
 
   // Auto-show form when navigated from Dashboard with showForm state
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function TankList() {
   const loadTanks = async () => {
     setIsLoading(true)
     try {
-      const data = await tanksApi.list()
+      const data = await tanksApi.list({ include_archived: showArchived })
       setTanks(data)
     } catch (error) {
       console.error('Failed to load tanks:', error)
@@ -66,6 +67,25 @@ export default function TankList() {
     } catch (error) {
       console.error('Failed to delete tank:', error)
       alert(t('deleteFailed'))
+    }
+  }
+
+  const handleArchive = async (id: string) => {
+    if (!confirm(tc('confirmArchive'))) return
+    try {
+      await tanksApi.archive(id)
+      loadTanks()
+    } catch (error) {
+      console.error('Failed to archive tank:', error)
+    }
+  }
+
+  const handleUnarchive = async (id: string) => {
+    try {
+      await tanksApi.unarchive(id)
+      loadTanks()
+    } catch (error) {
+      console.error('Failed to unarchive tank:', error)
     }
   }
 
@@ -107,6 +127,17 @@ export default function TankList() {
           {showForm ? tc('actions.cancel') : t('addTank')}
         </button>
       </div>
+
+      {/* Archive toggle */}
+      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600">
+        <input
+          type="checkbox"
+          checked={showArchived}
+          onChange={(e) => setShowArchived(e.target.checked)}
+          className="mr-2 rounded border-gray-300 text-ocean-600 focus:ring-ocean-500"
+        />
+        {tc('showArchived')}
+      </label>
 
       {/* Create Tank Form */}
       {showForm && (
@@ -162,6 +193,8 @@ export default function TankList() {
               tank={tank}
               onEdit={handleEdit}
               onDelete={handleDeleteTank}
+              onArchive={handleArchive}
+              onUnarchive={handleUnarchive}
             />
           ))}
         </div>

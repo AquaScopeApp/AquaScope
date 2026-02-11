@@ -31,8 +31,13 @@
     "next": "Weiter",
     "previous": "Zurück",
     "submit": "Absenden",
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "archive": "Archivieren",
+    "unarchive": "Dearchivieren"
   },
+  "archived": "Archiviert",
+  "showArchived": "Archivierte anzeigen",
+  "confirmArchive": "Dieses Element archivieren? Es wird aus den Standardansichten ausgeblendet, aber nicht gelöscht.",
   "common": {
     "loading": "Laden...",
     "error": "Ein Fehler ist aufgetreten",

@@ -16,9 +16,11 @@ interface TankCardProps {
   tank: Tank
   onEdit: (tank: Tank) => void
   onDelete: (id: string) => void
+  onArchive: (id: string) => void
+  onUnarchive: (id: string) => void
 }
 
-export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
+export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchive }: TankCardProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
   const navigate = useNavigate()
@@ -90,7 +92,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
 
   return (
     <div
-      className="bg-white rounded-lg shadow hover:shadow-xl transition-all border border-gray-200 overflow-hidden cursor-pointer"
+      className={`bg-white rounded-lg shadow hover:shadow-xl transition-all border border-gray-200 overflow-hidden cursor-pointer ${tank.is_archived ? 'opacity-60' : ''}`}
       onClick={handleCardClick}
     >
       {/* Tank Image */}
@@ -109,7 +111,41 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
         ) : (
           <DefaultTankAnimation waterType={tank.water_type} />
         )}
+        {tank.is_archived && (
+          <div className="absolute top-3 left-3">
+            <span className="px-2 py-1 bg-gray-800 text-white text-xs font-medium rounded shadow-sm">
+              {tc('archived')}
+            </span>
+          </div>
+        )}
         <div className="absolute top-3 right-3 flex space-x-2">
+          {tank.is_archived ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onUnarchive(tank.id)
+              }}
+              className="p-2 bg-white text-green-600 hover:bg-green-50 rounded-md transition-colors shadow-sm"
+              title={tc('actions.unarchive')}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" />
+              </svg>
+            </button>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onArchive(tank.id)
+              }}
+              className="p-2 bg-white text-gray-500 hover:bg-gray-50 rounded-md transition-colors shadow-sm"
+              title={tc('actions.archive')}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </button>
+          )}
           <button
             onClick={(e) => {
               e.stopPropagation()

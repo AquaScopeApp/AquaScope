@@ -22,15 +22,17 @@ function rowToEquipment(row: any): Equipment {
     notes: row.notes || null,
     created_at: row.created_at,
     updated_at: row.updated_at,
+    is_archived: !!row.is_archived,
   }
 }
 
 export const equipmentApi = {
-  list: async (params?: { tank_id?: string; equipment_type?: string; status?: string }): Promise<Equipment[]> => {
+  list: async (params?: { tank_id?: string; equipment_type?: string; status?: string; include_archived?: boolean }): Promise<Equipment[]> => {
     const userId = getLocalUserId()
     const conditions = ['user_id = ?']
     const values: any[] = [userId]
 
+    if (!params?.include_archived) { conditions.push('(is_archived = 0 OR is_archived IS NULL)') }
     if (params?.tank_id) { conditions.push('tank_id = ?'); values.push(params.tank_id) }
     if (params?.equipment_type) { conditions.push('equipment_type = ?'); values.push(params.equipment_type) }
     if (params?.status) { conditions.push('status = ?'); values.push(params.status) }
@@ -128,5 +130,15 @@ export const equipmentApi = {
 
     const row = await db.queryOne('SELECT * FROM consumables WHERE id = ?', [cId])
     return row as Consumable
+  },
+
+  archive: async (id: string): Promise<Equipment> => {
+    await db.execute('UPDATE equipment SET is_archived = 1, updated_at = ? WHERE id = ?', [now(), id])
+    return equipmentApi.get(id)
+  },
+
+  unarchive: async (id: string): Promise<Equipment> => {
+    await db.execute('UPDATE equipment SET is_archived = 0, updated_at = ? WHERE id = ?', [now(), id])
+    return equipmentApi.get(id)
   },
 }

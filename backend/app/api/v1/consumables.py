@@ -75,11 +75,15 @@ def list_consumables(
     tank_id: UUID = Query(None, description="Filter by tank ID"),
     consumable_type: str = Query(None, description="Filter by consumable type"),
     status_filter: str = Query(None, alias="status", description="Filter by status"),
+    include_archived: bool = Query(False, description="Include archived consumables"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """List consumables with optional filters."""
     query = db.query(Consumable).filter(Consumable.user_id == current_user.id)
+
+    if not include_archived:
+        query = query.filter(Consumable.is_archived == False)
 
     if tank_id:
         tank = db.query(Tank).filter(
@@ -182,6 +186,40 @@ def delete_consumable(
     db.commit()
 
     return None
+
+
+@router.post("/{consumable_id}/archive", response_model=ConsumableResponse)
+def archive_consumable(
+    consumable_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Archive consumable (hide from default list)."""
+    consumable = db.query(Consumable).filter(Consumable.id == consumable_id, Consumable.user_id == current_user.id).first()
+    if not consumable:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Consumable not found")
+    consumable.is_archived = True
+    db.commit()
+    db.refresh(consumable)
+    consumable.usage_count = len(consumable.usage_records)
+    return consumable
+
+
+@router.post("/{consumable_id}/unarchive", response_model=ConsumableResponse)
+def unarchive_consumable(
+    consumable_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Unarchive consumable (restore to default list)."""
+    consumable = db.query(Consumable).filter(Consumable.id == consumable_id, Consumable.user_id == current_user.id).first()
+    if not consumable:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Consumable not found")
+    consumable.is_archived = False
+    db.commit()
+    db.refresh(consumable)
+    consumable.usage_count = len(consumable.usage_records)
+    return consumable
 
 
 # ============================================================================

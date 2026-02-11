@@ -76,6 +76,7 @@ class TankResponse(TankBase):
     id: UUID
     user_id: UUID
     total_volume_liters: float
+    is_archived: bool = False
     created_at: datetime
     updated_at: datetime
     events: List[TankEventResponse] = []

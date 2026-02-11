@@ -19,7 +19,7 @@ Why separate tanks from users?
 - Parameters, livestock, and maintenance are tank-specific
 - Allows for tank-specific analytics and comparisons
 """
-from sqlalchemy import Column, String, Float, Date, DateTime, ForeignKey, Text
+from sqlalchemy import Column, String, Float, Date, DateTime, ForeignKey, Text, Boolean
 from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -50,6 +50,9 @@ class Tank(Base):
     setup_date = Column(Date, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Archive
+    is_archived = Column(Boolean, default=False, nullable=False, index=True)
 
     # Relationships
     owner = relationship("User", back_populates="tanks")

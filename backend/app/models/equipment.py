@@ -18,7 +18,7 @@ Why track equipment?
 - Document specifications for replacements
 - Cost tracking and budgeting
 """
-from sqlalchemy import Column, String, Text, DateTime, Date, ForeignKey, JSON
+from sqlalchemy import Column, String, Text, DateTime, Date, ForeignKey, JSON, Boolean
 from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -55,6 +55,9 @@ class Equipment(Base):
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Archive
+    is_archived = Column(Boolean, default=False, nullable=False, index=True)
 
     # Relationships
     tank = relationship("Tank", back_populates="equipment")

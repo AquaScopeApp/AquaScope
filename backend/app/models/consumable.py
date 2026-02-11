@@ -10,7 +10,7 @@ Features:
 - Purchase URL for reordering
 - Usage history via ConsumableUsage records
 """
-from sqlalchemy import Column, String, Text, DateTime, Date, ForeignKey, Float
+from sqlalchemy import Column, String, Text, DateTime, Date, ForeignKey, Float, Boolean
 from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -53,6 +53,9 @@ class Consumable(Base):
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Archive
+    is_archived = Column(Boolean, default=False, nullable=False, index=True)
 
     # Relationships
     tank = relationship("Tank", back_populates="consumables")

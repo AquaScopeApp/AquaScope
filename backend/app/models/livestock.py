@@ -23,7 +23,7 @@ Why track livestock?
 - Historical record if livestock is lost
 - Aid in troubleshooting (new addition causing issues)
 """
-from sqlalchemy import Column, String, Text, Date, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, Text, Date, DateTime, ForeignKey, Integer, Boolean
 from app.models.types import GUID
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -63,6 +63,9 @@ class Livestock(Base):
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    # Archive
+    is_archived = Column(Boolean, default=False, nullable=False, index=True)
 
     # Relationships
     tank = relationship("Tank", back_populates="livestock")

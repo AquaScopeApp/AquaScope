@@ -27,6 +27,7 @@ function rowToTank(row: any, events: TankEvent[] = []): Tank {
     setup_date: row.setup_date || null,
     created_at: row.created_at,
     updated_at: row.updated_at,
+    is_archived: !!row.is_archived,
     events,
   }
 }
@@ -46,9 +47,10 @@ function rowToEvent(row: any): TankEvent {
 }
 
 export const tanksApi = {
-  list: async (): Promise<Tank[]> => {
+  list: async (params?: { include_archived?: boolean }): Promise<Tank[]> => {
     const userId = getLocalUserId()
-    const rows = await db.query('SELECT * FROM tanks WHERE user_id = ? ORDER BY created_at DESC', [userId])
+    const archiveFilter = params?.include_archived ? '' : ' AND (is_archived = 0 OR is_archived IS NULL)'
+    const rows = await db.query(`SELECT * FROM tanks WHERE user_id = ?${archiveFilter} ORDER BY created_at DESC`, [userId])
     const tanks: Tank[] = []
     for (const row of rows) {
       const eventRows = await db.query('SELECT * FROM tank_events WHERE tank_id = ? ORDER BY event_date DESC', [row.id])
@@ -168,5 +170,15 @@ export const tanksApi = {
     if (!tank?.image_url) return ''
     const { readPhoto } = await import('../../services/photoStorage')
     return readPhoto(tank.image_url)
+  },
+
+  archive: async (id: string): Promise<Tank> => {
+    await db.execute('UPDATE tanks SET is_archived = 1, updated_at = ? WHERE id = ?', [now(), id])
+    return tanksApi.get(id)
+  },
+
+  unarchive: async (id: string): Promise<Tank> => {
+    await db.execute('UPDATE tanks SET is_archived = 0, updated_at = ? WHERE id = ?', [now(), id])
+    return tanksApi.get(id)
   },
 }

@@ -43,6 +43,7 @@ class EquipmentResponse(EquipmentBase):
     id: UUID
     tank_id: UUID
     user_id: UUID
+    is_archived: bool = False
     created_at: datetime
     updated_at: datetime
 

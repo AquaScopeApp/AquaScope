@@ -178,8 +178,8 @@ export const authApi = {
 // ============================================================================
 
 export const tanksApi = {
-  list: async (): Promise<Tank[]> => {
-    const response = await apiClient.get<Tank[]>('/tanks')
+  list: async (params?: { include_archived?: boolean }): Promise<Tank[]> => {
+    const response = await apiClient.get<Tank[]>('/tanks', { params })
     return response.data
   },
 
@@ -243,6 +243,16 @@ export const tanksApi = {
       responseType: 'blob',
     })
     return URL.createObjectURL(response.data)
+  },
+
+  archive: async (id: string): Promise<Tank> => {
+    const response = await apiClient.post<Tank>(`/tanks/${id}/archive`)
+    return response.data
+  },
+
+  unarchive: async (id: string): Promise<Tank> => {
+    const response = await apiClient.post<Tank>(`/tanks/${id}/unarchive`)
+    return response.data
   },
 }
 
@@ -455,6 +465,7 @@ export const livestockApi = {
   list: async (params?: {
     tank_id?: string
     type?: string
+    include_archived?: boolean
   }): Promise<Livestock[]> => {
     const response = await apiClient.get<Livestock[]>('/livestock', { params })
     return response.data
@@ -481,6 +492,16 @@ export const livestockApi = {
 
   split: async (id: string, data: { split_quantity: number; new_status: 'dead' | 'removed' }): Promise<{ original: Livestock; split: Livestock }> => {
     const response = await apiClient.post<{ original: Livestock; split: Livestock }>(`/livestock/${id}/split`, data)
+    return response.data
+  },
+
+  archive: async (id: string): Promise<Livestock> => {
+    const response = await apiClient.post<Livestock>(`/livestock/${id}/archive`)
+    return response.data
+  },
+
+  unarchive: async (id: string): Promise<Livestock> => {
+    const response = await apiClient.post<Livestock>(`/livestock/${id}/unarchive`)
     return response.data
   },
 
@@ -577,6 +598,7 @@ export const equipmentApi = {
     tank_id?: string
     equipment_type?: string
     status?: string
+    include_archived?: boolean
   }): Promise<Equipment[]> => {
     const response = await apiClient.get<Equipment[]>('/equipment', { params })
     return response.data
@@ -609,6 +631,16 @@ export const equipmentApi = {
     )
     return response.data
   },
+
+  archive: async (id: string): Promise<Equipment> => {
+    const response = await apiClient.post<Equipment>(`/equipment/${id}/archive`)
+    return response.data
+  },
+
+  unarchive: async (id: string): Promise<Equipment> => {
+    const response = await apiClient.post<Equipment>(`/equipment/${id}/unarchive`)
+    return response.data
+  },
 }
 
 // ============================================================================
@@ -620,6 +652,7 @@ export const consumablesApi = {
     tank_id?: string
     consumable_type?: string
     status?: string
+    include_archived?: boolean
   }): Promise<Consumable[]> => {
     const response = await apiClient.get<Consumable[]>('/consumables', { params })
     return response.data
@@ -660,6 +693,16 @@ export const consumablesApi = {
       null,
       { params: equipmentType ? { equipment_type: equipmentType } : undefined }
     )
+    return response.data
+  },
+
+  archive: async (id: string): Promise<Consumable> => {
+    const response = await apiClient.post<Consumable>(`/consumables/${id}/archive`)
+    return response.data
+  },
+
+  unarchive: async (id: string): Promise<Consumable> => {
+    const response = await apiClient.post<Consumable>(`/consumables/${id}/unarchive`)
     return response.data
   },
 }

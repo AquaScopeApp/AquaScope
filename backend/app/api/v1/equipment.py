@@ -65,6 +65,7 @@ def list_equipment(
     tank_id: UUID = Query(None, description="Filter by tank ID"),
     equipment_type: str = Query(None, description="Filter by equipment type"),
     status_filter: str = Query(None, alias="status", description="Filter by status (active or stock)"),
+    include_archived: bool = Query(False, description="Include archived equipment"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -75,6 +76,9 @@ def list_equipment(
     - Returns user's equipment only
     """
     query = db.query(Equipment).filter(Equipment.user_id == current_user.id)
+
+    if not include_archived:
+        query = query.filter(Equipment.is_archived == False)
 
     if tank_id:
         # Verify tank belongs to user
@@ -207,6 +211,38 @@ def delete_equipment(
     db.commit()
 
     return None
+
+
+@router.post("/{equipment_id}/archive", response_model=EquipmentResponse)
+def archive_equipment(
+    equipment_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Archive equipment (hide from default list)."""
+    equipment = db.query(Equipment).filter(Equipment.id == equipment_id, Equipment.user_id == current_user.id).first()
+    if not equipment:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Equipment not found")
+    equipment.is_archived = True
+    db.commit()
+    db.refresh(equipment)
+    return equipment
+
+
+@router.post("/{equipment_id}/unarchive", response_model=EquipmentResponse)
+def unarchive_equipment(
+    equipment_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Unarchive equipment (restore to default list)."""
+    equipment = db.query(Equipment).filter(Equipment.id == equipment_id, Equipment.user_id == current_user.id).first()
+    if not equipment:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Equipment not found")
+    equipment.is_archived = False
+    db.commit()
+    db.refresh(equipment)
+    return equipment
 
 
 # ============================================================================

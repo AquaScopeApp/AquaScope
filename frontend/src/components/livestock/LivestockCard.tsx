@@ -17,6 +17,8 @@ interface LivestockCardProps {
   onEdit: (livestock: Livestock) => void
   onDelete: (id: string) => void
   onSplit: (id: string, splitQuantity: number, newStatus: 'dead' | 'removed') => void
+  onArchive: (id: string) => void
+  onUnarchive: (id: string) => void
 }
 
 export default function LivestockCard({
@@ -25,6 +27,8 @@ export default function LivestockCard({
   onEdit,
   onDelete,
   onSplit,
+  onArchive,
+  onUnarchive,
 }: LivestockCardProps) {
   const { t } = useTranslation('livestock')
   const { t: tc } = useTranslation('common')
@@ -184,7 +188,7 @@ export default function LivestockCard({
   const age = getAge()
 
   return (
-    <div className={`rounded-lg shadow border-2 ${getTypeColor()} overflow-hidden ${isPast ? 'opacity-75' : ''}`}>
+    <div className={`rounded-lg shadow border-2 ${getTypeColor()} overflow-hidden ${isPast ? 'opacity-75' : ''} ${livestock.is_archived ? 'opacity-60' : ''}`}>
       {/* Thumbnail Image - Show for any livestock with photo */}
       {(livestock.cached_photo_url || livestock.inaturalist_id || livestock.fishbase_species_id) && (
         <div className={`h-40 bg-gradient-to-b from-blue-100 to-blue-50 relative ${isPast ? 'grayscale' : ''}`}>
@@ -232,6 +236,11 @@ export default function LivestockCard({
                   </span>
                 )}
                 {getStatusBadge()}
+                {livestock.is_archived && (
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-200 text-gray-700">
+                    {tc('archived')}
+                  </span>
+                )}
               </div>
               {livestock.common_name && (
                 <p className="text-sm text-gray-600 italic truncate">
@@ -253,6 +262,27 @@ export default function LivestockCard({
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+              </button>
+            )}
+            {livestock.is_archived ? (
+              <button
+                onClick={() => onUnarchive(livestock.id)}
+                className="p-1 text-green-600 hover:bg-green-100 rounded"
+                title={tc('actions.unarchive')}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={() => onArchive(livestock.id)}
+                className="p-1 text-gray-500 hover:bg-gray-100 rounded"
+                title={tc('actions.archive')}
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                 </svg>
               </button>
             )}

@@ -31,8 +31,13 @@
     "next": "Siguiente",
     "previous": "Anterior",
     "submit": "Enviar",
-    "refresh": "Actualizar"
+    "refresh": "Actualizar",
+    "archive": "Archivar",
+    "unarchive": "Desarchivar"
   },
+  "archived": "Archivado",
+  "showArchived": "Mostrar archivados",
+  "confirmArchive": "¿Archivar este elemento? Se ocultará de las vistas predeterminadas pero no se eliminará.",
   "common": {
     "loading": "Cargando...",
     "error": "Ocurrió un error",

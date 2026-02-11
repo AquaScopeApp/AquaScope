@@ -29,6 +29,7 @@ function rowToConsumable(row: any): Consumable {
     usage_count: row.usage_count || 0,
     created_at: row.created_at,
     updated_at: row.updated_at,
+    is_archived: !!row.is_archived,
   }
 }
 
@@ -46,11 +47,12 @@ function rowToUsage(row: any): ConsumableUsage {
 }
 
 export const consumablesApi = {
-  list: async (params?: { tank_id?: string; consumable_type?: string; status?: string }): Promise<Consumable[]> => {
+  list: async (params?: { tank_id?: string; consumable_type?: string; status?: string; include_archived?: boolean }): Promise<Consumable[]> => {
     const userId = getLocalUserId()
     const conditions = ['user_id = ?']
     const values: any[] = [userId]
 
+    if (!params?.include_archived) { conditions.push('(is_archived = 0 OR is_archived IS NULL)') }
     if (params?.tank_id) { conditions.push('tank_id = ?'); values.push(params.tank_id) }
     if (params?.consumable_type) { conditions.push('consumable_type = ?'); values.push(params.consumable_type) }
     if (params?.status) { conditions.push('status = ?'); values.push(params.status) }
@@ -172,5 +174,15 @@ export const consumablesApi = {
 
     const row = await db.queryOne('SELECT * FROM equipment WHERE id = ?', [eqId])
     return row as Equipment
+  },
+
+  archive: async (id: string): Promise<Consumable> => {
+    await db.execute('UPDATE consumables SET is_archived = 1, updated_at = ? WHERE id = ?', [now(), id])
+    return consumablesApi.get(id)
+  },
+
+  unarchive: async (id: string): Promise<Consumable> => {
+    await db.execute('UPDATE consumables SET is_archived = 0, updated_at = ? WHERE id = ?', [now(), id])
+    return consumablesApi.get(id)
   },
 }

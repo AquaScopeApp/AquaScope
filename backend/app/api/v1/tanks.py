@@ -8,7 +8,7 @@ Multi-tenancy: Users can only access their own tanks.
 import os
 from typing import List
 from uuid import UUID, uuid4
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Query
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pathlib import Path
@@ -54,6 +54,7 @@ def create_tank(
 
 @router.get("/", response_model=List[TankResponse])
 def list_tanks(
+    include_archived: bool = Query(False, description="Include archived tanks"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -62,7 +63,10 @@ def list_tanks(
 
     Returns empty list if user has no tanks.
     """
-    tanks = db.query(Tank).filter(Tank.user_id == current_user.id).all()
+    query = db.query(Tank).filter(Tank.user_id == current_user.id)
+    if not include_archived:
+        query = query.filter(Tank.is_archived == False)
+    tanks = query.all()
     return tanks
 
 
@@ -154,6 +158,38 @@ def delete_tank(
     db.delete(tank)
     db.commit()
     return None
+
+
+@router.post("/{tank_id}/archive", response_model=TankResponse)
+def archive_tank(
+    tank_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Archive a tank (hide from default list)."""
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == current_user.id).first()
+    if not tank:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tank not found")
+    tank.is_archived = True
+    db.commit()
+    db.refresh(tank)
+    return tank
+
+
+@router.post("/{tank_id}/unarchive", response_model=TankResponse)
+def unarchive_tank(
+    tank_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Unarchive a tank (restore to default list)."""
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == current_user.id).first()
+    if not tank:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tank not found")
+    tank.is_archived = False
+    db.commit()
+    db.refresh(tank)
+    return tank
 
 
 # ============================================================================

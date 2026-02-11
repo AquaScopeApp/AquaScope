@@ -23,10 +23,11 @@ export default function Livestock() {
   const [filterType, setFilterType] = useState<'all' | 'fish' | 'coral' | 'invertebrate'>('all')
   const [selectedTank, setSelectedTank] = useState<string>('all')
   const [showPast, setShowPast] = useState(false)
+  const [showArchived, setShowArchived] = useState(false)
 
   useEffect(() => {
     loadData()
-  }, [filterType, selectedTank])
+  }, [filterType, selectedTank, showArchived])
 
   const loadData = async () => {
     setIsLoading(true)
@@ -34,6 +35,7 @@ export default function Livestock() {
       const params: any = {}
       if (filterType !== 'all') params.type = filterType
       if (selectedTank !== 'all') params.tank_id = selectedTank
+      if (showArchived) params.include_archived = true
 
       const [livestockData, tanksData] = await Promise.all([
         livestockApi.list(params),
@@ -89,6 +91,25 @@ export default function Livestock() {
     } catch (error) {
       console.error('Failed to split livestock:', error)
       alert(t('split.failed'))
+    }
+  }
+
+  const handleArchive = async (id: string) => {
+    if (!confirm(tc('confirmArchive'))) return
+    try {
+      await livestockApi.archive(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to archive livestock:', error)
+    }
+  }
+
+  const handleUnarchive = async (id: string) => {
+    try {
+      await livestockApi.unarchive(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to unarchive livestock:', error)
     }
   }
 
@@ -211,6 +232,17 @@ export default function Livestock() {
         </div>
       </div>
 
+      {/* Archive toggle */}
+      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600">
+        <input
+          type="checkbox"
+          checked={showArchived}
+          onChange={(e) => setShowArchived(e.target.checked)}
+          className="mr-2 rounded border-gray-300 text-ocean-600 focus:ring-ocean-500"
+        />
+        {tc('showArchived')}
+      </label>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -302,6 +334,8 @@ export default function Livestock() {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onSplit={handleSplit}
+                        onArchive={handleArchive}
+                        onUnarchive={handleUnarchive}
                       />
                     ))}
                   </div>
@@ -324,6 +358,8 @@ export default function Livestock() {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onSplit={handleSplit}
+                        onArchive={handleArchive}
+                        onUnarchive={handleUnarchive}
                       />
                     ))}
                   </div>
@@ -346,6 +382,8 @@ export default function Livestock() {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         onSplit={handleSplit}
+                        onArchive={handleArchive}
+                        onUnarchive={handleUnarchive}
                       />
                     ))}
                   </div>
@@ -387,6 +425,8 @@ export default function Livestock() {
                       onEdit={handleEdit}
                       onDelete={handleDelete}
                       onSplit={handleSplit}
+                        onArchive={handleArchive}
+                        onUnarchive={handleUnarchive}
                     />
                   ))}
                 </div>

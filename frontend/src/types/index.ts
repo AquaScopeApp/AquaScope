@@ -118,6 +118,7 @@ export interface Tank {
   description: string | null
   image_url: string | null
   setup_date: string | null
+  is_archived: boolean
   created_at: string
   updated_at: string
   events: TankEvent[]
@@ -306,6 +307,7 @@ export interface Livestock {
   added_date: string | null
   removed_date: string | null
   notes: string | null
+  is_archived: boolean
   created_at: string
 }
 
@@ -367,6 +369,7 @@ export interface Equipment {
   condition: string | null
   status: string
   notes: string | null
+  is_archived: boolean
   created_at: string
   updated_at: string
 }
@@ -419,6 +422,7 @@ export interface Consumable {
   status: string
   notes: string | null
   usage_count: number
+  is_archived: boolean
   created_at: string
   updated_at: string
 }

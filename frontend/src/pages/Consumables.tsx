@@ -40,6 +40,7 @@ export default function ConsumablesPage() {
   const [selectedTank, setSelectedTank] = useState<string>('')
   const [selectedType, setSelectedType] = useState<string>('')
   const [selectedStatus, setSelectedStatus] = useState<string>('')
+  const [showArchived, setShowArchived] = useState(false)
 
   // Usage log state
   const [loggingUsageId, setLoggingUsageId] = useState<string | null>(null)
@@ -66,7 +67,7 @@ export default function ConsumablesPage() {
 
   useEffect(() => {
     loadData()
-  }, [selectedTank, selectedType, selectedStatus])
+  }, [selectedTank, selectedType, selectedStatus, showArchived])
 
   const loadData = async () => {
     try {
@@ -76,6 +77,7 @@ export default function ConsumablesPage() {
           tank_id: selectedTank || undefined,
           consumable_type: selectedType || undefined,
           status: selectedStatus || undefined,
+          include_archived: showArchived || undefined,
         }),
         tanksApi.list(),
       ])
@@ -166,6 +168,25 @@ export default function ConsumablesPage() {
     } catch (error) {
       console.error('Failed to convert to equipment:', error)
       alert(t('convertFailed', { defaultValue: 'Failed to convert' }))
+    }
+  }
+
+  const handleArchive = async (id: string) => {
+    if (!confirm(tc('confirmArchive'))) return
+    try {
+      await consumablesApi.archive(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to archive consumable:', error)
+    }
+  }
+
+  const handleUnarchive = async (id: string) => {
+    try {
+      await consumablesApi.unarchive(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to unarchive consumable:', error)
     }
   }
 
@@ -337,19 +358,56 @@ export default function ConsumablesPage() {
         </div>
       </div>
 
+      {/* Archive toggle */}
+      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600">
+        <input
+          type="checkbox"
+          checked={showArchived}
+          onChange={(e) => setShowArchived(e.target.checked)}
+          className="mr-2 rounded border-gray-300 text-ocean-600 focus:ring-ocean-500"
+        />
+        {tc('showArchived')}
+      </label>
+
       {/* Consumables List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {consumables.map((item) => {
           const expInfo = getExpirationInfo(item.expiration_date)
           return (
-            <div key={item.id} className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow">
+            <div key={item.id} className={`bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow ${item.is_archived ? 'opacity-60' : ''}`}>
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {item.name}
+                    {item.is_archived && (
+                      <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">{tc('archived')}</span>
+                    )}
+                  </h3>
                   <p className="text-sm text-gray-600">{formatType(item.consumable_type)}</p>
                   <p className="text-xs text-gray-500 mt-1">{getTankName(item.tank_id)}</p>
                 </div>
                 <div className="flex space-x-1">
+                  {item.is_archived ? (
+                    <button
+                      onClick={() => handleUnarchive(item.id)}
+                      className="p-1 text-green-600 hover:bg-green-50 rounded"
+                      title={tc('actions.unarchive')}
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleArchive(item.id)}
+                      className="p-1 text-gray-500 hover:bg-gray-50 rounded"
+                      title={tc('actions.archive')}
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                      </svg>
+                    </button>
+                  )}
                   <button
                     onClick={() => handleConvertToEquipment(item.id, item.name)}
                     className="p-1 text-amber-600 hover:bg-amber-50 rounded"

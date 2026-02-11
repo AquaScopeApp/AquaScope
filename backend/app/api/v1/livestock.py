@@ -69,11 +69,15 @@ def add_livestock(
 def list_livestock(
     tank_id: UUID = Query(None, description="Filter by tank ID"),
     type: str = Query(None, description="Filter by type (fish, coral, invertebrate)"),
+    include_archived: bool = Query(False, description="Include archived livestock"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """List livestock (optionally filtered by tank or type)"""
     query = db.query(Livestock).filter(Livestock.user_id == current_user.id)
+
+    if not include_archived:
+        query = query.filter(Livestock.is_archived == False)
 
     if tank_id:
         # Verify tank ownership
@@ -176,6 +180,38 @@ def delete_livestock(
     db.delete(livestock)
     db.commit()
     return None
+
+
+@router.post("/{livestock_id}/archive", response_model=LivestockResponse)
+def archive_livestock(
+    livestock_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Archive livestock (hide from default list)."""
+    livestock = db.query(Livestock).filter(Livestock.id == livestock_id, Livestock.user_id == current_user.id).first()
+    if not livestock:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Livestock not found")
+    livestock.is_archived = True
+    db.commit()
+    db.refresh(livestock)
+    return livestock
+
+
+@router.post("/{livestock_id}/unarchive", response_model=LivestockResponse)
+def unarchive_livestock(
+    livestock_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Unarchive livestock (restore to default list)."""
+    livestock = db.query(Livestock).filter(Livestock.id == livestock_id, Livestock.user_id == current_user.id).first()
+    if not livestock:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Livestock not found")
+    livestock.is_archived = False
+    db.commit()
+    db.refresh(livestock)
+    return livestock
 
 
 @router.post("/{livestock_id}/split", response_model=LivestockSplitResponse)

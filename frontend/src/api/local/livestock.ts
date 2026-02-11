@@ -26,15 +26,19 @@ function rowToLivestock(row: any): Livestock {
     removed_date: row.removed_date || null,
     notes: row.notes || null,
     created_at: row.created_at,
+    is_archived: !!row.is_archived,
   }
 }
 
 export const livestockApi = {
-  list: async (params?: { tank_id?: string; type?: string }): Promise<Livestock[]> => {
+  list: async (params?: { tank_id?: string; type?: string; include_archived?: boolean }): Promise<Livestock[]> => {
     const userId = getLocalUserId()
     const conditions = ['user_id = ?']
     const values: any[] = [userId]
 
+    if (!params?.include_archived) {
+      conditions.push('(is_archived = 0 OR is_archived IS NULL)')
+    }
     if (params?.tank_id) {
       conditions.push('tank_id = ?')
       values.push(params.tank_id)
@@ -253,5 +257,15 @@ export const livestockApi = {
     }
 
     return results
+  },
+
+  archive: async (id: string): Promise<Livestock> => {
+    await db.execute('UPDATE livestock SET is_archived = 1 WHERE id = ?', [id])
+    return livestockApi.get(id)
+  },
+
+  unarchive: async (id: string): Promise<Livestock> => {
+    await db.execute('UPDATE livestock SET is_archived = 0 WHERE id = ?', [id])
+    return livestockApi.get(id)
   },
 }

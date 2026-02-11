@@ -54,6 +54,7 @@ class LivestockResponse(LivestockBase):
     status: str
     added_date: Optional[date]
     removed_date: Optional[date]
+    is_archived: bool = False
     created_at: datetime
 
     class Config:

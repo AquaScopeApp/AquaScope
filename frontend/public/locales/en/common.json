@@ -31,8 +31,13 @@
     "next": "Next",
     "previous": "Previous",
     "submit": "Submit",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "archive": "Archive",
+    "unarchive": "Unarchive"
   },
+  "archived": "Archived",
+  "showArchived": "Show archived",
+  "confirmArchive": "Archive this item? It will be hidden from default views but not deleted.",
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
