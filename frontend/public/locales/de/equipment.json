@@ -11,6 +11,7 @@
   "allStatus": "Alle Status",
   "purchased": "Gekauft:",
   "price": "Preis:",
+  "buyAgain": "Nachkaufen",
   "noEquipment": "Keine Ausrüstung gefunden. Fügen Sie Ihre erste Ausrüstung hinzu!",
   "confirmDelete": "Sind Sie sicher, dass Sie diese Ausrüstung löschen möchten?",
   "saveFailed": "Ausrüstung konnte nicht gespeichert werden",
@@ -28,6 +29,7 @@
     "purchaseDate": "Kaufdatum",
     "price": "Preis",
     "condition": "Zustand",
+    "purchaseUrl": "Kauf-URL",
     "notes": "Notizen"
   }
 }

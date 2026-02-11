@@ -12,6 +12,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { consumablesApi, tanksApi } from '../api'
+import { parsePrice, formatPrice } from '../utils/price'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
 
 const CONSUMABLE_TYPES = [
@@ -41,6 +42,7 @@ export default function ConsumablesPage() {
   const [selectedType, setSelectedType] = useState<string>('')
   const [selectedStatus, setSelectedStatus] = useState<string>('')
   const [showArchived, setShowArchived] = useState(false)
+  const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set())
 
   // Usage log state
   const [loggingUsageId, setLoggingUsageId] = useState<string | null>(null)
@@ -266,6 +268,20 @@ export default function ConsumablesPage() {
     }
   }
 
+  const displayPrice = (raw: string | null) => {
+    if (!raw) return null
+    const parsed = parsePrice(raw)
+    return parsed !== null ? formatPrice(parsed) : raw
+  }
+
+  const toggleNotes = (id: string) => {
+    setExpandedNotes((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
   const getExpirationInfo = (expirationDate: string | null) => {
     if (!expirationDate) return null
     const now = new Date()
@@ -374,10 +390,10 @@ export default function ConsumablesPage() {
         {consumables.map((item) => {
           const expInfo = getExpirationInfo(item.expiration_date)
           return (
-            <div key={item.id} className={`bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow ${item.is_archived ? 'opacity-60' : ''}`}>
+            <div key={item.id} className={`bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
               <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold text-gray-900 truncate">
                     {item.name}
                     {item.is_archived && (
                       <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">{tc('archivedStatus')}</span>
@@ -473,7 +489,7 @@ export default function ConsumablesPage() {
               )}
               {item.purchase_price && (
                 <div className="text-xs text-gray-500 mb-1">
-                  {t('price')} {item.purchase_price}
+                  {t('price')} {displayPrice(item.purchase_price)}
                 </div>
               )}
 
@@ -484,7 +500,7 @@ export default function ConsumablesPage() {
                     href={item.purchase_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-ocean-600 hover:text-ocean-700 font-medium"
+                    className="text-xs text-ocean-600 hover:text-ocean-700 font-medium break-all"
                   >
                     {t('buyAgain')} &rarr;
                   </a>
@@ -493,8 +509,18 @@ export default function ConsumablesPage() {
 
               {/* Notes */}
               {item.notes && (
-                <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200">
-                  {item.notes}
+                <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200 break-words">
+                  <div className={expandedNotes.has(item.id) ? '' : 'line-clamp-3'}>
+                    {item.notes}
+                  </div>
+                  {item.notes.length > 120 && (
+                    <button
+                      onClick={() => toggleNotes(item.id)}
+                      className="text-xs text-ocean-600 hover:text-ocean-700 mt-1"
+                    >
+                      {expandedNotes.has(item.id) ? tc('showLess', { defaultValue: 'Show less' }) : tc('showMore', { defaultValue: 'Show more' })}
+                    </button>
+                  )}
                 </div>
               )}
 

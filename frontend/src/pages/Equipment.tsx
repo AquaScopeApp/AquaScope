@@ -11,6 +11,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { equipmentApi, tanksApi } from '../api'
+import { parsePrice, formatPrice } from '../utils/price'
 import type { Equipment, EquipmentCreate, Tank } from '../types'
 
 const EQUIPMENT_TYPES = [
@@ -59,6 +60,7 @@ export default function EquipmentPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>('')
   const [selectedCondition, setSelectedCondition] = useState<string>('')
   const [showArchived, setShowArchived] = useState(false)
+  const [expandedNotes, setExpandedNotes] = useState<Set<string>>(new Set())
 
   // Form state
   const [formData, setFormData] = useState<EquipmentCreate>({
@@ -70,6 +72,7 @@ export default function EquipmentPage() {
     specs: null,
     purchase_date: '',
     purchase_price: '',
+    purchase_url: '',
     condition: 'new',
     status: 'active',
     notes: '',
@@ -116,6 +119,7 @@ export default function EquipmentPage() {
         model: formData.model || null,
         purchase_date: formData.purchase_date || null,
         purchase_price: formData.purchase_price || null,
+        purchase_url: formData.purchase_url || null,
         notes: formData.notes || null,
       }
 
@@ -145,6 +149,7 @@ export default function EquipmentPage() {
       specs: item.specs,
       purchase_date: item.purchase_date || '',
       purchase_price: item.purchase_price || '',
+      purchase_url: item.purchase_url || '',
       condition: item.condition || 'good',
       status: item.status || 'active',
       notes: item.notes || '',
@@ -206,6 +211,7 @@ export default function EquipmentPage() {
       specs: null,
       purchase_date: '',
       purchase_price: '',
+      purchase_url: '',
       condition: 'new',
       status: 'active',
       notes: '',
@@ -227,6 +233,20 @@ export default function EquipmentPage() {
 
   const formatStatus = (status: string) => {
     return status.charAt(0).toUpperCase() + status.slice(1)
+  }
+
+  const displayPrice = (raw: string | null) => {
+    if (!raw) return null
+    const parsed = parsePrice(raw)
+    return parsed !== null ? formatPrice(parsed) : raw
+  }
+
+  const toggleNotes = (id: string) => {
+    setExpandedNotes((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
   }
 
   const getConditionCardStyle = (condition: string | null) => {
@@ -360,10 +380,10 @@ export default function EquipmentPage() {
         {equipment
           .filter((item) => !selectedCondition || item.condition === selectedCondition)
           .map((item) => (
-          <div key={item.id} className={`rounded-lg shadow p-4 hover:shadow-lg transition-shadow ${getConditionCardStyle(item.condition)} ${item.is_archived ? 'opacity-60' : ''}`}>
+          <div key={item.id} className={`rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${getConditionCardStyle(item.condition)} ${item.is_archived ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between mb-3">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg font-semibold text-gray-900 truncate">
                   {item.name}
                   {item.is_archived && (
                     <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">{tc('archivedStatus')}</span>
@@ -460,13 +480,36 @@ export default function EquipmentPage() {
 
             {item.purchase_price && (
               <div className="text-xs text-gray-500 mb-1">
-                {t('price')} {item.purchase_price}
+                {t('price')} {displayPrice(item.purchase_price)}
+              </div>
+            )}
+
+            {item.purchase_url && (
+              <div className="mb-1">
+                <a
+                  href={item.purchase_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-ocean-600 hover:text-ocean-700 font-medium break-all"
+                >
+                  {t('buyAgain', { defaultValue: 'Buy Again' })} &rarr;
+                </a>
               </div>
             )}
 
             {item.notes && (
-              <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200">
-                {item.notes}
+              <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200 break-words">
+                <div className={expandedNotes.has(item.id) ? '' : 'line-clamp-3'}>
+                  {item.notes}
+                </div>
+                {item.notes.length > 120 && (
+                  <button
+                    onClick={() => toggleNotes(item.id)}
+                    className="text-xs text-ocean-600 hover:text-ocean-700 mt-1"
+                  >
+                    {expandedNotes.has(item.id) ? tc('showLess', { defaultValue: 'Show less' }) : tc('showMore', { defaultValue: 'Show more' })}
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -587,6 +630,19 @@ export default function EquipmentPage() {
                       value={formData.purchase_price || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_price: e.target.value || null })}
                       placeholder="e.g., $250, €200"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      {t('form.purchaseUrl')}
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.purchase_url || ''}
+                      onChange={(e) => setFormData({ ...formData, purchase_url: e.target.value || null })}
+                      placeholder="https://..."
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
                     />
                   </div>

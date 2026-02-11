@@ -11,6 +11,7 @@
   "allStatus": "Tutti gli stati",
   "purchased": "Acquistato:",
   "price": "Prezzo:",
+  "buyAgain": "Riacquista",
   "noEquipment": "Nessuna attrezzatura trovata. Aggiungi la tua prima attrezzatura per iniziare!",
   "confirmDelete": "Sei sicuro di voler eliminare questa attrezzatura?",
   "saveFailed": "Salvataggio dell'attrezzatura non riuscito",
@@ -28,6 +29,7 @@
     "purchaseDate": "Data di acquisto",
     "price": "Prezzo",
     "condition": "Condizione",
+    "purchaseUrl": "URL di acquisto",
     "notes": "Note"
   }
 }

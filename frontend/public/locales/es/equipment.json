@@ -11,6 +11,7 @@
   "allStatus": "Todos los estados",
   "purchased": "Comprado:",
   "price": "Precio:",
+  "buyAgain": "Comprar de nuevo",
   "noEquipment": "No se encontró equipamiento. ¡Añade tu primer equipo para empezar!",
   "confirmDelete": "¿Estás seguro de que quieres eliminar este equipamiento?",
   "saveFailed": "Error al guardar el equipamiento",
@@ -28,6 +29,7 @@
     "purchaseDate": "Fecha de compra",
     "price": "Precio",
     "condition": "Condición",
+    "purchaseUrl": "URL de compra",
     "notes": "Notas"
   }
 }
