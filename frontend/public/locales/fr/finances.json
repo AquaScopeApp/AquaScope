@@ -31,6 +31,20 @@
     "tank": "Aquarium",
     "total": "Total"
   },
+  "details": {
+    "allCategories": "Toutes les catégories",
+    "items": "éléments",
+    "date": "Date",
+    "name": "Nom",
+    "category": "Catégorie",
+    "tank": "Aquarium",
+    "price": "Prix",
+    "url": "URL",
+    "edit": "Modifier",
+    "editTitle": "Modifier la dépense",
+    "purchaseUrl": "URL d'achat",
+    "noItems": "Aucune dépense trouvée"
+  },
   "budget": {
     "create": "Créer un budget",
     "edit": "Modifier le budget",

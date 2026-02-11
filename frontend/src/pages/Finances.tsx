@@ -66,8 +66,8 @@ export default function Finances() {
   const [details, setDetails] = useState<ExpenseDetailList | null>(null)
   const [detailsPage, setDetailsPage] = useState(1)
   const [detailsCategory, setDetailsCategory] = useState('')
-  const [editingPriceId, setEditingPriceId] = useState<string | null>(null)
-  const [editingPriceValue, setEditingPriceValue] = useState('')
+  const [editingItem, setEditingItem] = useState<ExpenseDetail | null>(null)
+  const [editForm, setEditForm] = useState({ name: '', price: '', date: '', purchase_url: '', tank_id: '' })
 
   const loadData = useCallback(async () => {
     setIsLoading(true)
@@ -144,13 +144,31 @@ export default function Finances() {
     }
   }
 
-  const handleSavePrice = async (item: ExpenseDetail) => {
+  const openEditModal = (item: ExpenseDetail) => {
+    setEditingItem(item)
+    setEditForm({
+      name: item.name,
+      price: item.price !== null ? String(item.price) : '',
+      date: item.date || '',
+      purchase_url: item.purchase_url || '',
+      tank_id: item.tank_id,
+    })
+  }
+
+  const handleSaveDetail = async () => {
+    if (!editingItem) return
     try {
-      await financesApi.updateExpensePrice(item.id, item.category, editingPriceValue)
-      setEditingPriceId(null)
+      await financesApi.updateExpenseDetail(editingItem.id, editingItem.category, {
+        name: editForm.name,
+        price: editForm.price || null,
+        date: editForm.date || null,
+        purchase_url: editForm.purchase_url || null,
+        tank_id: editForm.tank_id,
+      })
+      setEditingItem(null)
       loadData()
     } catch (err) {
-      console.error('Failed to update price:', err)
+      console.error('Failed to update expense:', err)
     }
   }
 
@@ -314,6 +332,7 @@ export default function Finances() {
                   <th className="px-4 py-3 font-medium">{t('details.tank', { defaultValue: 'Tank' })}</th>
                   <th className="px-4 py-3 font-medium text-right">{t('details.price', { defaultValue: 'Price' })}</th>
                   <th className="px-4 py-3 font-medium text-center">{t('details.url', { defaultValue: 'URL' })}</th>
+                  <th className="px-4 py-3 w-10"></th>
                 </tr>
               </thead>
               <tbody>
@@ -333,32 +352,8 @@ export default function Finances() {
                     <td className="px-4 py-3 text-gray-600 max-w-[120px] truncate">
                       {item.tank_name}
                     </td>
-                    <td className="px-4 py-3 text-right whitespace-nowrap">
-                      {editingPriceId === `${item.category}-${item.id}` ? (
-                        <input
-                          type="text"
-                          value={editingPriceValue}
-                          onChange={(e) => setEditingPriceValue(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleSavePrice(item)
-                            if (e.key === 'Escape') setEditingPriceId(null)
-                          }}
-                          onBlur={() => handleSavePrice(item)}
-                          autoFocus
-                          className="w-24 px-2 py-1 text-sm border border-ocean-400 rounded text-right focus:ring-1 focus:ring-ocean-500"
-                        />
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setEditingPriceId(`${item.category}-${item.id}`)
-                            setEditingPriceValue(item.price_raw || '')
-                          }}
-                          className="hover:bg-ocean-50 px-2 py-1 rounded cursor-pointer text-gray-900"
-                          title={t('details.clickToEdit', { defaultValue: 'Click to edit price' })}
-                        >
-                          {item.price !== null ? fp(item.price) : (item.price_raw || '—')}
-                        </button>
-                      )}
+                    <td className="px-4 py-3 text-right whitespace-nowrap text-gray-900">
+                      {item.price !== null ? fp(item.price) : (item.price_raw || '—')}
                     </td>
                     <td className="px-4 py-3 text-center">
                       {item.purchase_url ? (
@@ -377,11 +372,22 @@ export default function Finances() {
                         <span className="text-gray-300">—</span>
                       )}
                     </td>
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        onClick={() => openEditModal(item)}
+                        className="text-gray-400 hover:text-ocean-600 transition-colors"
+                        title={t('details.edit', { defaultValue: 'Edit' })}
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {(details?.items ?? []).length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center text-gray-400">
+                    <td colSpan={7} className="px-4 py-12 text-center text-gray-400">
                       {t('details.noItems', { defaultValue: 'No expenses found' })}
                     </td>
                   </tr>
@@ -448,6 +454,123 @@ export default function Finances() {
             setEditingBudget(null)
           }}
         />
+      )}
+
+      {/* Edit expense detail modal */}
+      {editingItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t('details.editTitle', { defaultValue: 'Edit Expense' })}
+                </h3>
+                <button
+                  onClick={() => setEditingItem(null)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[editingItem.category] || 'bg-gray-100 text-gray-800'}`}>
+                {t(`categories.${editingItem.category}`, editingItem.category)}
+              </span>
+
+              {/* Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('details.name', { defaultValue: 'Name' })}
+                </label>
+                <input
+                  type="text"
+                  value={editForm.name}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                />
+              </div>
+
+              {/* Price */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('details.price', { defaultValue: 'Price' })} ({currency})
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={editForm.price}
+                  onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                  placeholder="0.00"
+                />
+              </div>
+
+              {/* Date */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('details.date', { defaultValue: 'Date' })}
+                </label>
+                <input
+                  type="date"
+                  value={editForm.date}
+                  onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                />
+              </div>
+
+              {/* Tank */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('details.tank', { defaultValue: 'Tank' })}
+                </label>
+                <select
+                  value={editForm.tank_id}
+                  onChange={(e) => setEditForm({ ...editForm, tank_id: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                >
+                  {tanks.map((tank) => (
+                    <option key={tank.id} value={tank.id}>{tank.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Purchase URL */}
+              {editingItem.category !== 'icp_tests' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('details.purchaseUrl', { defaultValue: 'Purchase URL' })}
+                  </label>
+                  <input
+                    type="url"
+                    value={editForm.purchase_url}
+                    onChange={(e) => setEditForm({ ...editForm, purchase_url: e.target.value })}
+                    className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                    placeholder="https://..."
+                  />
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setEditingItem(null)}
+                  className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  {tc('actions.cancel')}
+                </button>
+                <button
+                  onClick={handleSaveDetail}
+                  className="px-4 py-2 text-sm text-white bg-ocean-600 rounded-md hover:bg-ocean-700"
+                >
+                  {tc('actions.save')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

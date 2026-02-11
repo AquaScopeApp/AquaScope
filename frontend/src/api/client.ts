@@ -974,8 +974,8 @@ export const financesApi = {
     return response.data
   },
 
-  updateExpensePrice: async (itemId: string, category: string, price: string): Promise<void> => {
-    await apiClient.patch(`/finances/details/${itemId}/price`, { price }, { params: { category } })
+  updateExpenseDetail: async (itemId: string, category: string, updates: Record<string, string | null>): Promise<void> => {
+    await apiClient.patch(`/finances/details/${itemId}`, updates, { params: { category } })
   },
 }
 

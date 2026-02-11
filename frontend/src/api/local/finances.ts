@@ -54,5 +54,5 @@ export const financesApi = {
     page_size: 20,
     total_pages: 0,
   }),
-  updateExpensePrice: async (_itemId: string, _category: string, _price: string): Promise<void> => {},
+  updateExpenseDetail: async (_itemId: string, _category: string, _updates: Record<string, string | null>): Promise<void> => {},
 }

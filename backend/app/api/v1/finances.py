@@ -423,30 +423,51 @@ def get_expense_details(
     )
 
 
-@router.patch("/details/{item_id}/price")
-def update_expense_price(
+@router.patch("/details/{item_id}")
+def update_expense_detail(
     item_id: UUID,
     category: str = Query(...),
-    price: str = Body(..., embed=True),
+    updates: dict = Body(...),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Update the price of an individual expense item."""
-    model_map = {
-        "equipment": (Equipment, "purchase_price"),
-        "consumables": (Consumable, "purchase_price"),
-        "livestock": (Livestock, "purchase_price"),
-        "icp_tests": (ICPTest, "cost"),
+    """Update fields of an individual expense item."""
+    # Field mapping: { frontend_field: { category: model_attr } }
+    field_map = {
+        "equipment": {
+            "name": "name", "price": "purchase_price", "date": "purchase_date",
+            "purchase_url": "purchase_url", "tank_id": "tank_id",
+        },
+        "consumables": {
+            "name": "name", "price": "purchase_price", "date": "purchase_date",
+            "purchase_url": "purchase_url", "tank_id": "tank_id",
+        },
+        "livestock": {
+            "name": "species_name", "price": "purchase_price", "date": "added_date",
+            "purchase_url": "purchase_url", "tank_id": "tank_id",
+        },
+        "icp_tests": {
+            "name": "lab_name", "price": "cost", "date": "test_date",
+            "tank_id": "tank_id",
+        },
     }
 
-    if category not in model_map:
+    if category not in field_map:
         raise HTTPException(status_code=400, detail=f"Invalid category: {category}")
 
-    Model, price_field = model_map[category]
-    item = db.query(Model).filter(Model.id == item_id, Model.user_id == current_user.id).first()
+    model_cls = {
+        "equipment": Equipment, "consumables": Consumable,
+        "livestock": Livestock, "icp_tests": ICPTest,
+    }[category]
+
+    item = db.query(model_cls).filter(model_cls.id == item_id, model_cls.user_id == current_user.id).first()
     if not item:
         raise HTTPException(status_code=404, detail="Item not found")
 
-    setattr(item, price_field, price)
+    allowed = field_map[category]
+    for key, value in updates.items():
+        if key in allowed:
+            setattr(item, allowed[key], value if value != "" else None)
+
     db.commit()
-    return {"ok": True, "id": str(item_id), "price": price}
+    return {"ok": True, "id": str(item_id)}
