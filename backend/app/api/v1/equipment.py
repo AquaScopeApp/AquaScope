@@ -8,11 +8,16 @@ from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
 
+from datetime import date
+
 from app.database import get_db
 from app.models.user import User
 from app.models.equipment import Equipment
+from app.models.consumable import Consumable
 from app.models.tank import Tank
+from app.models.maintenance import MaintenanceReminder
 from app.schemas.equipment import EquipmentCreate, EquipmentUpdate, EquipmentResponse
+from app.schemas.consumable import ConsumableResponse
 from app.api.deps import get_current_user
 
 router = APIRouter()
@@ -122,7 +127,7 @@ def update_equipment(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Update equipment"""
+    """Update equipment. Auto-creates maintenance reminder when condition is needs_maintenance or failing."""
     equipment = db.query(Equipment).filter(
         Equipment.id == equipment_id,
         Equipment.user_id == current_user.id
@@ -134,10 +139,45 @@ def update_equipment(
             detail="Equipment not found"
         )
 
+    old_condition = equipment.condition
+
     # Update fields
     update_data = equipment_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(equipment, field, value)
+
+    new_condition = equipment.condition
+    needs_attention = new_condition in ("needs_maintenance", "failing")
+
+    # Ensure a maintenance reminder exists whenever condition is bad
+    if needs_attention:
+        existing = db.query(MaintenanceReminder).filter(
+            MaintenanceReminder.equipment_id == equipment_id,
+            MaintenanceReminder.is_active == True,
+        ).first()
+
+        if not existing:
+            label = "Repair" if new_condition == "failing" else "Maintenance"
+            reminder = MaintenanceReminder(
+                tank_id=equipment.tank_id,
+                user_id=current_user.id,
+                equipment_id=equipment.id,
+                title=f"{label}: {equipment.name}",
+                description=f"Equipment condition: {new_condition.replace('_', ' ')}. Inspect and service.",
+                reminder_type="equipment_maintenance",
+                frequency_days=7,
+                next_due=date.today(),
+                is_active=True,
+            )
+            db.add(reminder)
+
+    # Deactivate auto-created reminder when condition improves
+    elif old_condition in ("needs_maintenance", "failing"):
+        db.query(MaintenanceReminder).filter(
+            MaintenanceReminder.equipment_id == equipment_id,
+            MaintenanceReminder.reminder_type == "equipment_maintenance",
+            MaintenanceReminder.is_active == True,
+        ).update({"is_active": False})
 
     db.commit()
     db.refresh(equipment)
@@ -167,3 +207,49 @@ def delete_equipment(
     db.commit()
 
     return None
+
+
+# ============================================================================
+# Conversion Endpoints
+# ============================================================================
+
+
+@router.post("/{equipment_id}/convert-to-consumable", response_model=ConsumableResponse)
+def convert_to_consumable(
+    equipment_id: UUID,
+    consumable_type: str = Query("other", description="The consumable type to assign"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Convert equipment to a consumable. Creates consumable and deletes the equipment."""
+    equipment = db.query(Equipment).filter(
+        Equipment.id == equipment_id,
+        Equipment.user_id == current_user.id
+    ).first()
+
+    if not equipment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Equipment not found"
+        )
+
+    new_consumable = Consumable(
+        tank_id=equipment.tank_id,
+        user_id=current_user.id,
+        name=equipment.name,
+        consumable_type=consumable_type,
+        brand=equipment.manufacturer,
+        product_name=equipment.model,
+        purchase_date=equipment.purchase_date,
+        purchase_price=equipment.purchase_price,
+        status='active',
+        notes=equipment.notes,
+    )
+
+    db.add(new_consumable)
+    db.delete(equipment)
+    db.commit()
+    db.refresh(new_consumable)
+
+    new_consumable.usage_count = 0
+    return new_consumable

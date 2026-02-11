@@ -11,7 +11,7 @@ import type { Tank } from '../../types'
 import TankStats from './TankStats'
 import TankImageUpload from './TankImageUpload'
 import DefaultTankAnimation from './DefaultTankAnimation'
-import { tanksApi } from '../../api/client'
+import { tanksApi } from '../../api'
 
 interface TankSidebarProps {
   tank: Tank
@@ -89,7 +89,7 @@ export default function TankSidebar({ tank, stats, onEdit, onAddEvent, onRefresh
               className="w-full h-full object-cover"
               onError={() => setImageError(true)}
             />
-          ) : tank.image_url && !imageUrl ? (
+          ) : tank.image_url && !imageUrl && !imageError ? (
             <div className="text-ocean-400">{tc('common.loading')}</div>
           ) : (
             <DefaultTankAnimation waterType={tank.water_type} />

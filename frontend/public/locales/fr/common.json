@@ -97,5 +97,16 @@
     "admin": "Admin",
     "developer": "Développeur",
     "apiDocumentation": "Documentation API →"
+  },
+  "pwa": {
+    "installTitle": "Installer AquaScope",
+    "installDescription": "Ajoutez AquaScope à votre écran d'accueil pour un accès rapide",
+    "installButton": "Installer",
+    "later": "Plus tard",
+    "offlineMessage": "Vous êtes hors ligne. Les modifications seront synchronisées à la reconnexion.",
+    "syncingMessage": "Synchronisation de {{count}} modification(s) en attente...",
+    "syncFailedMessage": "{{count}} modification(s) n'ont pas pu être synchronisées. Nouvelle tentative automatique.",
+    "updateAvailable": "Une nouvelle version d'AquaScope est disponible. Recharger pour mettre à jour ?",
+    "offlineReady": "AquaScope est prêt pour une utilisation hors ligne."
   }
 }

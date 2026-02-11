@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef } from 'react'
-import { tanksApi } from '../../api/client'
+import { tanksApi } from '../../api'
 
 interface TankImageUploadProps {
   tankId: string

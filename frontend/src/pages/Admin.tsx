@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { Navigate } from 'react-router-dom'
-import { adminApi } from '../api/client'
+import { adminApi } from '../api'
 import { User, UserWithStats, SystemStats, UserDataSummary, Tank, StorageStats, StorageFile } from '../types'
 
 type Tab = 'overview' | 'users' | 'database' | 'storage'

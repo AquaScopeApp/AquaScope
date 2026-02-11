@@ -42,6 +42,10 @@ vi.mock('../pages/ICPTests', () => ({ default: () => <div>ICP Tests</div> }))
 vi.mock('../pages/Photos', () => ({ default: () => <div>Photos</div> }))
 vi.mock('../pages/Notes', () => ({ default: () => <div>Notes</div> }))
 vi.mock('../pages/Admin', () => ({ default: () => <div>Admin</div> }))
+vi.mock('../pages/Consumables', () => ({ default: () => <div>Consumables</div> }))
+vi.mock('../components/OfflineBanner', () => ({
+  default: () => null,
+}))
 vi.mock('../i18n/config', () => ({}))
 
 vi.mock('react-i18next', () => ({

@@ -11,12 +11,28 @@ from uuid import UUID
 from app.database import get_db
 from app.models.user import User
 from app.models.consumable import Consumable, ConsumableUsage
+from app.models.equipment import Equipment
 from app.models.tank import Tank
 from app.schemas.consumable import (
     ConsumableCreate, ConsumableUpdate, ConsumableResponse,
     ConsumableUsageCreate, ConsumableUsageResponse,
 )
+from app.schemas.equipment import EquipmentResponse
 from app.api.deps import get_current_user
+
+# Mapping from consumable_type to equipment_type
+CONSUMABLE_TO_EQUIPMENT_TYPE = {
+    'salt_mix': 'other',
+    'additive': 'other',
+    'supplement': 'other',
+    'food': 'other',
+    'filter_media': 'filter',
+    'test_kit': 'other',
+    'medication': 'other',
+    'other': 'other',
+    'gear': 'other',
+    'decoration': 'other',
+}
 
 router = APIRouter()
 
@@ -240,3 +256,52 @@ def list_usage(
     ).order_by(ConsumableUsage.usage_date.desc()).all()
 
     return usage_list
+
+
+# ============================================================================
+# Conversion Endpoints
+# ============================================================================
+
+
+@router.post("/{consumable_id}/convert-to-equipment", response_model=EquipmentResponse)
+def convert_to_equipment(
+    consumable_id: UUID,
+    equipment_type: str = Query(None, description="Override the equipment type"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Convert a consumable to equipment. Creates equipment and deletes the consumable."""
+    consumable = db.query(Consumable).filter(
+        Consumable.id == consumable_id,
+        Consumable.user_id == current_user.id
+    ).first()
+
+    if not consumable:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Consumable not found"
+        )
+
+    eq_type = equipment_type or CONSUMABLE_TO_EQUIPMENT_TYPE.get(
+        consumable.consumable_type, 'other'
+    )
+
+    new_equipment = Equipment(
+        tank_id=consumable.tank_id,
+        user_id=current_user.id,
+        name=consumable.name,
+        equipment_type=eq_type,
+        manufacturer=consumable.brand,
+        model=consumable.product_name,
+        purchase_date=consumable.purchase_date,
+        purchase_price=consumable.purchase_price,
+        status=consumable.status if consumable.status in ('active', 'stock') else 'active',
+        notes=consumable.notes,
+    )
+
+    db.add(new_equipment)
+    db.delete(consumable)
+    db.commit()
+    db.refresh(new_equipment)
+
+    return new_equipment

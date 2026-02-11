@@ -16,7 +16,7 @@ vi.mock('react-i18next', () => ({
   initReactI18next: { type: '3rdParty', init: () => {} },
 }))
 
-vi.mock('../../api/client', () => ({
+vi.mock('../../api', () => ({
   photosApi: { getFileBlobUrl: vi.fn().mockResolvedValue('blob:test-photo') },
   livestockApi: { getFishBaseSpeciesImages: vi.fn().mockResolvedValue([]) },
 }))

@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { livestockApi, tanksApi } from '../api/client'
+import { livestockApi, tanksApi } from '../api'
 import type { Livestock as LivestockType, Tank } from '../types'
 import LivestockCard from '../components/livestock/LivestockCard'
 import LivestockForm from '../components/livestock/LivestockForm'

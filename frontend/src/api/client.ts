@@ -8,7 +8,8 @@
  * - Type-safe request methods
  */
 
-import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import { enqueueRequest } from '../services/offlineQueue'
 import type {
   AuthToken,
   LoginCredentials,
@@ -58,8 +59,9 @@ import type {
   ApiError,
 } from '../types'
 
-// API base URL - use environment variable or default to localhost
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// API base URL - empty string means same origin (nginx proxy in Docker)
+// For local dev: set VITE_API_URL=http://localhost:8000
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? ''
 const API_V1 = `${API_BASE_URL}/api/v1`
 
 // ============================================================================
@@ -97,13 +99,37 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
+  async (error: AxiosError<ApiError>) => {
     if (error.response?.status === 401) {
       // Token expired or invalid - clear auth and redirect to login
       localStorage.removeItem('aquascope_token')
       localStorage.removeItem('aquascope_user')
       window.location.href = '/login'
+      return Promise.reject(error)
     }
+
+    // Offline queue: enqueue failed write operations when offline
+    const config = error.config
+    if (
+      config &&
+      !error.response &&
+      ['post', 'put', 'delete', 'patch'].includes(config.method || '') &&
+      !config.url?.includes('/auth/') &&
+      config.headers?.['Content-Type'] !== 'multipart/form-data'
+    ) {
+      const headers: Record<string, string> = {}
+      if (config.headers) {
+        for (const [key, value] of Object.entries(config.headers)) {
+          if (typeof value === 'string') headers[key] = value
+        }
+      }
+      const fullUrl = config.baseURL
+        ? `${config.baseURL}${config.url}`
+        : config.url || ''
+      await enqueueRequest(fullUrl, config.method!.toUpperCase(), headers, config.data ?? null)
+      return { data: { queued: true }, status: 202, statusText: 'Queued', headers: {}, config } as AxiosResponse
+    }
+
     return Promise.reject(error)
   }
 )
@@ -574,6 +600,15 @@ export const equipmentApi = {
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/equipment/${id}`)
   },
+
+  convertToConsumable: async (id: string, consumableType = 'other'): Promise<Consumable> => {
+    const response = await apiClient.post<Consumable>(
+      `/equipment/${id}/convert-to-consumable`,
+      null,
+      { params: { consumable_type: consumableType } }
+    )
+    return response.data
+  },
 }
 
 // ============================================================================
@@ -616,6 +651,15 @@ export const consumablesApi = {
 
   listUsage: async (id: string): Promise<ConsumableUsage[]> => {
     const response = await apiClient.get<ConsumableUsage[]>(`/consumables/${id}/usage`)
+    return response.data
+  },
+
+  convertToEquipment: async (id: string, equipmentType?: string): Promise<Equipment> => {
+    const response = await apiClient.post<Equipment>(
+      `/consumables/${id}/convert-to-equipment`,
+      null,
+      { params: equipmentType ? { equipment_type: equipmentType } : undefined }
+    )
     return response.data
   },
 }

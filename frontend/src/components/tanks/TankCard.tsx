@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
-import { tanksApi } from '../../api/client'
+import { tanksApi } from '../../api'
 import DefaultTankAnimation from './DefaultTankAnimation'
 
 interface TankCardProps {
@@ -102,7 +102,7 @@ export default function TankCard({ tank, onEdit, onDelete }: TankCardProps) {
             className="w-full h-full object-cover"
             onError={() => setImageError(true)}
           />
-        ) : tank.image_url && !imageUrl ? (
+        ) : tank.image_url && !imageUrl && !imageError ? (
           <div className="flex items-center justify-center h-full bg-gradient-to-b from-ocean-100 to-ocean-200">
             <div className="text-ocean-400 text-sm">{tc('common.loading')}</div>
           </div>

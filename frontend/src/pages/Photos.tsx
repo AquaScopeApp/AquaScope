@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Photo, Tank } from '../types'
-import { photosApi, tanksApi } from '../api/client'
+import { photosApi, tanksApi } from '../api'
 import PhotoGallery from '../components/photos/PhotoGallery'
 import PhotoUpload from '../components/photos/PhotoUpload'
 
@@ -60,10 +60,14 @@ export default function Photos() {
 
   const handleUpdate = async (id: string, description: string, takenAt: string) => {
     try {
-      await photosApi.update(id, {
-        description,
-        taken_at: takenAt,
-      })
+      const data: { description?: string | null; taken_at?: string } = {
+        description: description || null,
+      }
+      // Only include taken_at if provided (column is NOT NULL in DB)
+      if (takenAt) {
+        data.taken_at = takenAt
+      }
+      await photosApi.update(id, data)
       loadData()
     } catch (error) {
       console.error('Failed to update photo:', error)
@@ -186,6 +190,7 @@ export default function Photos() {
           tanks={tanks}
           onDelete={handleDelete}
           onUpdate={handleUpdate}
+          onRefresh={loadData}
         />
       )}
     </div>

@@ -12,7 +12,8 @@
  */
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { authApi } from '../api/client'
+import { authApi } from '../api'
+import { isLocalMode } from '../platform'
 import type { User, LoginCredentials, RegisterData, AuthState } from '../types'
 
 // ============================================================================
@@ -45,9 +46,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Initialize auth state from localStorage
+  // Initialize auth state from localStorage (or auto-login in local mode)
   useEffect(() => {
     const initializeAuth = async () => {
+      if (isLocalMode()) {
+        // Local mode: auto-create/retrieve local user, no real auth needed
+        try {
+          const localUser = await authApi.getCurrentUser()
+          setUser(localUser)
+          setToken('local-mode')
+          localStorage.setItem('aquascope_token', 'local-mode')
+          localStorage.setItem('aquascope_user', JSON.stringify(localUser))
+        } catch (error) {
+          console.error('Local auth init failed:', error)
+        }
+        setIsLoading(false)
+        return
+      }
+
       const storedToken = localStorage.getItem('aquascope_token')
       const storedUser = localStorage.getItem('aquascope_user')
 

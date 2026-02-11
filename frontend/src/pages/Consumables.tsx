@@ -11,7 +11,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { consumablesApi, tanksApi } from '../api/client'
+import { consumablesApi, tanksApi } from '../api'
 import type { Consumable, ConsumableCreate, Tank, ConsumableUsage } from '../types'
 
 const CONSUMABLE_TYPES = [
@@ -154,6 +154,18 @@ export default function ConsumablesPage() {
     } catch (error) {
       console.error('Failed to delete consumable:', error)
       alert(t('deleteFailed'))
+    }
+  }
+
+  const handleConvertToEquipment = async (id: string, name: string) => {
+    if (!confirm(t('confirmConvertToEquipment', { name, defaultValue: `Move "${name}" to Equipment?` }))) return
+
+    try {
+      await consumablesApi.convertToEquipment(id)
+      loadData()
+    } catch (error) {
+      console.error('Failed to convert to equipment:', error)
+      alert(t('convertFailed', { defaultValue: 'Failed to convert' }))
     }
   }
 
@@ -338,6 +350,15 @@ export default function ConsumablesPage() {
                   <p className="text-xs text-gray-500 mt-1">{getTankName(item.tank_id)}</p>
                 </div>
                 <div className="flex space-x-1">
+                  <button
+                    onClick={() => handleConvertToEquipment(item.id, item.name)}
+                    className="p-1 text-amber-600 hover:bg-amber-50 rounded"
+                    title={t('moveToEquipment', { defaultValue: 'Move to Equipment' })}
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                  </button>
                   <button
                     onClick={() => handleEdit(item)}
                     className="p-1 text-ocean-600 hover:bg-ocean-50 rounded"

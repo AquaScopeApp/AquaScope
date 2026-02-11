@@ -6,7 +6,7 @@
 
 import { useState, useRef } from 'react'
 import { Tank } from '../../types'
-import { photosApi } from '../../api/client'
+import { photosApi } from '../../api'
 
 interface PhotoUploadProps {
   tanks: Tank[]

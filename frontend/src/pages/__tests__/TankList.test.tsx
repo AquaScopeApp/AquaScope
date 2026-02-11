@@ -31,7 +31,7 @@ const mockTanksDelete = vi.fn()
 const mockTanksCreate = vi.fn()
 const mockTanksUpdate = vi.fn()
 
-vi.mock('../../api/client', () => ({
+vi.mock('../../api', () => ({
   tanksApi: {
     list: (...args: any[]) => mockTanksList(...args),
     delete: (...args: any[]) => mockTanksDelete(...args),

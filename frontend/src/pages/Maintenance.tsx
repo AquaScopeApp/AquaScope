@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { maintenanceApi, tanksApi } from '../api/client'
+import { maintenanceApi, tanksApi } from '../api'
 import type { MaintenanceReminder, Tank } from '../types'
 import ReminderCard from '../components/maintenance/ReminderCard'
 import ReminderForm from '../components/maintenance/ReminderForm'
