@@ -220,16 +220,16 @@ export default function LivestockCard({
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-3 flex-1">
+          <div className="flex items-start space-x-3 flex-1 min-w-0">
             {/* Only show icon if no thumbnail */}
             {!(thumbnail && !imageError) && (
-              <span className="text-3xl">{getTypeIcon()}</span>
+              <span className="text-3xl flex-shrink-0">{getTypeIcon()}</span>
             )}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-gray-900 truncate">
-                  {livestock.common_name || livestock.species_name}
-                </h3>
+              <h3 className="font-semibold text-gray-900 truncate">
+                {livestock.common_name || livestock.species_name}
+              </h3>
+              <div className="flex items-center gap-1 flex-wrap mt-0.5">
                 {livestock.quantity > 1 && (
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-ocean-100 text-ocean-700">
                     x{livestock.quantity}
@@ -249,7 +249,7 @@ export default function LivestockCard({
               )}
             </div>
           </div>
-          <div className="flex space-x-1 ml-2">
+          <div className="flex space-x-1 ml-2 flex-shrink-0">
             {livestock.quantity > 1 && livestock.status === 'alive' && (
               <button
                 onClick={() => {
