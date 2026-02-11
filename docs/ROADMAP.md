@@ -47,42 +47,19 @@ AquaScope already tracks purchase prices across Equipment, Consumables, and Live
 ## Admin Module Toggles
 
 **Priority**: High
-**Status**: Planned
+**Status**: Done
 
 Allow administrators to enable/disable modules per installation. Not all users need every module — a freshwater hobbyist with one tank may only want Parameters, Notes, and Photos.
 
-### Scope
+### Implementation
 
-- **Admin Settings page** section: "Active Modules"
-- Checkbox list of toggleable modules:
-  - Parameters (core — always on)
-  - Tanks (core — always on)
-  - Photos
-  - Notes
-  - Livestock
-  - Equipment
-  - Consumables
-  - Maintenance Reminders
-  - ICP Tests
-  - Finances (when implemented)
-- Disabled modules:
-  - Hidden from sidebar navigation
-  - API endpoints still accessible (data preserved, just hidden from UI)
-  - Can be re-enabled at any time without data loss
-
-### Backend
-
-- New `app_settings` or `user_preferences` table:
-  - `user_id`, `setting_key`, `setting_value`
-  - Keys: `modules.photos.enabled`, `modules.livestock.enabled`, etc.
-- `GET /api/v1/admin/settings` — returns enabled modules
-- `PUT /api/v1/admin/settings` — update enabled modules
-
-### Frontend
-
-- Admin page: new "Modules" tab with toggle switches
-- Layout/sidebar: conditionally render nav items based on enabled modules
-- `useSettings()` hook or context to expose module visibility app-wide
+- `app_settings` table (key-value store) with Alembic migration
+- `GET /api/v1/admin/settings/modules` — any authenticated user can read
+- `PUT /api/v1/admin/settings/modules` — admin only
+- Admin page: "Modules" tab with toggle switches (core modules locked on)
+- `useModuleSettings()` context provides `isEnabled(module)` app-wide
+- Sidebar navigation filters items based on enabled modules
+- Disabled modules: hidden from UI, data preserved, API still accessible
 
 ---
 
