@@ -1,3 +1,6 @@
+# WARNING: Never use `docker compose down -v` — it destroys all data volumes
+# including the PostgreSQL database. Use `docker compose down` (without -v).
+# Uploads are stored in ./data/uploads/ (bind mount) so they survive rebuilds.
 services:
   postgres:
     image: postgres:15-alpine
@@ -58,7 +61,7 @@ services:
       UPLOAD_DIR: ${UPLOAD_DIR:-/app/uploads}
     volumes:
       - ./backend:/app
-      - backend_uploads:/app/uploads
+      - ./data/uploads:/app/uploads  # bind mount — survives rebuilds & down -v
     ports:
       - "8000:8000"
     depends_on:
@@ -89,6 +92,4 @@ volumes:
   influxdb_data:
     driver: local
   influxdb_config:
-    driver: local
-  backend_uploads:
     driver: local
