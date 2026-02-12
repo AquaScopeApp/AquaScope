@@ -1,7 +1,7 @@
 /**
  * Sparkline Component
  *
- * Renders mini sparkline charts for the last 7 days of key water parameters
+ * Renders mini sparkline charts for the last 90 days of key water parameters
  * on the Dashboard tank cards. Parameter selection is based on water type.
  */
 
@@ -21,6 +21,9 @@ const PARAM_CONFIGS: Record<string, { key: string; label: string; unit: string; 
     { key: 'temperature', label: 'Temp', unit: '\u00B0C', color: '#ef4444', fillColor: 'rgba(239,68,68,0.15)' },
     { key: 'alkalinity_kh', label: 'Alk', unit: 'dKH', color: '#06b6d4', fillColor: 'rgba(6,182,212,0.15)' },
     { key: 'calcium', label: 'Ca', unit: 'ppm', color: '#8b5cf6', fillColor: 'rgba(139,92,246,0.15)' },
+    { key: 'magnesium', label: 'Mg', unit: 'ppm', color: '#ec4899', fillColor: 'rgba(236,72,153,0.15)' },
+    { key: 'nitrate', label: 'NO₃', unit: 'ppm', color: '#f97316', fillColor: 'rgba(249,115,22,0.15)' },
+    { key: 'phosphate', label: 'PO₄', unit: 'ppm', color: '#14b8a6', fillColor: 'rgba(20,184,166,0.15)' },
   ],
   freshwater: [
     { key: 'temperature', label: 'Temp', unit: '\u00B0C', color: '#ef4444', fillColor: 'rgba(239,68,68,0.15)' },
@@ -65,7 +68,7 @@ export default function Sparkline({ tankId, waterType }: SparklineProps) {
               const readings: ParameterReading[] = await parametersApi.query({
                 tank_id: tankId,
                 parameter_type: cfg.key,
-                start: '-7d',
+                start: '-90d',
               })
 
               // Sort chronologically (oldest first) for the chart

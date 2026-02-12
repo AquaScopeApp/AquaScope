@@ -1,29 +1,81 @@
 import { chromium } from 'playwright';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const BASE = 'http://localhost';
-const OUT = '/Users/eprifti/prifticloud/HOBBIES/aqurophilie/Reefing/equipment/ReefPi/AquaScope/landing/assets';
+const BASE = process.env.CAPTURE_BASE_URL || 'http://localhost';
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const OUT = resolve(__dirname, 'assets');
+
+const DEMO_EMAIL = process.env.CAPTURE_DEMO_EMAIL || 'demo@reeflab.io';
+const DEMO_PASS = process.env.CAPTURE_DEMO_PASS;
+const ADMIN_EMAIL = process.env.CAPTURE_ADMIN_EMAIL;
+const ADMIN_PASS = process.env.CAPTURE_ADMIN_PASS;
+
+if (!DEMO_PASS) {
+  console.error('Missing CAPTURE_DEMO_PASS env var. Set credentials via environment variables.');
+  console.error('  CAPTURE_DEMO_EMAIL  (default: demo@reeflab.io)');
+  console.error('  CAPTURE_DEMO_PASS   (required)');
+  console.error('  CAPTURE_ADMIN_EMAIL (required for admin screenshot)');
+  console.error('  CAPTURE_ADMIN_PASS  (required for admin screenshot)');
+  process.exit(1);
+}
+
+/** Login via API and store token + user in localStorage so the SPA picks it up */
+async function loginViaToken(page, email, password) {
+  await page.goto(`${BASE}/login`, { waitUntil: 'networkidle' });
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    const ok = await page.evaluate(async ({ email, password }) => {
+      const params = new URLSearchParams();
+      params.append('username', email);
+      params.append('password', password);
+      const loginResp = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      });
+      if (!loginResp.ok) return false;
+      const { access_token } = await loginResp.json();
+      const meResp = await fetch('/api/v1/auth/me', {
+        headers: { Authorization: `Bearer ${access_token}` },
+      });
+      if (!meResp.ok) return false;
+      const user = await meResp.json();
+      localStorage.setItem('aquascope_token', access_token);
+      localStorage.setItem('aquascope_user', JSON.stringify(user));
+      return true;
+    }, { email, password });
+
+    if (ok) {
+      console.log(`  Authenticated as ${email} (attempt ${attempt})`);
+      return;
+    }
+    console.log(`  Login attempt ${attempt} failed, retrying in 3s...`);
+    await page.waitForTimeout(3000);
+  }
+  throw new Error(`Login failed for ${email} after 5 attempts`);
+}
 
 (async () => {
   const browser = await chromium.launch();
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     deviceScaleFactor: 2,
+    serviceWorkers: 'block',
   });
   const page = await ctx.newPage();
 
-  // Login
-  console.log('Logging in...');
-  await page.goto(`${BASE}/login`, { waitUntil: 'networkidle' });
-  await page.fill('input[type="email"]', 'demo@reeflab.io');
-  await page.fill('input[type="password"]', '***REDACTED***');
-  await page.click('button[type="submit"]');
-  await page.waitForTimeout(5000);
-  console.log('  Current URL:', page.url());
-
-  // Dashboard
+  // Login as demo user
+  console.log('Logging in as demo user...');
+  await loginViaToken(page, DEMO_EMAIL, DEMO_PASS);
+  // Navigate to dashboard (reload so SPA picks up the token from localStorage)
   console.log('Capturing dashboard...');
   await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(3000);
+  // Wait for redirect if not authenticated, then retry
+  if (page.url().includes('/login')) {
+    console.log('  Redirected to login, retrying...');
+    await page.goto(`${BASE}/dashboard`, { waitUntil: 'networkidle' });
+  }
+  await page.waitForTimeout(4000);
   await page.screenshot({ path: `${OUT}/screenshot-dashboard.png` });
 
   // Tank detail - click the first tank name on dashboard
@@ -34,7 +86,6 @@ const OUT = '/Users/eprifti/prifticloud/HOBBIES/aqurophilie/Reefing/equipment/Re
     await page.waitForTimeout(3000);
     await page.screenshot({ path: `${OUT}/screenshot-tank.png` });
   } else {
-    // Try any link containing /tanks/
     const anyTank = await page.$('[href*="/tanks/"]');
     if (anyTank) {
       await anyTank.click();
@@ -81,24 +132,30 @@ const OUT = '/Users/eprifti/prifticloud/HOBBIES/aqurophilie/Reefing/equipment/Re
   await page.waitForTimeout(2000);
   await page.screenshot({ path: `${OUT}/screenshot-consumables.png` });
 
-  // Admin page — log in as admin to capture the admin dashboard
-  console.log('Switching to admin account for admin screenshot...');
-  // Clear auth and re-login as admin
-  await page.evaluate(() => localStorage.clear());
-  await page.goto(`${BASE}/login`, { waitUntil: 'networkidle' });
-  await page.fill('input[type="email"]', '***REDACTED_EMAIL***');
-  await page.fill('input[type="password"]', '***REDACTED***');
-  await page.click('button[type="submit"]');
-  await page.waitForTimeout(5000);
-  console.log('  Admin URL:', page.url());
+  // Admin page
+  if (ADMIN_EMAIL && ADMIN_PASS) {
+    console.log('Switching to admin account...');
+    await page.evaluate(() => localStorage.clear());
+    await loginViaToken(page, ADMIN_EMAIL, ADMIN_PASS);
 
-  console.log('Capturing admin (modules tab)...');
-  await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(2000);
-  // Click the Modules tab
-  await page.click('button:has-text("Modules")');
-  await page.waitForTimeout(2000);
-  await page.screenshot({ path: `${OUT}/screenshot-admin.png` });
+    console.log('Capturing admin (modules tab)...');
+    await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });
+    if (page.url().includes('/login')) {
+      console.log('  Redirected to login, retrying...');
+      await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });
+    }
+    await page.waitForTimeout(2000);
+    const modulesBtn = await page.$('button:has-text("Modules")');
+    if (modulesBtn) {
+      await modulesBtn.click();
+      await page.waitForTimeout(2000);
+    } else {
+      console.log('  Modules tab not found, capturing current view');
+    }
+    await page.screenshot({ path: `${OUT}/screenshot-admin.png` });
+  } else {
+    console.log('Skipping admin screenshot (CAPTURE_ADMIN_EMAIL / CAPTURE_ADMIN_PASS not set)');
+  }
 
   await browser.close();
   console.log('Done! Screenshots saved to landing/assets/');

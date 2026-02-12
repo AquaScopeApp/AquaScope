@@ -37,7 +37,7 @@ def get_dashboard_summary(
     """
     tanks = (
         db.query(Tank)
-        .filter(Tank.user_id == current_user.id)
+        .filter(Tank.user_id == current_user.id, Tank.is_archived == False)
         .order_by(Tank.created_at)
         .all()
     )
