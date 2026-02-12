@@ -31,6 +31,8 @@ export let icpTestsApi: typeof import('./client').icpTestsApi
 export let parameterRangesApi: typeof import('./client').parameterRangesApi
 export let adminApi: typeof import('./client').adminApi
 export let financesApi: typeof import('./client').financesApi
+export let dashboardApi: typeof import('./client').dashboardApi
+export let exportApi: typeof import('./client').exportApi
 
 // ---------------------------------------------------------------------------
 // Initialization
@@ -60,6 +62,8 @@ export async function initializeApi(): Promise<void> {
     parameterRangesApi = local.parameterRangesApi
     adminApi = local.adminApi
     financesApi = local.financesApi
+    dashboardApi = local.dashboardApi
+    exportApi = local.exportApi
   } else {
     const remote = await import('./client')
     authApi = remote.authApi
@@ -75,6 +79,8 @@ export async function initializeApi(): Promise<void> {
     parameterRangesApi = remote.parameterRangesApi
     adminApi = remote.adminApi
     financesApi = remote.financesApi
+    dashboardApi = remote.dashboardApi
+    exportApi = remote.exportApi
   }
 
   initialized = true

@@ -881,3 +881,30 @@ export interface ExpenseDetailList {
   page_size: number
   total_pages: number
 }
+
+// ============================================================================
+// Dashboard Types
+// ============================================================================
+
+export interface DashboardTankSummary {
+  tank_id: string
+  tank_name: string
+  water_type: string | null
+  aquarium_subtype: string | null
+  total_volume_liters: number
+  setup_date: string | null
+  image_url: string | null
+  is_default: boolean
+  equipment_count: number
+  livestock_count: number
+  photos_count: number
+  notes_count: number
+  maintenance_count: number
+  consumables_count: number
+  overdue_count: number
+}
+
+export interface DashboardResponse {
+  tanks: DashboardTankSummary[]
+  total_overdue: number
+}

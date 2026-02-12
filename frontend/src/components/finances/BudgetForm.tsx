@@ -62,7 +62,7 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" role="dialog" aria-modal="true">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
         <h3 className="text-lg font-semibold mb-4">
           {budget ? t('budget.edit') : t('budget.create')}

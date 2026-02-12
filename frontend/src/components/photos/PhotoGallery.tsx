@@ -230,6 +230,8 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
       {selectedPhoto && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
           onClick={() => {
             setSelectedPhoto(null)
             setIsEditing(false)
@@ -261,6 +263,7 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                           : 'hover:bg-white hover:bg-opacity-20'
                       }`}
                       title={selectedPhoto.is_tank_display ? 'Unpin as tank display' : 'Pin as tank display'}
+                      aria-label={selectedPhoto.is_tank_display ? 'Unpin as tank display' : 'Pin as tank display'}
                     >
                       <svg className="w-6 h-6" fill={selectedPhoto.is_tank_display ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -275,6 +278,7 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                       onClick={() => handleEdit(selectedPhoto)}
                       className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
                       title="Edit"
+                      aria-label="Edit"
                     >
                       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -292,6 +296,7 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                       }}
                       className="p-2 hover:bg-red-600 rounded-lg transition-colors"
                       title="Delete"
+                      aria-label="Delete"
                     >
                       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -311,6 +316,7 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                   }}
                   className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-colors"
                   title="Close"
+                  aria-label="Close"
                 >
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
@@ -373,6 +379,8 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                     }}
                     disabled={photos.findIndex((p) => p.id === selectedPhoto.id) === 0}
                     className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full disabled:opacity-0 transition-opacity"
+                    title="Previous photo"
+                    aria-label="Previous photo"
                   >
                     <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -389,6 +397,8 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
                     }}
                     disabled={photos.findIndex((p) => p.id === selectedPhoto.id) === photos.length - 1}
                     className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full disabled:opacity-0 transition-opacity"
+                    title="Next photo"
+                    aria-label="Next photo"
                   >
                     <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

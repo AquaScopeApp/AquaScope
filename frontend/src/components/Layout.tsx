@@ -165,6 +165,14 @@ export default function Layout(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      {/* Skip to content link — visible on focus for keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ocean-600 focus:text-white focus:rounded-md focus:text-sm focus:font-medium"
+      >
+        {t('skipToContent', { defaultValue: 'Skip to content' })}
+      </a>
+
       {/* Top Navigation */}
       <nav className="sticky top-0 z-40 bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -197,6 +205,8 @@ export default function Layout(): JSX.Element {
                   <button
                     onClick={() => setShowAvatarMenu(!showAvatarMenu)}
                     className="flex items-center space-x-2 focus:outline-none"
+                    aria-label={t('userMenu', { defaultValue: 'User menu' })}
+                    aria-expanded={showAvatarMenu}
                   >
                     {avatarSrc ? (
                       <img src={avatarSrc} alt={user?.username} className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600" />
@@ -291,7 +301,7 @@ export default function Layout(): JSX.Element {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0">
+          <main id="main-content" className="flex-1 min-w-0">
             {!local && <InstallPrompt />}
             <div className="mt-6">
               <Outlet />

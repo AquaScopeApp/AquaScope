@@ -187,6 +187,7 @@ export default function LivestockCard({
               onClick={() => { setSplitQuantity(1); setSplitStatus('dead'); setShowSplitDialog(!showSplitDialog) }}
               className={`p-1 rounded ${showSplitDialog ? 'text-amber-800 dark:text-amber-300 bg-amber-200 dark:bg-amber-900/50' : 'text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-900/30'}`}
               title={t('split.title')}
+              aria-label={t('split.title')}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
@@ -194,24 +195,24 @@ export default function LivestockCard({
             </button>
           )}
           {livestock.is_archived ? (
-            <button onClick={() => onUnarchive(livestock.id)} className="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded" title={tc('actions.unarchive')}>
+            <button onClick={() => onUnarchive(livestock.id)} className="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded" title={tc('actions.unarchive')} aria-label={tc('actions.unarchive')}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" />
               </svg>
             </button>
           ) : (
-            <button onClick={() => onArchive(livestock.id)} className="p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded" title={tc('actions.archive')}>
+            <button onClick={() => onArchive(livestock.id)} className="p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded" title={tc('actions.archive')} aria-label={tc('actions.archive')}>
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
               </svg>
             </button>
           )}
-          <button onClick={() => onEdit(livestock)} className="p-1 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title={tc('actions.edit')}>
+          <button onClick={() => onEdit(livestock)} className="p-1 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title={tc('actions.edit')} aria-label={tc('actions.edit')}>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
           </button>
-          <button onClick={() => onDelete(livestock.id)} className="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded" title={tc('actions.delete')}>
+          <button onClick={() => onDelete(livestock.id)} className="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded" title={tc('actions.delete')} aria-label={tc('actions.delete')}>
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>

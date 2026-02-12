@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { tanksApi, parametersApi, parameterRangesApi } from '../api'
+import { tanksApi, parametersApi, parameterRangesApi, exportApi } from '../api'
 import { PARAMETER_RANGES, RATIO_ORDER, buildParameterRangesMap, getActiveParameterOrder } from '../config/parameterRanges'
 import type { ParameterRange } from '../config/parameterRanges'
 import ParameterChart from '../components/parameters/ParameterChart'
@@ -385,6 +385,19 @@ export default function Parameters() {
         </div>
 
         <div className="flex gap-3">
+          <button
+            onClick={() => {
+              const startMap: Record<string, string> = { '7d': '-7d', '30d': '-30d', '90d': '-90d', '365d': '-365d', all: '-3650d' }
+              exportApi.downloadParametersCSV(selectedTank || undefined, startMap[dateRange] || '-30d')
+            }}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 flex items-center gap-2"
+            title={tc('actions.export', { defaultValue: 'Export CSV' })}
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            CSV
+          </button>
           <button
             onClick={() => setShowTableView(!showTableView)}
             className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"

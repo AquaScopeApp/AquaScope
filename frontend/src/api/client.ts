@@ -1067,6 +1067,56 @@ export const financesApi = {
 }
 
 // ============================================================================
+// Dashboard API
+// ============================================================================
+
+export const dashboardApi = {
+  getSummary: async (): Promise<import('../types').DashboardResponse> => {
+    const response = await apiClient.get<import('../types').DashboardResponse>('/dashboard/summary')
+    return response.data
+  },
+}
+
+// ============================================================================
+// CSV Export API
+// ============================================================================
+
+function triggerDownload(blob: Blob, filename: string) {
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', filename)
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.URL.revokeObjectURL(url)
+}
+
+export const exportApi = {
+  downloadParametersCSV: async (tankId?: string, start?: string): Promise<void> => {
+    const params = new URLSearchParams()
+    if (tankId) params.set('tank_id', tankId)
+    if (start) params.set('start', start)
+    const response = await apiClient.get('/export/parameters', { params, responseType: 'blob' })
+    triggerDownload(response.data, 'parameters.csv')
+  },
+
+  downloadLivestockCSV: async (tankId?: string): Promise<void> => {
+    const params = new URLSearchParams()
+    if (tankId) params.set('tank_id', tankId)
+    const response = await apiClient.get('/export/livestock', { params, responseType: 'blob' })
+    triggerDownload(response.data, 'livestock.csv')
+  },
+
+  downloadMaintenanceCSV: async (tankId?: string): Promise<void> => {
+    const params = new URLSearchParams()
+    if (tankId) params.set('tank_id', tankId)
+    const response = await apiClient.get('/export/maintenance', { params, responseType: 'blob' })
+    triggerDownload(response.data, 'maintenance.csv')
+  },
+}
+
+// ============================================================================
 // Export API Client
 // ============================================================================
 

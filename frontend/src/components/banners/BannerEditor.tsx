@@ -115,6 +115,8 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      role="dialog"
+      aria-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -125,6 +127,8 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
               <button
                 onClick={() => { setStep('select'); setImageSrc(null) }}
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                title={t('bannerEditor.back')}
+                aria-label={t('bannerEditor.back')}
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -135,7 +139,7 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
               {step === 'select' ? t('bannerEditor.title') : t('bannerEditor.cropTitle')}
             </h2>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" title="Close" aria-label="Close">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
