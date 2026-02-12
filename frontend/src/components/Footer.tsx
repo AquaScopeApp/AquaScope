@@ -88,7 +88,7 @@ export default function Footer(): JSX.Element {
                 {t('footer.githubSponsors')}
               </a>
               <a
-                href="https://ko-fi.com/ediprifti"
+                href="https://ko-fi.com/aquascope"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition"
