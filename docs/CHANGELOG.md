@@ -1,13 +1,28 @@
 # Changelog
 
-All notable changes to ReefLab will be documented in this file.
+All notable changes to AquaScope will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.8.0] - 2026-02-11
+## [1.8.0] - 2026-02-12
 
 ### Added
+
+#### Promotional Landing Page
+- **Self-contained HTML landing page** (`landing/index.html`) with dark aquarium theme
+- CSS animations: bubble-rise, caustics overlay, floating glow orbs, scroll-reveal
+- Feature showcase: 17 modules across 3 tiers with CSS mockup frames
+- Real app screenshots in tabbed browser frame (Dashboard, Tank Detail, Parameters, Livestock, Finances)
+- Playwright capture script (`landing/capture.mjs`) for automated screenshot generation
+- Ecosystems showcase, Fishroom section, Tech Stack, Philosophy, Quick Deploy
+- Ko-fi and GitHub Sponsors support section
+- Responsive design with mobile hamburger menu and reduced-motion accessibility
+
+#### Selective Export/Import
+- **ZIP-based selective export**: Choose which data to include (tanks, parameters, livestock, equipment, consumables, maintenance, notes, photos, finances, ICP tests)
+- **Import with conflict resolution**: Merge or replace existing data
+- Storage category filter fix for admin panel
 
 #### Animated Dashboard Banners
 - **ReefBanner.tsx**: Dense animated reef SVG with ~15 corals (Acropora, Montipora, brain corals, sea fans, mushrooms, torch corals, zoanthid clusters), 8 fish, anemone with clownfish, cleaner shrimp — all SMIL-animated
@@ -35,6 +50,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **useCurrency hook**: Extended to also return `bannerTheme` from general settings API response
 - **Layout.tsx**: Removed `AquariumScene` component (replaced by banner system)
 - **Admin.tsx**: Removed Appearance section (banner editing moved to Dashboard)
+
+### Fixed
+- **Password hashing**: Replaced passlib with direct bcrypt for password hashing (fixes compatibility issues)
 
 ### Added (i18n)
 - `bannerEditor` translation keys in all 6 locales (EN, FR, DE, ES, IT, PT): title, theme names, crop UI labels
@@ -101,6 +119,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Testing
 - All 144 frontend tests passing (19 test files)
 - All 450 backend tests passing (79% coverage)
+
+## [1.6.0] - 2026-02-09
+
+### Added
+
+#### Freshwater & Brackish Aquarium Support
+- **Dynamic parameter ranges**: Water-type-specific optimal ranges for saltwater, freshwater, and brackish
+- Freshwater subtypes: Planted, Cichlid, Community
+- Brackish subtypes: Mangrove, Brackish Community
+- Saltwater subtypes: SPS, LPS, Mixed Reef, FOWLR, Soft Coral
+
+#### Admin Storage Management
+- **Storage admin panel**: View, manage, and download uploaded files (photos, banners, backups)
+- Storage category filter for file browsing
+- Download endpoints for stored files
+
+#### Backup & Restore
+- Full database backup and restore functionality
+- Admin-accessible backup/restore endpoints
+
+#### Demo Seed Data
+- **seed_demo.sh**: Script to populate demo database with saltwater and freshwater tanks
+- Demo user credentials documented in README
+
+#### Rebrand to AquaScope
+- Renamed from ReefLab to AquaScope across the entire codebase
+- Default tank images for saltwater, freshwater, and brackish
+- Water-type-specific banners and badges for tank visuals
+
+### Changed
+- **GitHub README**: Added animated SVG banner with fish animations
+- Auto-version reading from package.json for backend API
 
 ## [1.5.1] - 2026-02-09
 
@@ -842,7 +892,9 @@ All releases are tagged in Git and available on GitHub:
 - `v1.4.0` - Livestock split, time-in-tank, test coverage
 - `v1.5.0` - Full i18n (6 languages), aquarium animation, yellow tang
 - `v1.5.1` - Bottom dwellers, rocks, logo, GitHub banner
+- `v1.6.0` - Freshwater/brackish support, admin storage, backup/restore, rebrand to AquaScope
 - `v1.7.0` - Consumables module, visual timeline, timeline enhancements
+- `v1.8.0` - Animated banners, banner editor, selective export/import, landing page
 
 ## Versioning Strategy
 
@@ -862,6 +914,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 9** (v1.3.0-v1.4.0): Livestock enhancements & split feature
 - ✅ **Phase 10** (v1.5.x): i18n, animations, branding
 - ✅ **Phase 11** (v1.7.0): Consumables module, visual timeline
+- ✅ **Phase 12** (v1.8.0): Animated banners, banner editor, export/import, landing page
 
 ## Contributing
 
@@ -873,6 +926,6 @@ When contributing, please:
 
 ## Links
 
-- [GitHub Repository](https://github.com/eprifti/reeflab)
+- [GitHub Repository](https://github.com/eprifti/AquaScope)
 - [API Documentation](http://localhost:8000/docs) (when running)
 - [Architecture Documentation](backend/ARCHITECTURE.md)

@@ -478,7 +478,7 @@ For issues and questions:
 
 ## Features Status
 
-### Completed (v1.7.0)
+### Completed (v1.8.0)
 - Tank management hub with detail views and timeline
 - Tank image upload with default images per water type
 - Multi water type support (saltwater, freshwater, brackish)
@@ -498,6 +498,7 @@ For issues and questions:
 - Responsive UI with Tailwind CSS
 - Data visualization with Recharts
 - Excel/CSV import for historical data
+- Selective export/import with ZIP archives
 - GitHub Actions CI/CD pipeline with automated tests
 - Comprehensive unit and integration tests (647+ tests, 75% backend coverage)
 - Multi-language support (EN, FR, ES, DE, IT, PT)
@@ -507,6 +508,8 @@ For issues and questions:
 - User avatars with upload and management
 - Default tank preference with auto-selection across all modules
 - Compact card layouts for notes, maintenance, consumables, and livestock
+- Animated dashboard banners (reef and planted themes) with custom image upload
+- Promotional landing page with dark aquarium theme
 
 ### Roadmap
 
