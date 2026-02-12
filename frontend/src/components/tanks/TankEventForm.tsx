@@ -74,15 +74,15 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
   ]
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-4">
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           {event ? 'Edit Event' : 'Add Event'}
         </h3>
         <button
           type="button"
           onClick={onCancel}
-          className="text-gray-400 hover:text-gray-600"
+          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -92,7 +92,7 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
 
       {/* Title */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Title *
         </label>
         <input
@@ -101,14 +101,14 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-ocean-500 focus:border-ocean-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
           placeholder="e.g., Added new coral, Water change, Equipment upgrade"
         />
       </div>
 
       {/* Event Date */}
       <div>
-        <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Event Date *
         </label>
         <input
@@ -117,20 +117,20 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
           value={eventDate}
           onChange={(e) => setEventDate(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-ocean-500 focus:border-ocean-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
         />
       </div>
 
       {/* Event Type */}
       <div>
-        <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Event Type
         </label>
         <select
           id="eventType"
           value={eventType}
           onChange={(e) => setEventType(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-ocean-500 focus:border-ocean-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
         >
           {eventTypeOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -142,7 +142,7 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
 
       {/* Description */}
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Description
         </label>
         <textarea
@@ -150,7 +150,7 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-ocean-500 focus:border-ocean-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
           placeholder="Optional details about this event..."
         />
       </div>
@@ -167,7 +167,7 @@ export default function TankEventForm({ event, onSubmit, onCancel }: TankEventFo
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 font-medium"
         >
           Cancel
         </button>

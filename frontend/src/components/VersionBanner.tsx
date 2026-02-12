@@ -11,22 +11,22 @@ export default function VersionBanner(): JSX.Element {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg px-4 py-2">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg px-4 py-2">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-gray-600">Version</span>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-ocean-100 text-ocean-800">
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Version</span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-ocean-100 dark:bg-ocean-900/50 text-ocean-800 dark:text-ocean-300">
               {version}
             </span>
           </div>
           {gitCommit && (
-            <div className="flex items-center gap-2 border-l pl-3">
-              <span className="text-xs text-gray-500 font-mono">{gitCommit}</span>
+            <div className="flex items-center gap-2 border-l dark:border-gray-700 pl-3">
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">{gitCommit}</span>
             </div>
           )}
           {buildDate && (
-            <div className="flex items-center gap-2 border-l pl-3">
-              <span className="text-xs text-gray-500">{buildDate}</span>
+            <div className="flex items-center gap-2 border-l dark:border-gray-700 pl-3">
+              <span className="text-xs text-gray-500 dark:text-gray-400">{buildDate}</span>
             </div>
           )}
         </div>

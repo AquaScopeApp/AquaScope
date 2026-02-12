@@ -63,14 +63,14 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
         <h3 className="text-lg font-semibold mb-4">
           {budget ? t('budget.edit') : t('budget.create')}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('budget.name')}
             </label>
             <input
@@ -78,13 +78,13 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full border rounded-md px-3 py-2 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t('budget.amount')}
               </label>
               <input
@@ -94,11 +94,11 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
                 required
                 min="0.01"
                 step="0.01"
-                className="w-full border rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t('budget.currency')}
               </label>
               <input
@@ -106,19 +106,19 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
                 maxLength={5}
-                className="w-full border rounded-md px-3 py-2 text-sm"
+                className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('budget.period')}
             </label>
             <select
               value={period}
               onChange={(e) => setPeriod(e.target.value)}
-              className="w-full border rounded-md px-3 py-2 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
             >
               {PERIODS.map((p) => (
                 <option key={p} value={p}>
@@ -129,13 +129,13 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('budget.category')}
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full border rounded-md px-3 py-2 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
             >
               <option value="">{t('budget.allCategories')}</option>
               {CATEGORIES.map((c) => (
@@ -147,13 +147,13 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('budget.tank')}
             </label>
             <select
               value={tankId}
               onChange={(e) => setTankId(e.target.value)}
-              className="w-full border rounded-md px-3 py-2 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
             >
               <option value="">{t('budget.allTanks')}</option>
               {tanks.map((tank) => (
@@ -165,14 +165,14 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('budget.notes')}
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
-              className="w-full border rounded-md px-3 py-2 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-3 py-2 text-sm"
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function BudgetForm({ tanks, budget, onSubmit, onClose }: Props) 
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800"
+              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
             >
               {t('budget.cancel')}
             </button>

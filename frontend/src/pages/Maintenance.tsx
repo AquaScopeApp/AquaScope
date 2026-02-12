@@ -128,8 +128,8 @@ export default function Maintenance() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             {t('subtitle')}
           </p>
         </div>
@@ -147,7 +147,7 @@ export default function Maintenance() {
 
       {/* Tank Filter */}
       {tanks.length > 1 && (
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
           <TankSelector
             tanks={tanks}
             value={selectedTank}
@@ -161,11 +161,11 @@ export default function Maintenance() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-red-600 font-medium">{t('overdue')}</p>
-              <p className="text-2xl font-bold text-red-900">{overdueReminders.length}</p>
+              <p className="text-sm text-red-600 dark:text-red-400 font-medium">{t('overdue')}</p>
+              <p className="text-2xl font-bold text-red-900 dark:text-red-200">{overdueReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -173,11 +173,11 @@ export default function Maintenance() {
           </div>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-yellow-600 font-medium">{t('dueSoon')}</p>
-              <p className="text-2xl font-bold text-yellow-900">{dueSoonReminders.length}</p>
+              <p className="text-sm text-yellow-600 dark:text-yellow-400 font-medium">{t('dueSoon')}</p>
+              <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-200">{dueSoonReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
@@ -185,11 +185,11 @@ export default function Maintenance() {
           </div>
         </div>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-green-600 font-medium">{t('upcoming')}</p>
-              <p className="text-2xl font-bold text-green-900">{upcomingReminders.length}</p>
+              <p className="text-sm text-green-600 dark:text-green-400 font-medium">{t('upcoming')}</p>
+              <p className="text-2xl font-bold text-green-900 dark:text-green-200">{upcomingReminders.length}</p>
             </div>
             <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -219,14 +219,14 @@ export default function Maintenance() {
 
       {/* Reminders Lists */}
       {reminders.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
-          <div className="text-gray-400 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
+          <div className="text-gray-400 dark:text-gray-500 mb-4">
             <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noReminders')}</h3>
-          <p className="text-gray-600 mb-6">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{t('noReminders')}</h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             {t('noRemindersDescription')}
           </p>
           <button
@@ -241,7 +241,7 @@ export default function Maintenance() {
           {/* Overdue */}
           {overdueReminders.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-red-900 mb-4 flex items-center">
+              <h2 className="text-xl font-semibold text-red-900 dark:text-red-300 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
                 {t('overdue')} ({overdueReminders.length})
               </h2>
@@ -264,7 +264,7 @@ export default function Maintenance() {
           {/* Due Soon */}
           {dueSoonReminders.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
+              <h2 className="text-xl font-semibold text-yellow-900 dark:text-yellow-300 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
                 {t('dueSoon')} ({dueSoonReminders.length})
               </h2>
@@ -287,7 +287,7 @@ export default function Maintenance() {
           {/* Upcoming */}
           {upcomingReminders.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-green-900 mb-4 flex items-center">
+              <h2 className="text-xl font-semibold text-green-900 dark:text-green-300 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
                 {t('upcoming')} ({upcomingReminders.length})
               </h2>
@@ -310,7 +310,7 @@ export default function Maintenance() {
           {/* Inactive */}
           {inactiveReminders.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-600 mb-4 flex items-center">
+              <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-4 flex items-center">
                 <span className="w-3 h-3 bg-gray-400 rounded-full mr-2"></span>
                 {t('inactive')} ({inactiveReminders.length})
               </h2>

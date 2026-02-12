@@ -163,10 +163,10 @@ export default function TankTabs({
   /** Shared tab header with title, count, filters, and "View all →" link */
   const TabHeader = ({ tabId, title, count, children }: { tabId: TabId; title: string; count: number; children?: React.ReactNode }) => (
     <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
       <div className="flex items-center gap-3">
         {children}
-        <span className="text-sm text-gray-500">{count} {t('items')}</span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">{count} {t('items')}</span>
         {TAB_ROUTES[tabId] && (
           <button
             onClick={() => navigate(TAB_ROUTES[tabId]!)}
@@ -183,13 +183,13 @@ export default function TankTabs({
   const EmptyState = ({ icon, messageKey, goToKey }: { icon: string; messageKey: string; goToKey: string }) => (
     <div className="text-center py-12">
       <div className="text-4xl mb-4">{icon}</div>
-      <p className="text-gray-600">{t(messageKey)}</p>
-      <p className="text-sm text-gray-500 mt-2">{t(goToKey)}</p>
+      <p className="text-gray-600 dark:text-gray-400">{t(messageKey)}</p>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{t(goToKey)}</p>
     </div>
   )
 
   /** Shared row style for uniform cards */
-  const ROW_CLASS = 'flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors'
+  const ROW_CLASS = 'flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg cursor-pointer transition-colors'
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -235,7 +235,7 @@ export default function TankTabs({
                       onClick={() => toggleCategory(cat)}
                       className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition border ${
                         isHidden
-                          ? 'bg-gray-100 text-gray-400 border-gray-200'
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 border-gray-200 dark:border-gray-600'
                           : 'text-white border-transparent'
                       }`}
                       style={!isHidden ? { backgroundColor: CATEGORY_COLORS[cat] } : undefined}
@@ -247,7 +247,7 @@ export default function TankTabs({
               {hiddenCategories.size > 0 && (
                 <button
                   onClick={() => setHiddenCategories(new Set())}
-                  className="px-2.5 py-1 rounded-full text-xs font-medium text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 transition"
+                  className="px-2.5 py-1 rounded-full text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 transition"
                 >
                   Show all
                 </button>
@@ -274,13 +274,13 @@ export default function TankTabs({
         const paged = filteredEquip.slice((equipPage - 1) * ITEMS_PER_PAGE, equipPage * ITEMS_PER_PAGE)
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="equipment" title={t('tabs.equipment')} count={filteredEquip.length}>
               {equipmentTypes.length > 1 && (
                 <select
                   value={equipTypeFilter}
                   onChange={(e) => setEquipTypeFilter(e.target.value)}
-                  className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                  className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 >
                   <option value="">{tc('all', { defaultValue: 'All' })} ({equipment.length})</option>
                   {equipmentTypes.map(t => (
@@ -302,8 +302,8 @@ export default function TankTabs({
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="text-xl flex-shrink-0">⚙️</span>
                       <div className="min-w-0">
-                        <div className="font-medium text-gray-900 truncate">{item.name}</div>
-                        <div className="text-sm text-gray-500 truncate">
+                        <div className="font-medium text-gray-900 dark:text-gray-100 truncate">{item.name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
                           {item.equipment_type}{item.manufacturer ? ` · ${item.manufacturer}` : ''}
                         </div>
                       </div>
@@ -311,8 +311,8 @@ export default function TankTabs({
                     <div className="flex items-center gap-3 flex-shrink-0">
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         item.status === 'active'
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-gray-100 text-gray-700'
+                          ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}>
                         {item.status}
                       </span>
@@ -344,13 +344,13 @@ export default function TankTabs({
         }
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="livestock" title={t('tabs.livestock')} count={filteredLivestock.length}>
               {livestockTypes.length > 1 && (
                 <select
                   value={livestockTypeFilter}
                   onChange={(e) => setLivestockTypeFilter(e.target.value)}
-                  className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                  className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 >
                   <option value="">{tc('all', { defaultValue: 'All' })} ({livestock.length})</option>
                   {livestockTypes.map(t => (
@@ -361,7 +361,7 @@ export default function TankTabs({
               <select
                 value={livestockStatusFilter}
                 onChange={(e) => setLivestockStatusFilter(e.target.value)}
-                className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500"
+                className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 focus:ring-1 focus:ring-ocean-500 dark:bg-gray-700 dark:text-gray-100"
               >
                 <option value="">{tc('allStatus', { defaultValue: 'All Status' })}</option>
                 <option value="alive">{tc('alive', { defaultValue: 'Alive' })}</option>
@@ -382,22 +382,22 @@ export default function TankTabs({
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="text-xl flex-shrink-0">{getTypeIcon(item.type)}</span>
                       <div className="min-w-0">
-                        <div className="font-medium text-gray-900 truncate">
+                        <div className="font-medium text-gray-900 dark:text-gray-100 truncate">
                           {item.common_name || item.species_name}
                         </div>
                         {item.common_name && (
-                          <div className="text-sm text-gray-500 italic truncate">{item.species_name}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400 italic truncate">{item.species_name}</div>
                         )}
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-ocean-100 text-ocean-700 capitalize">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-ocean-100 dark:bg-ocean-900/50 text-ocean-700 dark:text-ocean-300 capitalize">
                         {item.type}
                       </span>
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        item.status === 'alive' ? 'bg-green-100 text-green-700' :
-                        item.status === 'dead' ? 'bg-red-100 text-red-700' :
-                        'bg-gray-100 text-gray-700'
+                        item.status === 'alive' ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' :
+                        item.status === 'dead' ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300' :
+                        'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                       }`}>
                         {item.status}
                       </span>
@@ -417,7 +417,7 @@ export default function TankTabs({
         const paged = photos.slice((photosPage - 1) * PHOTOS_PER_PAGE, photosPage * PHOTOS_PER_PAGE)
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="photos" title={t('tabs.photos')} count={photos.length} />
             {photos.length === 0 ? (
               <EmptyState icon="📷" messageKey="emptyState.noPhotos" goToKey="emptyState.goToPhotos" />
@@ -461,7 +461,7 @@ export default function TankTabs({
         const paged = notes.slice((notesPage - 1) * ITEMS_PER_PAGE, notesPage * ITEMS_PER_PAGE)
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="notes" title={t('tabs.notes')} count={notes.length} />
             {notes.length === 0 ? (
               <EmptyState icon="📝" messageKey="emptyState.noNotes" goToKey="emptyState.goToNotes" />
@@ -476,8 +476,8 @@ export default function TankTabs({
                     <div className="flex items-center gap-3 min-w-0 flex-1">
                       <span className="text-xl flex-shrink-0">📝</span>
                       <div className="min-w-0 flex-1">
-                        <div className="text-gray-800 line-clamp-2">{note.content}</div>
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="text-gray-800 dark:text-gray-200 line-clamp-2">{note.content}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           {new Date(note.created_at).toLocaleDateString()}
                         </div>
                       </div>
@@ -499,7 +499,7 @@ export default function TankTabs({
         const paged = icpTests.slice((icpPage - 1) * ITEMS_PER_PAGE, icpPage * ITEMS_PER_PAGE)
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="icp" title={t('tabs.icpTests')} count={icpTests.length} />
             {icpTests.length === 0 ? (
               <EmptyState icon="🔬" messageKey="emptyState.noIcpTests" goToKey="emptyState.goToIcpTests" />
@@ -514,15 +514,15 @@ export default function TankTabs({
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="text-xl flex-shrink-0">🔬</span>
                       <div className="min-w-0">
-                        <div className="font-medium text-gray-900 truncate">{test.lab_name}</div>
-                        <div className="text-sm text-gray-500">
+                        <div className="font-medium text-gray-900 dark:text-gray-100 truncate">{test.lab_name}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
                           {new Date(test.test_date).toLocaleDateString()}
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 flex-shrink-0">
                       {test.score_overall && (
-                        <span className="px-2.5 py-0.5 rounded-full text-sm font-bold bg-ocean-100 text-ocean-700">
+                        <span className="px-2.5 py-0.5 rounded-full text-sm font-bold bg-ocean-100 dark:bg-ocean-900/50 text-ocean-700 dark:text-ocean-300">
                           {test.score_overall}
                         </span>
                       )}
@@ -543,7 +543,7 @@ export default function TankTabs({
         const paged = activeReminders.slice((maintenancePage - 1) * ITEMS_PER_PAGE, maintenancePage * ITEMS_PER_PAGE)
 
         return (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <TabHeader tabId="maintenance" title={t('maintenance.reminders')} count={activeReminders.length} />
             {activeReminders.length === 0 ? (
               <EmptyState icon="🔧" messageKey="emptyState.noMaintenance" goToKey="emptyState.goToMaintenance" />
@@ -556,23 +556,23 @@ export default function TankTabs({
                       key={reminder.id}
                       className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition-colors ${
                         isOverdue
-                          ? 'bg-red-50 hover:bg-red-100 border border-red-200'
-                          : 'bg-gray-50 hover:bg-gray-100'
+                          ? 'bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 border border-red-200 dark:border-red-800'
+                          : 'bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-600'
                       }`}
                       onClick={() => navigate(itemRoute('maintenance', reminder.id))}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <span className="text-xl flex-shrink-0">{isOverdue ? '⚠️' : '🔧'}</span>
                         <div className="min-w-0">
-                          <div className="font-medium text-gray-900 truncate">{reminder.title}</div>
-                          <div className="text-sm text-gray-500">
+                          <div className="font-medium text-gray-900 dark:text-gray-100 truncate">{reminder.title}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
                             {t('maintenance.everyDays', { count: reminder.frequency_days })}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 flex-shrink-0">
                         <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          isOverdue ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                          isOverdue ? 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
                         }`}>
                           {new Date(reminder.next_due).toLocaleDateString()}
                         </span>
@@ -596,7 +596,7 @@ export default function TankTabs({
   return (
     <div className="space-y-6">
       {/* Tab Navigation */}
-      <div className="bg-white rounded-lg shadow-md p-2">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-2">
         <div className="flex flex-wrap gap-2">
           {tabs.map((tab) => (
             <button
@@ -605,7 +605,7 @@ export default function TankTabs({
               className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
                 activeTab === tab.id
                   ? 'bg-ocean-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
             >
               <span>{tab.icon}</span>
@@ -615,7 +615,7 @@ export default function TankTabs({
                   className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                     activeTab === tab.id
                       ? 'bg-ocean-700 text-white'
-                      : 'bg-gray-200 text-gray-700'
+                      : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   {tab.count}

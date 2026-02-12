@@ -300,20 +300,20 @@ export default function TankTimelineVisual({
 
   if (entries.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-8 text-center">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
         <div className="text-gray-400 mb-3 text-4xl">📅</div>
-        <p className="text-gray-600 text-sm">No events to display on the timeline</p>
+        <p className="text-gray-600 dark:text-gray-400 text-sm">No events to display on the timeline</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 px-4 py-2 border-b border-gray-100 bg-gray-50">
+      <div className="flex flex-wrap items-center gap-2 px-4 py-2 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
         {/* Zoom buttons */}
         <div className="flex items-center gap-1 mr-2">
-          <span className="text-xs text-gray-500 mr-1">Zoom:</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 mr-1">Zoom:</span>
           {(['all', 'year', 'quarter', 'month'] as ZoomLevel[]).map(level => (
             <button
               key={level}
@@ -321,7 +321,7 @@ export default function TankTimelineVisual({
               className={`px-2 py-0.5 rounded text-xs font-medium transition ${
                 zoomLevel === level
                   ? 'bg-ocean-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-200 border border-gray-200'
+                  : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
               }`}
             >
               {level === 'all' ? 'All' : level === 'year' ? '1Y' : level === 'quarter' ? '3M' : '1M'}
@@ -344,7 +344,7 @@ export default function TankTimelineVisual({
                       onClick={() => toggleCategory(cat)}
                       className={`px-2 py-0.5 rounded text-xs font-medium transition border ${
                         isHidden
-                          ? 'bg-gray-100 text-gray-400 border-gray-200'
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 border-gray-200 dark:border-gray-600'
                           : 'text-white border-transparent'
                       }`}
                       style={!isHidden ? { backgroundColor: CATEGORY_COLORS[cat] } : undefined}
@@ -552,8 +552,8 @@ export default function TankTimelineVisual({
 
       {/* Legend (compact only shows entry count) */}
       {compact && (
-        <div className="px-4 py-1.5 border-t border-gray-100 bg-gray-50">
-          <span className="text-xs text-gray-500">
+        <div className="px-4 py-1.5 border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             {visibleEntries.length} event{visibleEntries.length !== 1 ? 's' : ''} across{' '}
             {activeCategories.size} categor{activeCategories.size !== 1 ? 'ies' : 'y'}
           </span>

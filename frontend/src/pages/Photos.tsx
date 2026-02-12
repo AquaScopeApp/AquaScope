@@ -85,7 +85,7 @@ export default function Photos() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">{t('loading')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('loading')}</div>
       </div>
     )
   }
@@ -95,8 +95,8 @@ export default function Photos() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => setShowUpload(true)}
@@ -111,7 +111,7 @@ export default function Photos() {
 
       {/* Tank Filter */}
       {tanks.length > 1 && (
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
           <TankSelector
             tanks={tanks}
             value={selectedTankId}
@@ -125,13 +125,13 @@ export default function Photos() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-ocean-500">
-          <div className="text-sm text-gray-600">{t('totalPhotos')}</div>
-          <div className="text-2xl font-bold text-gray-900">{photos.length}</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-ocean-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('totalPhotos')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{photos.length}</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-          <div className="text-sm text-gray-600">{t('thisMonth')}</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('thisMonth')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {photos.filter((p) => {
               const date = new Date(p.taken_at)
               const now = new Date()
@@ -139,9 +139,9 @@ export default function Photos() {
             }).length}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-          <div className="text-sm text-gray-600">{t('tanksWithPhotos')}</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('tanksWithPhotos')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {new Set(photos.map((p) => p.tank_id)).size}
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function Photos() {
 
       {/* Gallery */}
       {photos.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
           <svg
             className="w-16 h-16 mx-auto text-gray-400 mb-4"
             fill="none"
@@ -172,8 +172,8 @@ export default function Photos() {
               d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noPhotos')}</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{t('noPhotos')}</h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
             {t('startUploading')}
           </p>
           <button

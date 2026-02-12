@@ -91,9 +91,9 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
           {tank ? t('editTank') : t('createTank')}
         </h2>
 
@@ -102,7 +102,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               {t('fields.name')} <span className="text-red-500">*</span>
             </label>
@@ -113,20 +113,20 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="e.g., Main Display Tank"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
 
           {/* Water Type & Subtype */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-gray-900">{t('fields.aquariumType')}</h3>
+            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{t('fields.aquariumType')}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Water Type */}
               <div>
                 <label
                   htmlFor="waterType"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('fields.waterType')} <span className="text-red-500">*</span>
                 </label>
@@ -134,7 +134,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   id="waterType"
                   value={waterType}
                   onChange={(e) => handleWaterTypeChange(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 >
                   {WATER_TYPES.map((type) => (
                     <option key={type} value={type}>
@@ -148,7 +148,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               <div>
                 <label
                   htmlFor="aquariumSubtype"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('fields.aquariumSubtype')}
                 </label>
@@ -156,7 +156,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   id="aquariumSubtype"
                   value={aquariumSubtype}
                   onChange={(e) => setAquariumSubtype(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 >
                   <option value="">{t('fields.selectSubtype')}</option>
                   {subtypeOptions.map((sub) => (
@@ -168,7 +168,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               </div>
             </div>
 
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {t('parameterRanges.rangesNote')}
             </p>
           </div>
@@ -177,7 +177,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               {t('fields.description')}
             </label>
@@ -187,20 +187,20 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="e.g., Mixed reef with SPS and LPS corals, heavy feeding schedule..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
             />
           </div>
 
           {/* Volume Section */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium text-gray-900">{t('fields.systemVolume')}</h3>
+            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">{t('fields.systemVolume')}</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Display Volume */}
               <div>
                 <label
                   htmlFor="displayVolume"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('fields.displayVolume')}
                 </label>
@@ -212,7 +212,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   step="0.1"
                   min="0"
                   placeholder="e.g., 400"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
 
@@ -220,7 +220,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               <div>
                 <label
                   htmlFor="sumpVolume"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('fields.sumpVolume')}
                 </label>
@@ -232,7 +232,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   step="0.1"
                   min="0"
                   placeholder="e.g., 100"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
             <div>
               <label
                 htmlFor="setupDate"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 {t('fields.setupDate')}
               </label>
@@ -262,9 +262,9 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                 id="setupDate"
                 value={setupDate}
                 onChange={(e) => setSetupDate(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {t('fields.setupDateHint')}
               </p>
             </div>
@@ -272,7 +272,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
             <div>
               <label
                 htmlFor="electricityCost"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 {t('fields.electricityCost')}
               </label>
@@ -284,9 +284,9 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                 step="0.01"
                 min="0"
                 placeholder="e.g., 1.00"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
               />
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {t('fields.electricityCostHint')}
               </p>
             </div>
@@ -298,7 +298,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {tc('actions.cancel')}
             </button>

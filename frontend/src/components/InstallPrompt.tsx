@@ -10,7 +10,7 @@ export default function InstallPrompt(): JSX.Element | null {
   if (!canInstall || dismissed) return null
 
   return (
-    <div className="bg-ocean-50 border border-ocean-200 rounded-lg p-4 mb-4 flex items-center justify-between">
+    <div className="bg-ocean-50 dark:bg-ocean-900/30 border border-ocean-200 dark:border-ocean-800 rounded-lg p-4 mb-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
         <img src="/logo-128.png" alt="" className="h-10 w-10" />
         <div>
@@ -21,7 +21,7 @@ export default function InstallPrompt(): JSX.Element | null {
       <div className="flex items-center gap-2">
         <button
           onClick={() => setDismissed(true)}
-          className="text-sm text-gray-500 hover:text-gray-700 px-2 py-1"
+          className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 px-2 py-1"
         >
           {t('pwa.later')}
         </button>

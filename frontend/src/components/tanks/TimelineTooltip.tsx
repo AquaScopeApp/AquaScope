@@ -49,7 +49,7 @@ export default function TimelineTooltip({ entry, x, y, containerWidth, onClose }
   return (
     <div
       ref={ref}
-      className="absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-4"
+      className="absolute z-50 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-4"
       style={{
         left: Math.max(4, left),
         top: Math.max(4, top),
@@ -59,7 +59,7 @@ export default function TimelineTooltip({ entry, x, y, containerWidth, onClose }
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-sm"
+        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm"
       >
         &times;
       </button>
@@ -68,12 +68,12 @@ export default function TimelineTooltip({ entry, x, y, containerWidth, onClose }
       <div className="flex items-start gap-2 mb-2 pr-4">
         <span className="text-xl flex-shrink-0">{entry.icon}</span>
         <div className="min-w-0">
-          <div className="font-semibold text-gray-900 text-sm leading-tight">{entry.title}</div>
+          <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm leading-tight">{entry.title}</div>
         </div>
       </div>
 
       {/* Date */}
-      <div className="text-xs text-gray-500 mb-2">
+      <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
         {new Date(entry.date + 'T00:00:00').toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
@@ -90,7 +90,7 @@ export default function TimelineTooltip({ entry, x, y, containerWidth, onClose }
           {CATEGORY_LABELS[entry.category] || entry.category}
         </span>
         {entry.eventType && entry.category === 'event' && (
-          <span className="ml-1 inline-block px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
+          <span className="ml-1 inline-block px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
             {entry.eventType.replace(/_/g, ' ')}
           </span>
         )}
@@ -98,7 +98,7 @@ export default function TimelineTooltip({ entry, x, y, containerWidth, onClose }
 
       {/* Subtitle / Description */}
       {entry.subtitle && (
-        <p className="text-sm text-gray-600 line-clamp-3">{entry.subtitle}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{entry.subtitle}</p>
       )}
     </div>
   )

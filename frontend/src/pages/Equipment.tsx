@@ -267,24 +267,24 @@ export default function EquipmentPage() {
     switch (condition) {
       case 'new':
       case 'excellent':
-        return 'border-l-4 border-l-green-500 bg-green-50/30'
+        return 'border-l-4 border-l-green-500 bg-green-50/30 dark:bg-green-900/20'
       case 'good':
-        return 'border-l-4 border-l-blue-500 bg-blue-50/30'
+        return 'border-l-4 border-l-blue-500 bg-blue-50/30 dark:bg-blue-900/20'
       case 'fair':
-        return 'border-l-4 border-l-yellow-500 bg-yellow-50/40'
+        return 'border-l-4 border-l-yellow-500 bg-yellow-50/40 dark:bg-yellow-900/20'
       case 'needs_maintenance':
-        return 'border-l-4 border-l-orange-500 bg-orange-50/50'
+        return 'border-l-4 border-l-orange-500 bg-orange-50/50 dark:bg-orange-900/20'
       case 'failing':
-        return 'border-l-4 border-l-red-500 bg-red-50/50'
+        return 'border-l-4 border-l-red-500 bg-red-50/50 dark:bg-red-900/20'
       default:
-        return 'border-l-4 border-l-gray-300'
+        return 'border-l-4 border-l-gray-300 dark:border-l-gray-600'
     }
   }
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">{t('loading')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('loading')}</div>
       </div>
     )
   }
@@ -294,8 +294,8 @@ export default function EquipmentPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => {
@@ -310,7 +310,7 @@ export default function EquipmentPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <TankSelector
@@ -324,11 +324,11 @@ export default function EquipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByType')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('filterByType')}</label>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('allTypes')}</option>
               {EQUIPMENT_TYPES.map((type) => (
@@ -340,11 +340,11 @@ export default function EquipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByCondition', { defaultValue: 'Condition' })}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('filterByCondition', { defaultValue: 'Condition' })}</label>
             <select
               value={selectedCondition}
               onChange={(e) => setSelectedCondition(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('allConditions', { defaultValue: 'All Conditions' })}</option>
               {CONDITIONS.map((cond) => (
@@ -356,11 +356,11 @@ export default function EquipmentPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByStatus')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('filterByStatus')}</label>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('allStatus')}</option>
               {STATUSES.map((status) => (
@@ -374,12 +374,12 @@ export default function EquipmentPage() {
       </div>
 
       {/* Archive toggle */}
-      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600">
+      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600 dark:text-gray-400">
         <input
           type="checkbox"
           checked={showArchived}
           onChange={(e) => setShowArchived(e.target.checked)}
-          className="mr-2 rounded border-gray-300 text-ocean-600 focus:ring-ocean-500"
+          className="mr-2 rounded border-gray-300 dark:border-gray-600 text-ocean-600 focus:ring-ocean-500"
         />
         {tc('showArchivedItems')}
       </label>
@@ -395,20 +395,20 @@ export default function EquipmentPage() {
           <div key={item.id} id={`card-${item.id}`} className={`rounded-lg shadow p-4 hover:shadow-lg transition-shadow overflow-hidden ${getConditionCardStyle(item.condition)} ${item.is_archived ? 'opacity-60' : ''}`}>
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
-                <h3 className="text-lg font-semibold text-gray-900 truncate">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">
                   {item.name}
                   {item.is_archived && (
-                    <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-medium rounded">{tc('archivedStatus')}</span>
+                    <span className="ml-2 px-2 py-0.5 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium rounded">{tc('archivedStatus')}</span>
                   )}
                 </h3>
-                <p className="text-sm text-gray-600">{formatType(item.equipment_type)}</p>
-                <p className="text-xs text-gray-500 mt-1">{getTankName(item.tank_id)}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{formatType(item.equipment_type)}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{getTankName(item.tank_id)}</p>
               </div>
               <div className="flex space-x-1">
                 {item.is_archived ? (
                   <button
                     onClick={() => handleUnarchive(item.id)}
-                    className="p-1 text-green-600 hover:bg-green-50 rounded"
+                    className="p-1 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 rounded"
                     title={tc('actions.unarchive')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -418,7 +418,7 @@ export default function EquipmentPage() {
                 ) : (
                   <button
                     onClick={() => handleArchive(item.id)}
-                    className="p-1 text-gray-500 hover:bg-gray-50 rounded"
+                    className="p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded"
                     title={tc('actions.archive')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -428,7 +428,7 @@ export default function EquipmentPage() {
                 )}
                 <button
                   onClick={() => handleConvertToConsumable(item.id, item.name)}
-                  className="p-1 text-amber-600 hover:bg-amber-50 rounded"
+                  className="p-1 text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded"
                   title={t('moveToConsumable', { defaultValue: 'Move to Consumables' })}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -437,7 +437,7 @@ export default function EquipmentPage() {
                 </button>
                 <button
                   onClick={() => handleEdit(item)}
-                  className="p-1 text-ocean-600 hover:bg-ocean-50 rounded"
+                  className="p-1 text-ocean-600 hover:bg-ocean-50 dark:hover:bg-ocean-900/30 rounded"
                   title="Edit"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -446,7 +446,7 @@ export default function EquipmentPage() {
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="p-1 text-red-600 hover:bg-red-50 rounded"
+                  className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded"
                   title="Delete"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -457,7 +457,7 @@ export default function EquipmentPage() {
             </div>
 
             {(item.manufacturer || item.model) && (
-              <div className="text-sm text-gray-700 mb-2">
+              <div className="text-sm text-gray-700 dark:text-gray-300 mb-2">
                 <span className="font-medium">{item.manufacturer}</span>
                 {item.model && <span className="ml-1">{item.model}</span>}
               </div>
@@ -466,18 +466,18 @@ export default function EquipmentPage() {
             <div className="mb-2 flex gap-2">
               {item.condition && (
                 <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  item.condition === 'new' || item.condition === 'excellent' ? 'bg-green-100 text-green-800' :
-                  item.condition === 'good' ? 'bg-blue-100 text-blue-800' :
-                  item.condition === 'fair' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-red-100 text-red-800'
+                  item.condition === 'new' || item.condition === 'excellent' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' :
+                  item.condition === 'good' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300' :
+                  item.condition === 'fair' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' :
+                  'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
                 }`}>
                   {formatCondition(item.condition)}
                 </span>
               )}
               {item.status && (
                 <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-                  item.status === 'active' ? 'bg-ocean-100 text-ocean-800' :
-                  'bg-gray-100 text-gray-800'
+                  item.status === 'active' ? 'bg-ocean-100 text-ocean-800 dark:bg-ocean-900/50 dark:text-ocean-300' :
+                  'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                 }`}>
                   {formatStatus(item.status)}
                 </span>
@@ -485,13 +485,13 @@ export default function EquipmentPage() {
             </div>
 
             {item.purchase_date && (
-              <div className="text-xs text-gray-500 mb-1">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                 {t('purchased')} {new Date(item.purchase_date).toLocaleDateString()}
               </div>
             )}
 
             {item.purchase_price && (
-              <div className="text-xs text-gray-500 mb-1">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                 {t('price')} {displayPrice(item.purchase_price)}
               </div>
             )}
@@ -510,7 +510,7 @@ export default function EquipmentPage() {
             )}
 
             {item.notes && (
-              <div className="text-sm text-gray-600 mt-2 pt-2 border-t border-gray-200 break-words">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700 break-words">
                 <div className={expandedNotes.has(item.id) ? '' : 'line-clamp-3'}>
                   {item.notes}
                 </div>
@@ -528,7 +528,7 @@ export default function EquipmentPage() {
         ))}
 
         {filtered.length === 0 && (
-          <div className="col-span-full text-center py-12 text-gray-500">
+          <div className="col-span-full text-center py-12 text-gray-500 dark:text-gray-400">
             {t('noEquipment')}
           </div>
         )}
@@ -546,16 +546,16 @@ export default function EquipmentPage() {
       {/* Add/Edit Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
                 {editingId ? t('editEquipment') : t('addEquipment')}
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.name')} <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -564,19 +564,19 @@ export default function EquipmentPage() {
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       placeholder="e.g., Return Pump, Main Light"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.tank')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.tank_id}
                       onChange={(e) => setFormData({ ...formData, tank_id: e.target.value })}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {tanks.map((tank) => (
                         <option key={tank.id} value={tank.id}>
@@ -587,14 +587,14 @@ export default function EquipmentPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.type')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.equipment_type}
                       onChange={(e) => setFormData({ ...formData, equipment_type: e.target.value })}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {EQUIPMENT_TYPES.map((type) => (
                         <option key={type} value={type}>
@@ -605,7 +605,7 @@ export default function EquipmentPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.brand')}
                     </label>
                     <input
@@ -613,12 +613,12 @@ export default function EquipmentPage() {
                       value={formData.manufacturer || ''}
                       onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value || null })}
                       placeholder="e.g., Ecotech, Neptune, Hydor"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.model')}
                     </label>
                     <input
@@ -626,24 +626,24 @@ export default function EquipmentPage() {
                       value={formData.model || ''}
                       onChange={(e) => setFormData({ ...formData, model: e.target.value || null })}
                       placeholder="e.g., Vectra M2, Apex Classic"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.purchaseDate')}
                     </label>
                     <input
                       type="date"
                       value={formData.purchase_date || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value || null })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.price')}
                     </label>
                     <input
@@ -651,12 +651,12 @@ export default function EquipmentPage() {
                       value={formData.purchase_price || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_price: e.target.value || null })}
                       placeholder="e.g., $250, €200"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.purchaseUrl')}
                     </label>
                     <input
@@ -664,18 +664,18 @@ export default function EquipmentPage() {
                       value={formData.purchase_url || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_url: e.target.value || null })}
                       placeholder="https://..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.condition')}
                     </label>
                     <select
                       value={formData.condition || 'good'}
                       onChange={(e) => setFormData({ ...formData, condition: e.target.value || null })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {CONDITIONS.map((cond) => (
                         <option key={cond} value={cond}>
@@ -686,13 +686,13 @@ export default function EquipmentPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.status')}
                     </label>
                     <select
                       value={formData.status || 'active'}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {STATUSES.map((stat) => (
                         <option key={stat} value={stat}>
@@ -703,7 +703,7 @@ export default function EquipmentPage() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.notes')}
                     </label>
                     <textarea
@@ -711,12 +711,12 @@ export default function EquipmentPage() {
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value || null })}
                       rows={3}
                       placeholder="Additional information, specifications, warranty details, etc."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end space-x-3 pt-4 border-t">
+                <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
                   <button
                     type="button"
                     onClick={() => {
@@ -724,7 +724,7 @@ export default function EquipmentPage() {
                       setEditingId(null)
                       resetForm()
                     }}
-                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                    className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     {tc('actions.cancel')}
                   </button>

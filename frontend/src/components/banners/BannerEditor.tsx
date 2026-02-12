@@ -117,25 +117,25 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
+        <div className="flex items-center justify-between p-6 border-b dark:border-gray-700">
           <div className="flex items-center gap-3">
             {step === 'crop' && (
               <button
                 onClick={() => { setStep('select'); setImageSrc(null) }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
             )}
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
               {step === 'select' ? t('bannerEditor.title') : t('bannerEditor.cropTitle')}
             </h2>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -157,17 +157,17 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
                       className={`rounded-lg border-2 overflow-hidden transition-all text-left ${
                         selectedTheme === theme.key
                           ? 'border-ocean-500 ring-2 ring-ocean-200 shadow-lg'
-                          : 'border-gray-200 hover:border-gray-300'
+                          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                       }`}
                     >
-                      <div className="h-20 overflow-hidden bg-gray-100">
+                      <div className="h-20 overflow-hidden bg-gray-100 dark:bg-gray-700">
                         <div style={{ transform: 'scale(0.35)', transformOrigin: 'top left', width: '286%', height: '286%' }}>
                           {BannerPreview && <BannerPreview />}
                         </div>
                       </div>
                       <div className="p-2">
-                        <div className="text-sm font-medium text-gray-900">{t(theme.labelKey)}</div>
-                        <div className="text-xs text-gray-500">{t(theme.descKey)}</div>
+                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{t(theme.labelKey)}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{t(theme.descKey)}</div>
                       </div>
                     </button>
                   )
@@ -179,17 +179,17 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
                   className={`rounded-lg border-2 overflow-hidden transition-all text-left ${
                     selectedTheme === 'custom'
                       ? 'border-ocean-500 ring-2 ring-ocean-200 shadow-lg'
-                      : 'border-gray-200 hover:border-gray-300'
+                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
                   }`}
                 >
-                  <div className="h-20 overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <div className="h-20 overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                     <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div className="p-2">
-                    <div className="text-sm font-medium text-gray-900">{t('bannerEditor.custom')}</div>
-                    <div className="text-xs text-gray-500">{t('bannerEditor.customDesc')}</div>
+                    <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{t('bannerEditor.custom')}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">{t('bannerEditor.customDesc')}</div>
                   </div>
                 </button>
               </div>
@@ -204,13 +204,13 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
                   className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
                     isDragging
                       ? 'border-ocean-600 bg-ocean-50'
-                      : 'border-gray-300 hover:border-ocean-400 bg-gray-50'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-ocean-400 bg-gray-50 dark:bg-gray-800/50'
                   }`}
                 >
                   <svg className="mx-auto w-8 h-8 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                   </svg>
-                  <p className="text-sm text-gray-600">{t('bannerEditor.uploadPrompt')}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('bannerEditor.uploadPrompt')}</p>
                   <p className="text-xs text-gray-400 mt-1">{t('bannerEditor.uploadHint')}</p>
                   <input
                     ref={fileInputRef}
@@ -228,11 +228,11 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
 
             {/* Footer for reef/planted */}
             {selectedTheme !== 'custom' && (
-              <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
+              <div className="flex items-center justify-end gap-3 p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
                 <button
                   onClick={onClose}
                   disabled={isSaving}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 disabled:opacity-50"
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -266,7 +266,7 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
 
               {/* Zoom slider */}
               <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-600 w-12">{t('bannerEditor.zoom')}</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400 w-12">{t('bannerEditor.zoom')}</span>
                 <input
                   type="range"
                   min={1}
@@ -276,16 +276,16 @@ export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEd
                   onChange={(e) => setZoom(Number(e.target.value))}
                   className="flex-1 accent-ocean-600"
                 />
-                <span className="text-sm text-gray-500 w-10 text-right">{zoom.toFixed(1)}x</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400 w-10 text-right">{zoom.toFixed(1)}x</span>
               </div>
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
+            <div className="flex items-center justify-end gap-3 p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
               <button
                 onClick={() => { setStep('select'); setImageSrc(null) }}
                 disabled={isSaving}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 disabled:opacity-50"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50"
               >
                 {t('bannerEditor.back')}
               </button>

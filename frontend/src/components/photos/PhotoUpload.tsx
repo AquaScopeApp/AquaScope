@@ -104,14 +104,14 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Upload Photo</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Upload Photo</h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* File Upload Area */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Photo <span className="text-red-500">*</span>
               </label>
 
@@ -124,7 +124,7 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                   className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
                     isDragging
                       ? 'border-ocean-500 bg-ocean-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   <svg
@@ -140,10 +140,10 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                       d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  <p className="text-gray-600 mb-2">
+                  <p className="text-gray-600 dark:text-gray-400 mb-2">
                     Drag and drop your photo here, or click to browse
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     JPG, PNG, GIF, or HEIC (max 10MB)
                   </p>
                   <input
@@ -175,7 +175,7 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                       />
                     </svg>
                   </button>
-                  <div className="mt-2 text-sm text-gray-600">
+                  <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
                   </div>
                 </div>
@@ -184,7 +184,7 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
 
             {/* Tank Selection */}
             <div>
-              <label htmlFor="tank" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="tank" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Tank <span className="text-red-500">*</span>
               </label>
               <select
@@ -192,7 +192,7 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                 value={tankId}
                 onChange={(e) => setTankId(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
               >
                 {tanks.map((tank) => (
                   <option key={tank.id} value={tank.id}>
@@ -204,7 +204,7 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
 
             {/* Date Taken */}
             <div>
-              <label htmlFor="takenAt" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="takenAt" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Date Taken <span className="text-red-500">*</span>
               </label>
               <input
@@ -213,13 +213,13 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                 value={takenAt}
                 onChange={(e) => setTakenAt(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
               />
             </div>
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Description
               </label>
               <textarea
@@ -228,17 +228,17 @@ export default function PhotoUpload({ tanks, onSuccess, onCancel }: PhotoUploadP
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
                 placeholder="What's happening in this photo?"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
               />
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-3 pt-4 border-t">
+            <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
               <button
                 type="button"
                 onClick={onCancel}
                 disabled={isUploading}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>

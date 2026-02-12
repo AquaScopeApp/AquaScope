@@ -16,6 +16,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="AquaScope" />
     <link rel="apple-touch-icon" href="/pwa-icons/apple-touch-icon-180x180.png" />
+
+    <!-- Dark mode FOUC prevention -->
+    <script>
+      (function(){var t=localStorage.getItem('aquascope_theme');if(t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')})();
+    </script>
   </head>
   <body>
     <div id="root"></div>

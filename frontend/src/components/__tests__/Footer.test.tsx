@@ -69,7 +69,7 @@ describe('Footer Component', () => {
     expect(sponsorLink.closest('a')).toHaveAttribute('href', 'https://github.com/sponsors/eprifti')
 
     const coffeeLink = screen.getByText(/Buy me a coffee/i)
-    expect(coffeeLink.closest('a')).toHaveAttribute('href', 'https://ko-fi.com/ediprifti')
+    expect(coffeeLink.closest('a')).toHaveAttribute('href', 'https://ko-fi.com/aquascope')
   })
 
   it('displays the current year in copyright', () => {

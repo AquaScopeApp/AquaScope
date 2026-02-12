@@ -91,9 +91,9 @@ export default function TankTimeline({
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           {t('tabs.events')}
-          <span className="ml-2 text-sm font-normal text-gray-500">
+          <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
             ({sortedEvents.length})
           </span>
         </h3>
@@ -123,7 +123,7 @@ export default function TankTimeline({
 
       {/* Timeline */}
       {sortedEvents.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
           <div className="text-gray-400 mb-4">
             <svg
               className="mx-auto h-12 w-12"
@@ -139,8 +139,8 @@ export default function TankTimeline({
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('emptyState.noEvents')}</h3>
-          <p className="text-gray-600 mb-6">{t('emptyState.startStory')}</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{t('emptyState.noEvents')}</h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{t('emptyState.startStory')}</p>
           <button
             onClick={() => setShowAddForm(true)}
             className="px-6 py-2 bg-ocean-600 text-white rounded-md hover:bg-ocean-700 font-medium"
@@ -154,7 +154,7 @@ export default function TankTimeline({
             {pagedEvents.map((event, index) => (
               <div
                 key={event.id}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow relative"
               >
                 {/* Timeline connector line */}
                 {index < pagedEvents.length - 1 && (
@@ -164,7 +164,7 @@ export default function TankTimeline({
                 <div className="p-6">
                   <div className="flex items-start gap-4">
                     {/* Event Icon */}
-                    <div className="flex-shrink-0 w-12 h-12 bg-ocean-100 rounded-full flex items-center justify-center text-2xl">
+                    <div className="flex-shrink-0 w-12 h-12 bg-ocean-100 dark:bg-ocean-900/50 rounded-full flex items-center justify-center text-2xl">
                       {getEventIcon(event.event_type)}
                     </div>
 
@@ -172,10 +172,10 @@ export default function TankTimeline({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                          <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
                             {event.title}
                           </h4>
-                          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-2">
+                          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
                             <span>
                               {new Date(event.event_date).toLocaleDateString(undefined, {
                                 year: 'numeric',
@@ -202,7 +202,7 @@ export default function TankTimeline({
                             )}
                           </div>
                           {event.description && (
-                            <p className="text-gray-600 text-sm whitespace-pre-wrap">
+                            <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">
                               {event.description}
                             </p>
                           )}
@@ -259,22 +259,22 @@ export default function TankTimeline({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between bg-white rounded-lg shadow-md px-4 py-3">
-              <span className="text-sm text-gray-500">
+            <div className="flex items-center justify-between bg-white dark:bg-gray-800 rounded-lg shadow-md px-4 py-3">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, sortedEvents.length)} / {sortedEvents.length}
               </span>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setCurrentPage(1)}
                   disabled={safePage <= 1}
-                  className="px-2 py-1 rounded text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-2 py-1 rounded text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   &laquo;
                 </button>
                 <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={safePage <= 1}
-                  className="px-2 py-1 rounded text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-2 py-1 rounded text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   &lsaquo;
                 </button>
@@ -295,7 +295,7 @@ export default function TankTimeline({
                         className={`px-2.5 py-1 rounded text-sm font-medium transition ${
                           item === safePage
                             ? 'bg-ocean-600 text-white'
-                            : 'text-gray-600 hover:bg-gray-100'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600'
                         }`}
                       >
                         {item}
@@ -305,14 +305,14 @@ export default function TankTimeline({
                 <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={safePage >= totalPages}
-                  className="px-2 py-1 rounded text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-2 py-1 rounded text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   &rsaquo;
                 </button>
                 <button
                   onClick={() => setCurrentPage(totalPages)}
                   disabled={safePage >= totalPages}
-                  className="px-2 py-1 rounded text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="px-2 py-1 rounded text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   &raquo;
                 </button>

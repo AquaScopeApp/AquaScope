@@ -104,9 +104,9 @@ export default function ReminderForm({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
           {reminder ? 'Edit Reminder' : 'Create New Reminder'}
         </h2>
 
@@ -115,7 +115,7 @@ export default function ReminderForm({
           <div>
             <label
               htmlFor="tank"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Tank <span className="text-red-500">*</span>
             </label>
@@ -125,7 +125,7 @@ export default function ReminderForm({
               onChange={(e) => setTankId(e.target.value)}
               required
               disabled={!!reminder}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 disabled:bg-gray-100 dark:disabled:bg-gray-600"
             >
               <option value="">Select a tank</option>
               {tanks.map((tank) => (
@@ -138,7 +138,7 @@ export default function ReminderForm({
 
           {/* Reminder Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Reminder Type <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -150,7 +150,7 @@ export default function ReminderForm({
                   className={`p-3 border-2 rounded-md text-left transition-colors ${
                     reminderType === type.value
                       ? 'border-ocean-500 bg-ocean-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
@@ -166,7 +166,7 @@ export default function ReminderForm({
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Title <span className="text-red-500">*</span>
             </label>
@@ -177,7 +177,7 @@ export default function ReminderForm({
               onChange={(e) => setTitle(e.target.value)}
               required
               placeholder="e.g., Weekly 10% water change"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
@@ -185,7 +185,7 @@ export default function ReminderForm({
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Description
             </label>
@@ -195,13 +195,13 @@ export default function ReminderForm({
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
               placeholder="e.g., Change 50L of water, clean powerheads during change"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Frequency */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Frequency <span className="text-red-500">*</span>
             </label>
 
@@ -215,7 +215,7 @@ export default function ReminderForm({
                   className={`px-3 py-2 text-sm border rounded-md transition-colors ${
                     parseInt(frequencyDays) === preset.days
                       ? 'border-ocean-500 bg-ocean-50 text-ocean-700'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   {preset.label}
@@ -225,7 +225,7 @@ export default function ReminderForm({
 
             {/* Custom Frequency */}
             <div className="flex items-center space-x-2">
-              <label htmlFor="frequency" className="text-sm text-gray-600">
+              <label htmlFor="frequency" className="text-sm text-gray-600 dark:text-gray-400">
                 Every
               </label>
               <input
@@ -235,9 +235,9 @@ export default function ReminderForm({
                 onChange={(e) => setFrequencyDays(e.target.value)}
                 required
                 min="1"
-                className="w-24 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
               />
-              <span className="text-sm text-gray-600">days</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">days</span>
             </div>
           </div>
 
@@ -245,7 +245,7 @@ export default function ReminderForm({
           <div>
             <label
               htmlFor="nextDue"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Next Due Date <span className="text-red-500">*</span>
             </label>
@@ -255,9 +255,9 @@ export default function ReminderForm({
               value={nextDue}
               onChange={(e) => setNextDue(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               When should this task be done next?
             </p>
           </div>
@@ -270,21 +270,21 @@ export default function ReminderForm({
                 id="isActive"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
-                className="w-4 h-4 text-ocean-600 border-gray-300 rounded focus:ring-ocean-500"
+                className="w-4 h-4 text-ocean-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ocean-500"
               />
-              <label htmlFor="isActive" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="isActive" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                 Active (uncheck to pause this reminder)
               </label>
             </div>
           )}
 
           {/* Form Actions */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
             <button
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>

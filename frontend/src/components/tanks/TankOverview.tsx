@@ -77,38 +77,38 @@ export default function TankOverview({
     <div className="space-y-6">
       {/* Quick Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+        <div className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-4 rounded-lg border border-ocean-100 dark:border-ocean-800">
           <div className="text-3xl mb-2">🐟</div>
           <div className="text-2xl font-bold text-ocean-600">{livestock.length}</div>
-          <div className="text-xs text-gray-600 font-medium">{t('stats.livestockCount')}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{t('stats.livestockCount')}</div>
         </div>
-        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+        <div className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-4 rounded-lg border border-ocean-100 dark:border-ocean-800">
           <div className="text-3xl mb-2">⚙️</div>
           <div className="text-2xl font-bold text-ocean-600">{equipment.length}</div>
-          <div className="text-xs text-gray-600 font-medium">{t('stats.equipmentCount')}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{t('stats.equipmentCount')}</div>
         </div>
-        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+        <div className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-4 rounded-lg border border-ocean-100 dark:border-ocean-800">
           <div className="text-3xl mb-2">🧪</div>
           <div className="text-2xl font-bold text-ocean-600">{consumables.length}</div>
-          <div className="text-xs text-gray-600 font-medium">{t('stats.consumableCount')}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{t('stats.consumableCount')}</div>
         </div>
-        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+        <div className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-4 rounded-lg border border-ocean-100 dark:border-ocean-800">
           <div className="text-3xl mb-2">📷</div>
           <div className="text-2xl font-bold text-ocean-600">{photos.length}</div>
-          <div className="text-xs text-gray-600 font-medium">{t('stats.photoCount')}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{t('stats.photoCount')}</div>
         </div>
-        <div className="bg-gradient-to-br from-ocean-50 to-white p-4 rounded-lg border border-ocean-100">
+        <div className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-4 rounded-lg border border-ocean-100 dark:border-ocean-800">
           <div className="text-3xl mb-2">📝</div>
           <div className="text-2xl font-bold text-ocean-600">{notes.length}</div>
-          <div className="text-xs text-gray-600 font-medium">{t('stats.noteCount')}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 font-medium">{t('stats.noteCount')}</div>
         </div>
       </div>
 
       {/* Latest ICP Test */}
       {latestICPTest && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">{t('latestIcpTest')}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('latestIcpTest')}</h3>
             <Link
               to="/icp-tests"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
@@ -118,10 +118,10 @@ export default function TankOverview({
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
                 {new Date(latestICPTest.test_date).toLocaleDateString()}
               </div>
-              <div className="text-lg font-semibold text-gray-900 mt-1">
+              <div className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1">
                 {latestICPTest.lab_name}
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function TankOverview({
                 <div className="text-3xl font-bold text-ocean-600">
                   {latestICPTest.score_overall}
                 </div>
-                <div className="text-xs text-gray-600">{t('overallScore')}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{t('overallScore')}</div>
               </div>
             )}
           </div>
@@ -147,9 +147,9 @@ export default function TankOverview({
 
       {/* Recent Photos */}
       {recentPhotos.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">{t('recentPhotos')}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('recentPhotos')}</h3>
             <Link
               to="/photos"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
@@ -177,9 +177,9 @@ export default function TankOverview({
 
       {/* Recent Notes */}
       {recentNotes.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">{t('recentNotes')}</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{t('recentNotes')}</h3>
             <Link
               to="/notes"
               className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
@@ -189,9 +189,9 @@ export default function TankOverview({
           </div>
           <div className="space-y-3">
             {recentNotes.map((note) => (
-              <div key={note.id} className="pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-                <div className="text-gray-700 text-sm line-clamp-2">{note.content}</div>
-                <div className="text-xs text-gray-500 mt-1">
+              <div key={note.id} className="pb-3 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
+                <div className="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">{note.content}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {new Date(note.created_at).toLocaleDateString()}
                 </div>
               </div>
@@ -202,14 +202,14 @@ export default function TankOverview({
 
       {/* Empty State */}
       {events.length === 0 && photos.length === 0 && notes.length === 0 && (
-        <div className="bg-white rounded-lg shadow-md p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center">
           <div className="text-gray-400 mb-4">
             <span className="text-6xl">🐠</span>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
             {t('emptyState.startStory')}
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             {t('emptyState.addContent')}
           </p>
         </div>

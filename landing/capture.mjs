@@ -63,6 +63,40 @@ const OUT = '/Users/eprifti/prifticloud/HOBBIES/aqurophilie/Reefing/equipment/Re
   await page.waitForTimeout(2000);
   await page.screenshot({ path: `${OUT}/screenshot-finances.png` });
 
+  // Maintenance
+  console.log('Capturing maintenance...');
+  await page.goto(`${BASE}/maintenance`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: `${OUT}/screenshot-maintenance.png` });
+
+  // Equipment
+  console.log('Capturing equipment...');
+  await page.goto(`${BASE}/equipment`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: `${OUT}/screenshot-equipment.png` });
+
+  // Consumables
+  console.log('Capturing consumables...');
+  await page.goto(`${BASE}/consumables`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: `${OUT}/screenshot-consumables.png` });
+
+  // Admin page — log in as admin to capture the admin dashboard
+  console.log('Switching to admin account for admin screenshot...');
+  // Clear auth and re-login as admin
+  await page.evaluate(() => localStorage.clear());
+  await page.goto(`${BASE}/login`, { waitUntil: 'networkidle' });
+  await page.fill('input[type="email"]', '***REDACTED_EMAIL***');
+  await page.fill('input[type="password"]', '***REDACTED***');
+  await page.click('button[type="submit"]');
+  await page.waitForTimeout(5000);
+  console.log('  Admin URL:', page.url());
+
+  console.log('Capturing admin...');
+  await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(3000);
+  await page.screenshot({ path: `${OUT}/screenshot-admin.png` });
+
   await browser.close();
   console.log('Done! Screenshots saved to landing/assets/');
 })();

@@ -358,8 +358,8 @@ export default function Parameters() {
   if (tanks.length === 0) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">{t('noTanksYet')}</h2>
-        <p className="text-gray-600 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">{t('noTanksYet')}</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
           {t('noTanksDescription')}
         </p>
         <a
@@ -378,8 +378,8 @@ export default function Parameters() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             {t('subtitle')}
           </p>
         </div>
@@ -402,7 +402,7 @@ export default function Parameters() {
 
       {/* Tank Selector */}
       {tanks.length > 1 && (
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
           <TankSelector
             tanks={tanks}
             value={selectedTank || ''}
@@ -427,14 +427,14 @@ export default function Parameters() {
 
       {/* Data Table View (Debug) */}
       {showTableView && selectedTank && !isLoading && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {t('rawDataTable')}
                 </h3>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {t('totalEntries')} {Object.values(parameters).flat().length}
                 </p>
               </div>
@@ -444,33 +444,33 @@ export default function Parameters() {
                   placeholder={t('filterByParameter')}
                   value={tableFilter}
                   onChange={(e) => setTableFilter(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
             </div>
           </div>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-gray-50 dark:bg-gray-800/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {t('table.timestamp')}
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {t('table.parameter')}
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {t('table.value')}
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {t('table.unit')}
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                     {t('table.actions')}
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 {(() => {
                   const allRows = Object.entries(parameters)
                     .flatMap(([paramType, readings]) =>
@@ -505,7 +505,7 @@ export default function Parameters() {
                                      editingReading?.reading.timestamp === reading.timestamp
                     return (
                       <tr key={`${paramType}-${reading.timestamp}`}>
-                        <td className="px-6 py-4 text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
                           {isEditing ? (
                             <input
                               type="datetime-local"
@@ -517,10 +517,10 @@ export default function Parameters() {
                             new Date(reading.timestamp).toLocaleString()
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                           {range?.name || paramType}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                           {isEditing ? (
                             <input
                               type="number"
@@ -540,7 +540,7 @@ export default function Parameters() {
                             })()
                           )}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                           {range?.unit || ''}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -554,7 +554,7 @@ export default function Parameters() {
                               </button>
                               <button
                                 onClick={handleCancelEdit}
-                                className="text-gray-600 hover:text-gray-900"
+                                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
                               >
                                 {tc('actions.cancel')}
                               </button>
@@ -583,7 +583,7 @@ export default function Parameters() {
                       })}
                       {allRows.length === 0 && (
                         <tr>
-                          <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                          <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                             {t('noData')}
                           </td>
                         </tr>
@@ -616,25 +616,25 @@ export default function Parameters() {
             if (totalPages <= 1) return null
 
             return (
-              <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-                <div className="text-sm text-gray-700">
+              <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="text-sm text-gray-700 dark:text-gray-300">
                   {t('showing', { from: ((currentPage - 1) * itemsPerPage) + 1, to: Math.min(currentPage * itemsPerPage, allRows.length), total: allRows.length })}
                 </div>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300"
                   >
                     {`\u2190 ${tc('actions.previous')}`}
                   </button>
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
                     {t('page', { current: currentPage, total: totalPages })}
                   </span>
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                    className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300"
                   >
                     {`${tc('actions.next')} \u2192`}
                   </button>
@@ -646,9 +646,9 @@ export default function Parameters() {
       )}
 
       {/* Date Range Selector */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <div className="flex items-center space-x-4">
-          <span className="text-sm font-medium text-gray-700">{t('timeRange')}</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('timeRange')}</span>
           <div className="flex space-x-2">
             {[
               { value: '7d', label: t('ranges.7d') },
@@ -663,7 +663,7 @@ export default function Parameters() {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   dateRange === option.value
                     ? 'bg-ocean-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {option.label}
@@ -716,8 +716,8 @@ export default function Parameters() {
       {!isLoading &&
         selectedTank &&
         activeParamOrder.every((p) => (parameters[p] || []).length === 0) && (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <div className="text-gray-400 mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
+            <div className="text-gray-400 dark:text-gray-500 mb-4">
               <svg
                 className="mx-auto h-12 w-12"
                 fill="none"
@@ -732,10 +732,10 @@ export default function Parameters() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
               {t('noParameterData')}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
               {t('startTracking')}
             </p>
             <button

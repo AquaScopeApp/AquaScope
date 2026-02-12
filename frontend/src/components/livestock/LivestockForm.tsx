@@ -245,16 +245,16 @@ export default function LivestockForm({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
           {livestock ? t('editLivestock') : t('addLivestock')}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Tank Selection */}
           <div>
-            <label htmlFor="tank" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="tank" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.tank')} <span className="text-red-500">*</span>
             </label>
             <select
@@ -263,7 +263,7 @@ export default function LivestockForm({
               onChange={(e) => setTankId(e.target.value)}
               required
               disabled={!!livestock}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 disabled:bg-gray-100"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 disabled:bg-gray-100 dark:disabled:bg-gray-600"
             >
               <option value="">{t('form.selectTank')}</option>
               {tanks.map((tank) => (
@@ -276,7 +276,7 @@ export default function LivestockForm({
 
           {/* Type Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.type')} <span className="text-red-500">*</span>
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -286,7 +286,7 @@ export default function LivestockForm({
                 className={`p-4 border-2 rounded-md transition-colors ${
                   type === 'fish'
                     ? 'border-ocean-500 bg-ocean-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                 }`}
               >
                 <div className="text-3xl mb-2">🐠</div>
@@ -298,7 +298,7 @@ export default function LivestockForm({
                 className={`p-4 border-2 rounded-md transition-colors ${
                   type === 'coral'
                     ? 'border-ocean-500 bg-ocean-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                 }`}
               >
                 <div className="text-3xl mb-2">🪸</div>
@@ -310,7 +310,7 @@ export default function LivestockForm({
                 className={`p-4 border-2 rounded-md transition-colors ${
                   type === 'invertebrate'
                     ? 'border-ocean-500 bg-ocean-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                 }`}
               >
                 <div className="text-3xl mb-2">🦐</div>
@@ -321,8 +321,8 @@ export default function LivestockForm({
 
           {/* Species Search - Available for ALL types */}
           {!livestock && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('form.searchSpecies')}
               </label>
 
@@ -334,7 +334,7 @@ export default function LivestockForm({
                   className={`px-4 py-2 rounded-md text-sm font-medium transition ${
                     searchSource === 'worms'
                       ? 'bg-ocean-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600'
                   }`}
                 >
                   WoRMS
@@ -346,7 +346,7 @@ export default function LivestockForm({
                   className={`px-4 py-2 rounded-md text-sm font-medium transition ${
                     searchSource === 'inaturalist'
                       ? 'bg-ocean-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600'
                   }`}
                 >
                   iNaturalist
@@ -358,7 +358,7 @@ export default function LivestockForm({
                   className={`px-4 py-2 rounded-md text-sm font-medium transition ${
                     searchSource === 'fishbase'
                       ? 'bg-ocean-600 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600'
                   }`}
                 >
                   FishBase
@@ -378,7 +378,7 @@ export default function LivestockForm({
                     searchSource === 'inaturalist' ? t('search.placeholderINaturalist') :
                     t('search.placeholderFishbase')
                   }
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
                 />
                 <button
                   type="button"
@@ -399,7 +399,7 @@ export default function LivestockForm({
 
               {/* Search Results */}
               {searchResults.length > 0 && (
-                <div className="mt-3 bg-white border border-gray-300 rounded-md max-h-64 overflow-y-auto">
+                <div className="mt-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md max-h-64 overflow-y-auto">
                   {searchResults.map((result, index) => {
                     let scientificName = ''
                     let displayCommonName = ''
@@ -426,7 +426,7 @@ export default function LivestockForm({
                         key={index}
                         type="button"
                         onClick={() => handleSelectResult(result)}
-                        className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-200 last:border-b-0 flex items-center space-x-3"
+                        className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 last:border-b-0 flex items-center space-x-3"
                       >
                         {photoUrl ? (
                           <img
@@ -442,16 +442,16 @@ export default function LivestockForm({
                         )}
 
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-gray-900">
+                          <div className="font-medium text-gray-900 dark:text-gray-100">
                             {displayCommonName}
                           </div>
                           {scientificName && (
-                            <div className="text-sm text-gray-600 italic">
+                            <div className="text-sm text-gray-600 dark:text-gray-400 italic">
                               {scientificName}
                             </div>
                           )}
                           {searchSource === 'worms' && result.status && (
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
                               Status: {result.status}
                             </div>
                           )}
@@ -466,7 +466,7 @@ export default function LivestockForm({
 
           {/* Species Name */}
           <div>
-            <label htmlFor="speciesName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="speciesName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.scientificName')} <span className="text-red-500">*</span>
             </label>
             <input
@@ -476,13 +476,13 @@ export default function LivestockForm({
               onChange={(e) => setSpeciesName(e.target.value)}
               required
               placeholder="e.g., Amphiprion ocellaris"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Common Name */}
           <div>
-            <label htmlFor="commonName" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="commonName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.commonName')}
             </label>
             <input
@@ -491,13 +491,13 @@ export default function LivestockForm({
               value={commonName}
               onChange={(e) => setCommonName(e.target.value)}
               placeholder="e.g., Clownfish"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Quantity */}
           <div>
-            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.quantity')}
             </label>
             <input
@@ -506,15 +506,15 @@ export default function LivestockForm({
               value={quantity}
               onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
               min={1}
-              className="w-32 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-32 px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
-            <p className="text-xs text-gray-500 mt-1">{t('form.quantityHelp')}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('form.quantityHelp')}</p>
           </div>
 
           {/* Status - only show when editing */}
           {livestock && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('form.status')}
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -524,7 +524,7 @@ export default function LivestockForm({
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'alive'
                       ? 'border-green-500 bg-green-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   <div className="text-xl mb-1">&#x2714;&#xFE0F;</div>
@@ -536,7 +536,7 @@ export default function LivestockForm({
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'dead'
                       ? 'border-red-500 bg-red-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   <div className="text-xl mb-1">&#x1FAA6;</div>
@@ -548,7 +548,7 @@ export default function LivestockForm({
                   className={`p-3 border-2 rounded-md transition-colors ${
                     status === 'removed'
                       ? 'border-yellow-500 bg-yellow-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400'
                   }`}
                 >
                   <div className="text-xl mb-1">&#x1F4E6;</div>
@@ -559,7 +559,7 @@ export default function LivestockForm({
               {/* Removed/Dead Date - shown when status is dead or removed */}
               {(status === 'dead' || status === 'removed') && (
                 <div className="mt-3">
-                  <label htmlFor="removedDate" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="removedDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {status === 'dead' ? t('form.deathDate') : t('form.removedDate')}
                   </label>
                   <input
@@ -567,7 +567,7 @@ export default function LivestockForm({
                     id="removedDate"
                     value={removedDate}
                     onChange={(e) => setRemovedDate(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
                   />
                 </div>
               )}
@@ -576,7 +576,7 @@ export default function LivestockForm({
 
           {/* Added Date */}
           <div>
-            <label htmlFor="addedDate" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="addedDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.dateAdded')}
             </label>
             <input
@@ -584,13 +584,13 @@ export default function LivestockForm({
               id="addedDate"
               value={addedDate}
               onChange={(e) => setAddedDate(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Purchase Price */}
           <div>
-            <label htmlFor="purchasePrice" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="purchasePrice" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.purchasePrice')}
             </label>
             <input
@@ -599,13 +599,13 @@ export default function LivestockForm({
               value={purchasePrice}
               onChange={(e) => setPurchasePrice(e.target.value)}
               placeholder='e.g., $29.99, €25'
-              className="w-48 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-48 px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Purchase URL */}
           <div>
-            <label htmlFor="purchaseUrl" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="purchaseUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.purchaseUrl')}
             </label>
             <input
@@ -614,13 +614,13 @@ export default function LivestockForm({
               value={purchaseUrl}
               onChange={(e) => setPurchaseUrl(e.target.value)}
               placeholder="https://..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('form.notes')}
             </label>
             <textarea
@@ -629,17 +629,17 @@ export default function LivestockForm({
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
               placeholder={t('form.notesPlaceholder')}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
             />
           </div>
 
           {/* Form Actions */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
             <button
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {tc('actions.cancel')}
             </button>

@@ -84,15 +84,15 @@ export default function TankImageUpload({ tankId, tankName, onSuccess, onCancel 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b dark:border-gray-700">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
             Upload Tank Image - {tankName}
           </h2>
           <button
             onClick={onCancel}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -110,8 +110,8 @@ export default function TankImageUpload({ tankId, tankName, onSuccess, onCancel 
             onClick={() => fileInputRef.current?.click()}
             className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
               isDragging
-                ? 'border-ocean-600 bg-ocean-50'
-                : 'border-gray-300 hover:border-ocean-400 bg-gray-50'
+                ? 'border-ocean-600 bg-ocean-50 dark:bg-ocean-900/30'
+                : 'border-gray-300 dark:border-gray-600 hover:border-ocean-400 bg-gray-50 dark:bg-gray-800/50'
             }`}
           >
             {previewUrl ? (
@@ -121,7 +121,7 @@ export default function TankImageUpload({ tankId, tankName, onSuccess, onCancel 
                   alt="Preview"
                   className="mx-auto max-h-64 rounded-lg"
                 />
-                <p className="text-sm text-gray-600">{selectedFile?.name}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{selectedFile?.name}</p>
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -149,10 +149,10 @@ export default function TankImageUpload({ tankId, tankName, onSuccess, onCancel 
                   />
                 </svg>
                 <div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <span className="font-semibold text-ocean-600">Click to upload</span> or drag and drop
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">PNG, JPG, GIF up to 10MB</p>
                 </div>
               </div>
             )}
@@ -168,11 +168,11 @@ export default function TankImageUpload({ tankId, tankName, onSuccess, onCancel 
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t bg-gray-50">
+        <div className="flex items-center justify-end gap-3 p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
           <button
             onClick={onCancel}
             disabled={isUploading}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 disabled:opacity-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 disabled:opacity-50"
           >
             Cancel
           </button>

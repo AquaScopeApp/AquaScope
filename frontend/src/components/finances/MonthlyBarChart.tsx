@@ -51,7 +51,7 @@ export default function MonthlyBarChart({ data, currency = 'EUR' }: Props) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-400">
+      <div className="flex items-center justify-center h-64 text-gray-400 dark:text-gray-500">
         {t('noData')}
       </div>
     )
@@ -65,7 +65,7 @@ export default function MonthlyBarChart({ data, currency = 'EUR' }: Props) {
           <button
             onClick={() => setSelectedYear('all')}
             className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-              selectedYear === 'all' ? 'bg-ocean-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              selectedYear === 'all' ? 'bg-ocean-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {t('allYears', { defaultValue: 'All' })}
@@ -75,7 +75,7 @@ export default function MonthlyBarChart({ data, currency = 'EUR' }: Props) {
               key={year}
               onClick={() => setSelectedYear(year)}
               className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                selectedYear === year ? 'bg-ocean-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                selectedYear === year ? 'bg-ocean-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {year}
@@ -86,24 +86,31 @@ export default function MonthlyBarChart({ data, currency = 'EUR' }: Props) {
 
       <ResponsiveContainer width="100%" height={320}>
         <ComposedChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
           <XAxis
             dataKey="monthLabel"
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: 11, fill: 'var(--chart-text)' }}
             angle={-45}
             textAnchor="end"
             height={50}
+            stroke="var(--chart-axis)"
           />
-          <YAxis yAxisId="left" tick={{ fontSize: 11 }} />
-          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11 }} stroke="#9ca3af" />
+          <YAxis yAxisId="left" tick={{ fontSize: 11, fill: 'var(--chart-text)' }} stroke="var(--chart-axis)" />
+          <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 11, fill: 'var(--chart-text)' }} stroke="var(--chart-axis)" />
           <Tooltip
             formatter={(value: number, name: string) => [
               formatPrice(value, currency),
               name,
             ]}
             labelFormatter={(label) => label}
+            contentStyle={{
+              backgroundColor: 'var(--chart-tooltip-bg)',
+              border: '1px solid var(--chart-tooltip-border)',
+              borderRadius: '0.375rem',
+              color: 'var(--chart-text)',
+            }}
           />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontSize: 12, color: 'var(--chart-text)' }} />
           <Bar
             yAxisId="left"
             dataKey="equipment"
@@ -154,8 +161,8 @@ export default function MonthlyBarChart({ data, currency = 'EUR' }: Props) {
             <Brush
               dataKey="monthLabel"
               height={20}
-              stroke="#94a3b8"
-              fill="#f1f5f9"
+              stroke="var(--chart-axis)"
+              fill="var(--chart-brush-fill)"
               travellerWidth={8}
             />
           )}

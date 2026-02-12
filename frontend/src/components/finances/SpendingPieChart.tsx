@@ -36,7 +36,7 @@ const renderCustomLabel = (
     <text
       x={x}
       y={y}
-      fill="#374151"
+      fill="var(--chart-text)"
       textAnchor={x > cx ? 'start' : 'end'}
       dominantBaseline="central"
       fontSize={11}
@@ -60,7 +60,7 @@ export default function SpendingPieChart({ data, currency = 'EUR' }: Props) {
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-400">
+      <div className="flex items-center justify-center h-64 text-gray-400 dark:text-gray-500">
         {t('noData')}
       </div>
     )
@@ -86,8 +86,14 @@ export default function SpendingPieChart({ data, currency = 'EUR' }: Props) {
         </Pie>
         <Tooltip
           formatter={(value: number) => formatPrice(value, currency)}
+          contentStyle={{
+            backgroundColor: 'var(--chart-tooltip-bg)',
+            border: '1px solid var(--chart-tooltip-border)',
+            borderRadius: '0.375rem',
+            color: 'var(--chart-text)',
+          }}
         />
-        <Legend />
+        <Legend wrapperStyle={{ color: 'var(--chart-text)' }} />
       </PieChart>
     </ResponsiveContainer>
   )

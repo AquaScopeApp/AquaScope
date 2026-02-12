@@ -189,19 +189,19 @@ export default function ICPTestsPage() {
   }
 
   const getScoreBg = (score: number | null): string => {
-    if (!score) return 'bg-gray-100'
-    if (score >= 90) return 'bg-green-50'
-    if (score >= 75) return 'bg-yellow-50'
-    if (score >= 50) return 'bg-orange-50'
-    return 'bg-red-50'
+    if (!score) return 'bg-gray-100 dark:bg-gray-700'
+    if (score >= 90) return 'bg-green-50 dark:bg-green-900/30'
+    if (score >= 75) return 'bg-yellow-50 dark:bg-yellow-900/30'
+    if (score >= 50) return 'bg-orange-50 dark:bg-orange-900/30'
+    return 'bg-red-50 dark:bg-red-900/30'
   }
 
   const getStatusColor = (status: string | null): string => {
     if (!status) return ''
-    if (status === 'NORMAL') return 'bg-green-100 text-green-800'
-    if (status.includes('CRITICALLY')) return 'bg-red-100 text-red-800'
-    if (status.includes('ABOVE') || status.includes('BELOW')) return 'bg-orange-100 text-orange-800'
-    return 'bg-gray-100 text-gray-600'
+    if (status === 'NORMAL') return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
+    if (status.includes('CRITICALLY')) return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+    if (status.includes('ABOVE') || status.includes('BELOW')) return 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300'
+    return 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400'
   }
 
   const getValueCellColor = (status: string | null): string => {
@@ -229,10 +229,10 @@ export default function ICPTestsPage() {
 
     return (
       <div>
-        <h4 className="text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">{title}</h4>
+        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{title}</h4>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200 text-xs text-gray-500">
+            <tr className="border-b border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
               <th className="text-left py-1 px-2 font-medium w-16">Element</th>
               <th className="text-right py-1 px-2 font-medium w-20">Value</th>
               <th className="text-left py-1 px-2 font-medium w-12">Unit</th>
@@ -247,8 +247,8 @@ export default function ICPTestsPage() {
               if (value == null && !status) return null
 
               return (
-                <tr key={el.key} className="border-b border-gray-50 hover:bg-gray-50">
-                  <td className="py-1 px-2 font-medium text-gray-900">
+                <tr key={el.key} className="border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="py-1 px-2 font-medium text-gray-900 dark:text-gray-100">
                     {ELEMENT_NAMES[el.key] || el.key.toUpperCase()}
                   </td>
                   <td className={`py-1 px-2 text-right tabular-nums ${getValueCellColor(status)}`}>
@@ -276,8 +276,8 @@ export default function ICPTestsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-sm text-gray-500">{t('subtitle')}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('subtitle')}</p>
         </div>
 
         {/* Upload */}
@@ -285,7 +285,7 @@ export default function ICPTestsPage() {
           <select
             value={uploadTankId}
             onChange={(e) => setUploadTankId(e.target.value)}
-            className="border rounded-md px-3 py-2 text-sm"
+            className="border rounded-md px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
           >
             <option value="">{t('selectTank')}</option>
             {tanks.map((tank) => (
@@ -317,9 +317,9 @@ export default function ICPTestsPage() {
 
       {/* Timeline selector */}
       {!isLoading && tests.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-3">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-3">
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <span className="text-xs text-gray-500 font-medium whitespace-nowrap mr-1">{t('testHistory')}:</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap mr-1">{t('testHistory')}:</span>
             {tests.map((test) => (
               <button
                 key={test.id}
@@ -327,15 +327,15 @@ export default function ICPTestsPage() {
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
                   selectedTest?.id === test.id
                     ? 'bg-ocean-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
                 <span>{new Date(test.test_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })}</span>
                 <span className={`px-1 py-0.5 rounded text-[10px] ${
                   selectedTest?.id === test.id ? 'bg-white/20' :
-                  test.water_type === 'saltwater' ? 'bg-blue-100 text-blue-700' :
-                  test.water_type === 'ro_water' ? 'bg-purple-100 text-purple-700' :
-                  'bg-gray-200 text-gray-600'
+                  test.water_type === 'saltwater' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
+                  test.water_type === 'ro_water' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
+                  'bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-300'
                 }`}>
                   {getWaterTypeLabel(test.water_type)}
                 </span>
@@ -361,24 +361,24 @@ export default function ICPTestsPage() {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-600"></div>
         </div>
       ) : tests.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center text-gray-500 dark:text-gray-400">
           {t('noTests')}
         </div>
       ) : selectedTest ? (
         <div className="space-y-4">
           {/* Header + Scores */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
             <div className="flex flex-wrap items-center gap-3 mb-3">
-              <h2 className="text-lg font-bold text-gray-900">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
                 {selectedTest.lab_name}
               </h2>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {new Date(selectedTest.test_date).toLocaleDateString()}
               </span>
               <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                selectedTest.water_type === 'saltwater' ? 'bg-blue-100 text-blue-700' :
-                selectedTest.water_type === 'ro_water' ? 'bg-purple-100 text-purple-700' :
-                'bg-gray-100 text-gray-700'
+                selectedTest.water_type === 'saltwater' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' :
+                selectedTest.water_type === 'ro_water' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
+                'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
               }`}>
                 {getWaterTypeLabel(selectedTest.water_type)}
               </span>
@@ -400,7 +400,7 @@ export default function ICPTestsPage() {
 
                 return (
                   <div key={score.key} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${getScoreBg(value)}`}>
-                    <span className="text-xs text-gray-600">{score.label}</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">{score.label}</span>
                     <span className={`text-lg font-bold ${getScoreColor(value)}`}>{value}</span>
                     <span className="text-xs text-gray-400">/100</span>
                   </div>
@@ -411,12 +411,12 @@ export default function ICPTestsPage() {
 
           {/* Element Tables - 2-column grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 space-y-4">
               {renderElementTable('Base Elements', BASE_ELEMENTS)}
               {renderElementTable('Major Elements (mg/l)', MAJOR_ELEMENTS)}
               {renderElementTable('Nutrients', NUTRIENTS)}
             </div>
-            <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 space-y-4">
               {renderElementTable('Minor Elements (\u00b5g/l)', MINOR_ELEMENTS)}
               {renderElementTable('Pollutants (\u00b5g/l)', POLLUTANTS)}
             </div>
@@ -424,18 +424,18 @@ export default function ICPTestsPage() {
 
           {/* Cost & Notes */}
           {(selectedTest.cost || selectedTest.notes) && (
-            <div className="bg-white rounded-lg shadow p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
               <div className="flex gap-6">
                 {selectedTest.cost && (
                   <div>
-                    <span className="text-xs font-medium text-gray-500 uppercase">{t('cost')}</span>
-                    <p className="text-gray-900 font-semibold">{selectedTest.cost}</p>
+                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{t('cost')}</span>
+                    <p className="text-gray-900 dark:text-gray-100 font-semibold">{selectedTest.cost}</p>
                   </div>
                 )}
                 {selectedTest.notes && (
                   <div className="flex-1">
-                    <span className="text-xs font-medium text-gray-500 uppercase">{t('notes')}</span>
-                    <p className="text-gray-700 whitespace-pre-wrap text-sm">{selectedTest.notes}</p>
+                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{t('notes')}</span>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap text-sm">{selectedTest.notes}</p>
                   </div>
                 )}
               </div>
@@ -443,7 +443,7 @@ export default function ICPTestsPage() {
           )}
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow p-12 text-center text-gray-500">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center text-gray-500 dark:text-gray-400">
           {t('selectTest')}
         </div>
       )}

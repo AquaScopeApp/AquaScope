@@ -37,11 +37,11 @@ import Pagination from '../components/common/Pagination'
 type Tab = 'summary' | 'details' | 'budgets'
 
 const CATEGORY_COLORS: Record<string, string> = {
-  equipment: 'bg-blue-100 text-blue-800',
-  consumables: 'bg-green-100 text-green-800',
-  livestock: 'bg-purple-100 text-purple-800',
-  icp_tests: 'bg-amber-100 text-amber-800',
-  electricity: 'bg-red-100 text-red-800',
+  equipment: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
+  consumables: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
+  livestock: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300',
+  icp_tests: 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
+  electricity: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
 }
 
 const DETAILS_PAGE_SIZE = 20
@@ -206,8 +206,8 @@ export default function Finances() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-sm text-gray-500">{t('subtitle')}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{t('subtitle')}</p>
         </div>
 
         {/* Tank filter */}
@@ -221,7 +221,7 @@ export default function Finances() {
       </div>
 
       {/* Tab bar */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-gray-200 dark:border-gray-700">
         <nav className="flex gap-8">
           {(['summary', 'details', 'budgets'] as Tab[]).map((tab) => (
             <button
@@ -230,7 +230,7 @@ export default function Finances() {
               className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab
                   ? 'border-ocean-600 text-ocean-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
               {t(`tabs.${tab}`)}
@@ -249,13 +249,13 @@ export default function Finances() {
             {statCards.map((card) => (
               <div
                 key={card.label}
-                className="bg-white rounded-lg border border-gray-200 p-4"
+                className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span>{card.icon}</span>
-                  <span className="text-xs text-gray-500">{card.label}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">{card.label}</span>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {fp(card.value)}
                 </p>
               </div>
@@ -264,15 +264,15 @@ export default function Finances() {
 
           {/* Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                 {t('charts.categoryBreakdown')}
               </h3>
               <SpendingPieChart data={summary?.by_category ?? []} currency={currency} />
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                 {t('charts.monthlySpending')}
               </h3>
               <MonthlyBarChart data={monthly} currency={currency} />
@@ -281,14 +281,14 @@ export default function Finances() {
 
           {/* Per-tank breakdown */}
           {(summary?.by_tank?.length ?? 0) > 1 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
                 {t('charts.byTank')}
               </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left text-gray-500 border-b">
+                    <tr className="text-left text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
                       <th className="pb-2 font-medium">{t('table.tank')}</th>
                       <th className="pb-2 font-medium text-right">{t('categories.equipment')}</th>
                       <th className="pb-2 font-medium text-right">{t('categories.consumables')}</th>
@@ -300,8 +300,8 @@ export default function Finances() {
                   </thead>
                   <tbody>
                     {summary!.by_tank.map((row) => (
-                      <tr key={row.tank_id} className="border-b border-gray-100">
-                        <td className="py-2 font-medium text-gray-900">{row.tank_name}</td>
+                      <tr key={row.tank_id} className="border-b border-gray-100 dark:border-gray-700">
+                        <td className="py-2 font-medium text-gray-900 dark:text-gray-100">{row.tank_name}</td>
                         <td className="py-2 text-right">{fp(row.equipment)}</td>
                         <td className="py-2 text-right">{fp(row.consumables)}</td>
                         <td className="py-2 text-right">{fp(row.livestock)}</td>
@@ -324,7 +324,7 @@ export default function Finances() {
             <select
               value={detailsCategory}
               onChange={(e) => { setDetailsCategory(e.target.value); setDetailsPage(1) }}
-              className="border rounded-md px-3 py-2 text-sm"
+              className="border rounded-md px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('details.allCategories', { defaultValue: 'All Categories' })}</option>
               <option value="equipment">{t('categories.equipment')}</option>
@@ -332,16 +332,16 @@ export default function Finances() {
               <option value="livestock">{t('categories.livestock')}</option>
               <option value="icp_tests">{t('categories.icp_tests')}</option>
             </select>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {details?.total ?? 0} {t('details.items', { defaultValue: 'items' })}
             </span>
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-gray-500 border-b bg-gray-50">
+                <tr className="text-left text-gray-500 dark:text-gray-400 border-b bg-gray-50 dark:bg-gray-800/50">
                   <th className="px-4 py-3 font-medium">{t('details.date', { defaultValue: 'Date' })}</th>
                   <th className="px-4 py-3 font-medium">{t('details.name', { defaultValue: 'Name' })}</th>
                   <th className="px-4 py-3 font-medium">{t('details.category', { defaultValue: 'Category' })}</th>
@@ -353,22 +353,22 @@ export default function Finances() {
               </thead>
               <tbody>
                 {(details?.items ?? []).map((item) => (
-                  <tr key={`${item.category}-${item.id}`} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                  <tr key={`${item.category}-${item.id}`} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="px-4 py-3 text-gray-600 dark:text-gray-400 whitespace-nowrap">
                       {item.date ? new Date(item.date).toLocaleDateString() : '—'}
                     </td>
-                    <td className="px-4 py-3 font-medium text-gray-900 max-w-[200px] truncate">
+                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100 max-w-[200px] truncate">
                       {item.name}
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[item.category] || 'bg-gray-100 text-gray-800'}`}>
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[item.category] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
                         {t(`categories.${item.category}`, item.category)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-600 max-w-[120px] truncate">
+                    <td className="px-4 py-3 text-gray-600 dark:text-gray-400 max-w-[120px] truncate">
                       {item.tank_name}
                     </td>
-                    <td className="px-4 py-3 text-right whitespace-nowrap text-gray-900">
+                    <td className="px-4 py-3 text-right whitespace-nowrap text-gray-900 dark:text-gray-100">
                       {item.price !== null ? fp(item.price) : (item.price_raw || '—')}
                     </td>
                     <td className="px-4 py-3 text-center">
@@ -475,15 +475,15 @@ export default function Finances() {
       {/* Edit expense detail modal */}
       {editingItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {t('details.editTitle', { defaultValue: 'Edit Expense' })}
                 </h3>
                 <button
                   onClick={() => setEditingItem(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -491,26 +491,26 @@ export default function Finances() {
                 </button>
               </div>
 
-              <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[editingItem.category] || 'bg-gray-100 text-gray-800'}`}>
+              <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CATEGORY_COLORS[editingItem.category] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
                 {t(`categories.${editingItem.category}`, editingItem.category)}
               </span>
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('details.name', { defaultValue: 'Name' })}
                 </label>
                 <input
                   type="text"
                   value={editForm.name}
                   onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
 
               {/* Price */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('details.price', { defaultValue: 'Price' })} ({currency})
                 </label>
                 <input
@@ -519,33 +519,33 @@ export default function Finances() {
                   min="0"
                   value={editForm.price}
                   onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                   placeholder="0.00"
                 />
               </div>
 
               {/* Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('details.date', { defaultValue: 'Date' })}
                 </label>
                 <input
                   type="date"
                   value={editForm.date}
                   onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
 
               {/* Tank */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {t('details.tank', { defaultValue: 'Tank' })}
                 </label>
                 <select
                   value={editForm.tank_id}
                   onChange={(e) => setEditForm({ ...editForm, tank_id: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                 >
                   {tanks.map((tank) => (
                     <option key={tank.id} value={tank.id}>{tank.name}</option>
@@ -556,14 +556,14 @@ export default function Finances() {
               {/* Purchase URL */}
               {editingItem.category !== 'icp_tests' && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     {t('details.purchaseUrl', { defaultValue: 'Purchase URL' })}
                   </label>
                   <input
                     type="url"
                     value={editForm.purchase_url}
                     onChange={(e) => setEditForm({ ...editForm, purchase_url: e.target.value })}
-                    className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500"
+                    className="w-full border rounded-md px-3 py-2 text-sm focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     placeholder="https://..."
                   />
                 </div>
@@ -573,14 +573,14 @@ export default function Finances() {
               <div className="flex justify-between pt-2">
                 <button
                   onClick={handleDeleteDetail}
-                  className="px-4 py-2 text-sm text-red-600 border border-red-300 rounded-md hover:bg-red-50"
+                  className="px-4 py-2 text-sm text-red-600 border border-red-300 rounded-md hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/30"
                 >
                   {tc('actions.delete')}
                 </button>
                 <div className="flex gap-3">
                   <button
                     onClick={() => setEditingItem(null)}
-                    className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                    className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     {tc('actions.cancel')}
                   </button>

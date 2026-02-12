@@ -182,9 +182,9 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
             key={photo.id}
             id={`card-${photo.id}`}
             onClick={() => setSelectedPhoto(photo)}
-            className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer overflow-hidden group"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer overflow-hidden group"
           >
-            <div className="aspect-square relative overflow-hidden bg-gray-100">
+            <div className="aspect-square relative overflow-hidden bg-gray-100 dark:bg-gray-700">
               <img
                 src={thumbnailUrls[photo.id] || ''}
                 alt={photo.description || 'Tank photo'}
@@ -214,12 +214,12 @@ export default function PhotoGallery({ photos, tanks, onDelete, onUpdate, onRefr
               </div>
             </div>
             <div className="p-3">
-              <div className="text-xs text-gray-500 mb-1">{getTankName(photo.tank_id)}</div>
-              <div className="text-sm font-medium text-gray-900 truncate">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{getTankName(photo.tank_id)}</div>
+              <div className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                 {format(new Date(photo.taken_at), 'MMM d, yyyy')}
               </div>
               {photo.description && (
-                <div className="text-xs text-gray-600 truncate mt-1">{photo.description}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 truncate mt-1">{photo.description}</div>
               )}
             </div>
           </div>

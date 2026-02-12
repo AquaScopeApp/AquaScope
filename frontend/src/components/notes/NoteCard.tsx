@@ -24,7 +24,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
 
   return (
     <div
-      className="bg-white rounded-lg shadow border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => isLong && setExpanded(!expanded)}
     >
       <div className="p-3 flex items-start gap-3">
@@ -33,10 +33,10 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
           <div className="text-lg font-bold text-ocean-700 leading-tight">
             {format(new Date(note.created_at), 'd')}
           </div>
-          <div className="text-[10px] text-gray-500 uppercase leading-tight">
+          <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase leading-tight">
             {format(new Date(note.created_at), 'MMM')}
           </div>
-          <div className="text-[10px] text-gray-400 leading-tight">
+          <div className="text-[10px] text-gray-400 dark:text-gray-500 leading-tight">
             {format(new Date(note.created_at), 'yyyy')}
           </div>
         </div>
@@ -44,9 +44,9 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
         {/* Center: content */}
         <div className="flex-1 min-w-0">
           {/* Meta line: tank + time */}
-          <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
+          <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-1">
             {tanks.length > 1 && (
-              <span className="font-medium text-gray-700">{tank?.name || 'Unknown'}</span>
+              <span className="font-medium text-gray-700 dark:text-gray-300">{tank?.name || 'Unknown'}</span>
             )}
             <span>{format(new Date(note.created_at), 'h:mm a')}</span>
             <span>·</span>
@@ -60,7 +60,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
           </div>
 
           {/* Note text */}
-          <div className={`text-sm text-gray-700 whitespace-pre-wrap ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
+          <div className={`text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap ${!expanded && isLong ? 'line-clamp-3' : ''}`}>
             {note.content}
           </div>
 
@@ -79,7 +79,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
         <div className="flex items-center space-x-0.5 flex-shrink-0">
           <button
             onClick={(e) => { e.stopPropagation(); onEdit(note) }}
-            className="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors"
+            className="p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded transition-colors"
             title="Edit"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,7 +88,7 @@ export default function NoteCard({ note, tanks, onEdit, onDelete }: NoteCardProp
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(note.id) }}
-            className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-colors"
+            className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
             title="Delete"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

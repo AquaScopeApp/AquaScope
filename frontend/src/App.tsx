@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './hooks/useAuth'
 import { ModuleSettingsProvider } from './hooks/useModuleSettings'
 import { CurrencyProvider } from './hooks/useCurrency'
+import { ThemeProvider } from './hooks/useTheme'
 import { isLocalMode } from './platform'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import Layout from './components/Layout'
@@ -31,6 +32,7 @@ const local = isLocalMode()
 
 function App() {
   return (
+    <ThemeProvider>
     <Router>
       <AuthProvider>
         <ModuleSettingsProvider>
@@ -83,6 +85,7 @@ function App() {
         </ModuleSettingsProvider>
       </AuthProvider>
     </Router>
+    </ThemeProvider>
   )
 }
 

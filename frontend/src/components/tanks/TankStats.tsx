@@ -38,13 +38,13 @@ export default function TankStats({ stats }: TankStatsProps) {
       {statItems.map((item) => (
         <div
           key={item.label}
-          className="bg-gradient-to-br from-ocean-50 to-white p-3 rounded-lg border border-ocean-100"
+          className="bg-gradient-to-br from-ocean-50 to-white dark:from-ocean-900/30 dark:to-gray-800 p-3 rounded-lg border border-ocean-100 dark:border-ocean-800"
         >
           <div className="flex items-center justify-between">
             <span className="text-2xl">{item.icon}</span>
             <span className="text-2xl font-bold text-ocean-600">{item.value}</span>
           </div>
-          <div className="text-xs text-gray-600 mt-1 font-medium">{item.label}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 font-medium">{item.label}</div>
         </div>
       ))}
     </div>

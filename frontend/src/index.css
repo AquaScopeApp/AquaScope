@@ -7,7 +7,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: light;
   color: rgba(0, 0, 0, 0.87);
   background-color: #ffffff;
 
@@ -15,6 +15,29 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Chart theme tokens (used by Recharts inline styles) */
+  --chart-bg: #ffffff;
+  --chart-grid: #e5e7eb;
+  --chart-axis: #9ca3af;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #e5e7eb;
+  --chart-text: #374151;
+  --chart-brush-fill: #f1f5f9;
+}
+
+.dark {
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #030712;
+
+  --chart-bg: #111827;
+  --chart-grid: #374151;
+  --chart-axis: #6b7280;
+  --chart-tooltip-bg: #1f2937;
+  --chart-tooltip-border: #374151;
+  --chart-text: #d1d5db;
+  --chart-brush-fill: #1f2937;
 }
 
 body {

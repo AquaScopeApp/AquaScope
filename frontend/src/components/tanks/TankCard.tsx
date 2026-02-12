@@ -94,7 +94,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
 
   return (
     <div
-      className={`bg-white rounded-lg shadow hover:shadow-xl transition-all border border-gray-200 overflow-hidden cursor-pointer ${tank.is_archived ? 'opacity-60' : ''}`}
+      className={`bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-xl transition-all border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer ${tank.is_archived ? 'opacity-60' : ''}`}
       onClick={handleCardClick}
     >
       {/* Tank Image */}
@@ -131,7 +131,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
               className={`p-2 rounded-md transition-colors shadow-sm ${
                 isDefault
                   ? 'bg-yellow-400 text-white hover:bg-yellow-500'
-                  : 'bg-white text-gray-400 hover:bg-yellow-50 hover:text-yellow-500'
+                  : 'bg-white dark:bg-gray-800 text-gray-400 dark:text-gray-400 hover:bg-yellow-50 hover:text-yellow-500'
               }`}
               title={isDefault ? t('isDefault') : t('setDefault')}
             >
@@ -146,7 +146,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
                 e.stopPropagation()
                 onUnarchive(tank.id)
               }}
-              className="p-2 bg-white text-green-600 hover:bg-green-50 rounded-md transition-colors shadow-sm"
+              className="p-2 bg-white dark:bg-gray-800 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 rounded-md transition-colors shadow-sm"
               title={tc('actions.unarchive')}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -159,7 +159,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
                 e.stopPropagation()
                 onArchive(tank.id)
               }}
-              className="p-2 bg-white text-gray-500 hover:bg-gray-50 rounded-md transition-colors shadow-sm"
+              className="p-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition-colors shadow-sm"
               title={tc('actions.archive')}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,7 +172,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
               e.stopPropagation()
               onEdit(tank)
             }}
-            className="p-2 bg-white text-ocean-600 hover:bg-ocean-50 rounded-md transition-colors shadow-sm"
+            className="p-2 bg-white dark:bg-gray-800 text-ocean-600 hover:bg-ocean-50 dark:hover:bg-ocean-900/30 rounded-md transition-colors shadow-sm"
             title={t('editTank')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -189,7 +189,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
               e.stopPropagation()
               onDelete(tank.id)
             }}
-            className="p-2 bg-white text-red-600 hover:bg-red-50 rounded-md transition-colors shadow-sm"
+            className="p-2 bg-white dark:bg-gray-800 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors shadow-sm"
             title={t('deleteTank')}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -205,27 +205,27 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
       </div>
 
       {/* Header + Quick Actions */}
-      <div className="p-6 border-b border-gray-100">
+      <div className="p-6 border-b border-gray-100 dark:border-gray-700">
         <div className="flex items-start justify-between">
-          <h3 className="text-xl font-semibold text-gray-900">{tank.name}</h3>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{tank.name}</h3>
           {tank.aquarium_subtype && (
-            <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full capitalize whitespace-nowrap ml-2">
+            <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full capitalize whitespace-nowrap ml-2">
               {t(`subtype.${tank.aquarium_subtype}`, { defaultValue: tank.aquarium_subtype.replace(/_/g, ' ') })}
             </span>
           )}
         </div>
         {age && (
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {t('runningFor', { age })}
           </p>
         )}
         {tank.description && (
-          <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
             {tank.description}
           </p>
         )}
         {/* Quick Actions - accessible right below the header */}
-        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
           <button
             onClick={(e) => {
               e.stopPropagation()
@@ -252,20 +252,20 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
         {/* Volumes */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">{t('fields.displayVolume')}</span>
-            <span className="font-medium text-gray-900">
+            <span className="text-gray-600 dark:text-gray-400">{t('fields.displayVolume')}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               {tank.display_volume_liters ? `${tank.display_volume_liters} ${t('fields.liters')}` : '-'}
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">{t('fields.sumpVolume')}</span>
-            <span className="font-medium text-gray-900">
+            <span className="text-gray-600 dark:text-gray-400">{t('fields.sumpVolume')}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               {tank.sump_volume_liters ? `${tank.sump_volume_liters} ${t('fields.liters')}` : '-'}
             </span>
           </div>
           {tank.total_volume_liters > 0 && (
-            <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-100">
-              <span className="text-gray-700 font-medium">{t('fields.totalSystem')}</span>
+            <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-100 dark:border-gray-700">
+              <span className="text-gray-700 dark:text-gray-300 font-medium">{t('fields.totalSystem')}</span>
               <span className="font-semibold text-ocean-600">
                 {tank.total_volume_liters.toFixed(1)} {t('fields.liters')}
               </span>
@@ -275,16 +275,16 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
 
         {/* Setup Date */}
         <div className="flex items-center justify-between text-sm pt-2">
-          <span className="text-gray-600">{t('fields.setupDate')}</span>
-          <span className="text-gray-900">
+          <span className="text-gray-600 dark:text-gray-400">{t('fields.setupDate')}</span>
+          <span className="text-gray-900 dark:text-gray-100">
             {formatDate(tank.setup_date)}
           </span>
         </div>
 
         {/* Recent Events */}
         {recentEvents.length > 0 && (
-          <div className="pt-3 border-t border-gray-100">
-            <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">
+          <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
+            <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2">
               {t('recentEvents')}
             </h4>
             <div className="space-y-2">
@@ -292,8 +292,8 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
                 <div key={event.id} className="flex items-start space-x-2 text-xs">
                   <div className="w-1.5 h-1.5 rounded-full bg-ocean-500 mt-1.5 flex-shrink-0"></div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-medium truncate">{event.title}</p>
-                    <p className="text-gray-500">
+                    <p className="text-gray-900 dark:text-gray-100 font-medium truncate">{event.title}</p>
+                    <p className="text-gray-500 dark:text-gray-400">
                       {new Date(event.event_date).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',

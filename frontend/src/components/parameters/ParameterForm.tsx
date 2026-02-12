@@ -94,21 +94,21 @@ export default function ParameterForm({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
         Log Water Test Results
       </h2>
 
       {/* Success Message */}
       {success && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-md">
+        <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/30 border border-green-200 text-green-700 rounded-md">
           Parameters saved successfully!
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md">
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 text-red-700 rounded-md">
           {error}
         </div>
       )}
@@ -116,14 +116,14 @@ export default function ParameterForm({
       <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
         {/* Timestamp */}
         <div>
-          <label htmlFor="timestamp" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="timestamp" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Test Date & Time
           </label>
           <input
             id="timestamp"
             type="datetime-local"
             {...register('timestamp', { required: 'Timestamp is required' })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
           />
           {errors.timestamp && (
             <p className="mt-1 text-sm text-red-600">{errors.timestamp.message}</p>
@@ -139,10 +139,10 @@ export default function ParameterForm({
               <div key={paramType}>
                 <label
                   htmlFor={paramType}
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   {range.name}
-                  <span className="text-gray-500 ml-1">({range.unit})</span>
+                  <span className="text-gray-500 dark:text-gray-400 ml-1">({range.unit})</span>
                 </label>
                 <div className="relative">
                   <input
@@ -157,10 +157,10 @@ export default function ParameterForm({
                         message: 'Value must be positive',
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
                   />
                   {range.ideal && (
-                    <div className="mt-1 text-xs text-gray-500">
+                    <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                       Ideal: {range.ideal} {range.unit}
                     </div>
                   )}
@@ -180,7 +180,7 @@ export default function ParameterForm({
           <button
             type="button"
             onClick={() => reset()}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
             disabled={isSubmitting}
           >
             Clear
@@ -196,7 +196,7 @@ export default function ParameterForm({
       </form>
 
       {/* Info Box */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+      <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
         <p className="text-sm text-blue-900">
           <strong>Tip:</strong> You don't need to test all parameters every time. Enter only the
           values you've tested, and leave the others blank.

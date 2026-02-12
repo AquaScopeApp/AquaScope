@@ -17,6 +17,7 @@ import type { ModuleSettings } from '../types'
 import Footer from './Footer'
 import VersionBanner from './VersionBanner'
 import LanguageSelector from './LanguageSelector'
+import ThemeToggle from './ThemeToggle'
 import InstallPrompt from './InstallPrompt'
 
 const local = isLocalMode()
@@ -110,8 +111,8 @@ export default function Layout(): JSX.Element {
                 flex items-center px-4 py-2 text-sm font-medium rounded-md
                 ${
                   active
-                    ? 'bg-ocean-50 text-ocean-700'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-ocean-50 text-ocean-700 dark:bg-ocean-900/50 dark:text-ocean-300'
+                    : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800'
                 }
               `}
             >
@@ -124,15 +125,15 @@ export default function Layout(): JSX.Element {
         {/* Admin Link (only for admins, hidden in local mode) */}
         {!local && user?.is_admin && (
           <>
-            <div className="my-2 border-t border-gray-300" />
+            <div className="my-2 border-t border-gray-300 dark:border-gray-600" />
             <Link
               to="/admin"
               className={`
                 flex items-center px-4 py-2 text-sm font-medium rounded-md
                 ${
                   isActive('/admin')
-                    ? 'bg-red-50 text-red-700'
-                    : 'text-red-600 hover:bg-red-50'
+                    ? 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                    : 'text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/30'
                 }
               `}
             >
@@ -145,15 +146,15 @@ export default function Layout(): JSX.Element {
 
       {/* API Documentation Link — hidden in local mode */}
       {!local && (
-        <div className="mt-8 p-4 bg-blue-50 rounded-md">
-          <p className="text-xs font-medium text-blue-900 mb-1">
+        <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+          <p className="text-xs font-medium text-blue-900 dark:text-blue-200 mb-1">
             {t('layout.developer')}
           </p>
           <a
             href="http://localhost:8000/docs"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-blue-600 hover:text-blue-700"
+            className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
             {t('layout.apiDocumentation')}
           </a>
@@ -163,16 +164,16 @@ export default function Layout(): JSX.Element {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Top Navigation */}
-      <nav className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
+      <nav className="sticky top-0 z-40 bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               {/* Hamburger button — mobile only */}
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden mr-3 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                className="lg:hidden mr-3 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800"
                 aria-label="Open menu"
               >
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -190,6 +191,7 @@ export default function Layout(): JSX.Element {
 
             <div className="flex items-center space-x-3">
               <LanguageSelector />
+              <ThemeToggle />
               {!local && (
                 <div className="relative">
                   <button
@@ -197,20 +199,20 @@ export default function Layout(): JSX.Element {
                     className="flex items-center space-x-2 focus:outline-none"
                   >
                     {avatarSrc ? (
-                      <img src={avatarSrc} alt={user?.username} className="w-8 h-8 rounded-full object-cover border-2 border-gray-200" />
+                      <img src={avatarSrc} alt={user?.username} className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600" />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-ocean-100 text-ocean-600 flex items-center justify-center text-sm font-bold border-2 border-gray-200">
+                      <div className="w-8 h-8 rounded-full bg-ocean-100 text-ocean-600 dark:bg-ocean-900 dark:text-ocean-300 flex items-center justify-center text-sm font-bold border-2 border-gray-200 dark:border-gray-600">
                         {(user?.username || '?')[0].toUpperCase()}
                       </div>
                     )}
-                    <span className="text-sm text-gray-700 hidden sm:inline">{user?.username}</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">{user?.username}</span>
                   </button>
 
                   {showAvatarMenu && (
                     <>
                       <div className="fixed inset-0 z-40" onClick={() => setShowAvatarMenu(false)} />
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 py-1">
-                        <label className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+                      <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 z-50 py-1">
+                        <label className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
                           <span className="mr-2">📷</span>
                           {user?.avatar_url ? t('changeAvatar') : t('uploadAvatar')}
                           <input type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
@@ -218,16 +220,16 @@ export default function Layout(): JSX.Element {
                         {user?.avatar_url && (
                           <button
                             onClick={handleAvatarDelete}
-                            className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                            className="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30"
                           >
                             <span className="mr-2">🗑️</span>
                             {t('removeAvatar')}
                           </button>
                         )}
-                        <div className="border-t border-gray-100 my-1" />
+                        <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
                         <button
                           onClick={() => { logout(); setShowAvatarMenu(false) }}
-                          className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                          className="w-full flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                         >
                           <span className="mr-2">🚪</span>
                           {t('actions.logout')}
@@ -238,7 +240,7 @@ export default function Layout(): JSX.Element {
                 </div>
               )}
               {local && (
-                <span className="text-sm text-gray-700 hidden sm:inline">My AquaScope</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300 hidden sm:inline">My AquaScope</span>
               )}
             </div>
           </div>
@@ -255,16 +257,16 @@ export default function Layout(): JSX.Element {
           />
 
           {/* Drawer panel */}
-          <div className="fixed inset-y-0 left-0 w-72 bg-white shadow-xl overflow-y-auto">
+          <div className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-gray-900 shadow-xl overflow-y-auto">
             {/* Drawer header */}
-            <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200">
+            <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 dark:border-gray-700">
               <Link to="/dashboard" className="flex items-center space-x-2" onClick={() => setMobileMenuOpen(false)}>
                 <img src="/logo-128.png" alt="AquaScope" className="h-8 w-8" />
                 <span className="text-xl font-bold text-ocean-600">AquaScope</span>
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800"
                 aria-label="Close menu"
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">

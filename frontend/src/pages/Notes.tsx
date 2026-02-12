@@ -100,7 +100,7 @@ export default function Notes() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">{t('loading')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('loading')}</div>
       </div>
     )
   }
@@ -110,8 +110,8 @@ export default function Notes() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={handleCreate}
@@ -126,7 +126,7 @@ export default function Notes() {
 
       {/* Tank Filter */}
       {tanks.length > 1 && (
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
           <TankSelector
             tanks={tanks}
             value={selectedTankId}
@@ -140,13 +140,13 @@ export default function Notes() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-ocean-500">
-          <div className="text-sm text-gray-600">{t('totalNotes')}</div>
-          <div className="text-2xl font-bold text-gray-900">{notes.length}</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-ocean-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('totalNotes')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{notes.length}</div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-          <div className="text-sm text-gray-600">{t('thisMonth')}</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('thisMonth')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {notes.filter((n) => {
               const date = new Date(n.created_at)
               const now = new Date()
@@ -154,9 +154,9 @@ export default function Notes() {
             }).length}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-          <div className="text-sm text-gray-600">{t('avgPerWeek')}</div>
-          <div className="text-2xl font-bold text-gray-900">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <div className="text-sm text-gray-600 dark:text-gray-400">{t('avgPerWeek')}</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {notes.length > 0
               ? Math.round((notes.length /
                   Math.max(1, Math.ceil((Date.now() - new Date(notes[notes.length - 1].created_at).getTime()) / (7 * 24 * 60 * 60 * 1000)))) * 10) / 10
@@ -177,7 +177,7 @@ export default function Notes() {
 
       {/* Notes List */}
       {notes.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-12 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-12 text-center">
           <svg
             className="w-16 h-16 mx-auto text-gray-400 mb-4"
             fill="none"
@@ -191,8 +191,8 @@ export default function Notes() {
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">{t('noNotes')}</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{t('noNotes')}</h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
             {t('startDocumenting')}
           </p>
           <button

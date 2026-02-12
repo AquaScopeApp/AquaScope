@@ -35,9 +35,9 @@ export default function NoteEditor({ note, tanks, onSave, onCancel }: NoteEditor
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             {note ? 'Edit Note' : 'New Note'}
           </h2>
 
@@ -45,7 +45,7 @@ export default function NoteEditor({ note, tanks, onSave, onCancel }: NoteEditor
             {/* Tank Selection */}
             {!note && (
               <div>
-                <label htmlFor="tank" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="tank" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Tank <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -53,7 +53,7 @@ export default function NoteEditor({ note, tanks, onSave, onCancel }: NoteEditor
                   value={tankId}
                   onChange={(e) => setTankId(e.target.value)}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
                 >
                   {tanks.map((tank) => (
                     <option key={tank.id} value={tank.id}>
@@ -66,7 +66,7 @@ export default function NoteEditor({ note, tanks, onSave, onCancel }: NoteEditor
 
             {/* Content Editor */}
             <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Note Content <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -82,15 +82,15 @@ Examples:
 - Added 2 new fish today
 - Started dosing calcium
 - Water change completed - 50L"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 font-mono text-sm"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 font-mono text-sm"
               />
-              <p className="mt-2 text-sm text-gray-500">
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                 {content.trim().length} characters
               </p>
             </div>
 
             {/* Formatting Tips */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <div className="flex items-start">
                 <svg
                   className="w-5 h-5 text-blue-600 mt-0.5 mr-2"
@@ -118,11 +118,11 @@ Examples:
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-3 pt-4 border-t">
+            <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 Cancel
               </button>

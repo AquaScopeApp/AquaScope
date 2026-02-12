@@ -27,11 +27,11 @@ export default function BudgetProgressBar({ status, onEdit, onDelete }: Props) {
   const barWidth = Math.min(percentage_used, 100)
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
       <div className="flex items-start justify-between mb-2">
         <div>
-          <h4 className="font-medium text-gray-900">{budget.name}</h4>
-          <p className="text-xs text-gray-500">
+          <h4 className="font-medium text-gray-900 dark:text-gray-100">{budget.name}</h4>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             {budget.category ? t(`categories.${budget.category}`) : t('budget.allCategories')}
             {' · '}
             {t(`budget.${budget.period}`)}
@@ -40,7 +40,7 @@ export default function BudgetProgressBar({ status, onEdit, onDelete }: Props) {
         <div className="flex items-center gap-2">
           <button
             onClick={onEdit}
-            className="text-gray-400 hover:text-gray-600 text-sm"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm"
             title={t('budget.edit')}
           >
             ✏️
@@ -56,7 +56,7 @@ export default function BudgetProgressBar({ status, onEdit, onDelete }: Props) {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-3 mb-2">
         <div
           className={`h-3 rounded-full transition-all ${barColor}`}
           style={{ width: `${barWidth}%` }}
@@ -64,10 +64,10 @@ export default function BudgetProgressBar({ status, onEdit, onDelete }: Props) {
       </div>
 
       <div className="flex justify-between text-sm">
-        <span className={is_over_budget ? 'text-red-600 font-medium' : 'text-gray-600'}>
+        <span className={is_over_budget ? 'text-red-600 font-medium' : 'text-gray-600 dark:text-gray-400'}>
           {formatPrice(spent, budget.currency)} / {formatPrice(budget.amount, budget.currency)}
         </span>
-        <span className={is_over_budget ? 'text-red-600 font-medium' : 'text-gray-500'}>
+        <span className={is_over_budget ? 'text-red-600 font-medium' : 'text-gray-500 dark:text-gray-400'}>
           {is_over_budget
             ? t('budget.overBy', { amount: formatPrice(Math.abs(remaining), budget.currency) })
             : t('budget.remaining', { amount: formatPrice(remaining, budget.currency) })

@@ -12,26 +12,26 @@ export default function Footer(): JSX.Element {
   const { t } = useTranslation('common')
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-12">
+    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Credits */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">AquaScope</h3>
-            <p className="text-sm text-gray-600">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">AquaScope</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               {t('footer.reefDescription')}
             </p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               {t('footer.createdBy')} <span className="font-medium text-ocean-600">Edi Prifti</span>
             </p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {t('footer.withLove')} <span className="text-red-500">❤️</span> and Claude Sonnet 4.5
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t('footer.links')}</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{t('footer.links')}</h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -51,7 +51,7 @@ export default function Footer(): JSX.Element {
                   href={`${githubUrl}/issues`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-600 hover:text-gray-900"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                 >
                   {t('footer.reportIssues')}
                 </a>
@@ -61,7 +61,7 @@ export default function Footer(): JSX.Element {
                   href={`${githubUrl}/blob/main/README.md`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-gray-600 hover:text-gray-900"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                 >
                   {t('footer.documentation')}
                 </a>
@@ -71,7 +71,7 @@ export default function Footer(): JSX.Element {
 
           {/* Support */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">{t('footer.supportProject')}</h3>
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{t('footer.supportProject')}</h3>
             <p className="text-xs text-gray-600 mb-3">
               {t('footer.helpKeepGoing')}
             </p>
@@ -100,12 +100,12 @@ export default function Footer(): JSX.Element {
         </div>
 
         {/* Version & Copyright */}
-        <div className="mt-6 pt-6 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
           <p>
             © {new Date().getFullYear()} Edi Prifti. {t('footer.openSource')}.
           </p>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-1 bg-ocean-100 text-ocean-700 rounded font-mono">
+            <span className="px-2 py-1 bg-ocean-100 text-ocean-700 dark:bg-ocean-900 dark:text-ocean-300 rounded font-mono">
               {version}
             </span>
           </div>

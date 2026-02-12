@@ -32,26 +32,26 @@ export default function ReminderCard({
   const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24))
 
   const getStatusColor = () => {
-    if (!reminder.is_active) return 'border-gray-300 bg-gray-50'
-    if (daysDiff < 0) return 'border-red-300 bg-red-50'
-    if (daysDiff <= 7) return 'border-yellow-300 bg-yellow-50'
-    return 'border-green-300 bg-green-50'
+    if (!reminder.is_active) return 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50'
+    if (daysDiff < 0) return 'border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30'
+    if (daysDiff <= 7) return 'border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/30'
+    return 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30'
   }
 
   const getStatusBadge = () => {
     if (!reminder.is_active) {
-      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-gray-600 bg-gray-200 rounded">{t('inactive')}</span>
+      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 rounded">{t('inactive')}</span>
     }
     if (daysDiff < 0) {
-      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-red-600 bg-red-200 rounded">{t('overdue')} {Math.abs(daysDiff)}d</span>
+      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-red-600 dark:text-red-400 bg-red-200 dark:bg-red-900/50 rounded">{t('overdue')} {Math.abs(daysDiff)}d</span>
     }
     if (daysDiff === 0) {
-      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-yellow-600 bg-yellow-200 rounded">{t('dueSoon').replace(/\s*\(.*\)/, '')} today</span>
+      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-yellow-600 dark:text-yellow-400 bg-yellow-200 dark:bg-yellow-900/50 rounded">{t('dueSoon').replace(/\s*\(.*\)/, '')} today</span>
     }
     if (daysDiff <= 7) {
-      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-yellow-600 bg-yellow-200 rounded">{daysDiff}d</span>
+      return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-yellow-600 dark:text-yellow-400 bg-yellow-200 dark:bg-yellow-900/50 rounded">{daysDiff}d</span>
     }
-    return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-green-600 bg-green-200 rounded">{daysDiff}d</span>
+    return <span className="px-1.5 py-0.5 text-[10px] font-semibold text-green-600 dark:text-green-400 bg-green-200 dark:bg-green-900/50 rounded">{daysDiff}d</span>
   }
 
   const getReminderTypeEmoji = () => {
@@ -71,13 +71,13 @@ export default function ReminderCard({
       {/* Top row: emoji + title + badge + actions */}
       <div className="flex items-start p-3 gap-2">
         {/* Type emoji */}
-        <div className="w-10 h-10 flex-shrink-0 rounded-md flex items-center justify-center bg-white/50 text-xl">
+        <div className="w-10 h-10 flex-shrink-0 rounded-md flex items-center justify-center bg-white/50 dark:bg-gray-700/50 text-xl">
           {getReminderTypeEmoji()}
         </div>
 
         {/* Title + badge */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight truncate">
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm leading-tight truncate">
             {reminder.title}
           </h3>
           <div className="flex items-center gap-1 mt-1">
@@ -90,7 +90,7 @@ export default function ReminderCard({
           {reminder.is_active && (
             <button
               onClick={() => onComplete(reminder.id)}
-              className="p-1 text-green-600 hover:bg-green-100 rounded"
+              className="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded"
               title={tc('actions.markComplete', { defaultValue: 'Mark complete' })}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,7 +100,7 @@ export default function ReminderCard({
           )}
           <button
             onClick={() => onEdit(reminder)}
-            className="p-1 text-gray-600 hover:bg-gray-200 rounded"
+            className="p-1 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
             title={tc('actions.edit')}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,7 @@ export default function ReminderCard({
           </button>
           <button
             onClick={() => onDelete(reminder.id)}
-            className="p-1 text-red-600 hover:bg-red-100 rounded"
+            className="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded"
             title={tc('actions.delete')}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -120,17 +120,17 @@ export default function ReminderCard({
       </div>
 
       {/* Condensed info row */}
-      <div className="px-3 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600">
+      <div className="px-3 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
         {/* Frequency */}
         <span className="inline-flex items-center gap-0.5">
           <span className="text-gray-400">🔁</span>
-          <span className="font-medium text-gray-700">{t('frequency.days', { count: reminder.frequency_days })}</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">{t('frequency.days', { count: reminder.frequency_days })}</span>
         </span>
 
         {/* Next due */}
         <span className="inline-flex items-center gap-0.5">
           <span className="text-gray-400">📅</span>
-          <span className="font-medium text-gray-700">{format(dueDate, 'MMM d, yyyy')}</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">{format(dueDate, 'MMM d, yyyy')}</span>
         </span>
 
         {/* Last completed */}
@@ -145,7 +145,7 @@ export default function ReminderCard({
       {/* Description - compact */}
       {reminder.description && (
         <div className="px-3 pb-2">
-          <p className="text-[11px] text-gray-500 line-clamp-2 italic">{reminder.description}</p>
+          <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 italic">{reminder.description}</p>
         </div>
       )}
     </div>

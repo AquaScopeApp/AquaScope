@@ -117,5 +117,11 @@
     "syncFailedMessage": "{{count}} change(s) failed to sync. Will retry automatically.",
     "updateAvailable": "A new version of AquaScope is available. Reload to update?",
     "offlineReady": "AquaScope is ready for offline use."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggleTheme": "Toggle theme"
   }
 }

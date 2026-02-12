@@ -270,11 +270,11 @@ export default function ConsumablesPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'low_stock': return 'bg-amber-100 text-amber-800'
-      case 'depleted': return 'bg-gray-100 text-gray-800'
-      case 'expired': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
+      case 'low_stock': return 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300'
+      case 'depleted': return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+      case 'expired': return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
     }
   }
 
@@ -306,7 +306,7 @@ export default function ConsumablesPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-600">{t('loading')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('loading')}</div>
       </div>
     )
   }
@@ -316,8 +316,8 @@ export default function ConsumablesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
-          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => {
@@ -332,7 +332,7 @@ export default function ConsumablesPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <TankSelector
@@ -346,11 +346,11 @@ export default function ConsumablesPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByType')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('filterByType')}</label>
             <select
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('allTypes')}</option>
               {CONSUMABLE_TYPES.map((type) => (
@@ -362,11 +362,11 @@ export default function ConsumablesPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('filterByStatus')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('filterByStatus')}</label>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             >
               <option value="">{t('allStatus')}</option>
               {STATUSES.map((status) => (
@@ -380,12 +380,12 @@ export default function ConsumablesPage() {
       </div>
 
       {/* Archive toggle */}
-      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600">
+      <label className="inline-flex items-center cursor-pointer text-sm text-gray-600 dark:text-gray-400">
         <input
           type="checkbox"
           checked={showArchived}
           onChange={(e) => setShowArchived(e.target.checked)}
-          className="mr-2 rounded border-gray-300 text-ocean-600 focus:ring-ocean-500"
+          className="mr-2 rounded border-gray-300 dark:border-gray-600 text-ocean-600 focus:ring-ocean-500"
         />
         {tc('showArchivedItems')}
       </label>
@@ -405,13 +405,13 @@ export default function ConsumablesPage() {
             ? (depletionPct > 50 ? 'bg-green-500' : depletionPct > 25 ? 'bg-yellow-500' : depletionPct > 10 ? 'bg-orange-500' : 'bg-red-500')
             : ''
           return (
-            <div key={item.id} id={`card-${item.id}`} className={`bg-white rounded-lg shadow border border-gray-200 overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
+            <div key={item.id} id={`card-${item.id}`} className={`bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden ${item.is_archived ? 'opacity-60' : ''}`}>
               {/* Top row: name + badges + actions */}
               <div className="flex items-start p-3 gap-2">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-900 text-sm leading-tight truncate">{item.name}</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-sm leading-tight truncate">{item.name}</h3>
                   {(item.brand || item.product_name) && (
-                    <p className="text-xs text-gray-500 truncate">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                       {item.brand}{item.brand && item.product_name ? ' · ' : ''}{item.product_name}
                     </p>
                   )}
@@ -419,43 +419,43 @@ export default function ConsumablesPage() {
                     <span className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-full ${getStatusColor(item.status)}`}>
                       {formatStatus(item.status)}
                     </span>
-                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 text-gray-600">
+                    <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
                       {formatType(item.consumable_type)}
                     </span>
                     {item.is_archived && (
-                      <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-200 text-gray-700">{tc('archivedStatus')}</span>
+                      <span className="px-1.5 py-0.5 text-[10px] rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">{tc('archivedStatus')}</span>
                     )}
                   </div>
                 </div>
                 <div className="flex space-x-0.5 flex-shrink-0">
                   {item.is_archived ? (
-                    <button onClick={() => handleUnarchive(item.id)} className="p-1 text-green-600 hover:bg-green-100 rounded" title={tc('actions.unarchive')}>
+                    <button onClick={() => handleUnarchive(item.id)} className="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded" title={tc('actions.unarchive')}>
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4l3 3m0 0l3-3m-3 3V9" /></svg>
                     </button>
                   ) : (
-                    <button onClick={() => handleArchive(item.id)} className="p-1 text-gray-500 hover:bg-gray-100 rounded" title={tc('actions.archive')}>
+                    <button onClick={() => handleArchive(item.id)} className="p-1 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600 rounded" title={tc('actions.archive')}>
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
                     </button>
                   )}
-                  <button onClick={() => handleConvertToEquipment(item.id, item.name)} className="p-1 text-amber-600 hover:bg-amber-100 rounded" title={t('moveToEquipment', { defaultValue: 'Move to Equipment' })}>
+                  <button onClick={() => handleConvertToEquipment(item.id, item.name)} className="p-1 text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-900/30 rounded" title={t('moveToEquipment', { defaultValue: 'Move to Equipment' })}>
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                   </button>
-                  <button onClick={() => handleEdit(item)} className="p-1 text-gray-600 hover:bg-gray-200 rounded" title={tc('actions.edit')}>
+                  <button onClick={() => handleEdit(item)} className="p-1 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" title={tc('actions.edit')}>
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                   </button>
-                  <button onClick={() => handleDelete(item.id)} className="p-1 text-red-600 hover:bg-red-100 rounded" title={tc('actions.delete')}>
+                  <button onClick={() => handleDelete(item.id)} className="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded" title={tc('actions.delete')}>
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                   </button>
                 </div>
               </div>
 
               {/* Condensed info row */}
-              <div className="px-3 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600">
+              <div className="px-3 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
                 {item.quantity_on_hand !== null && (
-                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">📦</span><span className="font-medium text-gray-700">{item.quantity_on_hand} {item.quantity_unit || ''}</span></span>
+                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">📦</span><span className="font-medium text-gray-700 dark:text-gray-300">{item.quantity_on_hand} {item.quantity_unit || ''}</span></span>
                 )}
                 {item.purchase_price && (
-                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">💰</span><span className="font-medium text-gray-700">{displayPrice(item.purchase_price)}</span></span>
+                  <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">💰</span><span className="font-medium text-gray-700 dark:text-gray-300">{displayPrice(item.purchase_price)}</span></span>
                 )}
                 {item.purchase_date && (
                   <span className="inline-flex items-center gap-0.5"><span className="text-gray-400">📅</span><span>{new Date(item.purchase_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })}</span></span>
@@ -471,15 +471,15 @@ export default function ConsumablesPage() {
               {/* Depletion bar */}
               {depletionPct !== null && (
                 <div className="px-3 pb-2">
-                  <div className="flex justify-between text-[10px] text-gray-500 mb-0.5"><span>{t('depletion.remaining')}</span><span>{depletionPct}%</span></div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5"><div className={`h-1.5 rounded-full transition-all ${depletionColor}`} style={{ width: `${depletionPct}%` }} /></div>
+                  <div className="flex justify-between text-[10px] text-gray-500 dark:text-gray-400 mb-0.5"><span>{t('depletion.remaining')}</span><span>{depletionPct}%</span></div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5"><div className={`h-1.5 rounded-full transition-all ${depletionColor}`} style={{ width: `${depletionPct}%` }} /></div>
                 </div>
               )}
 
               {/* Notes */}
               {item.notes && (
                 <div className="px-3 pb-2">
-                  <div className={`text-[11px] text-gray-500 italic ${expandedNotes.has(item.id) ? '' : 'line-clamp-2'}`}>{item.notes}</div>
+                  <div className={`text-[11px] text-gray-500 dark:text-gray-400 italic ${expandedNotes.has(item.id) ? '' : 'line-clamp-2'}`}>{item.notes}</div>
                   {item.notes.length > 120 && (
                     <button onClick={() => toggleNotes(item.id)} className="text-[10px] text-ocean-600 hover:text-ocean-700 mt-0.5">
                       {expandedNotes.has(item.id) ? tc('showLess', { defaultValue: 'Show less' }) : tc('showMore', { defaultValue: 'Show more' })}
@@ -498,7 +498,7 @@ export default function ConsumablesPage() {
                   className="text-[10px] px-2 py-0.5 bg-ocean-50 text-ocean-700 rounded hover:bg-ocean-100 font-medium"
                 >{t('logUsage')}</button>
                 {item.usage_count > 0 && (
-                  <button onClick={() => handleViewUsage(item.id)} className="text-[10px] px-2 py-0.5 bg-gray-50 text-gray-700 rounded hover:bg-gray-100 font-medium">
+                  <button onClick={() => handleViewUsage(item.id)} className="text-[10px] px-2 py-0.5 bg-gray-50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-100 dark:hover:bg-gray-600 font-medium">
                     {t('usageHistory')} ({item.usage_count})
                   </button>
                 )}
@@ -506,13 +506,13 @@ export default function ConsumablesPage() {
 
               {/* Inline usage form */}
               {loggingUsageId === item.id && (
-                <div className="p-3 bg-gray-50 border-t border-gray-200 space-y-2">
+                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 space-y-2">
                   <div className="grid grid-cols-2 gap-2">
                     <input type="number" step="0.01" min="0" placeholder={t('form.quantityUsed')} value={usageData.quantity_used}
                       onChange={(e) => setUsageData({ ...usageData, quantity_used: e.target.value })}
-                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500" />
+                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100" />
                     <select value={usageData.quantity_unit} onChange={(e) => setUsageData({ ...usageData, quantity_unit: e.target.value })}
-                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500">
+                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100">
                       <option value="">{t('form.unit')}</option>
                       {QUANTITY_UNITS.map((u) => <option key={u} value={u}>{u}</option>)}
                     </select>
@@ -521,21 +521,21 @@ export default function ConsumablesPage() {
                     className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-ocean-500" />
                   <div className="flex gap-2">
                     <button onClick={() => handleLogUsage(item.id)} className="flex-1 text-xs px-2 py-1 bg-ocean-600 text-white rounded hover:bg-ocean-700 font-medium">{tc('actions.save')}</button>
-                    <button onClick={() => setLoggingUsageId(null)} className="text-xs px-2 py-1 border border-gray-300 text-gray-700 rounded hover:bg-gray-50">{tc('actions.cancel')}</button>
+                    <button onClick={() => setLoggingUsageId(null)} className="text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-50 dark:hover:bg-gray-700">{tc('actions.cancel')}</button>
                   </div>
                 </div>
               )}
 
               {/* Usage history */}
               {viewingUsageId === item.id && (
-                <div className="p-3 bg-gray-50 border-t border-gray-200">
-                  <h4 className="text-xs font-semibold text-gray-700 mb-2">{t('usageHistory')}</h4>
+                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
+                  <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{t('usageHistory')}</h4>
                   {usageHistory.length === 0 ? (
-                    <p className="text-xs text-gray-500">{t('noUsage')}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{t('noUsage')}</p>
                   ) : (
                     <div className="space-y-1 max-h-32 overflow-y-auto">
                       {usageHistory.map((usage) => (
-                        <div key={usage.id} className="text-xs text-gray-600 flex justify-between">
+                        <div key={usage.id} className="text-xs text-gray-600 dark:text-gray-400 flex justify-between">
                           <span>{new Date(usage.usage_date).toLocaleDateString()}</span>
                           <span className="font-medium">{usage.quantity_used} {usage.quantity_unit || ''}</span>
                         </div>
@@ -549,7 +549,7 @@ export default function ConsumablesPage() {
         })}
 
         {consumables.length === 0 && (
-          <div className="col-span-full text-center py-12 text-gray-500">
+          <div className="col-span-full text-center py-12 text-gray-500 dark:text-gray-400">
             {t('noConsumables')}
           </div>
         )}
@@ -567,16 +567,16 @@ export default function ConsumablesPage() {
       {/* Add/Edit Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
                 {editingId ? t('editConsumable') : t('addConsumable')}
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.name')} <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -585,19 +585,19 @@ export default function ConsumablesPage() {
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       required
                       placeholder="e.g., Red Sea Coral Pro Salt, Seachem Prime"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.tank')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.tank_id}
                       onChange={(e) => setFormData({ ...formData, tank_id: e.target.value })}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {tanks.map((tank) => (
                         <option key={tank.id} value={tank.id}>
@@ -608,14 +608,14 @@ export default function ConsumablesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.type')} <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.consumable_type}
                       onChange={(e) => setFormData({ ...formData, consumable_type: e.target.value })}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {CONSUMABLE_TYPES.map((type) => (
                         <option key={type} value={type}>
@@ -626,7 +626,7 @@ export default function ConsumablesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.brand')}
                     </label>
                     <input
@@ -634,12 +634,12 @@ export default function ConsumablesPage() {
                       value={formData.brand || ''}
                       onChange={(e) => setFormData({ ...formData, brand: e.target.value || null })}
                       placeholder="e.g., Red Sea, Seachem, Tropic Marin"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.productName')}
                     </label>
                     <input
@@ -647,12 +647,12 @@ export default function ConsumablesPage() {
                       value={formData.product_name || ''}
                       onChange={(e) => setFormData({ ...formData, product_name: e.target.value || null })}
                       placeholder="e.g., Coral Pro Salt 7kg"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.quantity')}
                     </label>
                     <input
@@ -662,18 +662,18 @@ export default function ConsumablesPage() {
                       value={formData.quantity_on_hand ?? ''}
                       onChange={(e) => setFormData({ ...formData, quantity_on_hand: e.target.value ? parseFloat(e.target.value) : null })}
                       placeholder="e.g., 500"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.unit')}
                     </label>
                     <select
                       value={formData.quantity_unit || ''}
                       onChange={(e) => setFormData({ ...formData, quantity_unit: e.target.value || null })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       <option value="">--</option>
                       {QUANTITY_UNITS.map((u) => (
@@ -683,19 +683,19 @@ export default function ConsumablesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.purchaseDate')}
                     </label>
                     <input
                       type="date"
                       value={formData.purchase_date || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value || null })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.price')}
                     </label>
                     <input
@@ -703,30 +703,30 @@ export default function ConsumablesPage() {
                       value={formData.purchase_price || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_price: e.target.value || null })}
                       placeholder="e.g., 45€, $50"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.expirationDate')}
                     </label>
                     <input
                       type="date"
                       value={formData.expiration_date || ''}
                       onChange={(e) => setFormData({ ...formData, expiration_date: e.target.value || null })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.status')}
                     </label>
                     <select
                       value={formData.status || 'active'}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     >
                       {STATUSES.map((stat) => (
                         <option key={stat} value={stat}>
@@ -737,7 +737,7 @@ export default function ConsumablesPage() {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.purchaseUrl')}
                     </label>
                     <input
@@ -745,12 +745,12 @@ export default function ConsumablesPage() {
                       value={formData.purchase_url || ''}
                       onChange={(e) => setFormData({ ...formData, purchase_url: e.target.value || null })}
                       placeholder="https://..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       {t('form.notes')}
                     </label>
                     <textarea
@@ -758,12 +758,12 @@ export default function ConsumablesPage() {
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value || null })}
                       rows={3}
                       placeholder="Dosing instructions, storage notes, etc."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end space-x-3 pt-4 border-t">
+                <div className="flex justify-end space-x-3 pt-4 border-t dark:border-gray-700">
                   <button
                     type="button"
                     onClick={() => {
@@ -771,7 +771,7 @@ export default function ConsumablesPage() {
                       setEditingId(null)
                       resetForm()
                     }}
-                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+                    className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
                     {tc('actions.cancel')}
                   </button>
