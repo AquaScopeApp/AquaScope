@@ -71,6 +71,12 @@ export default function Dashboard() {
             tank.image_url ? tanksApi.getImageBlobUrl(tank.id).catch(() => null) : Promise.resolve(null),
           ])
 
+          const defaultImages: Record<string, string> = {
+            saltwater: '/images/defaults/saltwater.png',
+            freshwater: '/images/defaults/freshwater.png',
+            brackish: '/images/defaults/brackish.png',
+          }
+
           return {
             tank,
             equipmentCount: equipment.length,
@@ -79,7 +85,7 @@ export default function Dashboard() {
             notesCount: notes.length,
             maintenanceCount: maintenance.length,
             consumablesCount: consumables.length,
-            imageUrl,
+            imageUrl: imageUrl || defaultImages[tank.water_type || ''] || null,
             daysUp: calculateDaysUp(tank.setup_date),
           }
         })
@@ -210,21 +216,30 @@ export default function Dashboard() {
                   <div className="flex flex-col md:flex-row">
                     {/* Left Section - Tank Info with background image */}
                     <div className={`relative p-6 md:w-64 flex flex-col justify-between border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 overflow-hidden ${
-                      tank.water_type === 'freshwater' ? 'bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50' :
-                      tank.water_type === 'brackish' ? 'bg-gradient-to-br from-teal-50 via-teal-100 to-teal-50' :
-                      'bg-gradient-to-br from-ocean-50 via-ocean-100 to-ocean-50'
+                      imageUrl
+                        ? 'bg-gray-900'
+                        : tank.water_type === 'freshwater' ? 'bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-50 dark:from-emerald-900/40 dark:via-emerald-950/30 dark:to-emerald-900/40' :
+                          tank.water_type === 'brackish' ? 'bg-gradient-to-br from-teal-50 via-teal-100 to-teal-50 dark:from-teal-900/40 dark:via-teal-950/30 dark:to-teal-900/40' :
+                          'bg-gradient-to-br from-ocean-50 via-ocean-100 to-ocean-50 dark:from-ocean-900/40 dark:via-ocean-950/30 dark:to-ocean-900/40'
                     }`}>
-                      {/* Background tank image with transparency */}
+                      {/* Background tank image */}
                       {imageUrl && (
-                        <div
-                          className="absolute inset-0 bg-cover bg-center opacity-20"
-                          style={{ backgroundImage: `url(${imageUrl})` }}
-                        />
+                        <>
+                          <div
+                            className="absolute inset-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${imageUrl})` }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+                        </>
                       )}
                       <div className="relative z-10">
                         <div className="flex items-start justify-between">
                           <Link to={`/tanks/${tank.id}`} className="group flex-1">
-                            <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 group-hover:text-ocean-600 transition-colors">
+                            <h3 className={`font-bold text-xl transition-colors ${
+                              imageUrl
+                                ? 'text-white group-hover:text-ocean-300 drop-shadow-md'
+                                : 'text-gray-900 dark:text-gray-100 group-hover:text-ocean-600'
+                            }`}>
                               {tank.name}
                             </h3>
                           </Link>
@@ -234,7 +249,9 @@ export default function Dashboard() {
                             className={`ml-2 p-1 rounded-md transition-colors flex-shrink-0 ${
                               isDefault
                                 ? 'text-yellow-400 hover:text-yellow-500'
-                                : 'text-gray-300 hover:text-yellow-400'
+                                : imageUrl
+                                  ? 'text-white/60 hover:text-yellow-400'
+                                  : 'text-gray-300 hover:text-yellow-400'
                             }`}
                             title={isDefault ? t('defaultTank') : t('setDefault')}
                           >
@@ -243,29 +260,36 @@ export default function Dashboard() {
                             </svg>
                           </button>
                         </div>
-                        {(tank.water_type || tank.aquarium_subtype) && (
-                          <div className="flex flex-wrap gap-1.5 mt-1.5">
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
-                              tank.water_type === 'freshwater' ? 'bg-emerald-200 text-emerald-800' :
-                              tank.water_type === 'brackish' ? 'bg-teal-200 text-teal-800' :
-                              'bg-blue-200 text-blue-800'
-                            }`}>
-                              {tank.water_type === 'freshwater' ? '🌿' : tank.water_type === 'brackish' ? '🌊' : '🪸'}{' '}
-                              {tank.water_type?.charAt(0).toUpperCase()}{tank.water_type?.slice(1)}
-                            </span>
+                        {(tank.water_type || tank.aquarium_subtype || tank.total_volume_liters > 0) && (
+                          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            {tank.water_type && (
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                tank.water_type === 'freshwater' ? 'bg-emerald-200 text-emerald-800' :
+                                tank.water_type === 'brackish' ? 'bg-teal-200 text-teal-800' :
+                                'bg-blue-200 text-blue-800'
+                              }`}>
+                                {tank.water_type === 'freshwater' ? '🌿' : tank.water_type === 'brackish' ? '🌊' : '🪸'}{' '}
+                                {tank.water_type?.charAt(0).toUpperCase()}{tank.water_type?.slice(1)}
+                              </span>
+                            )}
                             {tank.aquarium_subtype && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-white/70 dark:bg-gray-800/70 text-gray-600 dark:text-gray-400 capitalize">
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium capitalize ${
+                                imageUrl
+                                  ? 'bg-black/40 text-white/90 backdrop-blur-sm'
+                                  : 'bg-white/70 dark:bg-gray-800/70 text-gray-600 dark:text-gray-400'
+                              }`}>
                                 {tank.aquarium_subtype.replace(/_/g, ' ')}
                               </span>
                             )}
-                          </div>
-                        )}
-                        {tank.total_volume_liters > 0 && (
-                          <div className="mt-2 flex items-center">
-                            <span className="text-2xl font-bold text-ocean-700">
-                              {tank.total_volume_liters}
-                            </span>
-                            <span className="ml-1 text-sm text-ocean-600 font-medium">{t('liters')}</span>
+                            {tank.total_volume_liters > 0 && (
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                imageUrl
+                                  ? 'bg-black/40 text-white/90 backdrop-blur-sm'
+                                  : 'bg-ocean-100 text-ocean-700 dark:bg-ocean-900/50 dark:text-ocean-300'
+                              }`}>
+                                {tank.total_volume_liters} {t('liters')}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
@@ -277,7 +301,7 @@ export default function Dashboard() {
                           </div>
                         )}
                         {tank.setup_date && (
-                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                          <div className={`text-xs ${imageUrl ? 'text-white/70' : 'text-gray-600 dark:text-gray-400'}`}>
                             {t('setup')} {new Date(tank.setup_date).toLocaleDateString()}
                           </div>
                         )}
