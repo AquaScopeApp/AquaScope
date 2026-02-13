@@ -1,0 +1,26 @@
+name: Deploy Landing Page
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'landing/**'
+
+jobs:
+  deploy:
+    name: Sync to AquaScopeApp.github.io
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to Pages repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          external_repository: AquaScopeApp/AquaScopeApp.github.io
+          publish_branch: main
+          publish_dir: ./landing
+          exclude_assets: 'node_modules,capture.mjs,package.json,package-lock.json'
+          commit_message: 'deploy: sync landing page from main repo'
