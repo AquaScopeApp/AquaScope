@@ -138,6 +138,27 @@ async function loginViaToken(page, email, password) {
   await page.waitForTimeout(2000);
   await page.screenshot({ path: `${OUT}/screenshot-livestock.png` });
 
+  // Compatibility checker (open modal from livestock page)
+  console.log('Capturing compatibility checker...');
+  const compatBtn = await page.$('button:has-text("Compatibility")');
+  if (compatBtn) {
+    await compatBtn.click();
+    await page.waitForTimeout(2000);
+    // Switch to Matrix tab for a more visual screenshot
+    const matrixTab = await page.$('button:has-text("Matrix")');
+    if (matrixTab) {
+      await matrixTab.click();
+      await page.waitForTimeout(1500);
+    }
+    await page.screenshot({ path: `${OUT}/screenshot-compatibility.png` });
+    // Close modal
+    const closeBtn = await page.$('button:has-text("Close")');
+    if (closeBtn) await closeBtn.click();
+    await page.waitForTimeout(500);
+  } else {
+    console.log('  Compatibility button not found, skipping');
+  }
+
   // Finances
   console.log('Capturing finances...');
   await page.goto(`${BASE}/finances`, { waitUntil: 'networkidle' });
@@ -167,6 +188,12 @@ async function loginViaToken(page, email, password) {
     console.log('Switching to admin account...');
     await page.evaluate(() => localStorage.clear());
     await loginViaToken(page, ADMIN_EMAIL, ADMIN_PASS);
+
+    // Re-enable dark mode after localStorage was cleared
+    await page.evaluate(() => {
+      localStorage.setItem('aquascope_theme', 'dark');
+      document.documentElement.classList.add('dark');
+    });
 
     console.log('Capturing admin (modules tab)...');
     await page.goto(`${BASE}/admin`, { waitUntil: 'networkidle' });
