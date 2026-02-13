@@ -101,7 +101,8 @@ jobs:
       - name: Build backend image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
+          context: .
+          file: backend/Dockerfile
           push: false
           tags: reeflab-backend:test
           cache-from: type=gha
@@ -110,7 +111,8 @@ jobs:
       - name: Build frontend image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
+          context: .
+          file: frontend/Dockerfile
           push: false
           tags: reeflab-frontend:test
           cache-from: type=gha
