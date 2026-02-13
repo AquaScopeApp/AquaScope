@@ -117,10 +117,17 @@ If you find AquaScope useful, consider supporting its development:
 
 ---
 
-## What's New in v1.9.0
+## What's New in v1.10.0
+
+- **Grouped Calculators** — Water Change + Dosing calculators combined under a single "Calculators" page with default tank auto-selection
+- **Temperature & pH auto-match** — replacement water values auto-set to tank readings (no false arrows)
+- **Landing page enhancements** — Compatibility Checker science section, Calculators feature section with visual mockups
+- **Bug fixes** — empty parameter data fallback, species-traits.json CI fix, demo screenshots
+
+### Previous: v1.9.0
 
 - **Dark mode** with system-aware toggle and full component coverage
-- **Tank maturity score** — gamified 0-100 gauge rewarding age, stability, and diversity ([docs](docs/MATURITY_SCORE.md))
+- **Tank maturity score** — gamified 0-100 gauge rewarding age, stability, and diversity ([docs](docs/maturity-score.md))
 - **Dashboard sparklines** — inline 7-day parameter trend charts on tank cards
 - **CSV export** for parameter data
 - **Shareable public tank profiles** — read-only links for sharing with the community
@@ -467,8 +474,9 @@ Generate a new token in the InfluxDB UI and update your `.env` file.
 - [x] ~~Shareable public tank profiles~~ (v1.9.0)
 - [x] ~~Dark mode~~ (v1.9.0)
 - [x] ~~Species compatibility checker~~ (v1.9.0)
-- [ ] Email notifications for maintenance reminders
 - [x] ~~Water change calculator~~ (v1.9.0)
+- [x] ~~Grouped calculators~~ (v1.10.0)
+- [ ] Email notifications for maintenance reminders
 - [ ] Integration with reef controllers (ReefPi, Neptune)
 - [ ] Native mobile app (Capacitor — in progress)
 - [ ] Advanced analytics and trend prediction

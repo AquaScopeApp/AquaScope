@@ -5,7 +5,28 @@ All notable changes to AquaScope will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.9.0] - 2026-02-13
+## [1.10.0] - 2026-02-13
+
+### Added
+
+#### Grouped Calculators Page
+- **Combined Water Change + Dosing calculators** under a single "Calculators" nav entry (🧮)
+- Dosing Calculator accessible as modal from the Water Change Calculator page
+- Default tank auto-selection via user profile preference
+- **Temperature & pH auto-match** — replacement water values auto-set to tank's current readings (always show "—" not false arrows)
+- Moved Calculators before Finances in sidebar navigation
+
+#### Landing Page Enhancements
+- **Compatibility Checker science section** with animated heatmap mockup and feature descriptions
+- **Calculators feature section** with water change slider mockup and projected parameter results
+- Updated feature tier cards (Calculators replaces standalone Dosing Calculator)
+
+### Fixed
+- Water Change Calculator "No parameter data" when ranges API returns empty — fallback to latestParams keys
+- species-traits.json missing from git (CI Docker build fix)
+- Screenshots recaptured with demo data instead of personal data
+
+## [1.9.0] - 2026-02-12
 
 ### Added
 
@@ -975,6 +996,7 @@ All releases are tagged in Git and available on GitHub:
 - `v1.7.0` - Consumables module, visual timeline, timeline enhancements
 - `v1.8.0` - Animated banners, banner editor, selective export/import, landing page
 - `v1.9.0` - Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
+- `v1.10.0` - Grouped calculators, landing page enhancements, compatibility + calculator sections
 
 ## Versioning Strategy
 
@@ -996,6 +1018,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 11** (v1.7.0): Consumables module, visual timeline
 - ✅ **Phase 12** (v1.8.0): Animated banners, banner editor, export/import, landing page
 - ✅ **Phase 13** (v1.9.0): Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
+- ✅ **Phase 14** (v1.10.0): Grouped calculators, landing page enhancements
 
 ## Contributing
 

@@ -198,3 +198,38 @@ Implemented in v1.9.0: sparklines, maturity badges, alert badges, tank images, a
 - Community-contributed species traits submissions
 - Per-species detailed compatibility profiles
 - Compatibility score aggregation per tank
+
+---
+
+## Parameter Trend Predictions
+
+**Priority**: Medium
+**Status**: Planned
+
+Using the 90-day parameter history, show simple linear trend lines on the Parameters page and dashboard. Example: "Ca dropping ~2 ppm/day, will hit 400 in 5 days". Helps aquarists anticipate problems before they happen.
+
+### Scope
+
+- Linear regression on the last 90 days of readings per parameter
+- Trend direction indicator (rising, falling, stable) on dashboard sparklines
+- Predicted value at a future date (e.g., 7 days, 14 days)
+- Warning when a trend will cross min/max thresholds within the prediction window
+- Visual trend line overlay on the parameter chart
+
+---
+
+## Parameter Alerting / Thresholds
+
+**Priority**: Medium
+**Status**: Planned
+
+Set min/max ranges per parameter per tank and get alerts when a reading is out of range. The parameter presets infrastructure already exists — this adds the alert trigger logic and notification delivery.
+
+### Scope
+
+- Per-tank, per-parameter threshold configuration (min, max, warning zones)
+- Dashboard badge alerts when parameters are out of range
+- Push notifications (via service worker for PWA)
+- Optional email notifications for critical thresholds
+- Alert history log
+- Snooze/acknowledge alerts to avoid repeated notifications

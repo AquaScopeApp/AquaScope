@@ -83,7 +83,7 @@ The star feature of v1.2.0 is the completely redesigned tank management system:
   - Comprehensive features list updated with all capabilities
 
 - **GIF Capture Documentation**:
-  - `docs/CAPTURING-ANIMATION.md` - Comprehensive guide with 6 methods
+  - `docs/capturing-animation.md` - Comprehensive guide with 6 methods
   - `scripts/capture-tank-animation.js` - Automated Puppeteer capture
   - `scripts/quick-gif.sh` - Quick bash script for manual recordings
   - `docs/images/README.md` - Quick reference with recommended settings

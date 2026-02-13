@@ -31,7 +31,7 @@
   - New CI run triggered
 
 - [x] **Step 5**: Created GitHub Release documentation
-  - Comprehensive release notes in `docs/RELEASE-v1.2.0.md`
+  - Comprehensive release notes in `docs/release-v1.2.0.md`
   - Release creation script in `scripts/create-github-release.sh`
 
 ## 🎯 Current Status
@@ -73,8 +73,8 @@
 
 ### New Files
 - `.github/workflows/ci.yml` - GitHub Actions CI/CD
-- `docs/CAPTURING-ANIMATION.md` - GIF capture guide
-- `docs/RELEASE-v1.2.0.md` - Release notes
+- `docs/capturing-animation.md` - GIF capture guide
+- `docs/release-v1.2.0.md` - Release notes
 - `docs/images/README.md` - Image docs
 - `docs/images/tank-animation-placeholder.svg` - Animated SVG
 - `scripts/capture-tank-animation.js` - Automated capture
@@ -112,7 +112,7 @@
    - Visit: https://github.com/eprifti/reeflab/releases/new
    - Tag: `v1.2.0` (select existing tag)
    - Title: `ReefLab v1.2.0 - Enhanced Tank Management Hub`
-   - Description: Copy from `docs/RELEASE-v1.2.0.md`
+   - Description: Copy from `docs/release-v1.2.0.md`
    - Click "Publish release"
 
 3. **Test Application** (15 minutes)
@@ -126,7 +126,7 @@
 ### Optional Actions
 
 4. **Create Animated GIF** (30 minutes)
-   Follow the guide in `docs/CAPTURING-ANIMATION.md`:
+   Follow the guide in `docs/capturing-animation.md`:
 
    **Quick Method**:
    ```bash
@@ -193,8 +193,8 @@ open https://github.com/eprifti/reeflab/actions
 ### Documentation
 - README: [GitHub](https://github.com/eprifti/reeflab#readme)
 - CHANGELOG: [CHANGELOG.md](../CHANGELOG.md)
-- Release Notes: [RELEASE-v1.2.0.md](RELEASE-v1.2.0.md)
-- GIF Guide: [CAPTURING-ANIMATION.md](CAPTURING-ANIMATION.md)
+- Release Notes: [release-v1.2.0.md](release-v1.2.0.md)
+- GIF Guide: [capturing-animation.md](capturing-animation.md)
 
 ### Links
 - **Repository**: https://github.com/eprifti/reeflab

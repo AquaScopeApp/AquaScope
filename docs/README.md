@@ -1,23 +1,23 @@
-# ReefLab Documentation
+# AquaScope Documentation
 
-Welcome to the ReefLab documentation! This folder contains comprehensive guides, API references, and technical documentation for the ReefLab reef aquarium management application.
+Welcome to the AquaScope documentation! This folder contains comprehensive guides, API references, and technical documentation.
 
 ## Getting Started
 
-- **[QUICK_START.md](QUICK_START.md)** - Quick start guide for new users
+- **[quick-start.md](quick-start.md)** - Quick start guide for new users
   - Installation instructions
   - First-time setup
   - Basic usage walkthrough
 
 ## API Documentation
 
-- **[API.md](API.md)** - Complete API reference
+- **[api.md](api.md)** - Complete API reference
   - All available endpoints
   - Request/response formats
   - Authentication details
   - Error codes and handling
 
-- **[API_GUIDE.md](API_GUIDE.md)** - API integration guide
+- **[api-guide.md](api-guide.md)** - API integration guide
   - Usage examples
   - Code samples in multiple languages
   - Best practices for API consumption
@@ -25,7 +25,7 @@ Welcome to the ReefLab documentation! This folder contains comprehensive guides,
 
 ## Deployment & Operations
 
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deployment instructions
+- **[deployment.md](deployment.md)** - Deployment instructions
   - Docker Compose deployment
   - Rebuild and restart procedures
   - Container management
@@ -33,7 +33,7 @@ Welcome to the ReefLab documentation! This folder contains comprehensive guides,
 
 ## Testing
 
-- **[TESTING.md](TESTING.md)** - Testing guide
+- **[testing.md](testing.md)** - Testing guide
   - Running backend tests (Pytest)
   - Running frontend tests (Vitest)
   - Writing new tests
@@ -42,23 +42,33 @@ Welcome to the ReefLab documentation! This folder contains comprehensive guides,
 
 ## Feature Documentation
 
-- **[ICP_TESTING.md](ICP_TESTING.md)** - ICP test management
+- **[icp-testing.md](icp-testing.md)** - ICP test management
   - Uploading ICP test results
   - Supported lab providers
   - Element tracking and scoring
   - Comparing test results
 
-- **[PHOTO_FEATURES.md](PHOTO_FEATURES.md)** - Photo gallery features
+- **[photo-features.md](photo-features.md)** - Photo gallery features
   - Uploading photos
   - Drag-and-drop functionality
   - Photo organization
   - Tank-specific galleries
 
-- **[MATURITY_SCORE.md](MATURITY_SCORE.md)** - Tank Maturity Score
+- **[maturity-score.md](maturity-score.md)** - Tank Maturity Score
   - Scoring formula (Age + Stability + Diversity)
   - Maturity levels and badge colors
   - API response format
   - Architecture and performance notes
+
+- **[compatibility-checker.md](compatibility-checker.md)** - Livestock Compatibility Checker
+  - 8-rule compatibility engine
+  - Species knowledge base
+  - Heatmap matrix and network graph views
+
+- **[water-change-calculator.md](water-change-calculator.md)** - Water Change Calculator
+  - Dilution formula and impact prediction
+  - Salt mix presets
+  - Target parameter reverse calculation
 
 ## Release Information
 
@@ -68,36 +78,36 @@ Welcome to the ReefLab documentation! This folder contains comprehensive guides,
   - Deprecations
   - Migration guides
 
-- **[RELEASE_NOTES_v1.0.0.md](RELEASE_NOTES_v1.0.0.md)** - v1.0.0 release notes
+- **[release-notes-v1.0.0.md](release-notes-v1.0.0.md)** - v1.0.0 release notes
   - Initial release features
   - Known issues
   - Installation instructions
 
-- **[RELEASE-v1.2.0.md](RELEASE-v1.2.0.md)** - v1.2.0 release notes
+- **[release-v1.2.0.md](release-v1.2.0.md)** - v1.2.0 release notes
   - Tank Management Hub
   - Tank events and timeline
   - Tank image upload
   - New features and improvements
 
-- **[DEPLOYMENT-SUMMARY-v1.2.0.md](DEPLOYMENT-SUMMARY-v1.2.0.md)** - v1.2.0 deployment summary
+- **[deployment-summary-v1.2.0.md](deployment-summary-v1.2.0.md)** - v1.2.0 deployment summary
   - Deployment verification
   - Post-deployment checklist
   - Performance improvements
 
 ## Technical Documentation
 
-- **[I18N-IMPLEMENTATION-PLAN.md](I18N-IMPLEMENTATION-PLAN.md)** - Internationalization plan
+- **[i18n-implementation-plan.md](i18n-implementation-plan.md)** - Internationalization plan
   - Multi-language support roadmap
   - i18n framework selection
   - Translation workflow
 
-- **[CI-TROUBLESHOOTING.md](CI-TROUBLESHOOTING.md)** - CI/CD troubleshooting
+- **[ci-troubleshooting.md](ci-troubleshooting.md)** - CI/CD troubleshooting
   - GitHub Actions workflow issues
   - Build failures
   - Test failures
   - Deployment issues
 
-- **[CAPTURING-ANIMATION.md](CAPTURING-ANIMATION.md)** - Animation capture guide
+- **[capturing-animation.md](capturing-animation.md)** - Animation capture guide
   - Capturing tank animations
   - GIF generation
   - Screenshot utilities
@@ -112,8 +122,9 @@ Welcome to the ReefLab documentation! This folder contains comprehensive guides,
 
 ## Need Help?
 
-- **GitHub Issues**: [github.com/eprifti/reeflab/issues](https://github.com/eprifti/reeflab/issues)
-- **Discussions**: [github.com/eprifti/reeflab/discussions](https://github.com/eprifti/reeflab/discussions)
+- **GitHub Repository**: [github.com/eprifti/AquaScope](https://github.com/eprifti/AquaScope)
+- **Issues**: [GitHub Issues](https://github.com/eprifti/AquaScope/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/eprifti/AquaScope/discussions)
 - **Main README**: [../README.md](../README.md)
 
 ## Contributing to Documentation
@@ -128,4 +139,4 @@ Documentation improvements are always welcome! When contributing:
 
 ---
 
-Made with ❤️ for the reef keeping community
+Made with love for the aquarium keeping community
