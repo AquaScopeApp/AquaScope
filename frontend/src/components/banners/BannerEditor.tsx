@@ -3,7 +3,7 @@ import Cropper from 'react-easy-crop'
 import type { Area } from 'react-easy-crop'
 import { banners, type BannerTheme } from './index'
 import { adminApi } from '../../api'
-import { useCurrency } from '../../hooks/useCurrency'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import { useTranslation } from 'react-i18next'
 import getCroppedImg from '../../utils/cropImage'
 
@@ -20,7 +20,7 @@ const themeOptions: { key: BannerTheme; labelKey: string; descKey: string }[] = 
 
 export default function BannerEditor({ isOpen, onClose, currentTheme }: BannerEditorProps) {
   const { t } = useTranslation('dashboard')
-  const { refresh: refreshCurrency } = useCurrency()
+  const { refresh: refreshCurrency } = useRegionalSettings()
   const [selectedTheme, setSelectedTheme] = useState<BannerTheme>(currentTheme)
   const [step, setStep] = useState<'select' | 'crop'>('select')
   const [imageSrc, setImageSrc] = useState<string | null>(null)

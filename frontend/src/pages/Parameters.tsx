@@ -14,6 +14,7 @@ import ParameterChart from '../components/parameters/ParameterChart'
 import ParameterForm from '../components/parameters/ParameterForm'
 import TankSelector from '../components/common/TankSelector'
 import { useAuth } from '../hooks/useAuth'
+import { useRegionalSettings } from '../hooks/useRegionalSettings'
 import DosingCalculator from '../components/dosing/DosingCalculator'
 import type { Tank, ParameterReading } from '../types'
 
@@ -21,6 +22,7 @@ export default function Parameters() {
   const { t } = useTranslation('parameters')
   const { t: tc } = useTranslation('common')
   const { user } = useAuth()
+  const { tempLabel, celsiusToDisplay } = useRegionalSettings()
   const [searchParams] = useSearchParams()
   const [tanks, setTanks] = useState<Tank[]>([])
   const [selectedTank, setSelectedTank] = useState<string | null>(searchParams.get('tank'))
@@ -558,16 +560,17 @@ export default function Parameters() {
                             />
                           ) : (
                             (() => {
+                              const displayVal = paramType === 'temperature' ? celsiusToDisplay(reading.value, 2) : reading.value
                               if (paramType === 'salinity' || paramType === 'phosphate') {
-                                return reading.value.toFixed(3)
+                                return displayVal.toFixed(3)
                               } else {
-                                return reading.value.toFixed(2)
+                                return displayVal.toFixed(2)
                               }
                             })()
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          {range?.unit || ''}
+                          {paramType === 'temperature' ? tempLabel : (range?.unit || '')}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           {isEditing ? (

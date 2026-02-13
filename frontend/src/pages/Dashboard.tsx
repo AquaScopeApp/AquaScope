@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
-import { useCurrency } from '../hooks/useCurrency'
+import { useRegionalSettings } from '../hooks/useRegionalSettings'
 import { dashboardApi, tanksApi, maintenanceApi, adminApi } from '../api'
 import { banners } from '../components/banners'
 import BannerEditor from '../components/banners/BannerEditor'
@@ -19,7 +19,7 @@ interface TankCard {
 
 export default function Dashboard() {
   const { user, refreshUser } = useAuth()
-  const { bannerTheme } = useCurrency()
+  const { bannerTheme, formatVolume } = useRegionalSettings()
   const { t } = useTranslation('dashboard')
   const navigate = useNavigate()
   const BannerComponent = banners[bannerTheme] || banners.reef
@@ -294,7 +294,7 @@ export default function Dashboard() {
                                   ? 'bg-black/40 text-white/90 backdrop-blur-sm'
                                   : 'bg-ocean-100 text-ocean-700 dark:bg-ocean-900/50 dark:text-ocean-300'
                               }`}>
-                                {summary.total_volume_liters} {t('liters')}
+                                {formatVolume(summary.total_volume_liters)}
                               </span>
                             )}
                           </div>

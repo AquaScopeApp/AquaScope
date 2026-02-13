@@ -34,7 +34,7 @@ i18n
       lookupLocalStorage: 'aquascope_language',
     },
 
-    ns: ['common', 'tanks', 'dashboard', 'parameters', 'maintenance', 'livestock', 'icptests', 'notes', 'photos', 'equipment', 'consumables', 'finances', 'dosing', 'compatibility', 'waterchange', 'feeding', 'diseases'],
+    ns: ['common', 'tanks', 'dashboard', 'parameters', 'maintenance', 'livestock', 'icptests', 'notes', 'photos', 'equipment', 'consumables', 'finances', 'dosing', 'compatibility', 'waterchange', 'feeding', 'diseases', 'regional'],
     defaultNS: 'common',
   })
 

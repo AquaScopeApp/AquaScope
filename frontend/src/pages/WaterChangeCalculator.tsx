@@ -14,6 +14,7 @@ import type { Tank, LatestParameters } from '../types'
 import TankSelector from '../components/common/TankSelector'
 import DosingCalculator from '../components/dosing/DosingCalculator'
 import { useAuth } from '../hooks/useAuth'
+import { useRegionalSettings } from '../hooks/useRegionalSettings'
 import {
   buildParameterRangesMap,
   getActiveParameterOrder,
@@ -43,6 +44,7 @@ export default function WaterChangeCalculator() {
   const { t: tc } = useTranslation('common')
   const [searchParams] = useSearchParams()
   const { user } = useAuth()
+  const { formatVolume, litersToDisplay } = useRegionalSettings()
 
   // Tank & data
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -287,16 +289,16 @@ export default function WaterChangeCalculator() {
         <div className="flex gap-4 mb-6 text-sm">
           {selectedTankObj.display_volume_liters && (
             <div className="px-3 py-1.5 bg-ocean-50 dark:bg-ocean-900/30 text-ocean-700 dark:text-ocean-300 rounded-md">
-              <span className="font-medium">{t('volume.display')}:</span> {selectedTankObj.display_volume_liters} L
+              <span className="font-medium">{t('volume.display')}:</span> {formatVolume(selectedTankObj.display_volume_liters)}
             </div>
           )}
           {selectedTankObj.sump_volume_liters && (
             <div className="px-3 py-1.5 bg-ocean-50 dark:bg-ocean-900/30 text-ocean-700 dark:text-ocean-300 rounded-md">
-              <span className="font-medium">{t('volume.sump')}:</span> {selectedTankObj.sump_volume_liters} L
+              <span className="font-medium">{t('volume.sump')}:</span> {formatVolume(selectedTankObj.sump_volume_liters)}
             </div>
           )}
           <div className="px-3 py-1.5 bg-ocean-100 dark:bg-ocean-900/50 text-ocean-800 dark:text-ocean-200 rounded-md font-semibold">
-            {t('volume.total')}: {totalVolume} L
+            {t('volume.total')}: {formatVolume(totalVolume)}
           </div>
         </div>
       )}
@@ -436,7 +438,7 @@ export default function WaterChangeCalculator() {
                 <span className="text-sm text-gray-500 dark:text-gray-400">%</span>
               </div>
               <span className="text-sm font-medium text-ocean-600 dark:text-ocean-400 whitespace-nowrap">
-                {t('impact.liters', { value: litersToChange })}
+                {t('impact.liters', { value: litersToDisplay(litersToChange) })}
               </span>
             </div>
           </div>
@@ -602,9 +604,9 @@ export default function WaterChangeCalculator() {
                 <div className="flex items-baseline justify-between">
                   <span className="text-sm text-ocean-600 dark:text-ocean-400">{t('target.result.volume')}</span>
                   <span className="text-lg font-semibold text-ocean-700 dark:text-ocean-300">
-                    {targetResult.requiredLiters} L
+                    {formatVolume(targetResult.requiredLiters)}
                     <span className="text-xs font-normal text-ocean-500 dark:text-ocean-400 ml-1">
-                      {t('target.result.ofTotal', { total: totalVolume })}
+                      {t('target.result.ofTotal', { total: litersToDisplay(totalVolume) })}
                     </span>
                   </span>
                 </div>
@@ -618,7 +620,7 @@ export default function WaterChangeCalculator() {
                     {t('target.split.description', {
                       count: targetResult.recommendedChanges,
                       percent: targetResult.perChangePercentage,
-                      liters: targetResult.perChangeLiters,
+                      liters: litersToDisplay(targetResult.perChangeLiters),
                     })}
                   </p>
                 </div>
@@ -632,7 +634,7 @@ export default function WaterChangeCalculator() {
                     {t('target.split.description', {
                       count: targetResult.recommendedChanges,
                       percent: targetResult.perChangePercentage,
-                      liters: targetResult.perChangeLiters,
+                      liters: litersToDisplay(targetResult.perChangeLiters),
                     })}
                   </p>
                 </div>
@@ -731,12 +733,12 @@ export default function WaterChangeCalculator() {
                   {correctionPlan.steps.length === 1
                     ? t('correction.singleChange', {
                         percent: correctionPlan.optimalChangePercent,
-                        liters: correctionPlan.steps[0].liters,
+                        liters: litersToDisplay(correctionPlan.steps[0].liters),
                       })
                     : t('correction.planSummary', {
                         count: correctionPlan.steps.length,
                         percent: correctionPlan.optimalChangePercent,
-                        liters: correctionPlan.steps[0]?.liters || 0,
+                        liters: litersToDisplay(correctionPlan.steps[0]?.liters || 0),
                         days: correctionPlan.totalDays,
                       })
                   }
@@ -815,7 +817,7 @@ export default function WaterChangeCalculator() {
                               {t('correction.dayOffset', { day: step.dayOffset })}
                             </span>
                             <span className="text-xs font-medium text-ocean-600 dark:text-ocean-400">
-                              {step.waterChangePercent}% &middot; {step.liters} L
+                              {step.waterChangePercent}% &middot; {formatVolume(step.liters)}
                             </span>
                           </div>
 

@@ -11,6 +11,7 @@ import type { Tank, MaturityScore } from '../../types'
 import TankImageUpload from './TankImageUpload'
 import DefaultTankAnimation from './DefaultTankAnimation'
 import { tanksApi } from '../../api'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import DosingCalculator from '../dosing/DosingCalculator'
 import type { ShareTokenResponse } from '../../types'
 
@@ -44,6 +45,7 @@ const LEVEL_COLORS: Record<string, { ring: string; text: string; bg: string }> =
 export default function TankSidebar({ tank, stats, maturity, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
+  const { formatVolume } = useRegionalSettings()
   const [imageError, setImageError] = useState(false)
   const [showImageUpload, setShowImageUpload] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -225,18 +227,18 @@ export default function TankSidebar({ tank, stats, maturity, onEdit, onAddEvent,
           {tank.display_volume_liters && (
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">{t('fields.displayVolume')}:</span>
-              <span className="font-medium">{tank.display_volume_liters}L</span>
+              <span className="font-medium">{formatVolume(tank.display_volume_liters)}</span>
             </div>
           )}
           {tank.sump_volume_liters && (
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">{t('fields.sumpVolume')}:</span>
-              <span className="font-medium">{tank.sump_volume_liters}L</span>
+              <span className="font-medium">{formatVolume(tank.sump_volume_liters)}</span>
             </div>
           )}
           <div className="flex justify-between pt-2 border-t">
             <span className="text-gray-600 dark:text-gray-400 font-medium">{t('fields.totalVolume')}:</span>
-            <span className="font-bold text-ocean-600">{tank.total_volume_liters}L</span>
+            <span className="font-bold text-ocean-600">{formatVolume(tank.total_volume_liters)}</span>
           </div>
         </div>
 

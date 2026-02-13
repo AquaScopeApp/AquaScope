@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "Bem-vindo ao AquaScope",
+    "subtitle": "Vamos configurar as suas preferências regionais",
+    "country": "País",
+    "countryPlaceholder": "Selecione o seu país...",
+    "countryHint": "A seleção de um país preenche automaticamente as configurações recomendadas abaixo",
+    "unitSystem": "Unidades de volume",
+    "metric": "Métrico (litros)",
+    "usImperial": "Imperial EUA (galões)",
+    "ukImperial": "Imperial UK (galões)",
+    "temperature": "Temperatura",
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "currency": "Moeda",
+    "dateFormat": "Formato de data",
+    "getStarted": "Começar",
+    "skip": "Ignorar por agora",
+    "preview": "Pré-visualização",
+    "saving": "A guardar...",
+    "skipForNow": "Ignorar por agora",
+    "selectCountry": "Selecione o seu país...",
+    "custom": "Personalizado",
+    "saveFailed": "Falha ao guardar as definições"
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "litros",
+    "usGallons": "gal",
+    "usGallonsFull": "galões EUA",
+    "ukGallons": "gal",
+    "ukGallonsFull": "galões UK",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "Estados Unidos",
+    "GB": "Reino Unido",
+    "FR": "França",
+    "DE": "Alemanha",
+    "IT": "Itália",
+    "ES": "Espanha",
+    "PT": "Portugal",
+    "NL": "Países Baixos",
+    "BE": "Bélgica",
+    "AT": "Áustria",
+    "CH": "Suíça",
+    "CA": "Canadá",
+    "AU": "Austrália",
+    "JP": "Japão",
+    "BR": "Brasil"
+  },
+  "admin": {
+    "title": "Regional e unidades",
+    "description": "Configurar unidades, temperatura e formato de data para todos os utilizadores.",
+    "country": "País / Região",
+    "unitSystem": "Unidades de volume",
+    "temperature": "Unidade de temperatura",
+    "dateFormat": "Formato de data",
+    "countryHint": "A seleção de um país preenche automaticamente os valores predefinidos recomendados"
+  }
+}

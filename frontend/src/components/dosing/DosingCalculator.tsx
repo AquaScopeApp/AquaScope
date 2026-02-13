@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import { parametersApi, parameterRangesApi } from '../../api'
 import { buildParameterRangesMap } from '../../config/parameterRanges'
 import type { ParameterRange } from '../../config/parameterRanges'
@@ -43,6 +44,7 @@ export default function DosingCalculator({
   onClose,
 }: DosingCalculatorProps) {
   const { t } = useTranslation('dosing')
+  const { formatVolume } = useRegionalSettings()
 
   const [latestParams, setLatestParams] = useState<LatestParameters | null>(null)
   const [paramRanges, setParamRanges] = useState<Record<string, ParameterRange> | null>(null)
@@ -118,7 +120,7 @@ export default function DosingCalculator({
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t('title')}</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              {t('tankVolume')}: <span className="font-semibold text-ocean-600">{tankVolumeLiters}L</span>
+              {t('tankVolume')}: <span className="font-semibold text-ocean-600">{formatVolume(tankVolumeLiters)}</span>
             </p>
           </div>
           <button
@@ -278,7 +280,7 @@ export default function DosingCalculator({
                         {' '}{t('result.toRaise')} {PARAM_LABELS[selectedParam] || selectedParam}
                         {' '}{t('result.from')} <span className="font-semibold">{currentNum}</span>
                         {' '}{t('result.to')} <span className="font-semibold">{targetNum} {selectedCompound.unit}</span>
-                        {' '}{t('result.inYour')} <span className="font-semibold">{tankVolumeLiters}L</span> {t('result.system')}
+                        {' '}{t('result.inYour')} <span className="font-semibold">{formatVolume(tankVolumeLiters)}</span> {t('result.system')}
                       </div>
                     </div>
                   </div>

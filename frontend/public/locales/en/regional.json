@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "Welcome to AquaScope",
+    "subtitle": "Let's configure your regional preferences",
+    "country": "Country",
+    "countryPlaceholder": "Select your country...",
+    "countryHint": "Selecting a country auto-fills recommended settings below",
+    "unitSystem": "Volume Units",
+    "metric": "Metric (liters)",
+    "usImperial": "US Imperial (gallons)",
+    "ukImperial": "UK Imperial (gallons)",
+    "temperature": "Temperature",
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "currency": "Currency",
+    "dateFormat": "Date Format",
+    "getStarted": "Get Started",
+    "skip": "Skip for now",
+    "skipForNow": "Skip for now",
+    "selectCountry": "Select your country...",
+    "custom": "Custom",
+    "saveFailed": "Failed to save settings",
+    "preview": "Preview",
+    "saving": "Saving..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "liters",
+    "usGallons": "gal",
+    "usGallonsFull": "US gallons",
+    "ukGallons": "gal",
+    "ukGallonsFull": "UK gallons",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "United States",
+    "GB": "United Kingdom",
+    "FR": "France",
+    "DE": "Germany",
+    "IT": "Italy",
+    "ES": "Spain",
+    "PT": "Portugal",
+    "NL": "Netherlands",
+    "BE": "Belgium",
+    "AT": "Austria",
+    "CH": "Switzerland",
+    "CA": "Canada",
+    "AU": "Australia",
+    "JP": "Japan",
+    "BR": "Brazil"
+  },
+  "admin": {
+    "title": "Regional & Units",
+    "description": "Configure units, temperature, and date format for all users.",
+    "country": "Country / Region",
+    "unitSystem": "Volume Units",
+    "temperature": "Temperature Unit",
+    "dateFormat": "Date Format",
+    "countryHint": "Selecting a country auto-fills recommended defaults"
+  }
+}

@@ -25,7 +25,7 @@ import type {
   ExpenseDetailList,
 } from '../types'
 import { formatPrice } from '../utils/price'
-import { useCurrency } from '../hooks/useCurrency'
+import { useRegionalSettings } from '../hooks/useRegionalSettings'
 import SpendingPieChart from '../components/finances/SpendingPieChart'
 import MonthlyBarChart from '../components/finances/MonthlyBarChart'
 import BudgetProgressBar from '../components/finances/BudgetProgressBar'
@@ -49,7 +49,7 @@ const DETAILS_PAGE_SIZE = 20
 export default function Finances() {
   const { t } = useTranslation('finances')
   const { t: tc } = useTranslation('common')
-  const { currency } = useCurrency()
+  const { currency } = useRegionalSettings()
   const { user } = useAuth()
   const fp = (amount: number) => formatPrice(amount, currency)
 

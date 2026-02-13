@@ -36,7 +36,7 @@ export default function Register() {
 
     try {
       await register({ email, username, password })
-      navigate('/dashboard')
+      navigate('/setup')
     } catch (err: any) {
       console.error('Registration error:', err)
       setError(

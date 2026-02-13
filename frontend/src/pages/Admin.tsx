@@ -7,18 +7,19 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../hooks/useAuth'
 import { useModuleSettings } from '../hooks/useModuleSettings'
-import { useCurrency } from '../hooks/useCurrency'
+import { useRegionalSettings, COUNTRY_PRESETS } from '../hooks/useRegionalSettings'
+import type { UnitSystem, TemperatureUnit, DateFormatPref } from '../hooks/useRegionalSettings'
 import { Navigate } from 'react-router-dom'
 import { adminApi } from '../api'
 import { User, UserWithStats, SystemStats, UserDataSummary, Tank, StorageStats, StorageFile, ModuleSettings } from '../types'
 import SpeciesTraitsManager from '../components/admin/SpeciesTraitsManager'
 
-type Tab = 'overview' | 'users' | 'database' | 'storage' | 'modules' | 'species'
+type Tab = 'overview' | 'users' | 'database' | 'storage' | 'modules' | 'general' | 'species'
 
 export default function Admin() {
   const { user } = useAuth()
   const { modules: globalModules, refresh: refreshModules } = useModuleSettings()
-  const { currency: globalCurrency, refresh: refreshCurrency } = useCurrency()
+  const { currency: globalCurrency, refresh: refreshCurrency, unitSystem: globalUnitSystem, temperatureUnit: globalTemperatureUnit, country: globalCountry, dateFormat: globalDateFormat } = useRegionalSettings()
   const [activeTab, setActiveTab] = useState<Tab>('overview')
   const [stats, setStats] = useState<SystemStats | null>(null)
   const [users, setUsers] = useState<UserWithStats[]>([])
@@ -56,6 +57,10 @@ export default function Admin() {
   const [moduleToggles, setModuleToggles] = useState<ModuleSettings>({ ...globalModules })
   const [savingModules, setSavingModules] = useState(false)
   const [defaultCurrency, setDefaultCurrency] = useState(globalCurrency)
+  const [defaultCountry, setDefaultCountry] = useState(globalCountry)
+  const [defaultUnitSystem, setDefaultUnitSystem] = useState<UnitSystem>(globalUnitSystem)
+  const [defaultTempUnit, setDefaultTempUnit] = useState<TemperatureUnit>(globalTemperatureUnit)
+  const [defaultDateFormat, setDefaultDateFormat] = useState<DateFormatPref>(globalDateFormat)
   const [savingGeneral, setSavingGeneral] = useState(false)
 
   // Redirect non-admin users
@@ -349,6 +354,16 @@ export default function Admin() {
             }`}
           >
             Modules
+          </button>
+          <button
+            onClick={() => setActiveTab('general')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'general'
+                ? 'border-ocean-500 text-ocean-600'
+                : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+            }`}
+          >
+            General
           </button>
           <button
             onClick={() => setActiveTab('species')}
@@ -1376,7 +1391,9 @@ export default function Admin() {
                 { key: 'equipment' as keyof ModuleSettings, label: 'Equipment', icon: '⚙️' },
                 { key: 'consumables' as keyof ModuleSettings, label: 'Consumables', icon: '🧪' },
                 { key: 'icp_tests' as keyof ModuleSettings, label: 'ICP Tests', icon: '🔬' },
+                { key: 'feeding' as keyof ModuleSettings, label: 'Feeding', icon: '🍽️' },
                 { key: 'finances' as keyof ModuleSettings, label: 'Finances', icon: '💰' },
+                { key: 'diseases' as keyof ModuleSettings, label: 'Diseases', icon: '🩺' },
               ]).map((mod) => (
                 <div key={mod.key} className="flex items-center justify-between py-3 px-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
                   <div className="flex items-center space-x-3">
@@ -1420,15 +1437,51 @@ export default function Admin() {
               </button>
             </div>
           </div>
+        </div>
+      )}
 
-          {/* General Settings */}
+      {/* ── General Tab ──────────────────────────────────────────── */}
+      {activeTab === 'general' && (
+        <div className="space-y-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">General Settings</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Configure default settings for all users.
+              Configure regional preferences, units, and currency for all users.
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
+              {/* Country */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Country / Region
+                </label>
+                <select
+                  value={defaultCountry}
+                  onChange={(e) => {
+                    const code = e.target.value
+                    setDefaultCountry(code)
+                    const preset = COUNTRY_PRESETS[code]
+                    if (preset) {
+                      setDefaultUnitSystem(preset.unitSystem)
+                      setDefaultTempUnit(preset.temperatureUnit)
+                      setDefaultCurrency(preset.currency)
+                      setDefaultDateFormat(preset.dateFormat)
+                    }
+                  }}
+                  className="w-full max-w-xs px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
+                >
+                  <option value="">Not set</option>
+                  {Object.keys(COUNTRY_PRESETS).map((code) => (
+                    <option key={code} value={code}>{code}</option>
+                  ))}
+                  <option value="custom">Custom</option>
+                </select>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  Selecting a country auto-fills the recommended defaults below.
+                </p>
+              </div>
+
+              {/* Currency */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Default Currency
@@ -1445,10 +1498,88 @@ export default function Admin() {
                   <option value="CAD">CAD — Canadian Dollar</option>
                   <option value="AUD">AUD — Australian Dollar</option>
                   <option value="JPY">JPY — Japanese Yen</option>
+                  <option value="BRL">BRL — Brazilian Real</option>
                 </select>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Used for formatting prices across the app when displaying costs.
-                </p>
+              </div>
+
+              {/* Unit System */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Volume Units
+                </label>
+                <div className="flex gap-3 max-w-md">
+                  {([
+                    { value: 'metric' as UnitSystem, label: 'Metric (L)' },
+                    { value: 'us_imperial' as UnitSystem, label: 'US Imperial (gal)' },
+                    { value: 'uk_imperial' as UnitSystem, label: 'UK Imperial (gal)' },
+                  ]).map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setDefaultUnitSystem(opt.value)}
+                      className={`flex-1 px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                        defaultUnitSystem === opt.value
+                          ? 'border-ocean-500 bg-ocean-50 text-ocean-700 dark:bg-ocean-900/30 dark:text-ocean-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Temperature */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Temperature Unit
+                </label>
+                <div className="flex gap-3 max-w-xs">
+                  {([
+                    { value: 'celsius' as TemperatureUnit, label: 'Celsius (\u00B0C)' },
+                    { value: 'fahrenheit' as TemperatureUnit, label: 'Fahrenheit (\u00B0F)' },
+                  ]).map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setDefaultTempUnit(opt.value)}
+                      className={`flex-1 px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                        defaultTempUnit === opt.value
+                          ? 'border-ocean-500 bg-ocean-50 text-ocean-700 dark:bg-ocean-900/30 dark:text-ocean-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Date Format */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Date Format
+                </label>
+                <div className="flex gap-3 max-w-md">
+                  {([
+                    { value: 'DD/MM/YYYY' as DateFormatPref, label: 'DD/MM/YYYY' },
+                    { value: 'MM/DD/YYYY' as DateFormatPref, label: 'MM/DD/YYYY' },
+                    { value: 'YYYY-MM-DD' as DateFormatPref, label: 'YYYY-MM-DD' },
+                  ]).map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setDefaultDateFormat(opt.value)}
+                      className={`flex-1 px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all ${
+                        defaultDateFormat === opt.value
+                          ? 'border-ocean-500 bg-ocean-50 text-ocean-700 dark:bg-ocean-900/30 dark:text-ocean-300'
+                          : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300'
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -1457,7 +1588,13 @@ export default function Admin() {
                 onClick={async () => {
                   setSavingGeneral(true)
                   try {
-                    await adminApi.updateGeneralSettings({ default_currency: defaultCurrency })
+                    await adminApi.updateGeneralSettings({
+                      default_currency: defaultCurrency,
+                      country: defaultCountry || '',
+                      unit_system: defaultUnitSystem,
+                      temperature_unit: defaultTempUnit,
+                      date_format: defaultDateFormat,
+                    })
                     await refreshCurrency()
                     alert('General settings saved!')
                   } catch (error) {

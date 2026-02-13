@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PARAMETER_RANGES, PARAMETER_ORDER, getActiveParameterOrder } from '../../config/parameterRanges'
 import type { ParameterRange } from '../../config/parameterRanges'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 
 interface ParameterFormData {
   calcium?: number
@@ -39,6 +40,7 @@ export default function ParameterForm({
 }: ParameterFormProps) {
   const ranges = customRanges || PARAMETER_RANGES
   const activeParams = customRanges ? getActiveParameterOrder(ranges) : PARAMETER_ORDER
+  const { tempLabel, displayToCelsius } = useRegionalSettings()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -55,10 +57,14 @@ export default function ParameterForm({
     setSuccess(false)
 
     try {
-      // Filter out empty values
+      // Filter out empty values and convert temperature from display unit to °C
       const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
-          (acc as any)[key] = value
+          if (key === 'temperature' && typeof value === 'number') {
+            (acc as any)[key] = displayToCelsius(value)
+          } else {
+            (acc as any)[key] = value
+          }
         }
         return acc
       }, {} as ParameterFormData)
@@ -142,7 +148,7 @@ export default function ParameterForm({
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   {range.name}
-                  <span className="text-gray-500 dark:text-gray-400 ml-1">({range.unit})</span>
+                  <span className="text-gray-500 dark:text-gray-400 ml-1">({paramType === 'temperature' ? tempLabel : range.unit})</span>
                 </label>
                 <div className="relative">
                   <input

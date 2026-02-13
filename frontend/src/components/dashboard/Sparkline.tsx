@@ -8,6 +8,7 @@
 import { useState, useEffect } from 'react'
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts'
 import { parametersApi } from '../../api'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import type { ParameterReading } from '../../types'
 
 interface SparklineProps {
@@ -53,6 +54,7 @@ interface ParamData {
 export default function Sparkline({ tankId, waterType }: SparklineProps) {
   const [paramData, setParamData] = useState<ParamData[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const { tempLabel, celsiusToDisplay } = useRegionalSettings()
 
   const configs = PARAM_CONFIGS[waterType || ''] || DEFAULT_PARAMS
 
@@ -120,13 +122,22 @@ export default function Sparkline({ tankId, waterType }: SparklineProps) {
             return <div key={param.key} />
           }
 
+          const isTemp = param.key === 'temperature'
+          const displayUnit = isTemp ? tempLabel : param.unit
+          const displayLatest = param.latestValue !== null
+            ? isTemp ? celsiusToDisplay(param.latestValue, 1) : param.latestValue
+            : null
+          const displayReadings = isTemp
+            ? param.readings.map((r) => ({ value: celsiusToDisplay(r.value, 2) }))
+            : param.readings
+
           const formatted =
-            param.latestValue !== null
+            displayLatest !== null
               ? param.key === 'salinity' || param.key === 'phosphate'
-                ? param.latestValue.toFixed(3)
-                : param.latestValue % 1 === 0
-                  ? param.latestValue.toString()
-                  : param.latestValue.toFixed(1)
+                ? displayLatest.toFixed(3)
+                : displayLatest % 1 === 0
+                  ? displayLatest.toString()
+                  : displayLatest.toFixed(1)
               : '--'
 
           return (
@@ -138,9 +149,9 @@ export default function Sparkline({ tankId, waterType }: SparklineProps) {
                 </span>
                 <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 ml-1 whitespace-nowrap">
                   {formatted}
-                  {param.unit && (
+                  {displayUnit && (
                     <span className="text-[9px] font-normal text-gray-400 dark:text-gray-500 ml-0.5">
-                      {param.unit}
+                      {displayUnit}
                     </span>
                   )}
                 </span>
@@ -149,7 +160,7 @@ export default function Sparkline({ tankId, waterType }: SparklineProps) {
               {/* Mini sparkline chart */}
               <div className="h-[30px] w-full">
                 <ResponsiveContainer width="100%" height={30}>
-                  <AreaChart data={param.readings} margin={{ top: 2, right: 1, bottom: 0, left: 1 }}>
+                  <AreaChart data={displayReadings} margin={{ top: 2, right: 1, bottom: 0, left: 1 }}>
                     <defs>
                       <linearGradient id={`sparkGrad-${param.key}-${tankId}`} x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor={param.color} stopOpacity={0.3} />
@@ -162,7 +173,7 @@ export default function Sparkline({ tankId, waterType }: SparklineProps) {
                         const val = payload[0].value as number
                         return (
                           <div className="bg-gray-900 text-white text-[10px] px-2 py-1 rounded shadow-lg">
-                            {typeof val === 'number' ? val.toFixed(2) : val} {param.unit}
+                            {typeof val === 'number' ? val.toFixed(2) : val} {displayUnit}
                           </div>
                         )
                       }}

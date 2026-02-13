@@ -1610,6 +1610,8 @@ MODULE_KEYS = [
     "modules.maintenance",
     "modules.icp_tests",
     "modules.feeding",
+    "modules.finances",
+    "modules.diseases",
 ]
 
 MODULE_DEFAULTS = {k: "true" for k in MODULE_KEYS}
@@ -1663,6 +1665,10 @@ GENERAL_SETTINGS_DEFAULTS = {
     "default_currency": "EUR",
     "banner_theme": "reef",
     "banner_image": "",
+    "unit_system": "metric",          # metric | us_imperial | uk_imperial
+    "temperature_unit": "celsius",    # celsius | fahrenheit
+    "country": "",                    # ISO 3166-1 alpha-2 (empty = not configured)
+    "date_format": "DD/MM/YYYY",     # DD/MM/YYYY | MM/DD/YYYY | YYYY-MM-DD
 }
 
 

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tank, TankCreate } from '../../types'
 import { WATER_TYPES, AQUARIUM_SUBTYPES } from '../../config/parameterRanges'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 
 interface TankFormProps {
   tank?: Tank
@@ -18,6 +19,7 @@ interface TankFormProps {
 export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
+  const { volumeLabel, litersToDisplay, displayToLiters } = useRegionalSettings()
   const [name, setName] = useState('')
   const [waterType, setWaterType] = useState('saltwater')
   const [aquariumSubtype, setAquariumSubtype] = useState('')
@@ -33,8 +35,8 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
       setName(tank.name)
       setWaterType(tank.water_type || 'saltwater')
       setAquariumSubtype(tank.aquarium_subtype || '')
-      setDisplayVolume(tank.display_volume_liters?.toString() || '')
-      setSumpVolume(tank.sump_volume_liters?.toString() || '')
+      setDisplayVolume(tank.display_volume_liters != null ? litersToDisplay(tank.display_volume_liters).toString() : '')
+      setSumpVolume(tank.sump_volume_liters != null ? litersToDisplay(tank.sump_volume_liters).toString() : '')
       setDescription(tank.description || '')
       setSetupDate(tank.setup_date || '')
       setElectricityCost(tank.electricity_cost_per_day?.toString() || '')
@@ -63,8 +65,8 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
         name,
         water_type: waterType,
         aquarium_subtype: aquariumSubtype || null,
-        display_volume_liters: displayVolume ? parseFloat(displayVolume) : null,
-        sump_volume_liters: sumpVolume ? parseFloat(sumpVolume) : null,
+        display_volume_liters: displayVolume ? displayToLiters(parseFloat(displayVolume)) : null,
+        sump_volume_liters: sumpVolume ? displayToLiters(parseFloat(sumpVolume)) : null,
         description: description || null,
         setup_date: setupDate || null,
         electricity_cost_per_day: electricityCost ? parseFloat(electricityCost) : null,
@@ -202,7 +204,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   htmlFor="displayVolume"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  {t('fields.displayVolume')}
+                  {t('fields.displayVolume')} ({volumeLabel})
                 </label>
                 <input
                   type="number"
@@ -211,7 +213,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   onChange={(e) => setDisplayVolume(e.target.value)}
                   step="0.1"
                   min="0"
-                  placeholder="e.g., 400"
+                  placeholder={volumeLabel === 'L' ? 'e.g., 400' : 'e.g., 100'}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
@@ -222,7 +224,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   htmlFor="sumpVolume"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  {t('fields.sumpVolume')}
+                  {t('fields.sumpVolume')} ({volumeLabel})
                 </label>
                 <input
                   type="number"
@@ -231,7 +233,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
                   onChange={(e) => setSumpVolume(e.target.value)}
                   step="0.1"
                   min="0"
-                  placeholder="e.g., 100"
+                  placeholder={volumeLabel === 'L' ? 'e.g., 100' : 'e.g., 25'}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500 dark:bg-gray-700 dark:text-gray-100"
                 />
               </div>
@@ -242,7 +244,7 @@ export default function TankForm({ tank, onSubmit, onCancel }: TankFormProps) {
               <div className="bg-ocean-50 border border-ocean-200 rounded-md p-3">
                 <p className="text-sm text-ocean-900">
                   <span className="font-medium">{t('fields.totalSystem')}:</span>{' '}
-                  <span className="text-lg font-semibold">{getTotalVolume().toFixed(1)} L</span>
+                  <span className="text-lg font-semibold">{getTotalVolume().toFixed(1)} {volumeLabel}</span>
                 </p>
               </div>
             )}

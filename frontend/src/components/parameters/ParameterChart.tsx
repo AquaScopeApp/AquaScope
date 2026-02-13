@@ -21,6 +21,7 @@ import { format } from 'date-fns'
 import { PARAMETER_RANGES, getParameterStatus, getStatusColor } from '../../config/parameterRanges'
 import type { ParameterRange } from '../../config/parameterRanges'
 import type { ParameterReading } from '../../types'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 
 interface ParameterChartProps {
   parameterType: string
@@ -37,22 +38,27 @@ export default function ParameterChart({
 }: ParameterChartProps) {
   const ranges = customRanges || PARAMETER_RANGES
   const range = ranges[parameterType]
+  const { tempLabel, celsiusToDisplay } = useRegionalSettings()
+
+  const isTemp = parameterType === 'temperature'
+  const toDisplay = (v: number) => isTemp ? celsiusToDisplay(v, 2) : v
+  const displayUnit = isTemp ? tempLabel : range?.unit
 
   // Transform data for recharts
   const chartData = useMemo(() => {
     return data
       .map((reading) => ({
         timestamp: new Date(reading.timestamp).getTime(),
-        value: reading.value,
+        value: toDisplay(reading.value),
         date: format(new Date(reading.timestamp), 'MMM dd, HH:mm'),
       }))
       .sort((a, b) => a.timestamp - b.timestamp)
-  }, [data])
+  }, [data, isTemp])
 
-  // Get current value and status
+  // Get current value and status (status check uses raw °C values)
   const latestReading = chartData[chartData.length - 1]
-  const status = latestReading
-    ? getParameterStatus(parameterType, latestReading.value, ranges)
+  const status = data.length > 0
+    ? getParameterStatus(parameterType, data[data.length - 1].value, ranges)
     : 'optimal'
 
   if (!range) {
@@ -76,8 +82,10 @@ export default function ParameterChart({
     )
   }
 
-  // Calculate domain with some padding
+  // Calculate domain with some padding (using display-converted range values)
   const values = chartData.map((d) => d.value)
+  const displayMin = toDisplay(range.min)
+  const displayMax = toDisplay(range.max)
 
   // For ratio charts, use tighter bounds to keep them readable
   const isRatio = parameterType.includes('_ratio')
@@ -85,9 +93,9 @@ export default function ParameterChart({
 
   if (isRatio) {
     // For ratios, prioritize the defined range with minimal expansion
-    const minValue = Math.min(...values, range.min)
-    const maxValue = Math.max(...values, range.max)
-    const rangeSpan = range.max - range.min
+    const minValue = Math.min(...values, displayMin)
+    const maxValue = Math.max(...values, displayMax)
+    const rangeSpan = displayMax - displayMin
     const padding = rangeSpan * 0.15 // Smaller padding for ratios
     yDomain = [
       Math.max(0, minValue - padding), // Don't go below 0 for ratios
@@ -95,8 +103,8 @@ export default function ParameterChart({
     ]
   } else {
     // For regular parameters, use existing logic
-    const minValue = Math.min(...values, range.min)
-    const maxValue = Math.max(...values, range.max)
+    const minValue = Math.min(...values, displayMin)
+    const maxValue = Math.max(...values, displayMax)
     const padding = (maxValue - minValue) * 0.1
     yDomain = [minValue - padding, maxValue + padding]
   }
@@ -125,7 +133,7 @@ export default function ParameterChart({
                   return latestReading.value.toFixed(2)
                 }
               })()}
-              <span className="text-sm ml-1">{range.unit}</span>
+              <span className="text-sm ml-1">{displayUnit}</span>
             </div>
           </div>
         )}
@@ -139,7 +147,7 @@ export default function ParameterChart({
             <span className="font-semibold text-gray-900 dark:text-gray-100 ml-2">
               {(() => {
                 const decimals = parameterType === 'salinity' || parameterType === 'phosphate' ? 3 : 2
-                return `${Number(range.min).toFixed(decimals)} - ${Number(range.max).toFixed(decimals)} ${range.unit}`
+                return `${toDisplay(Number(range.min)).toFixed(decimals)} - ${toDisplay(Number(range.max)).toFixed(decimals)} ${displayUnit}`
               })()}
             </span>
           </div>
@@ -149,7 +157,7 @@ export default function ParameterChart({
               <span className="font-semibold text-green-600 ml-2">
                 {(() => {
                   const decimals = parameterType === 'salinity' || parameterType === 'phosphate' ? 3 : 2
-                  return `${Number(range.ideal).toFixed(decimals)} ${range.unit}`
+                  return `${toDisplay(Number(range.ideal)).toFixed(decimals)} ${displayUnit}`
                 })()}
               </span>
             </div>
@@ -164,8 +172,8 @@ export default function ParameterChart({
 
           {/* Normal range area */}
           <ReferenceArea
-            y1={range.min}
-            y2={range.max}
+            y1={displayMin}
+            y2={displayMax}
             fill="#10b981"
             fillOpacity={0.1}
             strokeOpacity={0}
@@ -173,13 +181,13 @@ export default function ParameterChart({
 
           {/* Min/Max reference lines */}
           <ReferenceLine
-            y={range.min}
+            y={displayMin}
             stroke="#f59e0b"
             strokeDasharray="3 3"
             label={{ value: 'Min', position: 'right', fill: '#f59e0b', fontSize: 10 }}
           />
           <ReferenceLine
-            y={range.max}
+            y={displayMax}
             stroke="#f59e0b"
             strokeDasharray="3 3"
             label={{ value: 'Max', position: 'right', fill: '#f59e0b', fontSize: 10 }}
@@ -188,7 +196,7 @@ export default function ParameterChart({
           {/* Ideal reference line */}
           {range.ideal && (
             <ReferenceLine
-              y={range.ideal}
+              y={toDisplay(range.ideal)}
               stroke="#10b981"
               strokeDasharray="3 3"
               label={{ value: 'Ideal', position: 'right', fill: '#10b981', fontSize: 10 }}
@@ -208,7 +216,7 @@ export default function ParameterChart({
             domain={yDomain}
             tick={{ fontSize: 10, fill: 'var(--chart-text)' }}
             stroke="var(--chart-axis)"
-            label={{ value: range.unit, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'var(--chart-text)' } }}
+            label={{ value: displayUnit, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'var(--chart-text)' } }}
           />
 
           <Tooltip
@@ -227,7 +235,7 @@ export default function ParameterChart({
                 decimals = 2
               }
               return [
-                `${value.toFixed(decimals)} ${range.unit}`,
+                `${value.toFixed(decimals)} ${displayUnit}`,
                 range.name,
               ]
             }}

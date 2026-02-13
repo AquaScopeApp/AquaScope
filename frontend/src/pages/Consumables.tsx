@@ -14,7 +14,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { consumablesApi, tanksApi } from '../api'
 import { parsePrice, formatPrice } from '../utils/price'
-import { useCurrency } from '../hooks/useCurrency'
+import { useRegionalSettings } from '../hooks/useRegionalSettings'
 import { useScrollToItem } from '../hooks/useScrollToItem'
 import Pagination from '../components/common/Pagination'
 import TankSelector from '../components/common/TankSelector'
@@ -41,7 +41,7 @@ const STATUSES = ['active', 'low_stock', 'depleted', 'expired']
 export default function ConsumablesPage() {
   const { t } = useTranslation('consumables')
   const { t: tc } = useTranslation('common')
-  const { currency } = useCurrency()
+  const { currency } = useRegionalSettings()
   const { user } = useAuth()
   const [consumables, setConsumables] = useState<Consumable[]>([])
   const [tanks, setTanks] = useState<Tank[]>([])

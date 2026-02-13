@@ -5,6 +5,54 @@ All notable changes to AquaScope will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-02-14
+
+### Added
+
+#### Regional & Unit Preferences (Full Stack)
+- **Backend**: Extended `GENERAL_SETTINGS_DEFAULTS` with 4 new keys (`unit_system`, `temperature_unit`, `country`, `date_format`) using existing `app_settings` key-value store — no migration needed
+- **Backend**: Added `finances` and `diseases` to `MODULE_KEYS` for complete module toggle support (10 toggleable modules total)
+- **`useRegionalSettings()` hook** — replaces and extends `useCurrency()`:
+  - Context+Provider pattern loaded from `adminApi.getGeneralSettings()`
+  - Volume helpers: `formatVolume(liters)`, `litersToDisplay()`, `displayToLiters()`, `volumeLabel` (L/gal)
+  - Temperature helpers: `formatTemp(celsius)`, `celsiusToDisplay()`, `displayToCelsius()`, `tempLabel` (°C/°F)
+  - Date helper: `formatDate(isoString)` per user preference
+  - Country presets (15 countries): auto-fill unit system, temperature, currency, date format
+  - Conversion constants: 1 US gal = 3.78541 L, 1 UK gal = 4.54609 L, °F = °C × 9/5 + 32
+  - Backward-compatible `useCurrency()` alias export
+- **Display-only conversion** — all storage remains in liters and °C, conversion happens exclusively in UI rendering:
+  - Tank cards, sidebar, and form: volumes in L/gal with bidirectional conversion on submit
+  - Dashboard sparklines: temperature values converted to user preference
+  - Parameter charts: Y-axis, tooltips, reference lines, and range info all converted
+  - Parameter form: temperature input in preferred unit, converted to °C on submit
+  - Parameters table: temperature values and unit labels converted
+  - Water Change Calculator: volumes in preferred unit
+  - Dosing Calculator: volumes in preferred unit
+- **Post-registration onboarding wizard** (`Setup.tsx`):
+  - Single-page setup shown after first registration (`/setup` route)
+  - Country dropdown with flag emojis — auto-fills all other fields from presets
+  - Unit system, temperature, currency, and date format selectors with live previews
+  - "Get Started" saves settings and navigates to dashboard
+  - "Skip" link navigates with defaults (Metric / °C / EUR / DD/MM/YYYY)
+  - Guard: redirects to dashboard if setup already completed
+- **Admin "General" tab**: Separated regional/unit settings into its own tab (previously nested in Modules tab)
+  - Country dropdown with preset auto-fill
+  - Currency, volume units, temperature, and date format controls
+- **Admin Modules tab**: Added missing `feeding` and `diseases` toggles (10 modules total: photos, notes, maintenance, livestock, equipment, consumables, icp_tests, feeding, finances, diseases)
+- **i18n**: `regional` namespace with translations in all 6 languages (EN, FR, DE, ES, IT, PT)
+  - Setup wizard text, unit labels, country names, admin settings panel text
+- **Landing page**: "Regional & Units" feature card added to Tier 3 features grid
+
+### Changed
+- `CurrencyProvider` replaced by `RegionalSettingsProvider` in App.tsx provider tree
+- All `useCurrency()` consumers migrated to `useRegionalSettings()`
+- `Register.tsx` navigates to `/setup` instead of `/dashboard` after registration
+- Admin panel reorganized: General Settings in own tab, Modules tab has all 10 toggleable modules
+- Feature count on landing page updated from 17 to 20
+
+### Fixed
+- Missing `finances` and `diseases` module keys in backend `MODULE_KEYS` — toggling these modules in Admin now works correctly
+
 ## [1.11.0] - 2026-02-13
 
 ### Added
@@ -1048,6 +1096,7 @@ All releases are tagged in Git and available on GitHub:
 - `v1.9.0` - Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
 - `v1.10.0` - Grouped calculators, landing page enhancements, compatibility + calculator sections
 - `v1.11.0` - Disease/Health Tracking module (full stack)
+- `v1.12.0` - Regional & Unit Preferences, onboarding wizard, admin General tab
 
 ## Versioning Strategy
 
@@ -1071,6 +1120,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 13** (v1.9.0): Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
 - ✅ **Phase 14** (v1.10.0): Grouped calculators, landing page enhancements
 - ✅ **Phase 15** (v1.11.0): Disease/Health Tracking module
+- ✅ **Phase 16** (v1.12.0): Regional & Unit Preferences, onboarding wizard
 
 ## Contributing
 

@@ -10,6 +10,7 @@ import { Tank } from '../../types'
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { tanksApi } from '../../api'
+import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import DefaultTankAnimation from './DefaultTankAnimation'
 
 interface TankCardProps {
@@ -26,6 +27,7 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
   const navigate = useNavigate()
+  const { formatVolume } = useRegionalSettings()
   const [imageError, setImageError] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
 
@@ -259,20 +261,20 @@ export default function TankCard({ tank, onEdit, onDelete, onArchive, onUnarchiv
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">{t('fields.displayVolume')}</span>
             <span className="font-medium text-gray-900 dark:text-gray-100">
-              {tank.display_volume_liters ? `${tank.display_volume_liters} ${t('fields.liters')}` : '-'}
+              {formatVolume(tank.display_volume_liters)}
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600 dark:text-gray-400">{t('fields.sumpVolume')}</span>
             <span className="font-medium text-gray-900 dark:text-gray-100">
-              {tank.sump_volume_liters ? `${tank.sump_volume_liters} ${t('fields.liters')}` : '-'}
+              {formatVolume(tank.sump_volume_liters)}
             </span>
           </div>
           {tank.total_volume_liters > 0 && (
             <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-100 dark:border-gray-700">
               <span className="text-gray-700 dark:text-gray-300 font-medium">{t('fields.totalSystem')}</span>
               <span className="font-semibold text-ocean-600">
-                {tank.total_volume_liters.toFixed(1)} {t('fields.liters')}
+                {formatVolume(tank.total_volume_liters)}
               </span>
             </div>
           )}

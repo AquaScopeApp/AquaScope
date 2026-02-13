@@ -70,9 +70,13 @@ Allow administrators to enable/disable modules per installation. Not all users n
 ## Regional & Unit Preferences
 
 **Priority**: High
-**Status**: Planned
+**Status**: Done
 
 Centralize all locale-aware settings — measurement system, temperature scale, currency, and country — under a single "Regional Settings" concept. Configure during first-launch onboarding and adjustable from Admin (web) or Settings (local).
+
+### Done
+
+Fully implemented in v1.12.0 with `useRegionalSettings()` hook, display-only unit conversion (liters/gallons, °C/°F), post-registration onboarding wizard, Admin "General" tab, 15 country presets, and i18n in 6 languages.
 
 ### Scope
 

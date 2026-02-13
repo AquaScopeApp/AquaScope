@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './hooks/useAuth'
 import { ModuleSettingsProvider } from './hooks/useModuleSettings'
-import { CurrencyProvider } from './hooks/useCurrency'
+import { RegionalSettingsProvider } from './hooks/useRegionalSettings'
 import { ThemeProvider } from './hooks/useTheme'
 import { isLocalMode } from './platform'
 import ProtectedRoute from './components/auth/ProtectedRoute'
@@ -29,6 +29,7 @@ import Feeding from './pages/Feeding'
 import Diseases from './pages/Diseases'
 import WaterChangeCalculator from './pages/WaterChangeCalculator'
 import PublicTankProfile from './pages/PublicTankProfile'
+import Setup from './pages/Setup'
 
 const Welcome = lazy(() => import('./pages/Welcome'))
 
@@ -40,13 +41,16 @@ function App() {
     <Router>
       <AuthProvider>
         <ModuleSettingsProvider>
-        <CurrencyProvider>
+        <RegionalSettingsProvider>
         {!local && <OfflineBanner />}
         <Routes>
           {/* Public Routes — only in web mode */}
           {!local && <Route path="/login" element={<Login />} />}
           {!local && <Route path="/register" element={<Register />} />}
           <Route path="/share/tank/:shareToken" element={<PublicTankProfile />} />
+
+          {/* Regional setup — post-registration onboarding (web mode) */}
+          {!local && <Route path="/setup" element={<ProtectedRoute><Setup /></ProtectedRoute>} />}
 
           {/* Welcome/onboarding — only in local mode */}
           {local && (
@@ -89,7 +93,7 @@ function App() {
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
-        </CurrencyProvider>
+        </RegionalSettingsProvider>
         </ModuleSettingsProvider>
       </AuthProvider>
     </Router>
