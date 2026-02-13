@@ -8,7 +8,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory } from '../../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, TimelineCategory, DiseaseRecord } from '../../types'
 import TankOverview from './TankOverview'
 import TankTimeline from './TankTimeline'
 import TankTimelineVisual, { CATEGORY_LABELS } from './TankTimelineVisual'
@@ -36,13 +36,14 @@ interface TankTabsProps {
   notes: Note[]
   maintenance: MaintenanceReminder[]
   icpTests: ICPTestSummary[]
+  diseases: DiseaseRecord[]
   onCreateEvent: (data: any) => Promise<void>
   onUpdateEvent: (eventId: string, data: any) => Promise<void>
   onDeleteEvent: (eventId: string) => Promise<void>
   onRefresh: () => void
 }
 
-type TabId = 'overview' | 'events' | 'equipment' | 'livestock' | 'photos' | 'notes' | 'icp' | 'maintenance'
+type TabId = 'overview' | 'events' | 'equipment' | 'livestock' | 'health' | 'photos' | 'notes' | 'icp' | 'maintenance'
 
 interface Tab {
   id: TabId
@@ -61,6 +62,7 @@ export default function TankTabs({
   notes,
   maintenance,
   icpTests,
+  diseases,
   onCreateEvent,
   onUpdateEvent,
   onDeleteEvent,
@@ -79,6 +81,7 @@ export default function TankTabs({
   const [notesPage, setNotesPage] = useState(1)
   const [icpPage, setIcpPage] = useState(1)
   const [maintenancePage, setMaintenancePage] = useState(1)
+  const [healthPage, setHealthPage] = useState(1)
 
   // Filter state per tab
   const [equipTypeFilter, setEquipTypeFilter] = useState('')
@@ -110,6 +113,7 @@ export default function TankTabs({
   const TAB_ROUTES: Partial<Record<TabId, string>> = {
     equipment: `/equipment${tankParam}`,
     livestock: `/livestock${tankParam}`,
+    health: `/diseases${tankParam}`,
     photos: `/photos${tankParam}`,
     notes: `/notes${tankParam}`,
     icp: `/icp-tests${tankParam}`,
@@ -146,6 +150,7 @@ export default function TankTabs({
     { id: 'events', label: t('tabs.events'), icon: '📅', count: events.length },
     { id: 'equipment', label: t('tabs.equipment'), icon: '⚙️', count: equipment.length },
     { id: 'livestock', label: t('tabs.livestock'), icon: '🐟', count: livestock.length },
+    { id: 'health', label: t('tabs.health', { defaultValue: 'Health' }), icon: '🩺', count: diseases.filter(d => d.status !== 'resolved').length },
     { id: 'photos', label: t('tabs.photos'), icon: '📷', count: photos.length },
     { id: 'notes', label: t('tabs.notes'), icon: '📝', count: notes.length },
     { id: 'icp', label: t('tabs.icpTests'), icon: '🔬', count: icpTests.length },
@@ -408,6 +413,73 @@ export default function TankTabs({
               </div>
             )}
             <Pagination currentPage={livestockPage} totalPages={totalPages} totalItems={filteredLivestock.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setLivestockPage} />
+          </div>
+        )
+      }
+
+      case 'health': {
+        const activeDiseases = diseases.filter(d => d.status !== 'resolved')
+        const totalPages = Math.ceil(activeDiseases.length / ITEMS_PER_PAGE)
+        const paged = activeDiseases.slice((healthPage - 1) * ITEMS_PER_PAGE, healthPage * ITEMS_PER_PAGE)
+
+        const getSeverityColor = (severity: string) => {
+          switch (severity) {
+            case 'critical': return 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
+            case 'severe': return 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
+            case 'moderate': return 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+            case 'mild': return 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+            default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+          }
+        }
+
+        const getStatusColor = (status: string) => {
+          switch (status) {
+            case 'active': return 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
+            case 'monitoring': return 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+            case 'chronic': return 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300'
+            default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+          }
+        }
+
+        return (
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <TabHeader tabId="health" title={t('tabs.health', { defaultValue: 'Health' })} count={activeDiseases.length} />
+            {activeDiseases.length === 0 ? (
+              <EmptyState icon="🩺" messageKey="emptyState.noHealth" goToKey="emptyState.goToHealth" />
+            ) : (
+              <div className="space-y-2">
+                {paged.map((disease) => {
+                  const ls = livestock.find(l => l.id === disease.livestock_id)
+                  return (
+                    <div
+                      key={disease.id}
+                      className={ROW_CLASS}
+                      onClick={() => navigate(itemRoute('health', disease.id))}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-xl flex-shrink-0">🩺</span>
+                        <div className="min-w-0">
+                          <div className="font-medium text-gray-900 dark:text-gray-100 truncate">{disease.disease_name}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                            {ls ? (ls.common_name || ls.species_name) : ''} · {new Date(disease.detected_date).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(disease.severity)}`}>
+                          {disease.severity}
+                        </span>
+                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(disease.status)}`}>
+                          {disease.status}
+                        </span>
+                        <ChevronRight />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            <Pagination currentPage={healthPage} totalPages={totalPages} totalItems={activeDiseases.length} itemsPerPage={ITEMS_PER_PAGE} onPageChange={setHealthPage} />
           </div>
         )
       }

@@ -1,0 +1,86 @@
+{
+  "title": "Suivi des Maladies & Santé",
+  "subtitle": "Surveillez les maladies, traitements et résultats de santé de vos animaux",
+  "addDisease": "Enregistrer une maladie",
+  "editDisease": "Modifier la maladie",
+  "viewDetail": "Voir les détails",
+  "noRecords": "Aucun enregistrement de maladie",
+  "noRecordsDescription": "Lorsque vous remarquez des problèmes de santé chez vos animaux, enregistrez-les ici pour suivre les traitements et les résultats",
+  "createFirst": "Enregistrer la première maladie",
+  "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet enregistrement de maladie ?",
+  "deleteFailed": "Échec de la suppression de l'enregistrement de maladie",
+  "filterByLivestock": "Filtrer par animal",
+  "allLivestock": "Tous les animaux",
+  "showResolved": "Afficher les résolues",
+  "hideResolved": "Masquer les résolues",
+  "status": {
+    "active": "Active",
+    "monitoring": "Surveillance",
+    "resolved": "Résolue",
+    "chronic": "Chronique"
+  },
+  "severity": {
+    "mild": "Légère",
+    "moderate": "Modérée",
+    "severe": "Sévère",
+    "critical": "Critique"
+  },
+  "fields": {
+    "diseaseName": "Nom de la maladie",
+    "symptoms": "Symptômes",
+    "diagnosis": "Diagnostic",
+    "severity": "Gravité",
+    "status": "Statut",
+    "detectedDate": "Date de détection",
+    "resolvedDate": "Date de résolution",
+    "outcome": "Résultat",
+    "notes": "Notes",
+    "livestock": "Animal affecté"
+  },
+  "treatment": {
+    "title": "Traitements",
+    "add": "Ajouter un traitement",
+    "edit": "Modifier le traitement",
+    "noTreatments": "Aucun traitement enregistré",
+    "type": "Type de traitement",
+    "name": "Nom du traitement",
+    "dosage": "Dosage",
+    "date": "Date du traitement",
+    "duration": "Durée (jours)",
+    "effectiveness": "Efficacité",
+    "consumable": "Médicament lié",
+    "consumableNone": "Aucun",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce traitement ?",
+    "types": {
+      "medication": "Médicament",
+      "water_change": "Changement d'eau",
+      "quarantine": "Quarantaine",
+      "dip": "Bain/Trempage",
+      "temperature": "Ajustement de température",
+      "other": "Autre"
+    },
+    "effectivenessOptions": {
+      "effective": "Efficace",
+      "partially_effective": "Partiellement efficace",
+      "ineffective": "Inefficace",
+      "too_early": "Trop tôt pour juger"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Actives",
+    "monitoringDiseases": "Surveillance",
+    "chronicDiseases": "Chroniques",
+    "resolvedDiseases": "Résolues"
+  },
+  "detail": {
+    "timeline": "Chronologie des traitements",
+    "detectedOn": "Détectée le",
+    "resolvedOn": "Résolue le",
+    "ongoing": "En cours",
+    "duration": "Durée",
+    "days": "jours"
+  },
+  "suggestions": {
+    "title": "Maladies courantes"
+  }
+}

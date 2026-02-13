@@ -17,7 +17,8 @@
     "finances": "Finances",
     "waterChangeCalc": "Water Change Calc",
     "calculators": "Calculators",
-    "feeding": "Feeding"
+    "feeding": "Feeding",
+    "diseases": "Health"
   },
   "actions": {
     "add": "Add",

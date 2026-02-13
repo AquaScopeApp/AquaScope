@@ -253,6 +253,55 @@ CREATE TABLE IF NOT EXISTS icp_tests (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Disease Records
+CREATE TABLE IF NOT EXISTS disease_records (
+  id TEXT PRIMARY KEY,
+  livestock_id TEXT NOT NULL,
+  tank_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  disease_name TEXT NOT NULL,
+  symptoms TEXT,
+  diagnosis TEXT,
+  severity TEXT NOT NULL DEFAULT 'moderate',
+  status TEXT NOT NULL DEFAULT 'active',
+  detected_date TEXT NOT NULL,
+  resolved_date TEXT,
+  outcome TEXT,
+  notes TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (livestock_id) REFERENCES livestock(id) ON DELETE CASCADE,
+  FOREIGN KEY (tank_id) REFERENCES tanks(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_disease_records_tank
+  ON disease_records(tank_id, status);
+CREATE INDEX IF NOT EXISTS idx_disease_records_livestock
+  ON disease_records(livestock_id);
+
+-- Disease Treatments
+CREATE TABLE IF NOT EXISTS disease_treatments (
+  id TEXT PRIMARY KEY,
+  disease_record_id TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  consumable_id TEXT,
+  treatment_type TEXT NOT NULL,
+  treatment_name TEXT NOT NULL,
+  dosage TEXT,
+  quantity_used REAL,
+  quantity_unit TEXT,
+  treatment_date TEXT NOT NULL,
+  duration_days REAL,
+  effectiveness TEXT,
+  notes TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (disease_record_id) REFERENCES disease_records(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (consumable_id) REFERENCES consumables(id) ON DELETE SET NULL
+);
+CREATE INDEX IF NOT EXISTS idx_disease_treatments_record
+  ON disease_treatments(disease_record_id);
+
 -- Species Cache (cache external API results for offline use)
 CREATE TABLE IF NOT EXISTS species_cache (
   id TEXT PRIMARY KEY,

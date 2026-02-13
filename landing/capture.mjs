@@ -189,6 +189,12 @@ async function loginViaToken(page, email, password) {
   await page.waitForTimeout(2000);
   await page.screenshot({ path: `${OUT}/screenshot-feeding.png` });
 
+  // Diseases / Health
+  console.log('Capturing diseases...');
+  await page.goto(`${BASE}/diseases`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: `${OUT}/screenshot-diseases.png` });
+
   // Admin page
   if (ADMIN_EMAIL && ADMIN_PASS) {
     console.log('Switching to admin account...');

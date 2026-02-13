@@ -36,6 +36,7 @@ export let exportApi: typeof import('./client').exportApi
 export let shareApi: typeof import('./client').shareApi
 export let speciesTraitsApi: typeof import('./client').speciesTraitsApi
 export let feedingApi: typeof import('./client').feedingApi
+export let diseasesApi: typeof import('./client').diseasesApi
 
 // ---------------------------------------------------------------------------
 // Initialization
@@ -68,6 +69,7 @@ export async function initializeApi(): Promise<void> {
     dashboardApi = local.dashboardApi
     exportApi = local.exportApi
     feedingApi = local.feedingApi
+    diseasesApi = local.diseasesApi
     // shareApi & speciesTraitsApi always use remote client
     const remoteShare = await import('./client')
     shareApi = remoteShare.shareApi
@@ -92,6 +94,7 @@ export async function initializeApi(): Promise<void> {
     shareApi = remote.shareApi
     speciesTraitsApi = remote.speciesTraitsApi
     feedingApi = remote.feedingApi
+    diseasesApi = remote.diseasesApi
   }
 
   initialized = true

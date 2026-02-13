@@ -1,0 +1,86 @@
+{
+  "title": "Monitoraggio Malattie e Salute",
+  "subtitle": "Monitora malattie, trattamenti e risultati sanitari dei tuoi animali",
+  "addDisease": "Registra malattia",
+  "editDisease": "Modifica malattia",
+  "viewDetail": "Vedi dettagli",
+  "noRecords": "Nessun registro di malattie",
+  "noRecordsDescription": "Quando noti problemi di salute nei tuoi animali, registrali qui per monitorare trattamenti e risultati",
+  "createFirst": "Registra la prima malattia",
+  "confirmDelete": "Sei sicuro di voler eliminare questo registro di malattia?",
+  "deleteFailed": "Eliminazione del registro di malattia fallita",
+  "filterByLivestock": "Filtra per animale",
+  "allLivestock": "Tutti gli animali",
+  "showResolved": "Mostra risolte",
+  "hideResolved": "Nascondi risolte",
+  "status": {
+    "active": "Attiva",
+    "monitoring": "In osservazione",
+    "resolved": "Risolta",
+    "chronic": "Cronica"
+  },
+  "severity": {
+    "mild": "Lieve",
+    "moderate": "Moderata",
+    "severe": "Grave",
+    "critical": "Critica"
+  },
+  "fields": {
+    "diseaseName": "Nome della malattia",
+    "symptoms": "Sintomi",
+    "diagnosis": "Diagnosi",
+    "severity": "Gravità",
+    "status": "Stato",
+    "detectedDate": "Data di rilevamento",
+    "resolvedDate": "Data di risoluzione",
+    "outcome": "Esito",
+    "notes": "Note",
+    "livestock": "Animale colpito"
+  },
+  "treatment": {
+    "title": "Trattamenti",
+    "add": "Aggiungi trattamento",
+    "edit": "Modifica trattamento",
+    "noTreatments": "Nessun trattamento registrato",
+    "type": "Tipo di trattamento",
+    "name": "Nome del trattamento",
+    "dosage": "Dosaggio",
+    "date": "Data del trattamento",
+    "duration": "Durata (giorni)",
+    "effectiveness": "Efficacia",
+    "consumable": "Medicinale collegato",
+    "consumableNone": "Nessuno",
+    "confirmDelete": "Sei sicuro di voler eliminare questo trattamento?",
+    "types": {
+      "medication": "Medicinale",
+      "water_change": "Cambio d'acqua",
+      "quarantine": "Quarantena",
+      "dip": "Bagno/Immersione",
+      "temperature": "Regolazione temperatura",
+      "other": "Altro"
+    },
+    "effectivenessOptions": {
+      "effective": "Efficace",
+      "partially_effective": "Parzialmente efficace",
+      "ineffective": "Inefficace",
+      "too_early": "Troppo presto per valutare"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Attive",
+    "monitoringDiseases": "In osservazione",
+    "chronicDiseases": "Croniche",
+    "resolvedDiseases": "Risolte"
+  },
+  "detail": {
+    "timeline": "Cronologia dei trattamenti",
+    "detectedOn": "Rilevata il",
+    "resolvedOn": "Risolta il",
+    "ongoing": "In corso",
+    "duration": "Durata",
+    "days": "giorni"
+  },
+  "suggestions": {
+    "title": "Malattie comuni"
+  }
+}

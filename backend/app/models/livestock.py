@@ -72,6 +72,7 @@ class Livestock(Base):
     # Relationships
     tank = relationship("Tank", back_populates="livestock")
     owner = relationship("User", back_populates="livestock")
+    disease_records = relationship("DiseaseRecord", back_populates="livestock", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Livestock {self.common_name or self.species_name} ({self.type})>"

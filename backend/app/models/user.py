@@ -43,6 +43,7 @@ class User(Base):
     consumables = relationship("Consumable", back_populates="owner", cascade="all, delete-orphan")
     budgets = relationship("Budget", back_populates="owner", cascade="all, delete-orphan")
     feeding_schedules = relationship("FeedingSchedule", back_populates="owner", cascade="all, delete-orphan")
+    disease_records = relationship("DiseaseRecord", back_populates="owner", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User {self.email}>"

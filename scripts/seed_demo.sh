@@ -16,19 +16,19 @@ echo "=== AquaScope Demo Seed ==="
 
 # ── Safety: backup before seeding ─────────────────────────────────
 if docker ps --format '{{.Names}}' 2>/dev/null | grep -q aquascope-postgres; then
-  echo "[0/12] Creating pre-seed backup..."
+  echo "[0/13] Creating pre-seed backup..."
   SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
   bash "$SCRIPT_DIR/backup.sh" 2>/dev/null && echo "  Backup saved to backups/" || echo "  Backup skipped (not critical)"
   echo ""
 fi
 
 # ── Register & Login ──────────────────────────────────────────────
-echo "[1/12] Registering demo user..."
+echo "[1/13] Registering demo user..."
 curl -sf -X POST "$API/auth/register" \
   -H "Content-Type: application/json" \
   -d "{\"email\":\"$EMAIL\",\"username\":\"$USER\",\"password\":\"$PASS\"}" > /dev/null 2>&1 || true
 
-echo "[1/12] Logging in..."
+echo "[1/13] Logging in..."
 TOKEN=$(curl -sf -X POST "$API/auth/login" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=$EMAIL&password=$PASS" | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
@@ -48,8 +48,20 @@ post_quiet() {
   curl -sf -X POST "$url" -H "$AUTH" -H "$CT" -d "$1" > /dev/null
 }
 
+# Helper: lookup livestock ID by species name (partial match)
+lookup_livestock() {
+  local tank_id="$1"
+  local species="$2"
+  curl -sf "$API/livestock/?tank_id=$tank_id" -H "$AUTH" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+matches = [x for x in data if '$species' in x.get('species_name','')]
+print(matches[0]['id'] if matches else '')
+"
+}
+
 # ── Create Tanks ──────────────────────────────────────────────────
-echo "[2/12] Creating tanks..."
+echo "[2/13] Creating tanks..."
 
 SALT_TANK=$(post "$API/tanks/" '{
   "name": "Coral Paradise",
@@ -76,7 +88,7 @@ FRESH_TANK=$(post "$API/tanks/" '{
 echo "  Freshwater tank: $FRESH_TANK"
 
 # ── Tank Events ───────────────────────────────────────────────────
-echo "[3/12] Adding tank events..."
+echo "[3/13] Adding tank events..."
 
 # Saltwater events
 post_quiet "$API/tanks/$SALT_TANK/events" '{"title":"Initial cycle complete","event_date":"2024-04-20","event_type":"milestone","description":"Ammonia and nitrite at 0 for 7 days"}'
@@ -92,7 +104,7 @@ post_quiet "$API/tanks/$FRESH_TANK/events" '{"title":"Planted new swords","event
 post_quiet "$API/tanks/$FRESH_TANK/events" '{"title":"CO2 system installed","event_date":"2025-03-01","event_type":"equipment","description":"Pressurized CO2 with inline diffuser"}'
 
 # ── Livestock ─────────────────────────────────────────────────────
-echo "[4/12] Adding livestock..."
+echo "[4/13] Adding livestock..."
 
 # Saltwater livestock (with WoRMS, iNaturalist IDs and photo URLs)
 post_quiet "$API/livestock/" "{\"tank_id\":\"$SALT_TANK\",\"species_name\":\"Acropora millepora\",\"common_name\":\"Millepora Acro\",\"type\":\"coral\",\"quantity\":3,\"added_date\":\"2024-05-15\",\"notes\":\"Purple/green coloration, mid-tank placement\",\"worms_id\":\"207023\",\"inaturalist_id\":\"93299\",\"cached_photo_url\":\"https://inaturalist-open-data.s3.amazonaws.com/photos/105111643/medium.jpg\"}"
@@ -114,7 +126,7 @@ post_quiet "$API/livestock/" "{\"tank_id\":\"$FRESH_TANK\",\"species_name\":\"Ot
 post_quiet "$API/livestock/" "{\"tank_id\":\"$FRESH_TANK\",\"species_name\":\"Caridina multidentata\",\"common_name\":\"Amano Shrimp\",\"type\":\"invertebrate\",\"quantity\":10,\"added_date\":\"2024-11-20\",\"notes\":\"Best algae eaters in the tank\",\"worms_id\":\"586329\",\"inaturalist_id\":\"434771\",\"cached_photo_url\":\"https://static.inaturalist.org/photos/163242662/medium.jpg\"}"
 
 # ── Equipment ─────────────────────────────────────────────────────
-echo "[5/12] Adding equipment..."
+echo "[5/13] Adding equipment..."
 
 # Saltwater equipment
 post_quiet "$API/equipment/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Radion G6 Pro\",\"equipment_type\":\"light\",\"manufacturer\":\"EcoTech Marine\",\"model\":\"G6 Pro\",\"purchase_date\":\"2024-11-10\",\"purchase_price\":\"899.00\",\"condition\":\"excellent\",\"status\":\"active\",\"notes\":\"Running AB+ schedule at 60% intensity\"}"
@@ -131,7 +143,7 @@ post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"CO2Art Pro
 post_quiet "$API/equipment/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Eheim Jager 200W\",\"equipment_type\":\"heater\",\"manufacturer\":\"Eheim\",\"model\":\"Jager 200W\",\"purchase_date\":\"2024-09-01\",\"purchase_price\":\"39.00\",\"condition\":\"good\",\"status\":\"active\",\"notes\":\"Set to 26°C\"}"
 
 # ── Consumables (from Stock matériel inventory) ──────────────────
-echo "[6/12] Adding saltwater consumables..."
+echo "[6/13] Adding saltwater consumables..."
 
 # Decoration
 post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"CORALGUM\",\"consumable_type\":\"other\",\"brand\":\"Tunze\",\"product_name\":\"112g\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"12.99\",\"purchase_url\":\"https://www.zoanthus.fr/fr/bouturage/2218-tunze-coral-gum-112-g-0104740-4025167010415.html\",\"status\":\"active\",\"notes\":\"Epoxy putty-glue for secure coral frag mounting.\"}"
@@ -185,7 +197,7 @@ post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Reef Crys
 post_quiet "$API/consumables/" "{\"tank_id\":\"$SALT_TANK\",\"name\":\"Osmoseur\",\"consumable_type\":\"additive\",\"brand\":\"Aquavie\",\"product_name\":\"380l/j\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"89.70\",\"status\":\"active\",\"notes\":\"RO unit — produces high-quality osmosis water from tap water.\"}"
 
 # ── Freshwater Consumables ────────────────────────────────────────
-echo "[7/12] Adding freshwater consumables..."
+echo "[7/13] Adding freshwater consumables..."
 
 # Plant fertilizers
 post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Flourish Comprehensive\",\"consumable_type\":\"supplement\",\"brand\":\"Seachem\",\"product_name\":\"500ml\",\"quantity_on_hand\":2,\"quantity_unit\":\"units\",\"purchase_price\":\"14.99\",\"status\":\"active\",\"notes\":\"Comprehensive plant supplement — micro and macro nutrients. Dose 5ml per 250L twice weekly.\"}"
@@ -221,7 +233,7 @@ post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"ParaGuar
 post_quiet "$API/consumables/" "{\"tank_id\":\"$FRESH_TANK\",\"name\":\"Pimafix\",\"consumable_type\":\"medication\",\"brand\":\"API\",\"product_name\":\"237ml\",\"quantity_on_hand\":1,\"quantity_unit\":\"units\",\"purchase_price\":\"10.49\",\"status\":\"active\",\"notes\":\"Natural antifungal remedy from West Indian Bay Tree. Safe for scaleless fish and shrimp.\"}"
 
 # ── Maintenance Reminders ─────────────────────────────────────────
-echo "[8/12] Adding maintenance reminders..."
+echo "[8/13] Adding maintenance reminders..."
 
 # Saltwater maintenance
 post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$SALT_TANK\",\"title\":\"10% Water Change\",\"description\":\"Red Sea Coral Pro salt mix, match temp and salinity\",\"reminder_type\":\"water_change\",\"frequency_days\":7,\"next_due\":\"2026-02-15\"}"
@@ -237,7 +249,7 @@ post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$FRESH_TANK\",\"title\":
 post_quiet "$API/maintenance/reminders" "{\"tank_id\":\"$FRESH_TANK\",\"title\":\"Refill CO2 Cylinder\",\"description\":\"Check CO2 pressure gauge, refill when below 400 PSI\",\"reminder_type\":\"dosing_refill\",\"frequency_days\":60,\"next_due\":\"2026-04-01\"}"
 
 # ── Notes ─────────────────────────────────────────────────────────
-echo "[9/12] Adding notes..."
+echo "[9/13] Adding notes..."
 
 # Saltwater notes
 post_quiet "$API/notes/" "{\"tank_id\":\"$SALT_TANK\",\"content\":\"Noticed slight STN on the base of the green Acropora millepora. Increased flow in that area by adjusting the MP40 to pulse mode. Will monitor closely over the next week. Dipped in CoralRx as a precaution.\"}"
@@ -252,7 +264,7 @@ post_quiet "$API/notes/" "{\"tank_id\":\"$FRESH_TANK\",\"content\":\"CO2 drop ch
 post_quiet "$API/notes/" "{\"tank_id\":\"$FRESH_TANK\",\"content\":\"Rummy-nose tetras all showing deep red noses - good indicator of water quality. Corydoras are active and foraging during the day which is a great sign.\"}"
 
 # ── Parameters (historical data) ──────────────────────────────────
-echo "[10/12] Submitting parameter readings..."
+echo "[10/13] Submitting parameter readings..."
 
 # Saltwater parameters - 6 months of data (biweekly)
 for d in 2024-10-01 2024-10-15 2024-11-01 2024-11-15 2024-12-01 2024-12-15 \
@@ -306,7 +318,7 @@ for d in 2024-11-01 2024-11-08 2024-11-15 2024-11-22 2024-11-29 \
 done
 
 # ── ICP Tests (saltwater only) ────────────────────────────────────
-echo "[11/12] Adding ICP test results..."
+echo "[11/13] Adding ICP test results..."
 
 # ICP Test 1: August 2024 — first test after cycle, mostly good
 post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2024-08-15\",\"lab_name\":\"ATI\",\"test_id\":\"ATI-2024-08-001\",\"water_type\":\"saltwater\",\"sample_date\":\"2024-08-10\",\"received_date\":\"2024-08-13\",\"evaluated_date\":\"2024-08-15\",\"score_major_elements\":88,\"score_minor_elements\":72,\"score_pollutants\":95,\"score_base_elements\":90,\"score_overall\":86,\"salinity\":35.2,\"salinity_status\":\"ok\",\"kh\":7.8,\"kh_status\":\"low\",\"cl\":20100,\"cl_status\":\"ok\",\"na\":10800,\"na_status\":\"ok\",\"mg\":1340,\"mg_status\":\"ok\",\"s\":930,\"s_status\":\"ok\",\"ca\":425,\"ca_status\":\"ok\",\"k\":405,\"k_status\":\"ok\",\"br\":68,\"br_status\":\"ok\",\"sr\":8.4,\"sr_status\":\"ok\",\"b\":4.8,\"b_status\":\"ok\",\"f\":1.3,\"f_status\":\"ok\",\"li\":180,\"li_status\":\"ok\",\"si\":120,\"si_status\":\"ok\",\"i\":52,\"i_status\":\"low\",\"ba\":8,\"ba_status\":\"ok\",\"mo\":10,\"mo_status\":\"ok\",\"ni\":1.2,\"ni_status\":\"ok\",\"mn\":0.5,\"mn_status\":\"ok\",\"fe\":2.1,\"fe_status\":\"ok\",\"cu\":1.8,\"cu_status\":\"ok\",\"zn\":4.2,\"zn_status\":\"ok\",\"sn\":3.5,\"sn_status\":\"high\",\"no3\":3.2,\"no3_status\":\"ok\",\"po4\":0.04,\"po4_status\":\"ok\",\"al\":5,\"al_status\":\"ok\",\"pb\":0,\"pb_status\":\"ok\",\"notes\":\"First ICP test after cycle. Slight tin contamination detected — likely from heater element. Iodine low, started dosing Tropic Marin iodine.\"}"
@@ -318,7 +330,7 @@ post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2025-0
 post_quiet "$API/icp-tests/" "{\"tank_id\":\"$SALT_TANK\",\"test_date\":\"2025-07-10\",\"lab_name\":\"ATI\",\"test_id\":\"ATI-2025-07-089\",\"water_type\":\"saltwater\",\"sample_date\":\"2025-07-05\",\"received_date\":\"2025-07-08\",\"evaluated_date\":\"2025-07-10\",\"score_major_elements\":96,\"score_minor_elements\":92,\"score_pollutants\":100,\"score_base_elements\":97,\"score_overall\":96,\"salinity\":35.1,\"salinity_status\":\"ok\",\"kh\":8.8,\"kh_status\":\"ok\",\"cl\":19900,\"cl_status\":\"ok\",\"na\":10750,\"na_status\":\"ok\",\"mg\":1380,\"mg_status\":\"ok\",\"s\":925,\"s_status\":\"ok\",\"ca\":440,\"ca_status\":\"ok\",\"k\":400,\"k_status\":\"ok\",\"br\":68,\"br_status\":\"ok\",\"sr\":8.8,\"sr_status\":\"ok\",\"b\":4.5,\"b_status\":\"ok\",\"f\":1.3,\"f_status\":\"ok\",\"li\":178,\"li_status\":\"ok\",\"si\":60,\"si_status\":\"ok\",\"i\":58,\"i_status\":\"ok\",\"ba\":6,\"ba_status\":\"ok\",\"mo\":12,\"mo_status\":\"ok\",\"ni\":0.6,\"ni_status\":\"ok\",\"mn\":0.3,\"mn_status\":\"ok\",\"fe\":1.5,\"fe_status\":\"ok\",\"cu\":0.9,\"cu_status\":\"ok\",\"zn\":3.2,\"zn_status\":\"ok\",\"sn\":0.5,\"sn_status\":\"ok\",\"no3\":4.1,\"no3_status\":\"ok\",\"po4\":0.035,\"po4_status\":\"ok\",\"al\":2,\"al_status\":\"ok\",\"pb\":0,\"pb_status\":\"ok\",\"notes\":\"Mature system — all elements stable and within ideal range. Zero pollutants. Coral growth is excellent, Acropora encrusting onto surrounding rocks.\"}"
 
 # ── Feeding Schedules ─────────────────────────────────────────────
-echo "[12/12] Adding feeding schedules..."
+echo "[12/13] Adding feeding schedules..."
 
 # Saltwater feeding schedules
 post_quiet "$API/feeding/schedules" "{\"tank_id\":\"$SALT_TANK\",\"food_name\":\"PE Mysis Shrimp\",\"quantity\":2,\"quantity_unit\":\"cube\",\"frequency_hours\":12,\"notes\":\"Morning and evening feeding for all fish\",\"is_active\":true}"
@@ -333,6 +345,63 @@ post_quiet "$API/feeding/schedules" "{\"tank_id\":\"$FRESH_TANK\",\"food_name\":
 post_quiet "$API/feeding/schedules" "{\"tank_id\":\"$FRESH_TANK\",\"food_name\":\"Frozen Bloodworms\",\"quantity\":1,\"quantity_unit\":\"cube\",\"frequency_hours\":168,\"notes\":\"Weekly treat for all fish — thaw before feeding\",\"is_active\":true}"
 post_quiet "$API/feeding/schedules" "{\"tank_id\":\"$FRESH_TANK\",\"food_name\":\"Algae Wafers\",\"quantity\":1,\"quantity_unit\":\"piece\",\"frequency_hours\":48,\"notes\":\"For otocinclus and amano shrimp\",\"is_active\":true}"
 post_quiet "$API/feeding/schedules" "{\"tank_id\":\"$FRESH_TANK\",\"food_name\":\"Shrimp King Complete\",\"quantity\":1,\"quantity_unit\":\"piece\",\"frequency_hours\":72,\"notes\":\"Supplemental feed for amano shrimp colony\",\"is_active\":true}"
+
+# ── Disease/Health Records ────────────────────────────────────────
+echo "[13/13] Adding disease records and treatments..."
+
+# Lookup livestock IDs for disease linking
+SALT_TANG=$(lookup_livestock "$SALT_TANK" "Paracanthurus")
+SALT_ACRO=$(lookup_livestock "$SALT_TANK" "Acropora millepora")
+SALT_MONTI=$(lookup_livestock "$SALT_TANK" "Montipora")
+FRESH_CARDINAL=$(lookup_livestock "$FRESH_TANK" "Paracheirodon")
+FRESH_CORY=$(lookup_livestock "$FRESH_TANK" "Corydoras")
+
+# 1. Marine Ich on Blue Tang — resolved, severe
+if [ -n "$SALT_TANG" ]; then
+  D1=$(post "$API/diseases/" "{\"livestock_id\":\"$SALT_TANG\",\"tank_id\":\"$SALT_TANK\",\"disease_name\":\"Marine Ich (Cryptocaryon irritans)\",\"symptoms\":\"White spots on body and fins, flashing against rocks, loss of appetite\",\"diagnosis\":\"Cryptocaryon irritans confirmed by visual inspection under magnification\",\"severity\":\"severe\",\"status\":\"resolved\",\"detected_date\":\"2025-01-10\",\"resolved_date\":\"2025-02-14\",\"outcome\":\"Full recovery after 5-week copper treatment in quarantine\",\"notes\":\"Caught early due to daily visual inspections. Tang was isolated within hours of first spots appearing.\"}")
+  if [ -n "$D1" ]; then
+    post_quiet "$API/diseases/$D1/treatments" '{"treatment_type":"quarantine","treatment_name":"Quarantine isolation","treatment_date":"2025-01-10","duration_days":35,"effectiveness":"effective","notes":"Moved to 75L quarantine tank with bare bottom and PVC fittings"}'
+    post_quiet "$API/diseases/$D1/treatments" '{"treatment_type":"medication","treatment_name":"Copper Power treatment","dosage":"0.5 ppm therapeutic level","treatment_date":"2025-01-11","duration_days":30,"effectiveness":"effective","notes":"Maintained copper at 0.5 ppm, tested twice daily with Hanna checker"}'
+    post_quiet "$API/diseases/$D1/treatments" '{"treatment_type":"water_change","treatment_name":"Daily 10% water change","treatment_date":"2025-01-11","duration_days":30,"effectiveness":"effective","notes":"Maintained water quality during copper treatment, matched temp and salinity"}'
+  fi
+fi
+
+# 2. RTN on Acropora — monitoring, moderate
+if [ -n "$SALT_ACRO" ]; then
+  D2=$(post "$API/diseases/" "{\"livestock_id\":\"$SALT_ACRO\",\"tank_id\":\"$SALT_TANK\",\"disease_name\":\"Rapid Tissue Necrosis (RTN)\",\"symptoms\":\"Tissue loss from base of one colony, white skeleton exposed\",\"diagnosis\":\"RTN — rapid tissue recession starting at base, likely triggered by alkalinity swing\",\"severity\":\"moderate\",\"status\":\"monitoring\",\"detected_date\":\"2026-01-20\",\"notes\":\"Alkalinity dropped from 8.5 to 7.2 dKH overnight due to dosing pump malfunction. One colony affected.\"}")
+  if [ -n "$D2" ]; then
+    post_quiet "$API/diseases/$D2/treatments" '{"treatment_type":"dip","treatment_name":"CoralRx Pro dip","dosage":"20ml per 4L for 10 minutes","treatment_date":"2026-01-20","effectiveness":"partially_effective","notes":"Immediate dip to slow progression, removed loose tissue"}'
+    post_quiet "$API/diseases/$D2/treatments" '{"treatment_type":"other","treatment_name":"Emergency fragging","treatment_date":"2026-01-21","effectiveness":"effective","notes":"Cut 3 healthy branches above recession line, mounted on new plugs"}'
+    post_quiet "$API/diseases/$D2/treatments" '{"treatment_type":"other","treatment_name":"Flow adjustment","treatment_date":"2026-01-21","effectiveness":"too_early","notes":"Increased flow around remaining colony to improve oxygenation"}'
+  fi
+fi
+
+# 3. Flatworms on Montipora — resolved, mild
+if [ -n "$SALT_MONTI" ]; then
+  D3=$(post "$API/diseases/" "{\"livestock_id\":\"$SALT_MONTI\",\"tank_id\":\"$SALT_TANK\",\"disease_name\":\"Montipora Eating Nudibranchs\",\"symptoms\":\"Small white marks and tissue loss on Montipora digitata, tiny egg spirals visible\",\"severity\":\"mild\",\"status\":\"resolved\",\"detected_date\":\"2025-08-05\",\"resolved_date\":\"2025-08-20\",\"outcome\":\"All nudibranchs and eggs eliminated after 3 weekly dips\",\"notes\":\"Found during routine coral inspection with magnifying glass.\"}")
+  if [ -n "$D3" ]; then
+    post_quiet "$API/diseases/$D3/treatments" '{"treatment_type":"dip","treatment_name":"CoralRx Pro dip","dosage":"20ml per 4L for 15 minutes","treatment_date":"2025-08-05","effectiveness":"effective","notes":"First dip — removed 6 nudibranchs, scrubbed egg spirals with soft brush"}'
+  fi
+fi
+
+# 4. Ich on Cardinal Tetras — resolved, moderate
+if [ -n "$FRESH_CARDINAL" ]; then
+  D4=$(post "$API/diseases/" "{\"livestock_id\":\"$FRESH_CARDINAL\",\"tank_id\":\"$FRESH_TANK\",\"disease_name\":\"Freshwater Ich (Ichthyophthirius multifiliis)\",\"symptoms\":\"White spots on 5 of 20 cardinals, clamped fins, reduced schooling behavior\",\"diagnosis\":\"Classic ich presentation — white cyst stage visible\",\"severity\":\"moderate\",\"status\":\"resolved\",\"detected_date\":\"2025-04-12\",\"resolved_date\":\"2025-04-28\",\"outcome\":\"All fish recovered, no losses. Temperature method combined with ParaGuard was effective.\",\"notes\":\"Likely introduced via new plants that were not properly quarantined.\"}")
+  if [ -n "$D4" ]; then
+    post_quiet "$API/diseases/$D4/treatments" '{"treatment_type":"temperature","treatment_name":"Gradual temperature raise","dosage":"Raised from 26°C to 30°C over 48 hours","treatment_date":"2025-04-12","duration_days":14,"effectiveness":"effective","notes":"Accelerates ich lifecycle, combined with medication for full treatment"}'
+    post_quiet "$API/diseases/$D4/treatments" '{"treatment_type":"medication","treatment_name":"ParaGuard treatment","dosage":"5ml per 40L daily","treatment_date":"2025-04-13","duration_days":14,"effectiveness":"effective","notes":"Dosed daily for 2 weeks, safe for tetras and shrimp at half dose"}'
+    post_quiet "$API/diseases/$D4/treatments" '{"treatment_type":"water_change","treatment_name":"50% water changes every 3 days","treatment_date":"2025-04-14","duration_days":14,"effectiveness":"effective","notes":"Large water changes to remove free-swimming theronts and maintain water quality"}'
+  fi
+fi
+
+# 5. Fungal infection on Cory — resolved, mild
+if [ -n "$FRESH_CORY" ]; then
+  D5=$(post "$API/diseases/" "{\"livestock_id\":\"$FRESH_CORY\",\"tank_id\":\"$FRESH_TANK\",\"disease_name\":\"Fungal Infection (Saprolegnia)\",\"symptoms\":\"White cotton-like growth on dorsal fin of one Sterbai Cory\",\"severity\":\"mild\",\"status\":\"resolved\",\"detected_date\":\"2025-11-08\",\"resolved_date\":\"2025-11-22\",\"outcome\":\"Fungal growth completely gone, fin regenerating normally\",\"notes\":\"Likely caused by minor fin damage from driftwood snag.\"}")
+  if [ -n "$D5" ]; then
+    post_quiet "$API/diseases/$D5/treatments" '{"treatment_type":"medication","treatment_name":"Pimafix treatment","dosage":"5ml per 40L daily","treatment_date":"2025-11-08","duration_days":7,"effectiveness":"effective","notes":"Natural antifungal safe for corydoras and shrimp"}'
+    post_quiet "$API/diseases/$D5/treatments" '{"treatment_type":"water_change","treatment_name":"25% water change","treatment_date":"2025-11-15","effectiveness":"effective","notes":"Post-treatment water change with fresh Indian almond leaves for tannin boost"}'
+  fi
+fi
 
 echo ""
 echo "=== AquaScope Demo Seed Complete ==="
@@ -352,6 +421,7 @@ echo "    - 33 parameter readings (biweekly, Oct 2024 - Feb 2026)"
 echo "    - 41 consumables (additives, food, medication, gear)"
 echo "    - 3 ICP tests (Aug 2024, Jan 2025, Jul 2025)"
 echo "    - 5 feeding schedules (4 active, 1 inactive)"
+echo "    - 3 disease records (1 resolved, 1 monitoring, 1 resolved) with treatments"
 echo ""
 echo "  Rio Negro Biotope (freshwater):"
 echo "    - 4 tank events"
@@ -362,5 +432,6 @@ echo "    - 4 notes"
 echo "    - 67 parameter readings (weekly, Nov 2024 - Feb 2026)"
 echo "    - 21 consumables (fertilizers, food, water conditioners, test kits, filter media, medication)"
 echo "    - 5 feeding schedules (all active)"
+echo "    - 2 disease records (both resolved) with treatments"
 echo ""
 echo "Login at http://localhost with $EMAIL / $PASS"

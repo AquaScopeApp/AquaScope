@@ -26,6 +26,7 @@ import Notes from './pages/Notes'
 import Admin from './pages/Admin'
 import Finances from './pages/Finances'
 import Feeding from './pages/Feeding'
+import Diseases from './pages/Diseases'
 import WaterChangeCalculator from './pages/WaterChangeCalculator'
 import PublicTankProfile from './pages/PublicTankProfile'
 
@@ -80,6 +81,7 @@ function App() {
             <Route path="notes" element={<Notes />} />
             <Route path="finances" element={<Finances />} />
             <Route path="feeding" element={<Feeding />} />
+            <Route path="diseases" element={<Diseases />} />
             <Route path="water-change-calculator" element={<WaterChangeCalculator />} />
             {!local && <Route path="admin" element={<Admin />} />}
           </Route>

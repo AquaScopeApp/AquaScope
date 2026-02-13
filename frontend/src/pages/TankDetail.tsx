@@ -16,8 +16,9 @@ import {
   notesApi,
   maintenanceApi,
   icpTestsApi,
+  diseasesApi,
 } from '../api'
-import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, MaturityScore } from '../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, MaturityScore, DiseaseRecord } from '../types'
 import TankSidebar from '../components/tanks/TankSidebar'
 import TankTabs from '../components/tanks/TankTabs'
 
@@ -35,6 +36,7 @@ export default function TankDetail() {
   const [notes, setNotes] = useState<Note[]>([])
   const [maintenance, setMaintenance] = useState<MaintenanceReminder[]>([])
   const [icpTests, setIcpTests] = useState<ICPTestSummary[]>([])
+  const [diseases, setDiseases] = useState<DiseaseRecord[]>([])
   const [maturity, setMaturity] = useState<MaturityScore | null>(null)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -61,6 +63,7 @@ export default function TankDetail() {
         notesData,
         maintenanceData,
         icpTestsData,
+        diseasesData,
         maturityData,
       ] = await Promise.all([
         tanksApi.get(tankId),
@@ -72,6 +75,7 @@ export default function TankDetail() {
         notesApi.list(tankId).catch(() => []),
         maintenanceApi.listReminders({ tank_id: tankId }).catch(() => []),
         icpTestsApi.list({ tank_id: tankId }).catch(() => []),
+        diseasesApi.list({ tank_id: tankId }).catch(() => []),
         tanksApi.getMaturity(tankId).catch(() => null),
       ])
 
@@ -84,6 +88,7 @@ export default function TankDetail() {
       setNotes(notesData)
       setMaintenance(maintenanceData)
       setIcpTests(icpTestsData)
+      setDiseases(diseasesData)
       setMaturity(maturityData)
     } catch (error) {
       console.error('Failed to load tank data:', error)
@@ -189,6 +194,7 @@ export default function TankDetail() {
             notes={notes}
             maintenance={maintenance}
             icpTests={icpTests}
+            diseases={diseases}
             onCreateEvent={handleCreateEvent}
             onUpdateEvent={handleUpdateEvent}
             onDeleteEvent={handleDeleteEvent}

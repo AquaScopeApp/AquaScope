@@ -76,6 +76,13 @@ import type {
   FeedingLog,
   FeedingLogCreate,
   FeedingOverview,
+  DiseaseRecord,
+  DiseaseRecordCreate,
+  DiseaseRecordUpdate,
+  DiseaseRecordDetail,
+  DiseaseTreatment,
+  DiseaseTreatmentCreate,
+  DiseaseHealthSummary,
 } from '../types'
 
 // API base URL - empty string means same origin (nginx proxy in Docker)
@@ -1269,6 +1276,62 @@ export const feedingApi = {
 
   getOverview: async (tankId: string): Promise<FeedingOverview> => {
     const response = await apiClient.get<FeedingOverview>('/feeding/overview', {
+      params: { tank_id: tankId },
+    })
+    return response.data
+  },
+}
+
+// ============================================================================
+// Disease/Health API
+// ============================================================================
+
+export const diseasesApi = {
+  list: async (params?: {
+    tank_id?: string
+    livestock_id?: string
+    status?: string
+    severity?: string
+  }): Promise<DiseaseRecord[]> => {
+    const response = await apiClient.get<DiseaseRecord[]>('/diseases/', { params })
+    return response.data
+  },
+
+  get: async (id: string): Promise<DiseaseRecordDetail> => {
+    const response = await apiClient.get<DiseaseRecordDetail>(`/diseases/${id}`)
+    return response.data
+  },
+
+  create: async (data: DiseaseRecordCreate): Promise<DiseaseRecord> => {
+    const response = await apiClient.post<DiseaseRecord>('/diseases/', data)
+    return response.data
+  },
+
+  update: async (id: string, data: DiseaseRecordUpdate): Promise<DiseaseRecord> => {
+    const response = await apiClient.put<DiseaseRecord>(`/diseases/${id}`, data)
+    return response.data
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await apiClient.delete(`/diseases/${id}`)
+  },
+
+  addTreatment: async (diseaseId: string, data: DiseaseTreatmentCreate): Promise<DiseaseTreatment> => {
+    const response = await apiClient.post<DiseaseTreatment>(`/diseases/${diseaseId}/treatments`, data)
+    return response.data
+  },
+
+  updateTreatment: async (diseaseId: string, treatmentId: string, data: DiseaseTreatmentCreate): Promise<DiseaseTreatment> => {
+    const response = await apiClient.put<DiseaseTreatment>(`/diseases/${diseaseId}/treatments/${treatmentId}`, data)
+    return response.data
+  },
+
+  deleteTreatment: async (diseaseId: string, treatmentId: string): Promise<void> => {
+    await apiClient.delete(`/diseases/${diseaseId}/treatments/${treatmentId}`)
+  },
+
+  getSummary: async (tankId: string): Promise<DiseaseHealthSummary> => {
+    const response = await apiClient.get<DiseaseHealthSummary>('/diseases/summary', {
       params: { tank_id: tankId },
     })
     return response.data

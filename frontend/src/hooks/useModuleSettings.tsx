@@ -19,6 +19,7 @@ const DEFAULT_SETTINGS: ModuleSettings = {
   icp_tests: true,
   finances: true,
   feeding: true,
+  diseases: true,
 }
 
 interface ModuleSettingsContextValue {

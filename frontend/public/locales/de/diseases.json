@@ -1,0 +1,86 @@
+{
+  "title": "Krankheits- & Gesundheitsüberwachung",
+  "subtitle": "Überwachen Sie Krankheiten, Behandlungen und Gesundheitsergebnisse Ihrer Tiere",
+  "addDisease": "Krankheit erfassen",
+  "editDisease": "Krankheit bearbeiten",
+  "viewDetail": "Details anzeigen",
+  "noRecords": "Noch keine Krankheitseinträge",
+  "noRecordsDescription": "Wenn Sie Gesundheitsprobleme bei Ihren Tieren bemerken, erfassen Sie diese hier, um Behandlungen und Ergebnisse zu verfolgen",
+  "createFirst": "Erste Krankheit erfassen",
+  "confirmDelete": "Sind Sie sicher, dass Sie diesen Krankheitseintrag löschen möchten?",
+  "deleteFailed": "Löschen des Krankheitseintrags fehlgeschlagen",
+  "filterByLivestock": "Nach Tier filtern",
+  "allLivestock": "Alle Tiere",
+  "showResolved": "Geheilte anzeigen",
+  "hideResolved": "Geheilte ausblenden",
+  "status": {
+    "active": "Aktiv",
+    "monitoring": "Überwachung",
+    "resolved": "Geheilt",
+    "chronic": "Chronisch"
+  },
+  "severity": {
+    "mild": "Leicht",
+    "moderate": "Mittel",
+    "severe": "Schwer",
+    "critical": "Kritisch"
+  },
+  "fields": {
+    "diseaseName": "Krankheitsname",
+    "symptoms": "Symptome",
+    "diagnosis": "Diagnose",
+    "severity": "Schweregrad",
+    "status": "Status",
+    "detectedDate": "Erkennungsdatum",
+    "resolvedDate": "Heilungsdatum",
+    "outcome": "Ergebnis",
+    "notes": "Notizen",
+    "livestock": "Betroffenes Tier"
+  },
+  "treatment": {
+    "title": "Behandlungen",
+    "add": "Behandlung hinzufügen",
+    "edit": "Behandlung bearbeiten",
+    "noTreatments": "Noch keine Behandlungen erfasst",
+    "type": "Behandlungsart",
+    "name": "Behandlungsname",
+    "dosage": "Dosierung",
+    "date": "Behandlungsdatum",
+    "duration": "Dauer (Tage)",
+    "effectiveness": "Wirksamkeit",
+    "consumable": "Verknüpftes Medikament",
+    "consumableNone": "Keines",
+    "confirmDelete": "Sind Sie sicher, dass Sie diese Behandlung löschen möchten?",
+    "types": {
+      "medication": "Medikament",
+      "water_change": "Wasserwechsel",
+      "quarantine": "Quarantäne",
+      "dip": "Bad/Tauchbad",
+      "temperature": "Temperaturanpassung",
+      "other": "Sonstiges"
+    },
+    "effectivenessOptions": {
+      "effective": "Wirksam",
+      "partially_effective": "Teilweise wirksam",
+      "ineffective": "Unwirksam",
+      "too_early": "Zu früh für eine Bewertung"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Aktiv",
+    "monitoringDiseases": "Überwachung",
+    "chronicDiseases": "Chronisch",
+    "resolvedDiseases": "Geheilt"
+  },
+  "detail": {
+    "timeline": "Behandlungschronik",
+    "detectedOn": "Erkannt am",
+    "resolvedOn": "Geheilt am",
+    "ongoing": "Andauernd",
+    "duration": "Dauer",
+    "days": "Tage"
+  },
+  "suggestions": {
+    "title": "Häufige Krankheiten"
+  }
+}

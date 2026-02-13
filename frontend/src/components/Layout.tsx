@@ -92,6 +92,7 @@ export default function Layout(): JSX.Element {
     { name: t('navigation.equipment'), href: '/equipment', icon: '⚙️', module: 'equipment' },
     { name: t('navigation.consumables'), href: '/consumables', icon: '🧪', module: 'consumables' },
     { name: t('navigation.feeding'), href: '/feeding', icon: '🍽️', module: 'feeding' },
+    { name: t('navigation.diseases'), href: '/diseases', icon: '🩺', module: 'diseases' as keyof ModuleSettings },
     { name: t('navigation.calculators'), href: '/water-change-calculator', icon: '🧮', module: null },
     { name: t('navigation.finances'), href: '/finances', icon: '💰', module: 'finances' },
   ]

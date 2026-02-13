@@ -1,0 +1,86 @@
+{
+  "title": "Rastreamento de Doenças e Saúde",
+  "subtitle": "Monitore doenças, tratamentos e resultados de saúde dos seus animais",
+  "addDisease": "Registrar doença",
+  "editDisease": "Editar doença",
+  "viewDetail": "Ver detalhes",
+  "noRecords": "Nenhum registro de doença",
+  "noRecordsDescription": "Quando notar problemas de saúde nos seus animais, registre-os aqui para acompanhar tratamentos e resultados",
+  "createFirst": "Registrar primeira doença",
+  "confirmDelete": "Tem certeza de que deseja excluir este registro de doença?",
+  "deleteFailed": "Falha ao excluir o registro de doença",
+  "filterByLivestock": "Filtrar por animal",
+  "allLivestock": "Todos os animais",
+  "showResolved": "Mostrar resolvidas",
+  "hideResolved": "Ocultar resolvidas",
+  "status": {
+    "active": "Ativa",
+    "monitoring": "Em observação",
+    "resolved": "Resolvida",
+    "chronic": "Crônica"
+  },
+  "severity": {
+    "mild": "Leve",
+    "moderate": "Moderada",
+    "severe": "Grave",
+    "critical": "Crítica"
+  },
+  "fields": {
+    "diseaseName": "Nome da doença",
+    "symptoms": "Sintomas",
+    "diagnosis": "Diagnóstico",
+    "severity": "Gravidade",
+    "status": "Status",
+    "detectedDate": "Data de detecção",
+    "resolvedDate": "Data de resolução",
+    "outcome": "Resultado",
+    "notes": "Notas",
+    "livestock": "Animal afetado"
+  },
+  "treatment": {
+    "title": "Tratamentos",
+    "add": "Adicionar tratamento",
+    "edit": "Editar tratamento",
+    "noTreatments": "Nenhum tratamento registrado",
+    "type": "Tipo de tratamento",
+    "name": "Nome do tratamento",
+    "dosage": "Dosagem",
+    "date": "Data do tratamento",
+    "duration": "Duração (dias)",
+    "effectiveness": "Eficácia",
+    "consumable": "Medicamento vinculado",
+    "consumableNone": "Nenhum",
+    "confirmDelete": "Tem certeza de que deseja excluir este tratamento?",
+    "types": {
+      "medication": "Medicamento",
+      "water_change": "Troca de água",
+      "quarantine": "Quarentena",
+      "dip": "Banho/Imersão",
+      "temperature": "Ajuste de temperatura",
+      "other": "Outro"
+    },
+    "effectivenessOptions": {
+      "effective": "Eficaz",
+      "partially_effective": "Parcialmente eficaz",
+      "ineffective": "Ineficaz",
+      "too_early": "Muito cedo para avaliar"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Ativas",
+    "monitoringDiseases": "Em observação",
+    "chronicDiseases": "Crônicas",
+    "resolvedDiseases": "Resolvidas"
+  },
+  "detail": {
+    "timeline": "Cronologia dos tratamentos",
+    "detectedOn": "Detectada em",
+    "resolvedOn": "Resolvida em",
+    "ongoing": "Em andamento",
+    "duration": "Duração",
+    "days": "dias"
+  },
+  "suggestions": {
+    "title": "Doenças comuns"
+  }
+}

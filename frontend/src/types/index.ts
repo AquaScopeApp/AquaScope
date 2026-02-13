@@ -759,6 +759,7 @@ export interface ModuleSettings {
   icp_tests: boolean
   finances: boolean
   feeding: boolean
+  diseases: boolean
 }
 
 // ============================================================================
@@ -833,6 +834,103 @@ export interface FeedingOverview {
   next_due: string | null
   overdue_count: number
   recent_logs: FeedingLog[]
+}
+
+// ============================================================================
+// Disease/Health Types
+// ============================================================================
+
+export type DiseaseSeverity = 'mild' | 'moderate' | 'severe' | 'critical'
+export type DiseaseStatus = 'active' | 'monitoring' | 'resolved' | 'chronic'
+export type TreatmentType = 'medication' | 'water_change' | 'quarantine' | 'dip' | 'temperature' | 'other'
+export type TreatmentEffectiveness = 'effective' | 'partially_effective' | 'ineffective' | 'too_early'
+
+export interface DiseaseRecord {
+  id: string
+  livestock_id: string
+  tank_id: string
+  user_id: string
+  disease_name: string
+  symptoms: string | null
+  diagnosis: string | null
+  severity: DiseaseSeverity
+  status: DiseaseStatus
+  detected_date: string
+  resolved_date: string | null
+  outcome: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface DiseaseRecordCreate {
+  livestock_id: string
+  tank_id: string
+  disease_name: string
+  symptoms?: string | null
+  diagnosis?: string | null
+  severity?: DiseaseSeverity
+  status?: DiseaseStatus
+  detected_date: string
+  resolved_date?: string | null
+  outcome?: string | null
+  notes?: string | null
+}
+
+export interface DiseaseRecordUpdate {
+  disease_name?: string
+  symptoms?: string | null
+  diagnosis?: string | null
+  severity?: DiseaseSeverity
+  status?: DiseaseStatus
+  detected_date?: string
+  resolved_date?: string | null
+  outcome?: string | null
+  notes?: string | null
+}
+
+export interface DiseaseTreatment {
+  id: string
+  disease_record_id: string
+  user_id: string
+  consumable_id: string | null
+  treatment_type: TreatmentType
+  treatment_name: string
+  dosage: string | null
+  quantity_used: number | null
+  quantity_unit: string | null
+  treatment_date: string
+  duration_days: number | null
+  effectiveness: TreatmentEffectiveness | null
+  notes: string | null
+  created_at: string
+}
+
+export interface DiseaseTreatmentCreate {
+  treatment_type: TreatmentType
+  treatment_name: string
+  consumable_id?: string | null
+  dosage?: string | null
+  quantity_used?: number | null
+  quantity_unit?: string | null
+  treatment_date: string
+  duration_days?: number | null
+  effectiveness?: TreatmentEffectiveness | null
+  notes?: string | null
+}
+
+export interface DiseaseRecordDetail extends DiseaseRecord {
+  treatments: DiseaseTreatment[]
+}
+
+export interface DiseaseHealthSummary {
+  tank_id: string
+  active_count: number
+  monitoring_count: number
+  chronic_count: number
+  resolved_count: number
+  total_treatments: number
+  recent_diseases: DiseaseRecord[]
 }
 
 export interface StorageFile {
