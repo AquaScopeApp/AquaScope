@@ -746,8 +746,8 @@ Currently no rate limiting. Future versions will implement:
 
 ## Support
 
-- **Issues:** https://github.com/eprifti/reeflab/issues
-- **Discussions:** https://github.com/eprifti/reeflab/discussions
+- **Issues:** https://github.com/AquaScopeApp/AquaScope/issues
+- **Discussions:** https://github.com/AquaScopeApp/AquaScope/discussions
 - **Email:** See repository for contact
 
 ---

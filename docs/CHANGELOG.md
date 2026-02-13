@@ -1030,6 +1030,6 @@ When contributing, please:
 
 ## Links
 
-- [GitHub Repository](https://github.com/eprifti/AquaScope)
+- [GitHub Repository](https://github.com/AquaScopeApp/AquaScope)
 - [API Documentation](http://localhost:8000/docs) (when running)
 - [Architecture Documentation](backend/ARCHITECTURE.md)

@@ -122,9 +122,9 @@ Welcome to the AquaScope documentation! This folder contains comprehensive guide
 
 ## Need Help?
 
-- **GitHub Repository**: [github.com/eprifti/AquaScope](https://github.com/eprifti/AquaScope)
-- **Issues**: [GitHub Issues](https://github.com/eprifti/AquaScope/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/eprifti/AquaScope/discussions)
+- **GitHub Repository**: [github.com/AquaScopeApp/AquaScope](https://github.com/AquaScopeApp/AquaScope)
+- **Issues**: [GitHub Issues](https://github.com/AquaScopeApp/AquaScope/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/AquaScopeApp/AquaScope/discussions)
 - **Main README**: [../README.md](../README.md)
 
 ## Contributing to Documentation

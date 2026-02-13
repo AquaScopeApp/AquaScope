@@ -46,7 +46,7 @@ describe('Footer Component', () => {
     renderWithProviders(<Footer />)
     const link = screen.getByText('GitHub Repository')
     expect(link).toBeInTheDocument()
-    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/eprifti/AquaScope')
+    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/AquaScopeApp/AquaScope')
     expect(link.closest('a')).toHaveAttribute('target', '_blank')
   })
 
@@ -54,13 +54,13 @@ describe('Footer Component', () => {
     renderWithProviders(<Footer />)
     const link = screen.getByText('Report Issues')
     expect(link).toBeInTheDocument()
-    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/eprifti/AquaScope/issues')
+    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/AquaScopeApp/AquaScope/issues')
   })
 
   it('renders Documentation link', () => {
     renderWithProviders(<Footer />)
     const link = screen.getByText('Documentation')
-    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/eprifti/AquaScope/blob/main/README.md')
+    expect(link.closest('a')).toHaveAttribute('href', 'https://github.com/AquaScopeApp/AquaScope/blob/main/README.md')
   })
 
   it('renders sponsor links', () => {

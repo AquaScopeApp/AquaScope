@@ -55,7 +55,7 @@
 🔄 **GitHub Actions**:
 - Previous run (21798457400): ❌ Failed (fixed)
 - New run triggered: Awaiting results
-- Check at: https://github.com/eprifti/reeflab/actions
+- Check at: https://github.com/AquaScopeApp/AquaScope/actions
 
 ## 📦 What Was Deployed
 
@@ -94,7 +94,7 @@
 1. **Verify CI Pipeline** (5 minutes)
    ```bash
    # Check latest run status
-   open https://github.com/eprifti/reeflab/actions
+   open https://github.com/AquaScopeApp/AquaScope/actions
    ```
    - Verify backend tests pass ✅
    - Verify frontend build succeeds ✅
@@ -109,7 +109,7 @@
    ```
 
    **Option B - Web Interface**:
-   - Visit: https://github.com/eprifti/reeflab/releases/new
+   - Visit: https://github.com/AquaScopeApp/AquaScope/releases/new
    - Tag: `v1.2.0` (select existing tag)
    - Title: `ReefLab v1.2.0 - Enhanced Tank Management Hub`
    - Description: Copy from `docs/release-v1.2.0.md`
@@ -185,22 +185,22 @@ git tag -l
 ./scripts/test-ci-locally.sh
 
 # View recent CI runs
-open https://github.com/eprifti/reeflab/actions
+open https://github.com/AquaScopeApp/AquaScope/actions
 ```
 
 ## 📞 Support & Resources
 
 ### Documentation
-- README: [GitHub](https://github.com/eprifti/reeflab#readme)
+- README: [GitHub](https://github.com/AquaScopeApp/AquaScope#readme)
 - CHANGELOG: [CHANGELOG.md](../CHANGELOG.md)
 - Release Notes: [release-v1.2.0.md](release-v1.2.0.md)
 - GIF Guide: [capturing-animation.md](capturing-animation.md)
 
 ### Links
-- **Repository**: https://github.com/eprifti/reeflab
-- **Issues**: https://github.com/eprifti/reeflab/issues
-- **Discussions**: https://github.com/eprifti/reeflab/discussions
-- **Actions**: https://github.com/eprifti/reeflab/actions
+- **Repository**: https://github.com/AquaScopeApp/AquaScope
+- **Issues**: https://github.com/AquaScopeApp/AquaScope/issues
+- **Discussions**: https://github.com/AquaScopeApp/AquaScope/discussions
+- **Actions**: https://github.com/AquaScopeApp/AquaScope/actions
 
 ### Donations
 - **GitHub Sponsors**: https://github.com/sponsors/eprifti

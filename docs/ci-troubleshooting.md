@@ -2,7 +2,7 @@
 
 ## Current CI Status
 
-**Latest Run**: https://github.com/eprifti/reeflab/actions/runs/21798549706
+**Latest Run**: https://github.com/AquaScopeApp/AquaScope/actions/runs/21798549706
 **Status**: ❌ Failing (All 3 jobs)
 
 ### Failed Jobs:
@@ -14,7 +14,7 @@
 
 ### Option 1: GitHub Web Interface (Recommended)
 
-1. Visit: https://github.com/eprifti/reeflab/actions
+1. Visit: https://github.com/AquaScopeApp/AquaScope/actions
 2. Click on the latest failed run
 3. Click on each failed job to see logs
 4. Look for red "❌" marks and error messages
@@ -122,15 +122,15 @@ This will:
 ### Step 2: Check Specific Job Logs
 
 **Frontend Build**:
-- URL: https://github.com/eprifti/reeflab/actions/runs/21798549706/job/62890066223
+- URL: https://github.com/AquaScopeApp/AquaScope/actions/runs/21798549706/job/62890066223
 - Look for: npm install errors, TypeScript errors, Vite build errors
 
 **Backend Tests**:
-- URL: https://github.com/eprifti/reeflab/actions/runs/21798549706/job/62890066227
+- URL: https://github.com/AquaScopeApp/AquaScope/actions/runs/21798549706/job/62890066227
 - Look for: Import errors, test failures, database errors
 
 **Docker Build**:
-- URL: https://github.com/eprifti/reeflab/actions/runs/21798549706/job/62890066225
+- URL: https://github.com/AquaScopeApp/AquaScope/actions/runs/21798549706/job/62890066225
 - Look for: COPY errors, RUN command failures
 
 ### Step 3: Common Quick Fixes
@@ -203,8 +203,8 @@ If you can't resolve the CI failures:
 1. **Check the actual error logs** on GitHub Actions
 2. **Run tests locally** with `./scripts/test-ci-locally.sh`
 3. **Compare** local vs CI environment
-4. **Post in Discussions**: https://github.com/eprifti/reeflab/discussions
-5. **Open an Issue**: https://github.com/eprifti/reeflab/issues
+4. **Post in Discussions**: https://github.com/AquaScopeApp/AquaScope/discussions
+5. **Open an Issue**: https://github.com/AquaScopeApp/AquaScope/issues
 
 ## Next Steps
 

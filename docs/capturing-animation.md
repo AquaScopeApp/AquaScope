@@ -272,4 +272,4 @@ If you encounter issues:
 2. Verify the DefaultTankAnimation component is rendering
 3. Try the automated script first (Method 1)
 4. Use online tools as a fallback (ezgif.com)
-5. Ask for help in [GitHub Discussions](https://github.com/eprifti/reeflab/discussions)
+5. Ask for help in [GitHub Discussions](https://github.com/AquaScopeApp/AquaScope/discussions)

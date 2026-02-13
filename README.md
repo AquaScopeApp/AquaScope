@@ -9,12 +9,12 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/eprifti/AquaScope/actions/workflows/ci.yml"><img src="https://github.com/eprifti/AquaScope/actions/workflows/ci.yml/badge.svg" alt="CI Tests" /></a>
+  <a href="https://github.com/AquaScopeApp/AquaScope/actions/workflows/ci.yml"><img src="https://github.com/AquaScopeApp/AquaScope/actions/workflows/ci.yml/badge.svg" alt="CI Tests" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
-  <a href="https://github.com/eprifti/AquaScope/releases"><img src="https://img.shields.io/github/v/release/eprifti/AquaScope?color=success" alt="Release" /></a>
-  <a href="https://github.com/eprifti/AquaScope/issues"><img src="https://img.shields.io/github/issues/eprifti/AquaScope?color=yellow" alt="Issues" /></a>
-  <a href="https://github.com/eprifti/AquaScope/pulls"><img src="https://img.shields.io/github/issues-pr/eprifti/AquaScope?color=brightgreen" alt="Pull Requests" /></a>
-  <a href="https://github.com/eprifti/AquaScope/stargazers"><img src="https://img.shields.io/github/stars/eprifti/AquaScope?style=social" alt="Stars" /></a>
+  <a href="https://github.com/AquaScopeApp/AquaScope/releases"><img src="https://img.shields.io/github/v/release/AquaScopeApp/AquaScope?color=success" alt="Release" /></a>
+  <a href="https://github.com/AquaScopeApp/AquaScope/issues"><img src="https://img.shields.io/github/issues/AquaScopeApp/AquaScope?color=yellow" alt="Issues" /></a>
+  <a href="https://github.com/AquaScopeApp/AquaScope/pulls"><img src="https://img.shields.io/github/issues-pr/AquaScopeApp/AquaScope?color=brightgreen" alt="Pull Requests" /></a>
+  <a href="https://github.com/AquaScopeApp/AquaScope/stargazers"><img src="https://img.shields.io/github/stars/AquaScopeApp/AquaScope?style=social" alt="Stars" /></a>
 </p>
 
 <p align="center">
@@ -62,9 +62,9 @@ A standalone promotional page is available in the [`landing/`](landing/) directo
 
 ## Demo & Support
 
-- **GitHub Repository**: [github.com/eprifti/AquaScope](https://github.com/eprifti/AquaScope)
-- **Report Issues**: [GitHub Issues](https://github.com/eprifti/AquaScope/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/eprifti/AquaScope/discussions)
+- **GitHub Repository**: [github.com/AquaScopeApp/AquaScope](https://github.com/AquaScopeApp/AquaScope)
+- **Report Issues**: [GitHub Issues](https://github.com/AquaScopeApp/AquaScope/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/AquaScopeApp/AquaScope/discussions)
 
 ### Support the Project
 
@@ -173,7 +173,7 @@ If you find AquaScope useful, consider supporting its development:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/eprifti/AquaScope.git
+git clone https://github.com/AquaScopeApp/AquaScope.git
 cd AquaScope
 ```
 

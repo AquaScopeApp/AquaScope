@@ -172,7 +172,7 @@ New endpoints in `backend/app/api/v1/tanks.py`:
 Follow the standard installation in the README:
 
 ```bash
-git clone https://github.com/eprifti/reeflab.git
+git clone https://github.com/AquaScopeApp/AquaScope.git
 cd reeflab
 cp .env.example .env
 # Edit .env with your settings
@@ -194,7 +194,7 @@ No database migrations required for this release.
 
 ## 🎯 What's Next
 
-See our [Roadmap](https://github.com/eprifti/reeflab#-roadmap) for upcoming features:
+See our [Roadmap](https://github.com/AquaScopeApp/AquaScope#-roadmap) for upcoming features:
 
 - Email notifications for maintenance reminders
 - Mobile responsive design improvements
@@ -213,13 +213,13 @@ Special thanks to:
 
 ## 📞 Support
 
-- 🐛 **Report Bugs**: https://github.com/eprifti/reeflab/issues
-- 💬 **Discussions**: https://github.com/eprifti/reeflab/discussions
+- 🐛 **Report Bugs**: https://github.com/AquaScopeApp/AquaScope/issues
+- 💬 **Discussions**: https://github.com/AquaScopeApp/AquaScope/discussions
 - 💖 **Sponsor**: https://github.com/sponsors/eprifti
 - ☕ **Donate**: https://ko-fi.com/ediprifti
 
 ---
 
-**Full Changelog**: https://github.com/eprifti/reeflab/compare/v1.0.0...v1.2.0
+**Full Changelog**: https://github.com/AquaScopeApp/AquaScope/compare/v1.0.0...v1.2.0
 
 Made with ❤️ by [Edi Prifti](https://github.com/eprifti) for the reef keeping community

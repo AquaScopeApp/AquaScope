@@ -106,7 +106,7 @@ ReefLab is a modern, full-stack application that helps reef aquarium hobbyists t
 
 ```bash
 # Clone the repository
-git clone https://github.com/eprifti/reeflab.git
+git clone https://github.com/AquaScopeApp/AquaScope.git
 cd reeflab
 
 # Configure environment
@@ -172,12 +172,12 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 ## 🐛 Bug Reports & Feature Requests
 
-- **GitHub Issues**: https://github.com/eprifti/reeflab/issues
-- **Discussions**: https://github.com/eprifti/reeflab/discussions
+- **GitHub Issues**: https://github.com/AquaScopeApp/AquaScope/issues
+- **Discussions**: https://github.com/AquaScopeApp/AquaScope/discussions
 
 ## 📦 Release Assets
 
-- **Source Code**: Download from the [v1.0.0 tag](https://github.com/eprifti/reeflab/releases/tag/v1.0.0)
+- **Source Code**: Download from the [v1.0.0 tag](https://github.com/AquaScopeApp/AquaScope/releases/tag/v1.0.0)
 - **Docker Images**: Available via Docker Compose build
 - **Documentation**: Included in repository
 
