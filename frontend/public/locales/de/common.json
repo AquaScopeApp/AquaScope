@@ -15,7 +15,8 @@
     "icpTests": "ICP-Tests",
     "consumables": "Verbrauchsmaterial",
     "finances": "Finanzen",
-    "waterChangeCalc": "Wasserwechsel-Rechner"
+    "waterChangeCalc": "Wasserwechsel-Rechner",
+    "calculators": "Rechner"
   },
   "actions": {
     "add": "Hinzufügen",

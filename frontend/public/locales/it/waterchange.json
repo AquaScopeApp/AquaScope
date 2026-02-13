@@ -9,7 +9,8 @@
   },
   "tabs": {
     "impact": "Anteprima impatto",
-    "target": "Parametro obiettivo"
+    "target": "Parametro obiettivo",
+    "dosing": "Calcolatore di dosaggio"
   },
   "impact": {
     "waterChangePercent": "Cambio d'acqua",

@@ -740,8 +740,8 @@
 
         <div class="glass-card rounded-xl p-4 transition-all duration-300 group reveal" style="transition-delay:0.8s">
           <svg class="w-6 h-6 text-white/30 group-hover:text-emerald-400 transition-colors mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-          <h4 class="text-sm font-medium text-white mb-0.5">Dosing Calculator</h4>
-          <p class="text-white/40 text-xs">Chemistry-based corrections</p>
+          <h4 class="text-sm font-medium text-white mb-0.5">Calculators</h4>
+          <p class="text-white/40 text-xs">Water change &amp; dosing tools</p>
         </div>
       </div>
     </div>
@@ -858,6 +858,151 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!-- CALCULATORS -->
+  <!-- ============================================================ -->
+  <section class="relative py-24 sm:py-32 border-t border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Right visual first on mobile, left on desktop -->
+        <div class="reveal order-2 lg:order-1">
+          <div class="relative">
+            <div class="absolute inset-0 bg-emerald-500/5 rounded-3xl blur-2xl"></div>
+            <div class="relative glass-card rounded-2xl p-8">
+              <h3 class="text-white/70 text-xs font-semibold uppercase tracking-wider mb-5">Water Change Calculator</h3>
+
+              <!-- Mini calculator mockup -->
+              <div class="space-y-4">
+                <!-- Slider mockup -->
+                <div>
+                  <div class="flex justify-between text-xs text-white/40 mb-1">
+                    <span>Water Change</span>
+                    <span class="text-emerald-400 font-semibold">20% &mdash; 50 L</span>
+                  </div>
+                  <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full w-1/5 bg-gradient-to-r from-emerald-500/60 to-emerald-400/60 rounded-full"></div>
+                  </div>
+                </div>
+
+                <!-- Results mockup -->
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+                    <span class="text-white/50 text-xs">Calcium</span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-white/30 text-xs">420</span>
+                      <span class="text-white/60 text-xs">&rarr;</span>
+                      <span class="text-white/70 text-xs font-medium">424</span>
+                      <span class="text-emerald-400 text-xs">&#9650; +4</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+                    <span class="text-white/50 text-xs">Alkalinity</span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-white/30 text-xs">6.8</span>
+                      <span class="text-white/60 text-xs">&rarr;</span>
+                      <span class="text-white/70 text-xs font-medium">7.6</span>
+                      <span class="text-emerald-400 text-xs">&#9650; +0.8</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5 border-b border-white/5">
+                    <span class="text-white/50 text-xs">Nitrate</span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-white/30 text-xs">12.0</span>
+                      <span class="text-white/60 text-xs">&rarr;</span>
+                      <span class="text-white/70 text-xs font-medium">9.6</span>
+                      <span class="text-emerald-400 text-xs">&#9660; &minus;2.4</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-between py-1.5">
+                    <span class="text-white/50 text-xs">Phosphate</span>
+                    <div class="flex items-center gap-3">
+                      <span class="text-white/30 text-xs">0.06</span>
+                      <span class="text-white/60 text-xs">&rarr;</span>
+                      <span class="text-white/70 text-xs font-medium">0.048</span>
+                      <span class="text-emerald-400 text-xs">&#9660; &minus;0.012</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Salt mix badge -->
+                <div class="flex items-center gap-2 pt-2">
+                  <span class="px-2.5 py-1 rounded-full bg-ocean-500/10 text-ocean-400 text-xs font-medium">Red Sea Coral Pro</span>
+                  <span class="text-white/25 text-xs">salt mix preset</span>
+                </div>
+              </div>
+
+              <!-- Dosing section -->
+              <div class="mt-6 pt-5 border-t border-white/5">
+                <h4 class="text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">Dosing Calculator</h4>
+                <div class="flex items-center gap-4">
+                  <div class="flex-1 bg-white/5 rounded-lg p-3 text-center">
+                    <div class="text-xs text-white/40">Add</div>
+                    <div class="text-xl font-bold text-emerald-400">12.5g</div>
+                    <div class="text-xs text-white/30">Calcium Chloride</div>
+                  </div>
+                  <div class="text-white/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                  </div>
+                  <div class="flex-1 bg-white/5 rounded-lg p-3 text-center">
+                    <div class="text-xs text-white/40">Raises Ca</div>
+                    <div class="text-xl font-bold text-white/70">420 &rarr; 440</div>
+                    <div class="text-xs text-white/30">ppm in 250L</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Left: explanation -->
+        <div class="reveal order-1 lg:order-2">
+          <span class="text-emerald-400 text-sm font-semibold uppercase tracking-wider mb-3 block">Two Tools, One Page</span>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight">
+            Aquarium <span class="text-emerald-400">Calculators</span>
+          </h2>
+          <p class="text-white/55 text-lg mb-6 leading-relaxed">
+            Stop guessing. AquaScope's calculators use real dilution chemistry to predict exactly what happens to your parameters &mdash; before you touch the tank.
+          </p>
+
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-emerald-500/15 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white text-sm font-semibold">Water Change Impact</h4>
+                <p class="text-white/40 text-sm">Set a WC percentage, pick your salt mix (5 presets or custom), and see projected values for every parameter &mdash; color-coded green (improving) or red (worsening).</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-ocean-500/15 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-ocean-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white text-sm font-semibold">Target Parameter</h4>
+                <p class="text-white/40 text-sm">Pick a parameter and target value &mdash; the calculator tells you the exact WC% and liters needed. Splits large changes across multiple days with safety warnings.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 bg-amber-500/15 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              </div>
+              <div>
+                <h4 class="text-white text-sm font-semibold">Dosing Calculator</h4>
+                <p class="text-white/40 text-sm">Calculate how much of a chemical (CaCl&#8322;, baking soda, etc.) to add to correct a parameter. Includes safety warnings for large corrections.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>

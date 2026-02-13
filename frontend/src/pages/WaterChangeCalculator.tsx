@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next'
 import { tanksApi, parametersApi, parameterRangesApi } from '../api'
 import type { Tank, LatestParameters } from '../types'
 import TankSelector from '../components/common/TankSelector'
+import DosingCalculator from '../components/dosing/DosingCalculator'
+import { useAuth } from '../hooks/useAuth'
 import {
   buildParameterRangesMap,
   getActiveParameterOrder,
@@ -34,6 +36,7 @@ export default function WaterChangeCalculator() {
   const { t } = useTranslation('waterchange')
   const { t: tc } = useTranslation('common')
   const [searchParams] = useSearchParams()
+  const { user } = useAuth()
 
   // Tank & data
   const [tanks, setTanks] = useState<Tank[]>([])
@@ -41,6 +44,9 @@ export default function WaterChangeCalculator() {
   const [latestParams, setLatestParams] = useState<LatestParameters | null>(null)
   const [paramRanges, setParamRanges] = useState<Record<string, ParameterRange>>({})
   const [isLoading, setIsLoading] = useState(true)
+
+  // Dosing Calculator modal
+  const [showDosingCalc, setShowDosingCalc] = useState(false)
 
   // Tabs
   const [activeTab, setActiveTab] = useState<Tab>('impact')
@@ -60,8 +66,11 @@ export default function WaterChangeCalculator() {
   const waterType = selectedTankObj?.water_type || 'saltwater'
   const isSaltwater = waterType === 'saltwater' || waterType === 'brackish'
 
-  // Active parameter list (filtered by tank's configured ranges)
-  const activeParams = getActiveParameterOrder(paramRanges)
+  // Active parameter list (filtered by tank's configured ranges, fallback to latestParams keys)
+  const rangeParams = getActiveParameterOrder(paramRanges)
+  const activeParams = rangeParams.length > 0
+    ? rangeParams
+    : latestParams ? Object.keys(latestParams) : []
 
   // Load tanks
   useEffect(() => {
@@ -70,9 +79,6 @@ export default function WaterChangeCalculator() {
         const data = await tanksApi.list()
         const active = data.filter(t => !t.is_archived)
         setTanks(active)
-        if (!selectedTank && active.length > 0) {
-          setSelectedTank(active[0].id)
-        }
       } catch { /* ignore */ }
     }
     load()
@@ -84,8 +90,8 @@ export default function WaterChangeCalculator() {
     setIsLoading(true)
     try {
       const [latest, ranges] = await Promise.all([
-        parametersApi.latest(selectedTank).catch(() => ({} as LatestParameters)),
-        parameterRangesApi.getForTank(selectedTank).catch(() => []),
+        parametersApi.latest(selectedTank).catch(e => { console.warn('WC calc: latest params failed', e); return {} as LatestParameters }),
+        parameterRangesApi.getForTank(selectedTank).catch(e => { console.warn('WC calc: ranges failed', e); return [] }),
       ])
       setLatestParams(latest)
       const rangeMap = buildParameterRangesMap(ranges)
@@ -159,8 +165,13 @@ export default function WaterChangeCalculator() {
   for (const p of activeParams) {
     idealParams[p] = paramRanges[p]?.ideal
   }
+  // Auto-match temperature & pH — aquarists always match these before adding replacement water
+  const adjustedReplacementParams = { ...replacementParams }
+  if (latestParams?.temperature) adjustedReplacementParams.temperature = latestParams.temperature.value
+  if (latestParams?.ph) adjustedReplacementParams.ph = latestParams.ph.value
+
   const impactResults = latestParams
-    ? calculateFullImpact(latestParams, replacementParams, idealParams, waterChangePercent, activeParams)
+    ? calculateFullImpact(latestParams, adjustedReplacementParams, idealParams, waterChangePercent, activeParams)
     : []
 
   // Compute target result
@@ -194,7 +205,7 @@ export default function WaterChangeCalculator() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-          {t('title')}
+          {tc('navigation.calculators')}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">{t('subtitle')}</p>
       </div>
@@ -207,6 +218,7 @@ export default function WaterChangeCalculator() {
           onChange={setSelectedTank}
           allLabel={t('title')}
           showAllOption={false}
+          defaultTankId={user?.default_tank_id || undefined}
         />
       </div>
 
@@ -230,7 +242,7 @@ export default function WaterChangeCalculator() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700 mb-6">
+      <div className="flex items-center gap-4 border-b border-gray-200 dark:border-gray-700 mb-6">
         {(['impact', 'target'] as Tab[]).map(tab => (
           <button
             key={tab}
@@ -244,6 +256,16 @@ export default function WaterChangeCalculator() {
             {t(`tabs.${tab}`)}
           </button>
         ))}
+        <div className="ml-auto pb-3">
+          <button
+            onClick={() => setShowDosingCalc(true)}
+            disabled={!selectedTankObj}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-md hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span>🧪</span>
+            {t('tabs.dosing')}
+          </button>
+        </div>
       </div>
 
       {isLoading ? (
@@ -545,6 +567,17 @@ export default function WaterChangeCalculator() {
             <p className="text-blue-700 dark:text-blue-400">{t('info.description')}</p>
           </div>
         </div>
+      )}
+
+      {/* Dosing Calculator Modal */}
+      {showDosingCalc && selectedTankObj && (
+        <DosingCalculator
+          tankId={selectedTankObj.id}
+          tankVolumeLiters={totalVolume}
+          waterType={waterType}
+          isOpen={showDosingCalc}
+          onClose={() => setShowDosingCalc(false)}
+        />
       )}
     </div>
   )

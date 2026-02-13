@@ -91,8 +91,8 @@ export default function Layout(): JSX.Element {
     { name: t('navigation.livestock'), href: '/livestock', icon: '🐟', module: 'livestock' },
     { name: t('navigation.equipment'), href: '/equipment', icon: '⚙️', module: 'equipment' },
     { name: t('navigation.consumables'), href: '/consumables', icon: '🧪', module: 'consumables' },
+    { name: t('navigation.calculators'), href: '/water-change-calculator', icon: '🧮', module: null },
     { name: t('navigation.finances'), href: '/finances', icon: '💰', module: 'finances' },
-    { name: t('navigation.waterChangeCalc'), href: '/water-change-calculator', icon: '💧', module: null },
   ]
 
   const visibleNavigation = navigation.filter((item) => !item.module || isEnabled(item.module))

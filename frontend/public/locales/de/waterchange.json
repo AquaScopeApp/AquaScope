@@ -9,7 +9,8 @@
   },
   "tabs": {
     "impact": "Auswirkungsvorschau",
-    "target": "Zielparameter"
+    "target": "Zielparameter",
+    "dosing": "Dosierungsrechner"
   },
   "impact": {
     "waterChangePercent": "Wasserwechsel",

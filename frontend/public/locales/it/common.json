@@ -15,7 +15,8 @@
     "icpTests": "Test ICP",
     "consumables": "Consumabili",
     "finances": "Finanze",
-    "waterChangeCalc": "Cambio d'acqua"
+    "waterChangeCalc": "Cambio d'acqua",
+    "calculators": "Calcolatori"
   },
   "actions": {
     "add": "Aggiungi",
