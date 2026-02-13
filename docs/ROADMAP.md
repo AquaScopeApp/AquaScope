@@ -256,107 +256,61 @@ Set min/max ranges per parameter per tank and get alerts when a reading is out o
 
 ---
 
-## Disease Identification & Treatment
+## Disease/Health Tracking
 
 **Priority**: Medium
-**Status**: Planned
+**Status**: Done
 
-Track, identify, and treat fish and coral diseases with an integrated knowledge base linked to major aquatic disease databases.
+Track, identify, and treat fish and coral diseases with treatment timelines linked to specific livestock.
 
-### Scope
+### Done
 
-- **Disease database integration**:
-  - Link to established databases (e.g., FishBase disease records, Coral Disease and Health Consortium, USGS fish pathology)
-  - Local knowledge base of common freshwater and saltwater diseases with symptoms, photos, and causes
-  - Search by symptom (white spots, fin rot, tissue necrosis, etc.) to narrow down diagnosis
-- **Disease identification wizard**:
-  - Step-by-step symptom selector: affected species, visual symptoms, behavioral changes, timeline
-  - Ranked list of probable diseases with confidence level
-  - Reference photos for visual comparison
-  - Link to external resources for each disease
-- **Treatment protocols**:
-  - Pre-built treatment templates per disease (medication, dosage, duration, water change schedule)
-  - Customizable protocols: add steps, set reminders, adjust dosage for tank volume
-  - Link to Consumables module (medication inventory) and Dosing Calculator
-  - Quarantine tank tracking (separate from main tank)
-- **Treatment tracker**:
-  - Active treatment log per tank with start/end dates
-  - Daily checklist: dose administered, observation notes, photos
-  - Parameter monitoring during treatment (some meds affect pH, bacteria, etc.)
-  - Outcome recording: resolved, recurring, escalated
-  - Treatment history per livestock item
-- **Dashboard integration**:
-  - Active treatment badge on tank cards
-  - Alert when treatment step is due
+Fully implemented in v1.11.0 with disease records, treatment logging, severity/status tracking, common diseases knowledge base, and Health tab on tank detail.
 
-### Backend
+### Implementation
 
-- New `diseases` table: id, name, common_names, symptoms, causes, water_types, severity, external_refs
-- New `treatment_protocols` table: id, disease_id, name, steps (JSON), medications, duration_days
-- New `treatments` table: id, tank_id, disease_id, protocol_id, status, started_at, ended_at, notes
-- New `treatment_logs` table: id, treatment_id, date, step_number, notes, photo_url
-- `GET /api/v1/diseases/search?symptoms=...` — symptom-based search
-- `GET /api/v1/diseases/{id}` — disease detail with protocols
-- CRUD on `/api/v1/treatments/` — active and historical treatments per tank
-- CRUD on `/api/v1/treatments/{id}/logs` — daily treatment log entries
+- **Backend**: `disease_records` and `disease_treatments` tables with full CRUD API at `/api/v1/diseases/`
+  - Disease records linked to livestock and tank with severity (mild/moderate/severe/critical) and status (active/monitoring/resolved/chronic)
+  - Treatment types: medication, water_change, quarantine, dip, temperature, other
+  - Consumable stock deduction when medication treatment is linked
+  - Tank health summary endpoint with counts by status
+  - Auto-set resolved_date when status changes to resolved
+- **Frontend**: Diseases page with stats cards, grouped disease cards, DiseaseDetail modal with treatment timeline
+  - Common diseases knowledge base (17 saltwater + 15 freshwater) for datalist suggestions
+  - Health tab on tank detail page showing active disease summary
+- **Local SQLite API** for offline/PWA mode
+- **i18n**: Full translations in 6 languages
 
-### Frontend
+### Planned Extensions
 
-- New `Diseases.tsx` page with search/browse and identification wizard
-- `TreatmentTracker` component embedded in tank detail or standalone
-- Treatment timeline with daily log entries and photo documentation
-- Integration with Consumables (medication stock) and Maintenance (reminders)
+- Disease identification wizard (step-by-step symptom selector with ranked diagnosis)
+- Photo documentation per treatment step
+- Link to external disease databases (FishBase, Coral Disease Consortium)
+- Treatment protocol templates (pre-built medication/dosage/duration plans)
+- Dashboard active treatment badge on tank cards
 
 ---
 
 ## Feeding Management
 
 **Priority**: Medium
-**Status**: Planned
+**Status**: Done
 
-Track feeding schedules, food inventory, and consumption per tank. Know what each tank eats, how often, how much is left, and when to reorder.
+Track feeding schedules per tank with food names, quantities, frequency, and active/inactive toggles.
 
-### Scope
+### Done
 
-- **Feeding schedule**:
-  - Per-tank feeding plan: which foods, how much, how often (e.g., "Reef Frenzy 1 cube 2x/day", "Nori sheet every 3 days")
-  - Multiple feeding entries per tank (different foods at different frequencies)
-  - Visual weekly calendar showing feeding plan per tank
-  - Autofeeder integration notes (portion size, schedule)
-- **Feeding log**:
-  - Quick-log feedings: tap to record "fed Tank X with Food Y"
-  - Track actual vs. planned feedings (missed feedings highlighted)
-  - Notes per feeding (appetite observation, refusal, etc.)
-  - Batch feeding: record feeding multiple tanks at once
-- **Food inventory**:
-  - Link to existing Consumables module (food category items)
-  - Track quantity remaining per food item (weight, portions, cubes)
-  - Estimated depletion date based on feeding schedule and current stock
-  - Low-stock alerts when food is running out
-  - Reorder reminders with purchase links (from Consumables)
-- **Nutrition overview**:
-  - Per-tank nutrition summary: protein sources, variety score, feeding frequency
-  - Feeding history chart (feedings per day/week over time)
-  - Species dietary requirements cross-referenced with actual feeding plan
-- **Dashboard integration**:
-  - "Last fed" indicator per tank
-  - Low food stock alerts
-  - Upcoming feeding reminders
+Fully implemented in v1.10.0 with feeding schedules and feeding logs.
 
-### Backend
+### Implementation
 
-- New `feeding_schedules` table: id, tank_id, consumable_id, food_name, quantity, quantity_unit, frequency_hours, notes
-- New `feeding_logs` table: id, tank_id, schedule_id, fed_at, quantity, notes
-- `GET /api/v1/feeding/schedules?tank_id=...` — feeding plans per tank
-- `POST /api/v1/feeding/log` — quick-log a feeding event
-- `GET /api/v1/feeding/logs?tank_id=...&from=...&to=...` — feeding history
-- `GET /api/v1/feeding/inventory` — food stock status with depletion estimates
-- Links to existing Consumables API for food items
+- **Backend**: `feeding_schedules` and `feeding_logs` tables with CRUD API at `/api/v1/feeding/`
+- **Frontend**: Feeding page with schedule cards, quick-log, and per-tank filtering
+- **i18n**: Full translations in 6 languages
 
-### Frontend
+### Planned Extensions
 
-- New `Feeding.tsx` page with schedule editor, log, and inventory view
+- Visual weekly feeding calendar
+- Food inventory integration with depletion estimates
 - Quick-feed button on dashboard tank cards
-- Weekly feeding calendar component
-- Food inventory status with depletion countdown
-- Integration with Consumables module for stock management
+- Species dietary requirements cross-reference

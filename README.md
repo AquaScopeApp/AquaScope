@@ -94,6 +94,8 @@ If you find AquaScope useful, consider supporting its development:
 | **Maintenance** | Reminders with frequency-based scheduling, overdue notifications, task templates, and completion history |
 | **Photos** | Gallery with drag-and-drop upload, thumbnails, lightbox viewer, and tank-specific filtering |
 | **Notes** | Journal with rich text, timestamps, search, and tank-specific organization |
+| **Feeding** | Per-tank feeding schedules with food name, quantity, frequency, and active/inactive toggle |
+| **Health Tracking** | Disease and treatment logging linked to specific livestock, with severity/status tracking, treatment timelines (medication, quarantine, dips, water changes), and consumable stock deduction |
 | **Finances** | Spending analysis by category/tank, monthly charts, electricity cost tracking, budget management with alerts |
 | **Dosing Calculator** | Chemistry-based corrections for Ca, KH, Mg with product-specific dosing (BRS, Tropic Marin, Red Sea, etc.) |
 
@@ -117,28 +119,18 @@ If you find AquaScope useful, consider supporting its development:
 
 ---
 
-## What's New in v1.10.0
+## What's New in v1.11.0
+
+- **Disease/Health Tracking** — Full-stack module for logging diseases linked to specific livestock, with treatment timelines (medication, quarantine, dips, water changes), severity/status tracking, consumable stock deduction, and a common diseases knowledge base (30+ saltwater and freshwater diseases)
+- **Health tab** on tank detail page showing active disease count and per-tank health summary
+- **Seed data** — 5 disease records with treatments across demo saltwater and freshwater tanks
+- **6-language i18n** — full disease module translations (EN, FR, DE, ES, IT, PT)
+
+### Previous: v1.10.0
 
 - **Grouped Calculators** — Water Change + Dosing calculators combined under a single "Calculators" page with default tank auto-selection
 - **Temperature & pH auto-match** — replacement water values auto-set to tank readings (no false arrows)
 - **Landing page enhancements** — Compatibility Checker science section, Calculators feature section with visual mockups
-- **Bug fixes** — empty parameter data fallback, species-traits.json CI fix, demo screenshots
-
-### Previous: v1.9.0
-
-- **Dark mode** with system-aware toggle and full component coverage
-- **Tank maturity score** — gamified 0-100 gauge rewarding age, stability, and diversity ([docs](docs/maturity-score.md))
-- **Dashboard sparklines** — inline 7-day parameter trend charts on tank cards
-- **CSV export** for parameter data
-- **Shareable public tank profiles** — read-only links for sharing with the community
-- **Dosing calculator** — chemistry-based Ca/KH/Mg corrections with product-specific dosing
-- **Dashboard improvements** — tank background images, notification system, accessibility (aria-labels, skip-to-content)
-- **181 new frontend tests** boosting coverage from 21% to 33%
-- **Livestock Compatibility Checker** — 60+ species knowledge base, 8-rule engine, heatmap matrix, force-directed network graph ([docs](docs/compatibility-checker.md))
-- **Species Traits Admin** — CRUD API + admin UI for managing the compatibility knowledge base
-- **Species typeahead** — debounced WoRMS/iNaturalist/FishBase lookup on the species name field (create + edit)
-- **Water type validation** — backend enforcement of water type consistency
-- **Water Change Calculator** — dilution-based parameter impact prediction with salt mix presets and reverse target calculation ([docs](docs/water-change-calculator.md))
 
 ---
 
@@ -366,7 +358,7 @@ alembic upgrade head
 AquaScope/
 ├── backend/               # FastAPI backend
 │   ├── app/
-│   │   ├── api/v1/       # REST API endpoints (18 routers)
+│   │   ├── api/v1/       # REST API endpoints (19 routers)
 │   │   ├── core/         # Configuration, security, dependencies
 │   │   ├── models/       # SQLAlchemy models
 │   │   ├── schemas/      # Pydantic request/response schemas
@@ -376,12 +368,12 @@ AquaScope/
 ├── frontend/             # React frontend
 │   ├── src/
 │   │   ├── components/   # React components (tanks, livestock, dashboard, admin, ...)
-│   │   ├── pages/        # Page-level components (15 pages)
+│   │   ├── pages/        # Page-level components (16 pages)
 │   │   ├── config/       # Compatibility rules and data
 │   │   ├── api/          # API client + routing layer
 │   │   ├── hooks/        # Custom React hooks
 │   │   └── i18n/         # Internationalization config
-│   ├── public/locales/   # Translation files (6 languages x 12 namespaces)
+│   ├── public/locales/   # Translation files (6 languages x 17 namespaces)
 │   └── Dockerfile
 ├── data/                 # Shared data files
 │   └── species-traits.json  # Species compatibility knowledge base (60+ entries)
@@ -415,6 +407,8 @@ Once the backend is running, visit http://localhost:8000/docs for interactive AP
 | `GET /api/v1/species-traits` | List species compatibility traits |
 | `GET /api/v1/finances/summary` | Financial summary by category/tank |
 | `GET /api/v1/share/{token}` | Public tank profile |
+| `GET /api/v1/diseases` | List disease records with filters |
+| `GET /api/v1/diseases/summary` | Tank health summary by status |
 | `GET /api/v1/admin/storage/stats` | Admin storage statistics |
 
 ---
@@ -476,6 +470,7 @@ Generate a new token in the InfluxDB UI and update your `.env` file.
 - [x] ~~Species compatibility checker~~ (v1.9.0)
 - [x] ~~Water change calculator~~ (v1.9.0)
 - [x] ~~Grouped calculators~~ (v1.10.0)
+- [x] ~~Disease/Health tracking~~ (v1.11.0)
 - [ ] Email notifications for maintenance reminders
 - [ ] Integration with reef controllers (ReefPi, Neptune)
 - [ ] Native mobile app (Capacitor — in progress)

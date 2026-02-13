@@ -5,6 +5,56 @@ All notable changes to AquaScope will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2026-02-13
+
+### Added
+
+#### Disease/Health Tracking Module (Full Stack)
+- **Backend**: `DiseaseRecord` and `DiseaseTreatment` SQLAlchemy models with full CRUD
+  - `disease_records` table: livestock_id, tank_id, disease_name, symptoms, diagnosis, severity (mild/moderate/severe/critical), status (active/monitoring/resolved/chronic), detected_date, resolved_date, outcome, notes
+  - `disease_treatments` table: disease_record_id, consumable_id (optional), treatment_type (medication/water_change/quarantine/dip/temperature/other), treatment_name, dosage, quantity_used, effectiveness (effective/partially_effective/ineffective/too_early)
+  - Relationships to Livestock, Tank, User, and Consumables with cascade/set-null deletes
+  - Alembic migration for both tables with indexes on tank_id+status, livestock_id, disease_record_id
+  - Auto-sets resolved_date when status changes to "resolved"
+- **API Endpoints** (`/api/v1/diseases`):
+  - `POST /` — Create disease record (validates tank and livestock ownership)
+  - `GET /` — List disease records with filters (tank_id, livestock_id, status, severity)
+  - `GET /{id}` — Get disease record detail with embedded treatments
+  - `PUT /{id}` — Update disease record
+  - `DELETE /{id}` — Delete disease record (cascades treatments)
+  - `POST /{id}/treatments` — Add treatment (auto-deducts consumable stock if linked)
+  - `PUT /{id}/treatments/{tid}` — Update treatment
+  - `DELETE /{id}/treatments/{tid}` — Delete treatment
+  - `GET /summary?tank_id=` — Tank health summary (counts by status, recent diseases, total treatments)
+- **Frontend Page** (`Diseases.tsx`):
+  - 4 stats cards: Active (red), Monitoring (yellow), Chronic (orange), Resolved (green)
+  - Disease records grouped by status with collapsible resolved section
+  - TankSelector + livestock filter dropdowns
+  - Create/edit forms with common disease datalist suggestions
+- **Frontend Components** (4 new in `components/diseases/`):
+  - `DiseaseCard.tsx` — severity-colored left border, status badge, livestock name, treatment count, action buttons
+  - `DiseaseForm.tsx` — TankSelector, livestock dropdown, disease name with auto-fill symptoms from common diseases data, severity/status selects, date fields
+  - `DiseaseDetail.tsx` — full-screen overlay modal with treatment timeline, info grid, inline TreatmentForm
+  - `TreatmentForm.tsx` — visual treatment type selector (6 types), consumable linking for medications, dosage, effectiveness tracking
+- **Common Diseases Knowledge Base** (`data/commonDiseases.ts`):
+  - 17 saltwater diseases (Ich, Velvet, Brooklynella, RTN, STN, Flatworms, etc.) with typical symptoms
+  - 15 freshwater diseases (Ich, Columnaris, Dropsy, Fin Rot, Fungal, etc.) with typical symptoms
+  - Used for datalist suggestions in disease name field
+- **Local SQLite API** (`api/local/diseases.ts`): Full offline implementation for PWA/Capacitor mode
+- **Tank Detail Health Tab**: Shows active diseases count and per-tank disease list in TankTabs
+- **Navigation**: "Health" item with stethoscope icon in sidebar, guarded by `diseases` module setting
+- **Module Settings**: `diseases: true` added to default module settings
+- **i18n**: `diseases` namespace with translations in all 6 languages (EN, FR, DE, ES, IT, PT)
+  - Status labels, severity labels, form fields, treatment types, effectiveness options, summary labels
+  - `navigation.diseases` key added to all 6 common.json files
+- **Landing Page**: Health Tracking feature card with rose-400 hover color and diseases screenshot tab
+- **Seed Data**: 5 disease records with 12 treatments across demo tanks:
+  - Marine Ich on Blue Tang (resolved, severe, 3 treatments)
+  - RTN on Acropora (monitoring, moderate, 3 treatments)
+  - Montipora Eating Nudibranchs (resolved, mild, 1 treatment)
+  - Freshwater Ich on Cardinal Tetras (resolved, moderate, 3 treatments)
+  - Fungal Infection on Sterbai Cory (resolved, mild, 2 treatments)
+
 ## [1.10.0] - 2026-02-13
 
 ### Added
@@ -997,6 +1047,7 @@ All releases are tagged in Git and available on GitHub:
 - `v1.8.0` - Animated banners, banner editor, selective export/import, landing page
 - `v1.9.0` - Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
 - `v1.10.0` - Grouped calculators, landing page enhancements, compatibility + calculator sections
+- `v1.11.0` - Disease/Health Tracking module (full stack)
 
 ## Versioning Strategy
 
@@ -1019,6 +1070,7 @@ We follow [Semantic Versioning](https://semver.org/):
 - ✅ **Phase 12** (v1.8.0): Animated banners, banner editor, export/import, landing page
 - ✅ **Phase 13** (v1.9.0): Dark mode, maturity score, sparklines, CSV export, public profiles, dosing calculator, compatibility checker, species typeahead
 - ✅ **Phase 14** (v1.10.0): Grouped calculators, landing page enhancements
+- ✅ **Phase 15** (v1.11.0): Disease/Health Tracking module
 
 ## Contributing
 
