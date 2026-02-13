@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Impact Preview",
     "target": "Target Parameter",
+    "correction": "Correction Plan",
     "dosing": "Dosing Calculator"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Large Water Change",
       "description": "Changes over 50% can stress inhabitants. Consider {{count}} changes of {{percent}}% ({{liters}} L each) over several days."
+    }
+  },
+  "correction": {
+    "statusOverview": "Current Parameter Status",
+    "outOfRange": "{{count}} of {{total}} parameters out of range",
+    "allInRange": "All parameters are within optimal range!",
+    "criticalCount": "{{count}} critical",
+    "warningCount": "{{count}} warning",
+    "tooHigh": "Too high",
+    "tooLow": "Too low",
+    "onTarget": "On target",
+    "recommendedPlan": "Recommended Plan",
+    "planSummary": "{{count}} water changes of {{percent}}% ({{liters}} L each) over {{days}} days",
+    "singleChange": "Single water change of {{percent}}% ({{liters}} L)",
+    "noCorrection": "No correction needed",
+    "schedule": "Step-by-Step Schedule",
+    "step": "Change #{{number}}",
+    "dayOffset": "Day {{day}}",
+    "beforeAfter": "Before & After",
+    "before": "Before",
+    "afterPlan": "After Plan",
+    "uncorrectable": {
+      "title": "Cannot Correct with Water Changes",
+      "description": "These parameters need dosing or other correction methods:",
+      "useDosing": "Open Dosing Calculator"
+    },
+    "config": {
+      "title": "Schedule Settings",
+      "maxChange": "Max change per step",
+      "daysBetween": "Days between changes",
+      "days": "{{count}} days"
+    },
+    "info": {
+      "title": "About Stability",
+      "description": "Stability is more important than perfection in aquariums. Large, rapid parameter swings can stress livestock more than slightly out-of-range values. This plan limits each change and spaces them apart for safety."
     }
   },
   "info": {

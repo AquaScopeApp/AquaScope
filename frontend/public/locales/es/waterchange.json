@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Vista previa del impacto",
     "target": "Parámetro objetivo",
+    "correction": "Plan de corrección",
     "dosing": "Calculadora de dosificación"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Cambio de agua grande",
       "description": "Cambios mayores al 50% pueden estresar a los habitantes. Considere {{count}} cambios de {{percent}}% ({{liters}} L cada uno) durante varios días."
+    }
+  },
+  "correction": {
+    "statusOverview": "Estado actual de los parámetros",
+    "outOfRange": "{{count}} de {{total}} parámetros fuera de rango",
+    "allInRange": "¡Todos los parámetros están en el rango óptimo!",
+    "criticalCount": "{{count}} crítico(s)",
+    "warningCount": "{{count}} en alerta",
+    "tooHigh": "Demasiado alto",
+    "tooLow": "Demasiado bajo",
+    "onTarget": "En objetivo",
+    "recommendedPlan": "Plan recomendado",
+    "planSummary": "{{count}} cambios de agua del {{percent}}% ({{liters}} L cada uno) durante {{days}} días",
+    "singleChange": "Un cambio de agua del {{percent}}% ({{liters}} L)",
+    "noCorrection": "No se necesita corrección",
+    "schedule": "Calendario paso a paso",
+    "step": "Cambio n.º {{number}}",
+    "dayOffset": "Día {{day}}",
+    "beforeAfter": "Antes y después",
+    "before": "Antes",
+    "afterPlan": "Después del plan",
+    "uncorrectable": {
+      "title": "No corregible con cambios de agua",
+      "description": "Estos parámetros necesitan dosificación u otros métodos:",
+      "useDosing": "Abrir calculadora de dosificación"
+    },
+    "config": {
+      "title": "Configuración del plan",
+      "maxChange": "Cambio máx. por paso",
+      "daysBetween": "Días entre cambios",
+      "days": "{{count}} días"
+    },
+    "info": {
+      "title": "Sobre la estabilidad",
+      "description": "La estabilidad es más importante que la perfección en acuarios. Cambios grandes y rápidos estresan más a los habitantes que valores ligeramente fuera de rango. Este plan limita cada cambio y los espacia por seguridad."
     }
   },
   "info": {

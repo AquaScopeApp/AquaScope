@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Anteprima impatto",
     "target": "Parametro obiettivo",
+    "correction": "Piano di correzione",
     "dosing": "Calcolatore di dosaggio"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Cambio d'acqua grande",
       "description": "Cambi superiori al 50% possono stressare gli abitanti. Considera {{count}} cambi del {{percent}}% ({{liters}} L ciascuno) distribuiti su più giorni."
+    }
+  },
+  "correction": {
+    "statusOverview": "Stato attuale dei parametri",
+    "outOfRange": "{{count}} di {{total}} parametri fuori range",
+    "allInRange": "Tutti i parametri sono nel range ottimale!",
+    "criticalCount": "{{count}} critico/i",
+    "warningCount": "{{count}} in allerta",
+    "tooHigh": "Troppo alto",
+    "tooLow": "Troppo basso",
+    "onTarget": "In obiettivo",
+    "recommendedPlan": "Piano consigliato",
+    "planSummary": "{{count}} cambi d'acqua del {{percent}}% ({{liters}} L ciascuno) in {{days}} giorni",
+    "singleChange": "Un cambio d'acqua del {{percent}}% ({{liters}} L)",
+    "noCorrection": "Nessuna correzione necessaria",
+    "schedule": "Calendario passo per passo",
+    "step": "Cambio n. {{number}}",
+    "dayOffset": "Giorno {{day}}",
+    "beforeAfter": "Prima e dopo",
+    "before": "Prima",
+    "afterPlan": "Dopo il piano",
+    "uncorrectable": {
+      "title": "Non correggibile con cambi d'acqua",
+      "description": "Questi parametri richiedono dosaggio o altri metodi:",
+      "useDosing": "Apri calcolatore di dosaggio"
+    },
+    "config": {
+      "title": "Impostazioni del piano",
+      "maxChange": "Cambio max per passo",
+      "daysBetween": "Giorni tra i cambi",
+      "days": "{{count}} giorni"
+    },
+    "info": {
+      "title": "Sulla stabilità",
+      "description": "La stabilità è più importante della perfezione in acquariologia. Variazioni grandi e rapide stressano gli abitanti più di valori leggermente fuori range. Questo piano limita ogni cambio e li distanzia per sicurezza."
     }
   },
   "info": {

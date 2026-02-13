@@ -201,6 +201,26 @@ Implemented in v1.9.0: sparklines, maturity badges, alert badges, tank images, a
 
 ---
 
+## Water Change Calculator — Correction Plan
+
+**Priority**: High
+**Status**: In Progress
+
+Enhance the Water Change Calculator with a holistic correction mode that analyzes ALL parameters at once, recommends a safe multi-step schedule, and shows color-coded before/after comparisons.
+
+### Scope
+
+- **Color-coded Impact tab**: Current and After WC values show green/yellow/red based on parameter status
+- **Correction Plan tab**: new third tab with:
+  - Parameter status overview — all params with optimal/warning/critical badges
+  - Smart algorithm to find the optimal WC% that improves the most parameters
+  - Step-by-step schedule (e.g., "4 changes of 20% over 8 days") with configurable max % and spacing
+  - Before/after comparison with status transition badges (critical → optimal)
+  - Uncorrectable parameters flagged with link to Dosing Calculator
+- **Stability-focused scheduling**: limits single changes to 25% (configurable), spaces them 2 days apart, caps at 6 steps (~2 weeks)
+
+---
+
 ## Parameter Trend Predictions
 
 **Priority**: Medium

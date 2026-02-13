@@ -5,6 +5,8 @@
  * for predicting water parameter changes after water changes.
  */
 
+import { type ParameterRange, getParameterStatus } from './parameterRanges'
+
 // ============================================================================
 // Types
 // ============================================================================
@@ -46,19 +48,19 @@ export interface WaterChangeTargetResult {
 
 export const SALT_MIX_PRESETS: SaltMixPreset[] = [
   {
-    id: 'instant_ocean',
-    name: 'Instant Ocean',
+    id: 'red_sea_coral_pro',
+    name: 'Red Sea Coral Pro',
     parameters: {
-      calcium: 400, magnesium: 1280, alkalinity_kh: 11.0,
+      calcium: 440, magnesium: 1340, alkalinity_kh: 12.2,
       salinity: 1.026, ph: 8.2, temperature: 25.5,
       nitrate: 0, phosphate: 0, ammonia: 0, nitrite: 0,
     },
   },
   {
-    id: 'red_sea_coral_pro',
-    name: 'Red Sea Coral Pro',
+    id: 'instant_ocean',
+    name: 'Instant Ocean',
     parameters: {
-      calcium: 440, magnesium: 1340, alkalinity_kh: 12.2,
+      calcium: 400, magnesium: 1280, alkalinity_kh: 11.0,
       salinity: 1.026, ph: 8.2, temperature: 25.5,
       nitrate: 0, phosphate: 0, ammonia: 0, nitrite: 0,
     },
@@ -278,4 +280,211 @@ export function getDefaultReplacementParams(waterType: string): { params: Record
   }
   const preset = FRESHWATER_PRESETS[0]
   return { params: { ...preset.parameters }, presetId: preset.id }
+}
+
+// ============================================================================
+// Correction Plan Types & Functions
+// ============================================================================
+
+export interface CorrectionPlanConfig {
+  maxSingleChangePercent: number  // default 25
+  daysBetweenChanges: number      // default 2
+}
+
+export interface ParameterCorrectionStatus {
+  parameterType: string
+  currentValue: number
+  targetValue: number
+  status: 'optimal' | 'warning' | 'critical'
+  requiredPercentage: number
+  isCorrectable: boolean
+  direction: 'too_high' | 'too_low' | 'on_target'
+}
+
+export interface CorrectionStep {
+  stepNumber: number
+  waterChangePercent: number
+  liters: number
+  dayOffset: number
+  projectedValues: Record<string, number>
+  projectedStatuses: Record<string, 'optimal' | 'warning' | 'critical'>
+}
+
+export interface CorrectionPlanResult {
+  parameterStatuses: ParameterCorrectionStatus[]
+  outOfRangeCount: number
+  correctedAfterPlanCount: number
+  optimalChangePercent: number
+  steps: CorrectionStep[]
+  totalLiters: number
+  totalDays: number
+  uncorrectableParams: string[]
+}
+
+const DEFAULT_CORRECTION_CONFIG: CorrectionPlanConfig = {
+  maxSingleChangePercent: 25,
+  daysBetweenChanges: 2,
+}
+
+/**
+ * Analyze all parameters against their ranges — status, required WC%, correctability.
+ */
+export function analyzeAllParameters(
+  latestParams: Record<string, { value: number }>,
+  replacementParams: Record<string, number>,
+  paramRanges: Record<string, ParameterRange>,
+  activeParams: string[],
+): ParameterCorrectionStatus[] {
+  return activeParams
+    .filter(pt => latestParams[pt] !== undefined && paramRanges[pt] !== undefined)
+    .map(pt => {
+      const current = latestParams[pt].value
+      const range = paramRanges[pt]
+      const target = range.ideal ?? (range.min + range.max) / 2
+      const status = getParameterStatus(pt, current, paramRanges)
+      const replacement = replacementParams[pt] ?? current
+      const requiredPct = calculateRequiredPercentage(current, target, replacement)
+
+      // Correctable if: replacement moves value toward target, and required % is positive + finite
+      const isCorrectable = isFinite(requiredPct) && requiredPct > 0
+
+      let direction: 'too_high' | 'too_low' | 'on_target' = 'on_target'
+      if (status !== 'optimal') {
+        direction = current > target ? 'too_high' : 'too_low'
+      }
+
+      return {
+        parameterType: pt,
+        currentValue: current,
+        targetValue: target,
+        status,
+        requiredPercentage: requiredPct,
+        isCorrectable,
+        direction,
+      }
+    })
+}
+
+/**
+ * Find the WC% (in 5% increments up to maxPercent) that improves the most parameters.
+ * Scoring: critical→optimal = +2, critical→warning = +1, warning→optimal = +1, degradation = -1.
+ */
+export function findOptimalChangePercent(
+  latestParams: Record<string, { value: number }>,
+  replacementParams: Record<string, number>,
+  paramRanges: Record<string, ParameterRange>,
+  activeParams: string[],
+  maxPercent: number = 25,
+): number {
+  const paramsWithData = activeParams.filter(
+    pt => latestParams[pt] !== undefined && paramRanges[pt] !== undefined
+  )
+  if (paramsWithData.length === 0) return 0
+
+  let bestPercent = 5
+  let bestScore = -Infinity
+
+  for (let pct = 5; pct <= maxPercent; pct += 5) {
+    let score = 0
+    for (const pt of paramsWithData) {
+      const current = latestParams[pt].value
+      const replacement = replacementParams[pt] ?? current
+      const projected = calculateImpact(current, replacement, pct)
+
+      const currentStatus = getParameterStatus(pt, current, paramRanges)
+      const projectedStatus = getParameterStatus(pt, projected, paramRanges)
+
+      if (currentStatus === 'critical' && projectedStatus === 'optimal') score += 2
+      else if (currentStatus === 'critical' && projectedStatus === 'warning') score += 1
+      else if (currentStatus === 'warning' && projectedStatus === 'optimal') score += 1
+      else if (currentStatus === 'optimal' && projectedStatus !== 'optimal') score -= 1
+      else if (currentStatus === 'warning' && projectedStatus === 'critical') score -= 1
+    }
+    if (score > bestScore) {
+      bestScore = score
+      bestPercent = pct
+    }
+  }
+
+  return bestPercent
+}
+
+/**
+ * Build a multi-step correction plan: find optimal WC%, iterate steps
+ * until all correctable params reach optimal or 6-step cap.
+ */
+export function buildCorrectionPlan(
+  latestParams: Record<string, { value: number }>,
+  replacementParams: Record<string, number>,
+  paramRanges: Record<string, ParameterRange>,
+  activeParams: string[],
+  totalVolumeLiters: number,
+  config?: Partial<CorrectionPlanConfig>,
+): CorrectionPlanResult {
+  const cfg = { ...DEFAULT_CORRECTION_CONFIG, ...config }
+  const paramStatuses = analyzeAllParameters(latestParams, replacementParams, paramRanges, activeParams)
+  const outOfRangeCount = paramStatuses.filter(s => s.status !== 'optimal').length
+
+  const uncorrectable = paramStatuses
+    .filter(s => s.status !== 'optimal' && !s.isCorrectable)
+    .map(s => s.parameterType)
+
+  const optimalPct = findOptimalChangePercent(
+    latestParams, replacementParams, paramRanges, activeParams, cfg.maxSingleChangePercent
+  )
+
+  // Build steps iteratively
+  const steps: CorrectionStep[] = []
+  const maxSteps = 6
+  // Track running values for each parameter
+  const currentValues: Record<string, number> = {}
+  for (const s of paramStatuses) {
+    currentValues[s.parameterType] = s.currentValue
+  }
+
+  for (let i = 0; i < maxSteps; i++) {
+    // Check if all correctable params are now optimal
+    const stillOutOfRange = paramStatuses.some(s =>
+      s.isCorrectable && getParameterStatus(s.parameterType, currentValues[s.parameterType], paramRanges) !== 'optimal'
+    )
+    if (!stillOutOfRange) break
+
+    const projectedValues: Record<string, number> = {}
+    const projectedStatuses: Record<string, 'optimal' | 'warning' | 'critical'> = {}
+
+    for (const s of paramStatuses) {
+      const cv = currentValues[s.parameterType]
+      const rv = replacementParams[s.parameterType] ?? cv
+      const pv = calculateImpact(cv, rv, optimalPct)
+      projectedValues[s.parameterType] = pv
+      projectedStatuses[s.parameterType] = getParameterStatus(s.parameterType, pv, paramRanges)
+      currentValues[s.parameterType] = pv
+    }
+
+    steps.push({
+      stepNumber: i + 1,
+      waterChangePercent: optimalPct,
+      liters: Math.round((optimalPct / 100) * totalVolumeLiters * 10) / 10,
+      dayOffset: i * cfg.daysBetweenChanges,
+      projectedValues,
+      projectedStatuses,
+    })
+  }
+
+  const correctedAfterPlan = paramStatuses.filter(s =>
+    s.status !== 'optimal' &&
+    steps.length > 0 &&
+    (steps[steps.length - 1].projectedStatuses[s.parameterType] === 'optimal')
+  ).length
+
+  return {
+    parameterStatuses: paramStatuses,
+    outOfRangeCount,
+    correctedAfterPlanCount: correctedAfterPlan,
+    optimalChangePercent: optimalPct,
+    steps,
+    totalLiters: steps.reduce((sum, s) => sum + s.liters, 0),
+    totalDays: steps.length > 0 ? steps[steps.length - 1].dayOffset : 0,
+    uncorrectableParams: uncorrectable,
+  }
 }

@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Visualização do impacto",
     "target": "Parâmetro alvo",
+    "correction": "Plano de correção",
     "dosing": "Calculadora de dosagem"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Troca de água grande",
       "description": "Trocas acima de 50% podem estressar os habitantes. Considere {{count}} trocas de {{percent}}% ({{liters}} L cada) ao longo de vários dias."
+    }
+  },
+  "correction": {
+    "statusOverview": "Estado atual dos parâmetros",
+    "outOfRange": "{{count}} de {{total}} parâmetros fora da faixa",
+    "allInRange": "Todos os parâmetros estão na faixa ideal!",
+    "criticalCount": "{{count}} crítico(s)",
+    "warningCount": "{{count}} em alerta",
+    "tooHigh": "Muito alto",
+    "tooLow": "Muito baixo",
+    "onTarget": "No alvo",
+    "recommendedPlan": "Plano recomendado",
+    "planSummary": "{{count}} trocas de água de {{percent}}% ({{liters}} L cada) ao longo de {{days}} dias",
+    "singleChange": "Uma troca de água de {{percent}}% ({{liters}} L)",
+    "noCorrection": "Nenhuma correção necessária",
+    "schedule": "Cronograma passo a passo",
+    "step": "Troca n.º {{number}}",
+    "dayOffset": "Dia {{day}}",
+    "beforeAfter": "Antes e depois",
+    "before": "Antes",
+    "afterPlan": "Após o plano",
+    "uncorrectable": {
+      "title": "Não corrigível com trocas de água",
+      "description": "Estes parâmetros precisam de dosagem ou outros métodos:",
+      "useDosing": "Abrir calculadora de dosagem"
+    },
+    "config": {
+      "title": "Configurações do plano",
+      "maxChange": "Troca máx. por etapa",
+      "daysBetween": "Dias entre trocas",
+      "days": "{{count}} dias"
+    },
+    "info": {
+      "title": "Sobre estabilidade",
+      "description": "A estabilidade é mais importante que a perfeição em aquários. Mudanças grandes e rápidas estressam os habitantes mais do que valores ligeiramente fora da faixa. Este plano limita cada troca e as espaça por segurança."
     }
   },
   "info": {

@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Auswirkungsvorschau",
     "target": "Zielparameter",
+    "correction": "Korrekturplan",
     "dosing": "Dosierungsrechner"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Großer Wasserwechsel",
       "description": "Wechsel über 50 % können Bewohner stressen. Erwägen Sie {{count}} Wechsel à {{percent}} % ({{liters}} L) über mehrere Tage."
+    }
+  },
+  "correction": {
+    "statusOverview": "Aktueller Parameterstatus",
+    "outOfRange": "{{count}} von {{total}} Parametern außerhalb des Bereichs",
+    "allInRange": "Alle Parameter liegen im optimalen Bereich!",
+    "criticalCount": "{{count}} kritisch",
+    "warningCount": "{{count}} Warnung",
+    "tooHigh": "Zu hoch",
+    "tooLow": "Zu niedrig",
+    "onTarget": "Im Zielbereich",
+    "recommendedPlan": "Empfohlener Plan",
+    "planSummary": "{{count}} Wasserwechsel à {{percent}} % ({{liters}} L) über {{days}} Tage",
+    "singleChange": "Ein Wasserwechsel von {{percent}} % ({{liters}} L)",
+    "noCorrection": "Keine Korrektur nötig",
+    "schedule": "Schritt-für-Schritt-Plan",
+    "step": "Wechsel Nr. {{number}}",
+    "dayOffset": "Tag {{day}}",
+    "beforeAfter": "Vorher und nachher",
+    "before": "Vorher",
+    "afterPlan": "Nach dem Plan",
+    "uncorrectable": {
+      "title": "Nicht durch Wasserwechsel korrigierbar",
+      "description": "Diese Parameter erfordern Dosierung oder andere Methoden:",
+      "useDosing": "Dosierungsrechner öffnen"
+    },
+    "config": {
+      "title": "Planeinstellungen",
+      "maxChange": "Max. Wechsel pro Schritt",
+      "daysBetween": "Tage zwischen Wechseln",
+      "days": "{{count}} Tage"
+    },
+    "info": {
+      "title": "Über Stabilität",
+      "description": "Stabilität ist wichtiger als Perfektion in der Aquaristik. Große, schnelle Schwankungen stressen die Bewohner mehr als leicht abweichende Werte. Dieser Plan begrenzt jeden Wechsel und verteilt sie zeitlich."
     }
   },
   "info": {

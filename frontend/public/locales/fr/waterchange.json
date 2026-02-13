@@ -10,6 +10,7 @@
   "tabs": {
     "impact": "Aperçu de l'impact",
     "target": "Paramètre cible",
+    "correction": "Plan de correction",
     "dosing": "Calculateur de dosage"
   },
   "impact": {
@@ -46,6 +47,41 @@
     "split": {
       "title": "Changement d'eau important",
       "description": "Les changements de plus de 50 % peuvent stresser les habitants. Envisagez {{count}} changements de {{percent}} % ({{liters}} L chacun) sur plusieurs jours."
+    }
+  },
+  "correction": {
+    "statusOverview": "État actuel des paramètres",
+    "outOfRange": "{{count}} paramètre(s) sur {{total}} hors plage",
+    "allInRange": "Tous les paramètres sont dans la plage optimale !",
+    "criticalCount": "{{count}} critique(s)",
+    "warningCount": "{{count}} en alerte",
+    "tooHigh": "Trop élevé",
+    "tooLow": "Trop bas",
+    "onTarget": "Dans la cible",
+    "recommendedPlan": "Plan recommandé",
+    "planSummary": "{{count}} changements d'eau de {{percent}} % ({{liters}} L chacun) sur {{days}} jours",
+    "singleChange": "Un seul changement d'eau de {{percent}} % ({{liters}} L)",
+    "noCorrection": "Aucune correction nécessaire",
+    "schedule": "Calendrier étape par étape",
+    "step": "Changement n°{{number}}",
+    "dayOffset": "Jour {{day}}",
+    "beforeAfter": "Avant et après",
+    "before": "Avant",
+    "afterPlan": "Après le plan",
+    "uncorrectable": {
+      "title": "Non corrigeable par changement d'eau",
+      "description": "Ces paramètres nécessitent un dosage ou d'autres méthodes :",
+      "useDosing": "Ouvrir le calculateur de dosage"
+    },
+    "config": {
+      "title": "Réglages du calendrier",
+      "maxChange": "Changement max par étape",
+      "daysBetween": "Jours entre les changements",
+      "days": "{{count}} jours"
+    },
+    "info": {
+      "title": "À propos de la stabilité",
+      "description": "La stabilité est plus importante que la perfection en aquariophilie. Des variations rapides et importantes peuvent stresser les habitants plus que des valeurs légèrement hors plage. Ce plan limite chaque changement et les espace pour la sécurité."
     }
   },
   "info": {

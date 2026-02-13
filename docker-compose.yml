@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-aquascope}"]
       interval: 10s
@@ -64,7 +64,7 @@ services:
       - ./data/uploads:/app/uploads  # bind mount — survives rebuilds & down -v
       - ./data:/data  # shared species-traits.json for compatibility checks
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     depends_on:
       postgres:
         condition: service_healthy
