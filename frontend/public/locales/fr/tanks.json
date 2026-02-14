@@ -206,6 +206,17 @@
     "achievements": "Réalisations",
     "insights": "Conseils",
     "noData": "Pas assez de données pour générer un bulletin",
-    "downloadPdf": "Télécharger PDF"
+    "downloadPdf": "Télécharger PDF",
+    "legend": "Guide de notation",
+    "gradeScale": "Échelle de notes",
+    "categoryDetails": "Catégories",
+    "categoryDesc": {
+      "parameter_stability": "Stabilité des paramètres d'eau selon les tests ICP et les relevés",
+      "maintenance": "Respect des échéances de maintenance planifiées",
+      "livestock_health": "Absence de maladies, taux de mortalité et diversité des espèces",
+      "equipment": "État de l'équipement — pénalise les pannes et le manque d'entretien",
+      "maturity": "Âge du bac, stabilité des paramètres et diversité de l'écosystème",
+      "water_chemistry": "Résultats des tests ICP et fraîcheur des analyses d'eau"
+    }
   }
 }

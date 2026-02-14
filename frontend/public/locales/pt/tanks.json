@@ -206,6 +206,17 @@
     "achievements": "Conquistas",
     "insights": "Recomendações",
     "noData": "Dados insuficientes para gerar um boletim",
-    "downloadPdf": "Baixar PDF"
+    "downloadPdf": "Baixar PDF",
+    "legend": "Guia de pontuação",
+    "gradeScale": "Escala de notas",
+    "categoryDetails": "Categorias",
+    "categoryDesc": {
+      "parameter_stability": "Consistência dos parâmetros da água com base em testes ICP e leituras",
+      "maintenance": "Cumprimento pontual das tarefas de manutenção programadas",
+      "livestock_health": "Estado livre de doenças, taxa de mortalidade e diversidade de espécies",
+      "equipment": "Estado do equipamento — penaliza falhas e falta de manutenção",
+      "maturity": "Idade do aquário, estabilidade dos parâmetros e diversidade do ecossistema",
+      "water_chemistry": "Resultados dos testes ICP e atualidade das análises de água"
+    }
   }
 }

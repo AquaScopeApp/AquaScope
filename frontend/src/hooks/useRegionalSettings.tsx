@@ -10,6 +10,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react'
 import { adminApi } from '../api'
+import { useAuth } from './useAuth'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -142,6 +143,7 @@ const RegionalSettingsContext = createContext<RegionalSettingsContextValue>({
 // ── Provider ─────────────────────────────────────────────────────────────────
 
 export function RegionalSettingsProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth()
   const [currency, setCurrency] = useState('EUR')
   const [bannerTheme, setBannerTheme] = useState<BannerTheme>('reef')
   const [unitSystem, setUnitSystem] = useState<UnitSystem>('metric')
@@ -173,7 +175,7 @@ export function RegionalSettingsProvider({ children }: { children: ReactNode }) 
 
   useEffect(() => {
     refresh()
-  }, [refresh])
+  }, [refresh, user])
 
   const setupNeeded = isLoaded && country === ''
 

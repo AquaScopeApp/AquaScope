@@ -206,6 +206,17 @@
     "achievements": "Traguardi",
     "insights": "Suggerimenti",
     "noData": "Dati insufficienti per generare una pagella",
-    "downloadPdf": "Scarica PDF"
+    "downloadPdf": "Scarica PDF",
+    "legend": "Guida alla valutazione",
+    "gradeScale": "Scala dei voti",
+    "categoryDetails": "Categorie",
+    "categoryDesc": {
+      "parameter_stability": "Consistenza dei parametri dell'acqua da test ICP e misurazioni",
+      "maintenance": "Completamento puntuale delle attività di manutenzione programmate",
+      "livestock_health": "Assenza di malattie, tasso di mortalità e diversità delle specie",
+      "equipment": "Stato dell'attrezzatura — penalizza guasti e mancanza di manutenzione",
+      "maturity": "Età della vasca, stabilità dei parametri e diversità dell'ecosistema",
+      "water_chemistry": "Risultati dei test ICP e freschezza delle analisi dell'acqua"
+    }
   }
 }

@@ -206,6 +206,17 @@
     "achievements": "Erfolge",
     "insights": "Empfehlungen",
     "noData": "Nicht genügend Daten für ein Zeugnis",
-    "downloadPdf": "PDF herunterladen"
+    "downloadPdf": "PDF herunterladen",
+    "legend": "Bewertungsleitfaden",
+    "gradeScale": "Notenskala",
+    "categoryDetails": "Kategorien",
+    "categoryDesc": {
+      "parameter_stability": "Konsistenz der Wasserparameter aus ICP-Tests und Messungen",
+      "maintenance": "Pünktliche Erledigung geplanter Wartungsaufgaben",
+      "livestock_health": "Krankheitsfreier Status, Sterblichkeitsrate und Artenvielfalt",
+      "equipment": "Gerätezustand — Abzug bei defekter oder nicht gewarteter Ausrüstung",
+      "maturity": "Beckenalter, Parameterstabilität und Ökosystem-Diversität",
+      "water_chemistry": "ICP-Testergebnisse und Aktualität der Wasseranalysen"
+    }
   }
 }

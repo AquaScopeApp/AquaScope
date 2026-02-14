@@ -44,6 +44,7 @@ function App() {
         <ModuleSettingsProvider>
         <RegionalSettingsProvider>
         {!local && <OfflineBanner />}
+        <Suspense fallback={<div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-600" /></div>}>
         <Routes>
           {/* Public Routes — only in web mode */}
           {!local && <Route path="/login" element={<Login />} />}
@@ -95,6 +96,7 @@ function App() {
           {/* Catch all */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        </Suspense>
         </RegionalSettingsProvider>
         </ModuleSettingsProvider>
       </AuthProvider>

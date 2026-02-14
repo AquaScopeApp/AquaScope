@@ -206,6 +206,17 @@
     "achievements": "Achievements",
     "insights": "Insights",
     "noData": "Not enough data to generate a report card",
-    "downloadPdf": "Download PDF"
+    "downloadPdf": "Download PDF",
+    "legend": "Scoring Guide",
+    "gradeScale": "Grade Scale",
+    "categoryDetails": "Categories",
+    "categoryDesc": {
+      "parameter_stability": "Water parameter consistency from ICP tests and logged readings",
+      "maintenance": "On-time completion of scheduled maintenance tasks",
+      "livestock_health": "Disease-free status, mortality rate, and species diversity",
+      "equipment": "Equipment condition — penalizes failing or unmaintained gear",
+      "maturity": "Tank age, parameter stability over time, and ecosystem diversity",
+      "water_chemistry": "ICP test results and freshness of water analysis data"
+    }
   }
 }

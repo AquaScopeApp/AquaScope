@@ -7,6 +7,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import { adminApi } from '../api'
+import { useAuth } from './useAuth'
 import type { ModuleSettings } from '../types'
 
 const DEFAULT_SETTINGS: ModuleSettings = {
@@ -38,6 +39,7 @@ const ModuleSettingsContext = createContext<ModuleSettingsContextValue>({
 })
 
 export function ModuleSettingsProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth()
   const [modules, setModules] = useState<ModuleSettings>(DEFAULT_SETTINGS)
   const [isLoaded, setIsLoaded] = useState(false)
 
@@ -60,7 +62,7 @@ export function ModuleSettingsProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refresh()
-  }, [refresh])
+  }, [refresh, user])
 
   const isEnabled = useCallback(
     (module: keyof ModuleSettings) => modules[module] ?? true,
