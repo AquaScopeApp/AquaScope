@@ -9,6 +9,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.utils import ImageReader
+from PIL import Image as PILImage
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
     HRFlowable, Flowable,
@@ -232,26 +233,28 @@ class CircularImage(Flowable):
         c = self.canv
         r = self.diameter / 2
         try:
-            img = ImageReader(self.image_path)
-            iw, ih = img.getSize()
+            # Resize image to 2x diameter for retina-quality but small file size
+            target_px = int(self.diameter * 2)
+            pil_img = PILImage.open(self.image_path)
+            pil_img = pil_img.convert('RGB')
+            # Center-crop to square
+            iw, ih = pil_img.size
+            side = min(iw, ih)
+            left = (iw - side) // 2
+            top = (ih - side) // 2
+            pil_img = pil_img.crop((left, top, left + side, top + side))
+            pil_img = pil_img.resize((target_px, target_px), PILImage.LANCZOS)
+            img_buf = io.BytesIO()
+            pil_img.save(img_buf, format='JPEG', quality=80)
+            img_buf.seek(0)
+            img = ImageReader(img_buf)
 
             # Clip to circle
             c.saveState()
             p = c.beginPath()
             p.circle(r, r, r)
             c.clipPath(p, stroke=0)
-
-            # Scale image to cover the circle (center-crop)
-            aspect = iw / ih
-            if aspect > 1:
-                draw_h = self.diameter
-                draw_w = self.diameter * aspect
-            else:
-                draw_w = self.diameter
-                draw_h = self.diameter / aspect
-            x_off = (self.diameter - draw_w) / 2
-            y_off = (self.diameter - draw_h) / 2
-            c.drawImage(img, x_off, y_off, draw_w, draw_h)
+            c.drawImage(img, 0, 0, self.diameter, self.diameter)
             c.restoreState()
 
             # Thin border ring
@@ -264,7 +267,7 @@ class CircularImage(Flowable):
             c.circle(r, r, r, fill=1, stroke=0)
             c.setFillColor(colors.HexColor('#9ca3af'))
             c.setFont('Helvetica', 10)
-            c.drawCentredString(r, r - 3, '🐠')
+            c.drawCentredString(r, r - 3, '?')
 
 
 # ── Main Generator ───────────────────────────────────────────────────────────
@@ -375,14 +378,16 @@ def generate_report_card_pdf(
     ))
     elements.append(Spacer(1, 6))
 
-    # ── Hero: Grade Ring + Category Bars ─────────────────────────────────────
+    # ── Hero: Grade Ring + Energy Label + Category Bars ─────────────────────
     overall_grade = report_data.get('overall_grade', 'N/A')
     overall_score = report_data.get('overall_score', 0)
     status = report_data.get('status', 'unknown')
     categories = report_data.get('categories', {})
 
     grade_ring = GradeRing(overall_grade, overall_score, status)
+    energy_label = EnergyLabel(overall_grade, total_width=130)
 
+    cat_bar_w = 110  # narrower progress bars to fit 3-col layout
     cat_rows = []
     for key, cat in categories.items():
         label = CATEGORY_META.get(key, key)
@@ -393,7 +398,7 @@ def generate_report_card_pdf(
                 f"<font size=7 color='#9ca3af'>({cat['weight']}%)</font>",
                 s_cat_label,
             ),
-            ProgressBar(cat['score'], ghex),
+            ProgressBar(cat['score'], ghex, width=cat_bar_w),
             Paragraph(
                 f"{cat['score']} "
                 f"<font color='{ghex}'><b>{cat['grade']}</b></font>",
@@ -401,7 +406,7 @@ def generate_report_card_pdf(
             ),
         ])
 
-    cat_table = Table(cat_rows, colWidths=[100, 155, 55])
+    cat_table = Table(cat_rows, colWidths=[85, cat_bar_w + 10, 48])
     cat_table.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('TOPPADDING', (0, 0), (-1, -1), 3),
@@ -410,7 +415,13 @@ def generate_report_card_pdf(
         ('RIGHTPADDING', (-1, 0), (-1, -1), 0),
     ]))
 
-    hero = Table([[grade_ring, cat_table]], colWidths=[110, pw - 120])
+    ring_w = 100
+    label_w = 140
+    cat_w = pw - ring_w - label_w - 10
+    hero = Table(
+        [[grade_ring, energy_label, cat_table]],
+        colWidths=[ring_w, label_w, cat_w],
+    )
     hero.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
         ('ALIGN', (0, 0), (0, 0), 'CENTER'),
@@ -421,12 +432,6 @@ def generate_report_card_pdf(
     ]))
     elements.append(hero)
     elements.append(Spacer(1, 6))
-
-    # ── Energy Label Grade Scale ─────────────────────────────────────────────
-    energy_label = EnergyLabel(overall_grade, total_width=180)
-    elements.append(Paragraph('GRADE SCALE', s_section))
-    elements.append(energy_label)
-    elements.append(Spacer(1, 4))
 
     # ── Achievements (inline) ────────────────────────────────────────────────
     achievements = report_data.get('achievements', [])
