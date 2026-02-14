@@ -272,14 +272,23 @@ class CircularImage(Flowable):
 
 # ── Main Generator ───────────────────────────────────────────────────────────
 
-def _resolve_image_path(image_url: str | None) -> str | None:
-    """Convert a relative image_url to an absolute filesystem path."""
-    if not image_url:
-        return None
-    # image_url is like /uploads/tank-images/uuid.jpg
-    file_path = Path(f"/app{image_url}")
-    if file_path.exists():
-        return str(file_path)
+DEFAULT_WATER_IMAGES = {
+    'saltwater': '/data/images/saltwater.png',
+    'freshwater': '/data/images/freshwater.png',
+    'brackish': '/data/images/brakishwater.png',
+}
+
+
+def _resolve_image_path(image_url: str | None, water_type: str = '') -> str | None:
+    """Convert a relative image_url to an absolute path, fallback to default."""
+    if image_url:
+        file_path = Path(f"/app{image_url}")
+        if file_path.exists():
+            return str(file_path)
+    # Fallback to water-type default image
+    default = DEFAULT_WATER_IMAGES.get(water_type.lower(), '')
+    if default and Path(default).exists():
+        return default
     return None
 
 
@@ -347,9 +356,10 @@ def generate_report_card_pdf(
     elements.append(AccentBar(pw))
     elements.append(Spacer(1, 8))
 
-    # ── Header with optional tank avatar ─────────────────────────────────────
+    # ── Header with tank avatar ──────────────────────────────────────────────
     image_path = _resolve_image_path(
-        tank_info.get('image_url') if tank_info else None
+        tank_info.get('image_url') if tank_info else None,
+        water_type,
     )
     if image_path:
         avatar = CircularImage(image_path, diameter=60)

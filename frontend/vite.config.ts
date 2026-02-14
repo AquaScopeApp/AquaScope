@@ -21,7 +21,7 @@ export default defineConfig({
     react(),
     // Skip PWA plugin for Capacitor builds (native app doesn't need a service worker)
     ...(!isCapacitorBuild ? [VitePWA({
-      registerType: 'prompt',
+      registerType: 'autoUpdate',
       includeAssets: [
         'favicon.svg',
         'favicon.png',
@@ -64,16 +64,17 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,ico,woff2}', '*.png', 'pwa-icons/*.png'],
         globIgnores: ['images/defaults/**'],
         runtimeCaching: [
-          // Locale files — CacheFirst (translations rarely change)
+          // Locale files — NetworkFirst (translations update with deploys)
           {
             urlPattern: /\/locales\/.*\.json$/,
-            handler: 'CacheFirst',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'aquascope-locales',
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 7 * 24 * 60 * 60,
               },
+              networkTimeoutSeconds: 3,
             },
           },
           // Auth endpoints — NetworkOnly (NEVER cache)
