@@ -5,7 +5,6 @@
  * Displays overall grade circle, category breakdowns, achievements, and insights.
  */
 
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { ReportCard } from '../../types'
 
@@ -98,28 +97,27 @@ function InsightIcon({ type }: { type: string }) {
   }
 }
 
-const CATEGORY_DESCRIPTIONS: Record<string, string> = {
-  parameter_stability: 'Water parameter consistency from ICP tests and logged readings',
-  maintenance:         'On-time completion of scheduled maintenance tasks',
-  livestock_health:    'Disease-free status, mortality rate, and species diversity',
-  equipment:           'Equipment condition — penalizes failing or unmaintained gear',
-  maturity:            'Tank age, parameter stability over time, and ecosystem diversity',
-  water_chemistry:     'ICP test results and freshness of water analysis data',
-}
-
-const GRADE_SCALE = [
-  { range: 'A+ to A-', label: '90–100', color: '#10b981', bg: 'bg-emerald-500' },
-  { range: 'B+ to B-', label: '80–89',  color: '#0ea5e9', bg: 'bg-sky-500' },
-  { range: 'C+ to C-', label: '70–79',  color: '#f59e0b', bg: 'bg-amber-500' },
-  { range: 'D+ to D-', label: '60–69',  color: '#f97316', bg: 'bg-orange-500' },
-  { range: 'F',         label: '0–59',   color: '#ef4444', bg: 'bg-red-500' },
+const ENERGY_LABEL = [
+  { grade: 'A', label: '90–100', color: '#10b981', width: 40 },
+  { grade: 'B', label: '80–89',  color: '#0ea5e9', width: 52 },
+  { grade: 'C', label: '70–79',  color: '#f59e0b', width: 64 },
+  { grade: 'D', label: '60–69',  color: '#f97316', width: 76 },
+  { grade: 'F', label: '0–59',   color: '#ef4444', width: 88 },
 ]
+
+function getGradeLevel(grade: string): string {
+  if (grade.startsWith('A')) return 'A'
+  if (grade.startsWith('B')) return 'B'
+  if (grade.startsWith('C')) return 'C'
+  if (grade.startsWith('D')) return 'D'
+  return 'F'
+}
 
 export default function TankReportCard({ reportCard, onDownloadPdf }: TankReportCardProps) {
   const { t } = useTranslation('tanks')
-  const [showLegend, setShowLegend] = useState(false)
 
   const { overall_score, overall_grade, status, categories, achievements, insights } = reportCard
+  const currentLevel = getGradeLevel(overall_grade)
 
   // SVG gauge configuration
   const size = 128
@@ -232,57 +230,40 @@ export default function TankReportCard({ reportCard, onDownloadPdf }: TankReport
         })}
       </div>
 
-      {/* Legend Toggle */}
-      <button
-        onClick={() => setShowLegend(!showLegend)}
-        className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-      >
-        <svg className={`w-3.5 h-3.5 transition-transform ${showLegend ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-        {t('reportCard.legend', 'Scoring Guide')}
-      </button>
-
-      {showLegend && (
-        <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-xs">
-          {/* Grade Scale */}
-          <div>
-            <h5 className="font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide mb-2">
-              {t('reportCard.gradeScale', 'Grade Scale')}
-            </h5>
-            <div className="flex flex-wrap gap-x-4 gap-y-1">
-              {GRADE_SCALE.map(({ range, label, bg }) => (
-                <div key={range} className="flex items-center gap-1.5">
-                  <span className={`w-2.5 h-2.5 rounded-full ${bg}`} />
-                  <span className="text-gray-600 dark:text-gray-300 font-medium">{range}</span>
-                  <span className="text-gray-400 dark:text-gray-500">{label}</span>
+      {/* Energy Label Grade Scale */}
+      <div className="space-y-2">
+        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+          {t('reportCard.gradeScale', 'Grade Scale')}
+        </h4>
+        <div className="space-y-0.5">
+          {ENERGY_LABEL.map(({ grade, label, color, width }) => {
+            const isActive = currentLevel === grade
+            return (
+              <div key={grade} className="flex items-center gap-2">
+                <div
+                  className={`h-6 flex items-center text-white text-xs font-bold pl-2.5 transition-opacity ${isActive ? '' : 'opacity-40'}`}
+                  style={{
+                    width: `${width}%`,
+                    backgroundColor: color,
+                    clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%)',
+                  }}
+                >
+                  {grade}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Category Descriptions */}
-          <div>
-            <h5 className="font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide mb-2">
-              {t('reportCard.categoryDetails', 'Categories')}
-            </h5>
-            <div className="space-y-1.5">
-              {Object.entries(categories).map(([key, cat]) => {
-                const meta = CATEGORY_LABELS[key] || { label: key, icon: '' }
-                const desc = CATEGORY_DESCRIPTIONS[key] || ''
-                return (
-                  <div key={key} className="flex gap-2">
-                    <span className="flex-shrink-0 font-medium text-gray-600 dark:text-gray-300 w-24">
-                      {meta.icon} {t(`reportCard.category.${key}`, meta.label)} ({cat.weight}%)
-                    </span>
-                    <span className="text-gray-500 dark:text-gray-400">{t(`reportCard.categoryDesc.${key}`, desc)}</span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+                <span className={`text-[10px] tabular-nums ${isActive ? 'text-gray-600 dark:text-gray-300 font-medium' : 'text-gray-400 dark:text-gray-500'}`}>
+                  {label}
+                </span>
+                {isActive && (
+                  <span className="ml-auto flex items-center gap-1 text-xs font-bold text-gray-700 dark:text-gray-200">
+                    <svg className="w-3 h-3" viewBox="0 0 12 12" fill="currentColor"><path d="M8 6L2 2v8z" /></svg>
+                    {overall_grade}
+                  </span>
+                )}
+              </div>
+            )
+          })}
         </div>
-      )}
+      </div>
 
       {/* Achievements */}
       {achievements.length > 0 && (
