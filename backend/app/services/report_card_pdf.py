@@ -1,334 +1,417 @@
 """
-Report Card PDF Generator — creates a downloadable PDF report.
+Report Card PDF Generator — compact single-page report with visual grade ring.
 """
 import io
 from datetime import date
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm, cm
+from reportlab.lib.units import mm
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
-    HRFlowable,
+    HRFlowable, Flowable,
 )
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.enums import TA_CENTER, TA_RIGHT
 
 
-# Grade-to-color mapping
+# ── Palette ──────────────────────────────────────────────────────────────────
+
 GRADE_COLORS = {
-    'A+': colors.HexColor('#10b981'), 'A': colors.HexColor('#10b981'), 'A-': colors.HexColor('#10b981'),
-    'B+': colors.HexColor('#0ea5e9'), 'B': colors.HexColor('#0ea5e9'), 'B-': colors.HexColor('#0ea5e9'),
-    'C+': colors.HexColor('#f59e0b'), 'C': colors.HexColor('#f59e0b'), 'C-': colors.HexColor('#f59e0b'),
-    'D+': colors.HexColor('#f97316'), 'D': colors.HexColor('#f97316'), 'D-': colors.HexColor('#f97316'),
-    'F': colors.HexColor('#ef4444'),
+    'A+': '#10b981', 'A': '#10b981', 'A-': '#10b981',
+    'B+': '#0ea5e9', 'B': '#0ea5e9', 'B-': '#0ea5e9',
+    'C+': '#f59e0b', 'C': '#f59e0b', 'C-': '#f59e0b',
+    'D+': '#f97316', 'D': '#f97316', 'D-': '#f97316',
+    'F': '#ef4444',
 }
 
-CATEGORY_LABELS = {
-    'parameter_stability': 'Parameter Stability',
-    'maintenance': 'Maintenance Compliance',
-    'livestock_health': 'Livestock Health',
-    'equipment': 'Equipment Status',
-    'maturity': 'Tank Maturity',
-    'water_chemistry': 'Water Chemistry',
+CATEGORY_META = {
+    'parameter_stability': 'Parameters',
+    'maintenance':         'Maintenance',
+    'livestock_health':    'Livestock',
+    'equipment':           'Equipment',
+    'maturity':            'Maturity',
+    'water_chemistry':     'Chemistry',
 }
 
 STATUS_LABELS = {
-    'excellent': 'Excellent',
-    'good': 'Good',
-    'fair': 'Fair',
-    'poor': 'Poor',
-    'critical': 'Critical',
+    'excellent': 'EXCELLENT',
+    'good': 'GOOD',
+    'fair': 'FAIR',
+    'poor': 'POOR',
+    'critical': 'CRITICAL',
 }
 
 
-def generate_report_card_pdf(tank_name: str, water_type: str, report_data: dict, tank_info: dict | None = None) -> bytes:
-    """Generate a PDF report card and return the bytes."""
+# ── Custom Flowables ─────────────────────────────────────────────────────────
+
+class AccentBar(Flowable):
+    """Thin colored bar spanning full width."""
+    def __init__(self, width, height=3):
+        Flowable.__init__(self)
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        self.canv.setFillColor(colors.HexColor('#0369a1'))
+        self.canv.rect(0, 0, self.width, self.height, fill=1, stroke=0)
+
+
+class GradeRing(Flowable):
+    """Circular grade gauge with arc progress, score, and status label."""
+    def __init__(self, grade, score, status, size=95):
+        Flowable.__init__(self)
+        self.grade = grade
+        self.score = score
+        self.status = status
+        self.size = size
+        self.width = size
+        self.height = size + 16
+
+    def draw(self):
+        c = self.canv
+        cx = self.size / 2
+        cy = self.size / 2 + 12
+        r = self.size / 2 - 6
+        ghex = GRADE_COLORS.get(self.grade, '#9ca3af')
+
+        # Background ring
+        c.setStrokeColor(colors.HexColor('#e5e7eb'))
+        c.setLineWidth(7)
+        c.setLineCap(1)
+        c.circle(cx, cy, r, stroke=1, fill=0)
+
+        # Progress arc (from 12-o'clock, clockwise)
+        if self.score > 0:
+            c.setStrokeColor(colors.HexColor(ghex))
+            c.setLineWidth(7)
+            c.setLineCap(1)
+            c.arc(cx - r, cy - r, cx + r, cy + r, 90, -(self.score / 100) * 360)
+
+        # Grade letter
+        c.setFillColor(colors.HexColor(ghex))
+        c.setFont('Helvetica-Bold', 28)
+        c.drawCentredString(cx, cy, self.grade)
+
+        # Score
+        c.setFillColor(colors.HexColor('#6b7280'))
+        c.setFont('Helvetica', 10)
+        c.drawCentredString(cx, cy - 17, f"{self.score}/100")
+
+        # Status label below the ring
+        c.setFillColor(colors.HexColor(ghex))
+        c.setFont('Helvetica-Bold', 7)
+        c.drawCentredString(cx, 2, STATUS_LABELS.get(self.status, ''))
+
+
+class ProgressBar(Flowable):
+    """Horizontal rounded progress bar."""
+    def __init__(self, score, color_hex, width=145, height=7):
+        Flowable.__init__(self)
+        self.score = score
+        self.color_hex = color_hex
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        c = self.canv
+        rad = self.height / 2
+        # Track
+        c.setFillColor(colors.HexColor('#e5e7eb'))
+        c.roundRect(0, 0, self.width, self.height, rad, fill=1, stroke=0)
+        # Fill
+        if self.score > 0:
+            filled = max(self.height, (self.score / 100) * self.width)
+            c.setFillColor(colors.HexColor(self.color_hex))
+            c.roundRect(0, 0, filled, self.height, rad, fill=1, stroke=0)
+
+
+# ── Main Generator ───────────────────────────────────────────────────────────
+
+def generate_report_card_pdf(
+    tank_name: str,
+    water_type: str,
+    report_data: dict,
+    tank_info: dict | None = None,
+) -> bytes:
+    """Generate a compact, single-page PDF report card."""
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
-        topMargin=2 * cm,
-        bottomMargin=2 * cm,
-        leftMargin=2.5 * cm,
-        rightMargin=2.5 * cm,
+        topMargin=14 * mm,
+        bottomMargin=10 * mm,
+        leftMargin=18 * mm,
+        rightMargin=18 * mm,
     )
 
+    pw = A4[0] - 36 * mm  # usable page width (~493 pt)
     styles = getSampleStyleSheet()
 
-    # Custom styles
-    title_style = ParagraphStyle(
-        'ReportTitle', parent=styles['Title'],
-        fontSize=24, spaceAfter=6, textColor=colors.HexColor('#1f2937'),
+    # ── Styles ──
+    s_title = ParagraphStyle(
+        'T', parent=styles['Title'],
+        fontSize=20, leading=24,
+        textColor=colors.HexColor('#111827'), spaceAfter=2,
     )
-    subtitle_style = ParagraphStyle(
-        'ReportSubtitle', parent=styles['Normal'],
-        fontSize=12, textColor=colors.HexColor('#6b7280'), spaceAfter=20,
+    s_sub = ParagraphStyle(
+        'S', parent=styles['Normal'],
+        fontSize=9, textColor=colors.HexColor('#6b7280'), spaceAfter=8,
     )
-    heading_style = ParagraphStyle(
-        'SectionHeading', parent=styles['Heading2'],
-        fontSize=14, textColor=colors.HexColor('#374151'),
-        spaceBefore=20, spaceAfter=10,
+    s_section = ParagraphStyle(
+        'H', parent=styles['Normal'],
+        fontSize=8, textColor=colors.HexColor('#374151'),
+        fontName='Helvetica-Bold', spaceBefore=8, spaceAfter=3,
     )
-    body_style = ParagraphStyle(
-        'BodyText', parent=styles['Normal'],
-        fontSize=10, textColor=colors.HexColor('#4b5563'), leading=14,
+    s_body = ParagraphStyle(
+        'B', parent=styles['Normal'],
+        fontSize=9, textColor=colors.HexColor('#4b5563'), leading=13,
     )
-    grade_style = ParagraphStyle(
-        'GradeText', parent=styles['Normal'],
-        fontSize=48, alignment=TA_CENTER,
-        textColor=colors.HexColor('#1f2937'), spaceAfter=4,
+    s_small = ParagraphStyle(
+        'Sm', parent=styles['Normal'],
+        fontSize=8, textColor=colors.HexColor('#374151'), leading=11,
     )
-    score_style = ParagraphStyle(
-        'ScoreText', parent=styles['Normal'],
-        fontSize=14, alignment=TA_CENTER,
-        textColor=colors.HexColor('#6b7280'), spaceAfter=4,
+    s_footer = ParagraphStyle(
+        'F', parent=styles['Normal'],
+        fontSize=7, textColor=colors.HexColor('#9ca3af'),
+        alignment=TA_CENTER, spaceBefore=6,
     )
-    status_style = ParagraphStyle(
-        'StatusText', parent=styles['Normal'],
-        fontSize=12, alignment=TA_CENTER,
-        spaceAfter=20,
+    s_cat_label = ParagraphStyle(
+        'CL', parent=styles['Normal'],
+        fontSize=9, textColor=colors.HexColor('#374151'), leading=12,
+    )
+    s_cat_score = ParagraphStyle(
+        'CS', parent=styles['Normal'],
+        fontSize=9, textColor=colors.HexColor('#6b7280'),
+        alignment=TA_RIGHT, leading=12,
     )
 
     elements = []
 
-    # -- Header --
-    elements.append(Paragraph(f"🐠 {tank_name}", title_style))
-    elements.append(Paragraph(
-        f"Tank Report Card  •  {water_type.capitalize()}  •  {date.today().strftime('%B %d, %Y')}",
-        subtitle_style
-    ))
-    elements.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#e5e7eb')))
-    elements.append(Spacer(1, 10))
+    # ── Accent bar ───────────────────────────────────────────────────────────
+    elements.append(AccentBar(pw))
+    elements.append(Spacer(1, 8))
 
-    # -- Overall Grade --
+    # ── Header ───────────────────────────────────────────────────────────────
+    elements.append(Paragraph(tank_name, s_title))
+    elements.append(Paragraph(
+        f"Tank Report Card &nbsp;&bull;&nbsp; {water_type.capitalize()} "
+        f"&nbsp;&bull;&nbsp; {date.today().strftime('%B %d, %Y')}",
+        s_sub,
+    ))
+    elements.append(HRFlowable(
+        width="100%", thickness=0.5, color=colors.HexColor('#e5e7eb'),
+    ))
+    elements.append(Spacer(1, 6))
+
+    # ── Hero: Grade Ring + Category Bars ─────────────────────────────────────
     overall_grade = report_data.get('overall_grade', 'N/A')
     overall_score = report_data.get('overall_score', 0)
     status = report_data.get('status', 'unknown')
-    grade_color = GRADE_COLORS.get(overall_grade, colors.gray)
-
-    elements.append(Paragraph(f'<b>{overall_grade}</b>', ParagraphStyle(
-        'BigGrade', parent=grade_style, textColor=grade_color,
-    )))
-    elements.append(Paragraph(f'{overall_score} / 100', score_style))
-    status_color = GRADE_COLORS.get(overall_grade, colors.gray)
-    elements.append(Paragraph(
-        f'<b>{STATUS_LABELS.get(status, status).upper()}</b>',
-        ParagraphStyle('StatusLabel', parent=status_style, textColor=status_color)
-    ))
-    elements.append(Spacer(1, 10))
-
-    # -- Category Breakdown --
-    elements.append(Paragraph('Category Breakdown', heading_style))
-
     categories = report_data.get('categories', {})
-    table_data = [['Category', 'Weight', 'Score', 'Grade']]
 
+    grade_ring = GradeRing(overall_grade, overall_score, status)
+
+    cat_rows = []
     for key, cat in categories.items():
-        label = CATEGORY_LABELS.get(key, key)
-        table_data.append([label, f"{cat['weight']}%", f"{cat['score']}/100", cat['grade']])
+        label = CATEGORY_META.get(key, key)
+        ghex = GRADE_COLORS.get(cat['grade'], '#9ca3af')
+        cat_rows.append([
+            Paragraph(
+                f"<b>{label}</b> "
+                f"<font size=7 color='#9ca3af'>({cat['weight']}%)</font>",
+                s_cat_label,
+            ),
+            ProgressBar(cat['score'], ghex),
+            Paragraph(
+                f"{cat['score']} "
+                f"<font color='{ghex}'><b>{cat['grade']}</b></font>",
+                s_cat_score,
+            ),
+        ])
 
-    cat_table = Table(table_data, colWidths=[200, 60, 70, 50])
+    cat_table = Table(cat_rows, colWidths=[100, 155, 55])
     cat_table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
-        ('TOPPADDING', (0, 0), (-1, 0), 10),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-        ('TOPPADDING', (0, 1), (-1, -1), 8),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 3),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
+        ('LEFTPADDING', (0, 0), (0, -1), 0),
+        ('RIGHTPADDING', (-1, 0), (-1, -1), 0),
     ]))
-    # Color the grade cells
-    for i, (key, cat) in enumerate(categories.items(), start=1):
-        g_color = GRADE_COLORS.get(cat['grade'], colors.gray)
-        cat_table.setStyle(TableStyle([
-            ('TEXTCOLOR', (3, i), (3, i), g_color),
-            ('FONTNAME', (3, i), (3, i), 'Helvetica-Bold'),
-        ]))
 
-    elements.append(cat_table)
-    elements.append(Spacer(1, 15))
+    hero = Table([[grade_ring, cat_table]], colWidths=[110, pw - 120])
+    hero.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+    ]))
+    elements.append(hero)
+    elements.append(Spacer(1, 8))
 
-    # -- Achievements --
+    # ── Achievements (inline) ────────────────────────────────────────────────
     achievements = report_data.get('achievements', [])
     if achievements:
-        elements.append(Paragraph('Achievements', heading_style))
-        for ach in achievements:
-            elements.append(Paragraph(
-                f"{ach['icon']}  <b>{ach['label']}</b> — {ach['detail']}",
-                body_style
-            ))
-        elements.append(Spacer(1, 10))
+        elements.append(Paragraph('ACHIEVEMENTS', s_section))
+        parts = [f"<b>{a['label']}</b>" for a in achievements]
+        elements.append(Paragraph(
+            " &nbsp;&bull;&nbsp; ".join(parts), s_small,
+        ))
+        elements.append(Spacer(1, 2))
 
-    # -- Insights & Recommendations --
+    # ── Insights ─────────────────────────────────────────────────────────────
     insights = report_data.get('insights', [])
     if insights:
-        elements.append(Paragraph('Insights & Recommendations', heading_style))
-        type_icons = {'success': '✅', 'info': 'ℹ️', 'warning': '⚠️', 'alert': '🚨'}
+        type_colors = {
+            'success': '#10b981', 'info': '#0ea5e9',
+            'warning': '#f59e0b', 'alert': '#ef4444',
+        }
+        elements.append(Paragraph('INSIGHTS', s_section))
         for ins in insights:
-            icon = type_icons.get(ins['type'], '•')
-            elements.append(Paragraph(f"{icon}  {ins['message']}", body_style))
-        elements.append(Spacer(1, 10))
+            col = type_colors.get(ins['type'], '#6b7280')
+            elements.append(Paragraph(
+                f"<font color='{col}'>&bull;</font>&nbsp; {ins['message']}",
+                s_body,
+            ))
+        elements.append(Spacer(1, 2))
 
-    # -- Stats Summary --
+    # ── Divider ──────────────────────────────────────────────────────────────
+    elements.append(HRFlowable(
+        width="100%", thickness=0.5, color=colors.HexColor('#e5e7eb'),
+    ))
+    elements.append(Spacer(1, 4))
+
+    # ── Tank Profile (two-column key-value grid) ─────────────────────────────
     stats = report_data.get('stats', {})
-    if stats:
-        elements.append(Paragraph('Tank Statistics', heading_style))
-        stats_data = [
-            ['Metric', 'Value'],
-            ['Total Livestock', str(stats.get('total_livestock', 0))],
-            ['Species Count', str(stats.get('species_count', 0))],
-            ['Type Diversity', str(stats.get('type_diversity', 0))],
-            ['Active Diseases', str(stats.get('active_diseases', 0))],
-            ['Overdue Maintenance', str(stats.get('overdue_maintenance', 0))],
-            ['Total Reminders', str(stats.get('total_reminders', 0))],
-            ['Equipment Count', str(stats.get('equipment_count', 0))],
-        ]
+    left_kv = []
+    right_kv = []
 
-        stats_table = Table(stats_data, colWidths=[200, 80])
-        stats_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('ALIGN', (1, 0), (1, -1), 'CENTER'),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
+    if tank_info and tank_info.get('setup_date'):
+        left_kv.append(('Setup', tank_info['setup_date']))
+    left_kv.append(('Water Type', water_type.capitalize()))
+    left_kv.append(('Livestock', str(stats.get('total_livestock', 0))))
+    left_kv.append(('Species', str(stats.get('species_count', 0))))
+
+    if tank_info and tank_info.get('display_volume_liters'):
+        right_kv.append(('Display Vol.', f"{tank_info['display_volume_liters']:.0f} L"))
+    if tank_info and tank_info.get('sump_volume_liters'):
+        right_kv.append(('Sump Vol.', f"{tank_info['sump_volume_liters']:.0f} L"))
+    if tank_info and tank_info.get('total_volume_liters'):
+        right_kv.append(('Total Vol.', f"{tank_info['total_volume_liters']:.0f} L"))
+    right_kv.append(('Equipment', str(stats.get('equipment_count', 0))))
+    if stats.get('active_diseases', 0) > 0:
+        right_kv.append(('Diseases', str(stats['active_diseases'])))
+
+    max_rows = max(len(left_kv), len(right_kv))
+    profile_rows = []
+    for i in range(max_rows):
+        profile_rows.append([
+            left_kv[i][0] if i < len(left_kv) else '',
+            left_kv[i][1] if i < len(left_kv) else '',
+            '',
+            right_kv[i][0] if i < len(right_kv) else '',
+            right_kv[i][1] if i < len(right_kv) else '',
+        ])
+
+    if profile_rows:
+        elements.append(Paragraph('TANK PROFILE', s_section))
+        pt = Table(profile_rows, colWidths=[70, 80, 15, 80, 80])
+        pt.setStyle(TableStyle([
+            ('FONTSIZE', (0, 0), (-1, -1), 8),
+            ('TEXTCOLOR', (0, 0), (0, -1), colors.HexColor('#6b7280')),
+            ('TEXTCOLOR', (1, 0), (1, -1), colors.HexColor('#111827')),
+            ('TEXTCOLOR', (3, 0), (3, -1), colors.HexColor('#6b7280')),
+            ('TEXTCOLOR', (4, 0), (4, -1), colors.HexColor('#111827')),
+            ('FONTNAME', (1, 0), (1, -1), 'Helvetica-Bold'),
+            ('FONTNAME', (4, 0), (4, -1), 'Helvetica-Bold'),
+            ('TOPPADDING', (0, 0), (-1, -1), 2),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('BACKGROUND', (0, 0), (1, -1), colors.HexColor('#f9fafb')),
+            ('BACKGROUND', (3, 0), (4, -1), colors.HexColor('#f9fafb')),
         ]))
-        elements.append(stats_table)
+        elements.append(pt)
+        elements.append(Spacer(1, 4))
 
-    # -- Tank Overview --
-    if tank_info:
-        elements.append(Paragraph('Tank Overview', heading_style))
-        overview_rows = [['Detail', 'Value']]
-        if tank_info.get('setup_date'):
-            overview_rows.append(['Setup Date', tank_info['setup_date']])
-        if tank_info.get('display_volume_liters'):
-            overview_rows.append(['Display Volume', f"{tank_info['display_volume_liters']:.0f} L"])
-        if tank_info.get('sump_volume_liters'):
-            overview_rows.append(['Sump Volume', f"{tank_info['sump_volume_liters']:.0f} L"])
-        if tank_info.get('total_volume_liters'):
-            overview_rows.append(['Total Volume', f"{tank_info['total_volume_liters']:.0f} L"])
-
-        if len(overview_rows) > 1:
-            ov_table = Table(overview_rows, colWidths=[200, 180])
-            ov_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-                ('TOPPADDING', (0, 0), (-1, -1), 6),
-                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
-            ]))
-            elements.append(ov_table)
-            elements.append(Spacer(1, 10))
-
-    # -- Livestock Roster --
+    # ── Livestock Roster (compact) ───────────────────────────────────────────
     if tank_info and tank_info.get('livestock'):
-        elements.append(Paragraph('Livestock Roster', heading_style))
+        elements.append(Paragraph('LIVESTOCK', s_section))
         ls_data = [['Species', 'Common Name', 'Type', 'Qty']]
-        for item in tank_info['livestock']:
+        for item in tank_info['livestock'][:15]:
             ls_data.append([
-                item.get('species', '—'),
-                item.get('common', '—') or '—',
+                item.get('species', '-'),
+                item.get('common', '-') or '-',
                 (item.get('type', '') or '').replace('_', ' ').title(),
                 str(item.get('qty', 1)),
             ])
+        if len(tank_info['livestock']) > 15:
+            remaining = len(tank_info['livestock']) - 15
+            ls_data.append([f'... and {remaining} more', '', '', ''])
 
-        ls_table = Table(ls_data, colWidths=[150, 120, 80, 40])
-        ls_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
+        lt = Table(ls_data, colWidths=[140, 120, 70, 35])
+        lt.setStyle(TableStyle([
+            ('FONTSIZE', (0, 0), (-1, -1), 8),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 9),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#4b5563')),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
             ('ALIGN', (3, 0), (3, -1), 'CENTER'),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
-            ('TOPPADDING', (0, 0), (-1, -1), 5),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
+            ('TOPPADDING', (0, 0), (-1, -1), 2),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+            ('LEFTPADDING', (0, 0), (-1, -1), 4),
+            ('LINEBELOW', (0, 0), (-1, 0), 0.5, colors.HexColor('#e5e7eb')),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1),
+             [colors.white, colors.HexColor('#fafafa')]),
         ]))
-        elements.append(ls_table)
-        elements.append(Spacer(1, 10))
+        elements.append(lt)
+        elements.append(Spacer(1, 4))
 
-    # -- Refugium --
+    # ── Refugium + Lighting (compact inline) ─────────────────────────────────
+    extra_parts = []
+
     if tank_info and tank_info.get('has_refugium'):
-        elements.append(Paragraph('Refugium', heading_style))
-        ref_rows = [['Detail', 'Value']]
+        bits = []
         if tank_info.get('refugium_type'):
-            ref_rows.append(['Type', tank_info['refugium_type'].replace('_', ' ').title()])
+            bits.append(
+                f"Type: {tank_info['refugium_type'].replace('_', ' ').title()}")
         if tank_info.get('refugium_volume_liters'):
-            ref_rows.append(['Volume', f"{tank_info['refugium_volume_liters']:.0f} L"])
+            bits.append(f"Vol: {tank_info['refugium_volume_liters']:.0f} L")
         if tank_info.get('refugium_algae'):
-            ref_rows.append(['Algae', tank_info['refugium_algae']])
+            bits.append(f"Algae: {tank_info['refugium_algae']}")
         if tank_info.get('refugium_lighting_hours'):
-            ref_rows.append(['Lighting', f"{tank_info['refugium_lighting_hours']:.1f} hrs/day"])
+            bits.append(
+                f"Light: {tank_info['refugium_lighting_hours']:.1f} h/day")
+        if bits:
+            extra_parts.append(Paragraph(
+                "<b>REFUGIUM</b>&nbsp;&nbsp;" +
+                " &nbsp;&bull;&nbsp; ".join(
+                    f"<font color='#4b5563'>{b}</font>" for b in bits),
+                ParagraphStyle('RP', parent=s_small, fontSize=8, leading=11),
+            ))
 
-        if len(ref_rows) > 1:
-            ref_table = Table(ref_rows, colWidths=[200, 180])
-            ref_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-                ('TOPPADDING', (0, 0), (-1, -1), 6),
-                ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
-            ]))
-            elements.append(ref_table)
-            elements.append(Spacer(1, 10))
-
-    # -- Lighting Schedules --
     if tank_info and tank_info.get('lighting'):
-        elements.append(Paragraph('Lighting Schedules', heading_style))
-        lt_data = [['Schedule', 'Channels', 'Status']]
         for sched in tank_info['lighting']:
-            lt_data.append([
-                sched.get('name', '—'),
-                str(sched.get('channels', 0)),
-                'Active' if sched.get('active') else 'Inactive',
-            ])
+            st = 'Active' if sched.get('active') else 'Inactive'
+            extra_parts.append(Paragraph(
+                f"<b>LIGHTING</b>&nbsp;&nbsp;"
+                f"<font color='#4b5563'>{sched.get('name', '?')} "
+                f"({st}, {sched.get('channels', 0)} channels)</font>",
+                ParagraphStyle('LP', parent=s_small, fontSize=8, leading=11),
+            ))
 
-        lt_table = Table(lt_data, colWidths=[220, 80, 80])
-        lt_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#f3f4f6')),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#374151')),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('ALIGN', (1, 0), (-1, -1), 'CENTER'),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#e5e7eb')),
-            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f9fafb')]),
-        ]))
-        # Color active rows green
-        for i, sched in enumerate(tank_info['lighting'], start=1):
-            if sched.get('active'):
-                lt_table.setStyle(TableStyle([
-                    ('TEXTCOLOR', (2, i), (2, i), colors.HexColor('#10b981')),
-                    ('FONTNAME', (2, i), (2, i), 'Helvetica-Bold'),
-                ]))
-        elements.append(lt_table)
-        elements.append(Spacer(1, 10))
+    for ep in extra_parts:
+        elements.append(ep)
+    if extra_parts:
+        elements.append(Spacer(1, 4))
 
-    # -- Footer --
-    elements.append(Spacer(1, 30))
-    elements.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor('#d1d5db')))
-    footer_style = ParagraphStyle(
-        'Footer', parent=styles['Normal'],
-        fontSize=8, textColor=colors.HexColor('#9ca3af'), alignment=TA_CENTER,
-        spaceBefore=8,
-    )
+    # ── Footer ───────────────────────────────────────────────────────────────
+    elements.append(HRFlowable(
+        width="100%", thickness=0.5, color=colors.HexColor('#d1d5db'),
+    ))
     elements.append(Paragraph(
-        f"Generated by AquaScope — {date.today().strftime('%Y-%m-%d')}",
-        footer_style
+        f"Generated by AquaScope &mdash; {date.today().strftime('%Y-%m-%d')}",
+        s_footer,
     ))
 
     doc.build(elements)
