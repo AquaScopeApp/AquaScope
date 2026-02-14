@@ -12,6 +12,7 @@ Computes an overall grade (A+ to F) from:
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy import func
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.models.tank import Tank, TankEvent
 from app.models.livestock import Livestock
@@ -19,6 +20,7 @@ from app.models.maintenance import MaintenanceReminder
 from app.models.disease import DiseaseRecord
 from app.models.equipment import Equipment
 from app.models.consumable import Consumable
+from app.models.score_history import ScoreHistory
 
 
 def _score_to_grade(score: int) -> str:
@@ -44,6 +46,233 @@ def _score_to_status(score: int) -> str:
     if score >= 60: return "fair"
     if score >= 40: return "poor"
     return "critical"
+
+
+def _compute_scores_at_date(
+    db: Session, tank_id: str, user_id: str, target_date: date,
+) -> dict:
+    """Compute sub-scores for a tank as if 'today' were *target_date*.
+
+    Used both by the live report card and by the backfill routine.
+    Returns a flat dict of the six category scores.
+    """
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == user_id).first()
+    if not tank:
+        return None
+
+    # --- Livestock at target_date ---
+    all_livestock = db.query(Livestock).filter(
+        Livestock.tank_id == tank_id,
+        Livestock.is_archived == False,
+    ).all()
+
+    livestock = [
+        l for l in all_livestock
+        if (l.added_date is None or l.added_date <= target_date)
+    ]
+
+    alive = [
+        l for l in livestock
+        if l.status == "alive" or (l.removed_date is not None and l.removed_date > target_date)
+    ]
+    dead = [
+        l for l in livestock
+        if l.status == "dead" and l.removed_date is not None and l.removed_date <= target_date
+    ]
+
+    total_individuals = sum(l.quantity for l in alive)
+    species_count = len(set(l.species_name for l in alive))
+    type_diversity = len(set(l.type for l in alive))
+
+    # --- Diseases at target_date ---
+    all_diseases = db.query(DiseaseRecord).filter(DiseaseRecord.tank_id == tank_id).all()
+    active_diseases = [
+        d for d in all_diseases
+        if d.detected_date <= target_date
+        and d.status in ("active", "monitoring", "resolved", "chronic")
+        and (d.resolved_date is None or d.resolved_date > target_date)
+    ]
+
+    # --- Livestock Health Score ---
+    livestock_score = 100
+    for d in active_diseases:
+        severity_penalty = {"mild": 5, "moderate": 10, "severe": 20, "critical": 30}.get(d.severity, 10)
+        livestock_score -= severity_penalty
+
+    recent_dead = [l for l in dead if l.removed_date and (target_date - l.removed_date).days <= 90]
+    livestock_score -= len(recent_dead) * 10
+
+    if type_diversity >= 3 and livestock_score >= 80:
+        livestock_score = min(100, livestock_score + 5)
+    livestock_score = max(0, min(100, livestock_score))
+
+    # --- Maintenance at target_date ---
+    reminders = db.query(MaintenanceReminder).filter(
+        MaintenanceReminder.tank_id == tank_id,
+        MaintenanceReminder.is_active == True,
+    ).all()
+
+    maintenance_score = 100
+    for r in reminders:
+        # Skip reminders that didn't exist yet
+        if r.created_at and r.created_at.date() > target_date:
+            continue
+        if r.next_due and r.next_due < target_date:
+            days_overdue = (target_date - r.next_due).days
+            maintenance_score -= min(days_overdue * 5, 20)
+        elif r.last_completed and r.last_completed <= target_date:
+            # Between last_completed and next_due: on schedule
+            pass
+    maintenance_score = max(0, min(100, maintenance_score))
+
+    # --- Equipment at target_date ---
+    equipment_list = db.query(Equipment).filter(Equipment.tank_id == tank_id).all()
+    equipment_at_date = [e for e in equipment_list if e.created_at.date() <= target_date]
+
+    equipment_score = 100
+    for eq in equipment_at_date:
+        if eq.condition == "failing":
+            equipment_score -= 20
+        elif eq.condition == "needs_maintenance":
+            equipment_score -= 10
+    equipment_score = max(0, min(100, equipment_score))
+
+    # --- Parameter Stability (ICP-based for backfill) ---
+    from app.models.icp_test import ICPTest
+    latest_icp = db.query(ICPTest).filter(
+        ICPTest.tank_id == tank_id,
+        ICPTest.test_date <= target_date,
+    ).order_by(ICPTest.test_date.desc()).first()
+
+    parameter_score = 75
+    if latest_icp and latest_icp.score_overall:
+        parameter_score = latest_icp.score_overall
+        if latest_icp.test_date:
+            days_since_test = (target_date - latest_icp.test_date).days
+            if days_since_test > 180:
+                parameter_score -= 15
+            elif days_since_test > 90:
+                parameter_score -= 5
+    parameter_score = max(0, min(100, parameter_score))
+
+    # --- Water Chemistry (ICP) ---
+    chemistry_score = 70
+    if latest_icp:
+        chemistry_score = latest_icp.score_overall or 70
+        if latest_icp.test_date:
+            days_since = (target_date - latest_icp.test_date).days
+            if days_since <= 30:
+                chemistry_score = min(100, chemistry_score + 5)
+            elif days_since > 180:
+                chemistry_score = max(0, chemistry_score - 10)
+    elif tank.water_type == "freshwater":
+        chemistry_score = 80
+    chemistry_score = max(0, min(100, chemistry_score))
+
+    # --- Maturity (age-based, no InfluxDB for historical) ---
+    maturity_score = 50
+    if tank.setup_date:
+        from app.services.maturity import calculate_age_score
+        age_days = (target_date - tank.setup_date).days
+        if age_days >= 0:
+            # Inline age score logic with target_date
+            if age_days <= 30:
+                age_s = round(5 * (age_days / 30))
+            elif age_days <= 90:
+                age_s = round(5 + 10 * ((age_days - 30) / 60))
+            elif age_days <= 365:
+                age_s = round(15 + 10 * ((age_days - 90) / 275))
+            elif age_days <= 730:
+                age_s = round(25 + 3 * ((age_days - 365) / 365))
+            else:
+                age_s = 30
+
+            # Livestock score for maturity
+            if species_count == 0:
+                ls = 0
+            elif species_count <= 2:
+                ls = 3
+            elif species_count <= 5:
+                ls = 7
+            elif species_count <= 10:
+                ls = 11
+            elif species_count <= 20:
+                ls = 13
+            else:
+                ls = 15
+            tc = type_diversity
+            ts = {0: 0, 1: 3, 2: 7}.get(tc, 10)
+            avg_q = (total_individuals / max(len(alive), 1)) if alive else 0
+            if avg_q >= 3:
+                ps = 5
+            elif avg_q >= 2:
+                ps = 3
+            elif avg_q >= 1:
+                ps = 1
+            else:
+                ps = 0
+
+            maturity_score = min(age_s + ls + ts + ps, 100)
+    maturity_score = max(0, min(100, maturity_score))
+
+    # --- Overall ---
+    overall_score = int(
+        parameter_score * 0.20 +
+        maintenance_score * 0.20 +
+        livestock_score * 0.20 +
+        equipment_score * 0.15 +
+        maturity_score * 0.15 +
+        chemistry_score * 0.10
+    )
+    overall_score = max(0, min(100, overall_score))
+
+    return {
+        "overall_score": overall_score,
+        "overall_grade": _score_to_grade(overall_score),
+        "parameter_stability_score": parameter_score,
+        "maintenance_score": maintenance_score,
+        "livestock_health_score": livestock_score,
+        "equipment_score": equipment_score,
+        "maturity_score": maturity_score,
+        "water_chemistry_score": chemistry_score,
+    }
+
+
+def backfill_score_history(db: Session, tank_id: str, user_id: str) -> int:
+    """Backfill weekly score snapshots from tank setup_date to yesterday.
+
+    Returns the number of rows inserted/updated.
+    """
+    tank = db.query(Tank).filter(Tank.id == tank_id, Tank.user_id == user_id).first()
+    if not tank or not tank.setup_date:
+        return 0
+
+    today = date.today()
+    start = tank.setup_date
+    count = 0
+    current = start
+
+    while current < today:
+        scores = _compute_scores_at_date(db, tank_id, user_id, current)
+        if scores:
+            try:
+                stmt = pg_insert(ScoreHistory).values(
+                    tank_id=tank_id,
+                    user_id=user_id,
+                    recorded_at=current,
+                    **scores,
+                ).on_conflict_do_update(
+                    constraint="uq_score_history_tank_day",
+                    set_=scores,
+                )
+                db.execute(stmt)
+                db.commit()
+                count += 1
+            except Exception:
+                db.rollback()
+        current += timedelta(days=7)
+
+    return count
 
 
 def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
@@ -302,6 +531,38 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
             "type": "success",
             "message": "Your tank is in excellent condition — keep it up!",
         })
+
+    # --- Record score snapshot (once per day per tank) ---
+    try:
+        stmt = pg_insert(ScoreHistory).values(
+            tank_id=tank_id,
+            user_id=user_id,
+            recorded_at=today,
+            overall_score=overall_score,
+            overall_grade=_score_to_grade(overall_score),
+            parameter_stability_score=parameter_score,
+            maintenance_score=maintenance_score,
+            livestock_health_score=livestock_score,
+            equipment_score=equipment_score,
+            maturity_score=maturity_score,
+            water_chemistry_score=chemistry_score,
+        ).on_conflict_do_update(
+            constraint="uq_score_history_tank_day",
+            set_={
+                "overall_score": overall_score,
+                "overall_grade": _score_to_grade(overall_score),
+                "parameter_stability_score": parameter_score,
+                "maintenance_score": maintenance_score,
+                "livestock_health_score": livestock_score,
+                "equipment_score": equipment_score,
+                "maturity_score": maturity_score,
+                "water_chemistry_score": chemistry_score,
+            },
+        )
+        db.execute(stmt)
+        db.commit()
+    except Exception:
+        db.rollback()
 
     return {
         "overall_score": overall_score,

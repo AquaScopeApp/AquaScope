@@ -217,6 +217,11 @@
       "equipment": "Estado do equipamento — penaliza falhas e falta de manutenção",
       "maturity": "Idade do aquário, estabilidade dos parâmetros e diversidade do ecossistema",
       "water_chemistry": "Resultados dos testes ICP e atualidade das análises de água"
-    }
+    },
+    "scoreEvolution": "Evolução da pontuação",
+    "overall": "Geral",
+    "showCategories": "Mostrar categorias",
+    "hideCategories": "Ocultar categorias",
+    "trackingStarted": "Rastreamento da pontuação iniciado — o gráfico aparecerá após a sua próxima visita"
   }
 }

@@ -344,6 +344,14 @@ export const tanksApi = {
     return response.data
   },
 
+  getScoreHistory: async (tankId: string, days = 90): Promise<import('../types').ScoreHistoryEntry[]> => {
+    const response = await apiClient.get<import('../types').ScoreHistoryEntry[]>(
+      `/tanks/${tankId}/score-history`,
+      { params: { days } }
+    )
+    return response.data
+  },
+
   getReportCardPdf: async (tankId: string): Promise<void> => {
     const response = await apiClient.get(`/tanks/${tankId}/report-card/pdf`, {
       responseType: 'blob',

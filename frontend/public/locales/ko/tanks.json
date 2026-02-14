@@ -217,6 +217,11 @@
       "equipment": "장비 상태 — 고장이나 관리 부족 장비는 감점",
       "maturity": "수조 경과일, 장기 매개변수 안정성, 생태계 다양성",
       "water_chemistry": "ICP 검사 결과와 수질 분석 데이터의 최신성"
-    }
+    },
+    "scoreEvolution": "점수 변화 추이",
+    "overall": "종합",
+    "showCategories": "카테고리 표시",
+    "hideCategories": "카테고리 숨기기",
+    "trackingStarted": "점수 추적이 시작되었습니다 — 다음 방문 후 차트가 표시됩니다"
   }
 }

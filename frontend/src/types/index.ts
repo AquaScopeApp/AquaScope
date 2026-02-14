@@ -1177,6 +1177,13 @@ export interface ReportCard {
   insights: Insight[]
 }
 
+export interface ScoreHistoryEntry {
+  recorded_at: string
+  overall_score: number
+  overall_grade: string
+  categories: Record<string, number>
+}
+
 export interface DashboardTankSummary {
   tank_id: string
   tank_name: string

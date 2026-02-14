@@ -217,6 +217,11 @@
       "equipment": "Gjendja e pajisjeve — penalizon pajisjet e dëmtuara ose të pamirëmbanura",
       "maturity": "Mosha e akuariumit, stabiliteti i parametrave me kalimin e kohës dhe diversiteti i ekosistemit",
       "water_chemistry": "Rezultatet e testeve ICP dhe freskia e të dhënave të analizës së ujit"
-    }
+    },
+    "scoreEvolution": "Evolucioni i rezultatit",
+    "overall": "I përgjithshëm",
+    "showCategories": "Shfaq kategoritë",
+    "hideCategories": "Fshih kategoritë",
+    "trackingStarted": "Gjurmimi i rezultatit filloi — grafiku do të shfaqet pas vizitës suaj të radhës"
   }
 }

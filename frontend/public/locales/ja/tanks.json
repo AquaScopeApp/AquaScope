@@ -217,6 +217,11 @@
       "equipment": "機器の状態 — 故障やメンテナンス不足の機器はペナルティ",
       "maturity": "水槽の経過日数、パラメータの長期安定性、生態系の多様性",
       "water_chemistry": "ICP検査結果と水質分析データの新しさ"
-    }
+    },
+    "scoreEvolution": "スコアの推移",
+    "overall": "総合",
+    "showCategories": "カテゴリを表示",
+    "hideCategories": "カテゴリを非表示",
+    "trackingStarted": "スコアの追跡を開始しました — 次回の訪問後にグラフが表示されます"
   }
 }

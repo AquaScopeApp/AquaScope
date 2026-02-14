@@ -217,6 +217,11 @@
       "equipment": "设备状况 — 故障或缺少维护的设备会扣分",
       "maturity": "水族箱年龄、参数长期稳定性和生态多样性",
       "water_chemistry": "ICP检测结果和水质分析数据的时效性"
-    }
+    },
+    "scoreEvolution": "评分趋势",
+    "overall": "综合",
+    "showCategories": "显示分类",
+    "hideCategories": "隐藏分类",
+    "trackingStarted": "评分追踪已开始 — 下次访问后将显示图表"
   }
 }

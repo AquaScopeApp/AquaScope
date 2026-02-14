@@ -217,6 +217,11 @@
       "equipment": "Stato dell'attrezzatura — penalizza guasti e mancanza di manutenzione",
       "maturity": "Età della vasca, stabilità dei parametri e diversità dell'ecosistema",
       "water_chemistry": "Risultati dei test ICP e freschezza delle analisi dell'acqua"
-    }
+    },
+    "scoreEvolution": "Evoluzione del punteggio",
+    "overall": "Complessivo",
+    "showCategories": "Mostra categorie",
+    "hideCategories": "Nascondi categorie",
+    "trackingStarted": "Monitoraggio del punteggio avviato — il grafico apparirà dopo la prossima visita"
   }
 }

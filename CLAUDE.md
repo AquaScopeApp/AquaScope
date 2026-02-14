@@ -32,7 +32,7 @@ docker compose logs -f frontend
 docker compose down
 ```
 
-**WARNING**: NEVER use `docker compose down -v` — it destroys all database volumes.
+**WARNING**: NEVER use `docker compose down -v` — it destroys all data volumes (PostgreSQL, InfluxDB, and uploaded photos).
 
 ## Port Conflicts
 
@@ -49,7 +49,7 @@ docker stop predomics-web predomics-db
 | Backend | FastAPI + Python 3.11 + SQLAlchemy 2.0 |
 | Databases | PostgreSQL 15 (relational) + InfluxDB 2.7 (time-series) |
 | Testing | Backend: pytest, Frontend: vitest |
-| i18n | i18next, 6 languages: en, fr, de, es, it, pt |
+| i18n | i18next, 15 languages: en, fr, de, es, it, pt, sq, nl, ja, tr, pl, ar, ru, zh, ko |
 | Mobile | Capacitor (iOS/Android) |
 | PWA | vite-plugin-pwa, offline-capable with local SQLite |
 
@@ -88,7 +88,7 @@ data/species-traits.json     # Shared species compatibility database
 
 ## API Modules (registered in backend/app/main.py)
 
-auth, dashboard, tanks, parameter-ranges, parameters, notes, photos, maintenance, livestock, equipment, icp-tests, admin, consumables, finances, export, share, species-traits, feeding, diseases
+auth, dashboard, tanks, parameter-ranges, parameters, notes, photos, maintenance, livestock, equipment, icp-tests, admin, consumables, finances, export, share, species-traits, feeding, diseases, lighting
 
 All endpoints are under `/api/v1/`. All are user-scoped (multi-tenant).
 
@@ -112,7 +112,7 @@ Module visibility controlled by `useModuleSettings` hook. Defaults: all enabled.
 
 1. **Backend**: model in `models/`, schema in `schemas/`, router in `api/v1/`, register in `main.py`, migration in `alembic/versions/`
 2. **Frontend**: types in `types/index.ts`, API client in `api/client.ts`, local API in `api/local/`, page in `pages/`, components in `components/<module>/`
-3. **i18n**: new namespace JSON in `public/locales/{en,fr,de,es,it,pt}/`, register in `i18n/config.ts`
+3. **i18n**: new namespace JSON in `public/locales/{en,fr,de,es,it,pt,sq,nl,ja,tr,pl,ar,ru,zh,ko}/`, register in `i18n/config.ts`
 4. **Navigation**: add to `Layout.tsx` nav items array with module guard
 5. **Routing**: add to `App.tsx` routes
 6. **Module settings**: add to `ModuleSettings` type + `DEFAULT_SETTINGS` in `useModuleSettings.tsx`
@@ -130,7 +130,7 @@ React Hook Form + controlled components + TankSelector + datalist suggestions
 
 ### i18n namespaces
 
-common, tanks, dashboard, parameters, maintenance, livestock, icptests, notes, photos, equipment, consumables, finances, dosing, compatibility, waterchange, feeding, diseases
+common, tanks, dashboard, parameters, maintenance, livestock, icptests, notes, photos, equipment, consumables, finances, dosing, compatibility, waterchange, feeding, diseases, lighting
 
 ## Testing
 
@@ -185,4 +185,8 @@ Dark mode via `class` strategy. Custom colors: `ocean-*` (blue) and `coral-*` (r
 | frontend | aquascope-frontend | 80 | Nginx serving built React |
 | backup-cron | aquascope-backup-cron | - | Daily backups at 2 AM |
 
-Uploads stored at `./data/uploads/` (bind mount, survives rebuilds).
+Uploads stored in named Docker volume `uploads_data` (robust, survives rebuilds and recreates).
+
+## Score History
+
+Daily score snapshots stored in `score_histories` table. Report card auto-records on each view. Historical scores can be backfilled via `POST /api/v1/tanks/{id}/score-history/backfill`. Score evolution chart in TankReportCard with color-coded dots (green=90+, blue=80-89, amber=70-79, orange=60-69, red=<60).

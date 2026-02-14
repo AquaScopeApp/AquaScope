@@ -229,6 +229,8 @@ export const tanksApi = {
     ],
   }),
 
+  getScoreHistory: async (_tankId: string, _days = 90): Promise<import('../../types').ScoreHistoryEntry[]> => [],
+
   getReportCardPdf: async (_tankId: string): Promise<void> => {
     alert('PDF export is only available in server mode')
   },

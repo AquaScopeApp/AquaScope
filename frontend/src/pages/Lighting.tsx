@@ -26,6 +26,7 @@ export default function Lighting() {
   const [showForm, setShowForm] = useState(false)
   const [editingSchedule, setEditingSchedule] = useState<LightingSchedule | null>(null)
   const [selectedTank, setSelectedTank] = useState<string>(searchParams.get('tank') || '')
+  const [showInactive, setShowInactive] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -258,25 +259,33 @@ export default function Lighting() {
             </div>
           )}
 
-          {/* Inactive Schedules */}
+          {/* Inactive Schedules (hidden by default) */}
           {inactiveSchedules.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-4">
+              <button
+                onClick={() => setShowInactive(!showInactive)}
+                className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors mb-4"
+              >
+                <svg className={`w-4 h-4 transition-transform ${showInactive ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
                 {t('fields.inactive', { defaultValue: 'Inactive' })} ({inactiveSchedules.length})
-              </h2>
-              <div className="grid grid-cols-1 gap-4">
-                {inactiveSchedules.map((schedule) => (
-                  <ScheduleCard
-                    key={schedule.id}
-                    schedule={schedule}
-                    tankName={tankNameMap[schedule.tank_id] || ''}
-                    onEdit={() => { setEditingSchedule(schedule); setShowForm(false) }}
-                    onDelete={() => handleDelete(schedule.id)}
-                    onActivate={() => handleActivate(schedule.id)}
-                    onDuplicate={() => handleDuplicate(schedule)}
-                  />
-                ))}
-              </div>
+              </button>
+              {showInactive && (
+                <div className="grid grid-cols-1 gap-4">
+                  {inactiveSchedules.map((schedule) => (
+                    <ScheduleCard
+                      key={schedule.id}
+                      schedule={schedule}
+                      tankName={tankNameMap[schedule.tank_id] || ''}
+                      onEdit={() => { setEditingSchedule(schedule); setShowForm(false) }}
+                      onDelete={() => handleDelete(schedule.id)}
+                      onActivate={() => handleActivate(schedule.id)}
+                      onDuplicate={() => handleDuplicate(schedule)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -217,6 +217,11 @@
       "equipment": "Equipment condition — penalizes failing or unmaintained gear",
       "maturity": "Tank age, parameter stability over time, and ecosystem diversity",
       "water_chemistry": "ICP test results and freshness of water analysis data"
-    }
+    },
+    "scoreEvolution": "Score Evolution",
+    "overall": "Overall",
+    "showCategories": "Show categories",
+    "hideCategories": "Hide categories",
+    "trackingStarted": "Score tracking started — chart will appear after your next visit"
   }
 }

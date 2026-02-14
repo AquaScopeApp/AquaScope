@@ -524,6 +524,59 @@ def get_tank_report_card(
     return result
 
 
+@router.get("/{tank_id}/score-history")
+def get_score_history(
+    tank_id: str,
+    days: int = Query(90, ge=1, le=365),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get score evolution history for a tank."""
+    from datetime import date, timedelta
+    from app.models.score_history import ScoreHistory
+
+    start_date = date.today() - timedelta(days=days)
+    rows = (
+        db.query(ScoreHistory)
+        .filter(
+            ScoreHistory.tank_id == tank_id,
+            ScoreHistory.user_id == current_user.id,
+            ScoreHistory.recorded_at >= start_date,
+        )
+        .order_by(ScoreHistory.recorded_at)
+        .all()
+    )
+
+    return [
+        {
+            "recorded_at": row.recorded_at.isoformat(),
+            "overall_score": row.overall_score,
+            "overall_grade": row.overall_grade,
+            "categories": {
+                "parameter_stability": row.parameter_stability_score,
+                "maintenance": row.maintenance_score,
+                "livestock_health": row.livestock_health_score,
+                "equipment": row.equipment_score,
+                "maturity": row.maturity_score,
+                "water_chemistry": row.water_chemistry_score,
+            },
+        }
+        for row in rows
+    ]
+
+
+@router.post("/{tank_id}/score-history/backfill")
+def backfill_tank_score_history(
+    tank_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Backfill weekly historical score snapshots from setup_date to yesterday."""
+    from app.services.report_card import backfill_score_history
+    count = backfill_score_history(db, str(tank_id), str(current_user.id))
+    return {"backfilled": count}
+
+
 @router.get("/{tank_id}/report-card/pdf")
 def get_tank_report_card_pdf(
     tank_id: str,

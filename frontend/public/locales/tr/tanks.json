@@ -217,6 +217,11 @@
       "equipment": "Ekipman durumu — arızalı veya bakımsız cihazlar için ceza",
       "maturity": "Akvaryum yaşı, zamanla parametre kararlılığı ve ekosistem çeşitliliği",
       "water_chemistry": "ICP test sonuçları ve su analizi verilerinin güncelliği"
-    }
+    },
+    "scoreEvolution": "Puan Gelişimi",
+    "overall": "Genel",
+    "showCategories": "Kategorileri göster",
+    "hideCategories": "Kategorileri gizle",
+    "trackingStarted": "Puan takibi başlatıldı — grafik bir sonraki ziyaretinizden sonra görünecek"
   }
 }

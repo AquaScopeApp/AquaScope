@@ -273,6 +273,7 @@ export default function TankSidebar({ tank, stats, reportCard, onEdit, onAddEven
                 <div className="mt-2">
                   <TankReportCard
                     reportCard={reportCard}
+                    tankId={tank.id}
                     onDownloadPdf={() => {
                       import('../../api').then(({ tanksApi }) => {
                         tanksApi.getReportCardPdf(tank.id)

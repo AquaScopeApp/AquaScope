@@ -217,6 +217,11 @@
       "equipment": "Stan sprzętu — karze za uszkodzony lub niekonserwowany sprzęt",
       "maturity": "Wiek akwarium, stabilność parametrów w czasie i różnorodność ekosystemu",
       "water_chemistry": "Wyniki testów ICP i aktualność danych z analizy wody"
-    }
+    },
+    "scoreEvolution": "Ewolucja wyniku",
+    "overall": "Ogólny",
+    "showCategories": "Pokaż kategorie",
+    "hideCategories": "Ukryj kategorie",
+    "trackingStarted": "Śledzenie wyniku rozpoczęte — wykres pojawi się po następnej wizycie"
   }
 }

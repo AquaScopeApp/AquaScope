@@ -5,8 +5,10 @@
  * Displays overall grade circle, category breakdowns, achievements, and insights.
  */
 
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { ReportCard } from '../../types'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import type { ReportCard, ScoreHistoryEntry } from '../../types'
 
 interface TankReportCardProps {
   reportCard: ReportCard
@@ -113,8 +115,42 @@ function getGradeLevel(grade: string): string {
   return 'F'
 }
 
-export default function TankReportCard({ reportCard, onDownloadPdf }: TankReportCardProps) {
+function scoreToColor(score: number): string {
+  if (score >= 90) return '#10b981'  // emerald
+  if (score >= 80) return '#0ea5e9'  // sky
+  if (score >= 70) return '#f59e0b'  // amber
+  if (score >= 60) return '#f97316'  // orange
+  return '#ef4444'                    // red
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ScoreColorDot(props: any) {
+  const { cx, cy, payload } = props
+  if (cx == null || cy == null) return null
+  const color = scoreToColor(payload?.overall_score ?? 0)
+  return <circle cx={cx} cy={cy} r={4} fill={color} stroke="#fff" strokeWidth={1.5} />
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  parameter_stability: '#0ea5e9',
+  maintenance: '#8b5cf6',
+  livestock_health: '#10b981',
+  equipment: '#6b7280',
+  maturity: '#f59e0b',
+  water_chemistry: '#ec4899',
+}
+
+export default function TankReportCard({ reportCard, tankId, onDownloadPdf }: TankReportCardProps) {
   const { t } = useTranslation('tanks')
+  const [scoreHistory, setScoreHistory] = useState<ScoreHistoryEntry[]>([])
+  const [showCategories, setShowCategories] = useState(false)
+
+  useEffect(() => {
+    if (!tankId) return
+    import('../../api').then(({ tanksApi }) => {
+      tanksApi.getScoreHistory(tankId, 365).then(setScoreHistory).catch(() => {})
+    })
+  }, [tankId])
 
   const { overall_score, overall_grade, status, categories, achievements, insights } = reportCard
   const currentLevel = getGradeLevel(overall_grade)
@@ -320,6 +356,110 @@ export default function TankReportCard({ reportCard, onDownloadPdf }: TankReport
               )
             })}
           </div>
+        </div>
+      )}
+
+      {/* Score Evolution Chart */}
+      {scoreHistory.length >= 2 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              {t('reportCard.scoreEvolution', 'Score Evolution')}
+            </h4>
+            <button
+              onClick={() => setShowCategories(!showCategories)}
+              className="text-xs text-ocean-500 dark:text-ocean-400 hover:underline"
+            >
+              {showCategories
+                ? t('reportCard.hideCategories', 'Hide categories')
+                : t('reportCard.showCategories', 'Show categories')}
+            </button>
+          </div>
+          <div className="h-48">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={scoreHistory} margin={{ top: 5, right: 5, bottom: 5, left: -20 }}>
+                <XAxis
+                  dataKey="recorded_at"
+                  tick={{ fontSize: 10 }}
+                  tickFormatter={(v: string) => {
+                    const d = new Date(v)
+                    return `${d.getDate()}/${d.getMonth() + 1}`
+                  }}
+                  stroke="#9ca3af"
+                />
+                <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} stroke="#9ca3af" />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'var(--tooltip-bg, #fff)',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    fontSize: '12px',
+                  }}
+                  labelFormatter={(v: string) => new Date(v).toLocaleDateString()}
+                  formatter={(value: number, name: string) => {
+                    const label = CATEGORY_LABELS[name]?.label || name
+                    return [value, name === 'overall_score' ? t('reportCard.overall', 'Overall') : label]
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="overall_score"
+                  stroke="#3b82f6"
+                  strokeWidth={2.5}
+                  dot={<ScoreColorDot />}
+                  activeDot={{ r: 6, strokeWidth: 2 }}
+                  name="overall_score"
+                />
+                {showCategories && Object.keys(CATEGORY_COLORS).map((key) => (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={`categories.${key}`}
+                    stroke={CATEGORY_COLORS[key]}
+                    strokeWidth={1}
+                    strokeDasharray="4 2"
+                    dot={false}
+                    name={key}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            {[
+              { color: '#10b981', label: '90+' },
+              { color: '#0ea5e9', label: '80–89' },
+              { color: '#f59e0b', label: '70–79' },
+              { color: '#f97316', label: '60–69' },
+              { color: '#ef4444', label: '<60' },
+            ].map(({ color, label }) => (
+              <span key={label} className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: color }} />
+                {label}
+              </span>
+            ))}
+          </div>
+          {showCategories && (
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+              <span className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400">
+                <span className="w-3 h-0.5 bg-blue-500 inline-block rounded" /> {t('reportCard.overall', 'Overall')}
+              </span>
+              {Object.entries(CATEGORY_COLORS).map(([key, color]) => (
+                <span key={key} className="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400">
+                  <span className="w-3 h-0.5 inline-block rounded" style={{ backgroundColor: color }} />
+                  {CATEGORY_LABELS[key]?.label || key}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {scoreHistory.length === 1 && (
+        <div className="text-center py-3">
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            {t('reportCard.trackingStarted', 'Score tracking started — chart will appear after your next visit')}
+          </p>
         </div>
       )}
 

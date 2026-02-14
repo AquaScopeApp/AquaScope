@@ -217,6 +217,11 @@
       "equipment": "Gerätezustand — Abzug bei defekter oder nicht gewarteter Ausrüstung",
       "maturity": "Beckenalter, Parameterstabilität und Ökosystem-Diversität",
       "water_chemistry": "ICP-Testergebnisse und Aktualität der Wasseranalysen"
-    }
+    },
+    "scoreEvolution": "Bewertungsverlauf",
+    "overall": "Gesamt",
+    "showCategories": "Kategorien anzeigen",
+    "hideCategories": "Kategorien ausblenden",
+    "trackingStarted": "Bewertungsverfolgung gestartet — das Diagramm erscheint nach Ihrem nächsten Besuch"
   }
 }

@@ -85,6 +85,7 @@ class Tank(Base):
     feeding_logs = relationship("FeedingLog", back_populates="tank", cascade="all, delete-orphan")
     disease_records = relationship("DiseaseRecord", back_populates="tank", cascade="all, delete-orphan")
     lighting_schedules = relationship("LightingSchedule", back_populates="tank", cascade="all, delete-orphan")
+    score_histories = relationship("ScoreHistory", back_populates="tank", cascade="all, delete-orphan")
 
     @property
     def total_volume_liters(self) -> float:

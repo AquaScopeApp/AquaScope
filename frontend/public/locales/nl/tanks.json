@@ -217,6 +217,11 @@
       "equipment": "Apparatuurconditie — bestraft defecte of niet-onderhouden apparatuur",
       "maturity": "Aquariumleeftijd, parameterstabiliteit door de tijd en ecosysteemdiversiteit",
       "water_chemistry": "ICP-testresultaten en versheid van wateranalysegegevens"
-    }
+    },
+    "scoreEvolution": "Score-evolutie",
+    "overall": "Totaal",
+    "showCategories": "Categorieën tonen",
+    "hideCategories": "Categorieën verbergen",
+    "trackingStarted": "Scorebijhouding gestart — de grafiek verschijnt na uw volgende bezoek"
   }
 }
