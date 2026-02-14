@@ -193,6 +193,7 @@
       "maintenance": "Wartung",
       "livestock_health": "Tiergesundheit",
       "equipment": "Ausrüstung",
+      "maturity": "Reife",
       "water_chemistry": "Wasserchemie"
     },
     "status": {

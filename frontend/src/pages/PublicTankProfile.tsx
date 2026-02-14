@@ -10,14 +10,6 @@ import { useParams } from 'react-router-dom'
 import { shareApi } from '../api'
 import type { PublicTankProfile as ProfileData } from '../types'
 
-const LEVEL_COLORS: Record<string, { ring: string; text: string }> = {
-  new:         { ring: '#9ca3af', text: 'text-gray-400' },
-  growing:     { ring: '#38bdf8', text: 'text-sky-400' },
-  established: { ring: '#0284c7', text: 'text-sky-400' },
-  thriving:    { ring: '#10b981', text: 'text-emerald-400' },
-  mature:      { ring: '#f59e0b', text: 'text-amber-400' },
-}
-
 export default function PublicTankProfile() {
   const { shareToken } = useParams<{ shareToken: string }>()
   const [profile, setProfile] = useState<ProfileData | null>(null)
@@ -88,7 +80,6 @@ export default function PublicTankProfile() {
     )
   }
 
-  const maturity = profile.maturity
   const waterTypeLabel = profile.water_type === 'saltwater' ? 'Saltwater' : profile.water_type === 'freshwater' ? 'Freshwater' : 'Brackish'
 
   return (
@@ -164,59 +155,6 @@ export default function PublicTankProfile() {
             <span>📅 {profile.event_count}</span>
           </div>
         </div>
-
-        {/* Maturity Score */}
-        {maturity && maturity.score > 0 && (() => {
-          const cfg = LEVEL_COLORS[maturity.level] || LEVEL_COLORS.new
-          const size = 72
-          const strokeWidth = 5
-          const radius = (size - strokeWidth) / 2
-          const circumference = 2 * Math.PI * radius
-          const progress = (maturity.score / 100) * circumference
-
-          return (
-            <div className="bg-gray-800/50 rounded-xl p-6">
-              <div className="flex items-center gap-6">
-                <svg width={size} height={size} className="flex-shrink-0">
-                  <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="currentColor" strokeWidth={strokeWidth} className="text-gray-700" />
-                  <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke={cfg.ring} strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={circumference - progress} strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`} />
-                  <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central" className="fill-white font-bold" fontSize={20}>{maturity.score}</text>
-                </svg>
-                <div className="flex-1">
-                  <div className={`text-xl font-bold capitalize ${cfg.text}`}>
-                    {maturity.level}
-                  </div>
-                  <div className="text-sm text-gray-400 mt-1">
-                    Maturity Score
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 mt-3">
-                    <div>
-                      <div className="text-xs text-gray-500 mb-1">Age</div>
-                      <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-cyan-500 rounded-full" style={{ width: `${(maturity.age_score / 30) * 100}%` }} />
-                      </div>
-                      <div className="text-xs text-gray-400 mt-0.5">{maturity.age_score}/30</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 mb-1">Stability</div>
-                      <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(maturity.stability_score / 40) * 100}%` }} />
-                      </div>
-                      <div className="text-xs text-gray-400 mt-0.5">{maturity.stability_score}/40</div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 mb-1">Diversity</div>
-                      <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${(maturity.livestock_score / 30) * 100}%` }} />
-                      </div>
-                      <div className="text-xs text-gray-400 mt-0.5">{maturity.livestock_score}/30</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
 
         {/* Refugium Info */}
         {profile.has_refugium && (

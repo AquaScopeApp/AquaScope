@@ -51,6 +51,7 @@ const CATEGORY_LABELS: Record<string, { label: string; icon: string }> = {
   maintenance:         { label: 'Maintenance', icon: '\uD83D\uDD27' },
   livestock_health:    { label: 'Livestock', icon: '\uD83D\uDC20' },
   equipment:           { label: 'Equipment', icon: '\u2699\uFE0F' },
+  maturity:            { label: 'Maturity', icon: '\uD83C\uDF31' },
   water_chemistry:     { label: 'Chemistry', icon: '\uD83E\uDDEA' },
 }
 

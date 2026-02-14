@@ -18,7 +18,7 @@ import {
   icpTestsApi,
   diseasesApi,
 } from '../api'
-import type { Tank, TankCreate, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, MaturityScore, DiseaseRecord, ReportCard } from '../types'
+import type { Tank, TankCreate, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, DiseaseRecord, ReportCard } from '../types'
 import TankSidebar from '../components/tanks/TankSidebar'
 import TankTabs from '../components/tanks/TankTabs'
 import TankForm from '../components/tanks/TankForm'
@@ -38,7 +38,6 @@ export default function TankDetail() {
   const [maintenance, setMaintenance] = useState<MaintenanceReminder[]>([])
   const [icpTests, setIcpTests] = useState<ICPTestSummary[]>([])
   const [diseases, setDiseases] = useState<DiseaseRecord[]>([])
-  const [maturity, setMaturity] = useState<MaturityScore | null>(null)
   const [reportCard, setReportCard] = useState<ReportCard | null>(null)
 
   const [isLoading, setIsLoading] = useState(true)
@@ -67,7 +66,6 @@ export default function TankDetail() {
         maintenanceData,
         icpTestsData,
         diseasesData,
-        maturityData,
       ] = await Promise.all([
         tanksApi.get(tankId),
         tanksApi.listEvents(tankId).catch(() => []),
@@ -79,7 +77,6 @@ export default function TankDetail() {
         maintenanceApi.listReminders({ tank_id: tankId }).catch(() => []),
         icpTestsApi.list({ tank_id: tankId }).catch(() => []),
         diseasesApi.list({ tank_id: tankId }).catch(() => []),
-        tanksApi.getMaturity(tankId).catch(() => null),
       ])
 
       setTank(tankData)
@@ -92,7 +89,6 @@ export default function TankDetail() {
       setMaintenance(maintenanceData)
       setIcpTests(icpTestsData)
       setDiseases(diseasesData)
-      setMaturity(maturityData)
 
       // Load report card separately (non-blocking)
       tanksApi.getReportCard(tankId).then(setReportCard).catch(() => {})
@@ -197,7 +193,6 @@ export default function TankDetail() {
           <TankSidebar
             tank={tank}
             stats={stats}
-            maturity={maturity}
             reportCard={reportCard}
             onEdit={() => setShowEditForm(!showEditForm)}
             onAddEvent={() => alert('Add event - switch to Events tab')}

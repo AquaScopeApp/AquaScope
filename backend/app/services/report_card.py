@@ -2,11 +2,12 @@
 Tank Report Card — automated health assessment.
 
 Computes an overall grade (A+ to F) from:
-  - Parameter Stability (25%)
-  - Maintenance Compliance (25%)
+  - Parameter Stability (20%)
+  - Maintenance Compliance (20%)
   - Livestock Health (20%)
   - Equipment Status (15%)
-  - Water Chemistry (ICP) (15%)
+  - Tank Maturity (15%)
+  - Water Chemistry (ICP) (10%)
 """
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
@@ -133,13 +134,9 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
 
     equipment_score = max(0, min(100, equipment_score))
 
-    # --- 4. Parameter Stability (25%) ---
-    # We check if ICP tests exist for water chemistry proxy
-    # Without InfluxDB access here, we use ICP scores and event-based assessment
-    # (The maturity service already handles InfluxDB stability scoring)
-    parameter_score = 75  # Default baseline — "we don't know"
+    # --- 4. Parameter Stability (20%) ---
+    parameter_score = 75  # Default baseline
 
-    # Try to use ICP test scores if available (saltwater)
     from app.models.icp_test import ICPTest
     latest_icp = db.query(ICPTest).filter(
         ICPTest.tank_id == tank_id,
@@ -147,7 +144,6 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
 
     if latest_icp and latest_icp.score_overall:
         parameter_score = latest_icp.score_overall
-        # Decay if test is old
         if latest_icp.test_date:
             days_since_test = (today - latest_icp.test_date).days
             if days_since_test > 180:
@@ -155,18 +151,16 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
             elif days_since_test > 90:
                 parameter_score -= 5
 
-    # Use maturity stability score if available
+    # Use InfluxDB stability data if available
     try:
-        from app.services.maturity import compute_maturity_batch
-        maturity_results = compute_maturity_batch(
-            db, user_id,
-            [(tank.id, tank.setup_date, tank.water_type or "saltwater")]
+        from app.services.maturity import calculate_stability_scores_batch
+        stability_results = calculate_stability_scores_batch(
+            user_id,
+            {str(tank.id): tank.water_type or "saltwater"},
         )
-        ms = maturity_results.get(str(tank.id))
-        if ms and ms.get("stability_score", 0) > 0:
-            # Stability score is out of 40, normalize to 100
-            stability_normalized = int((ms["stability_score"] / 40) * 100)
-            # Blend with ICP score if we have both
+        raw_stability = stability_results.get(str(tank.id), 0)
+        if raw_stability > 0:
+            stability_normalized = int((raw_stability / 40) * 100)
             if latest_icp and latest_icp.score_overall:
                 parameter_score = int(parameter_score * 0.5 + stability_normalized * 0.5)
             else:
@@ -193,13 +187,32 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
 
     chemistry_score = max(0, min(100, chemistry_score))
 
+    # --- 6. Tank Maturity (15%) ---
+    maturity_score = 50  # Default baseline
+    maturity_data = None
+    try:
+        from app.services.maturity import compute_maturity_batch
+        maturity_results = compute_maturity_batch(
+            db, user_id,
+            [(tank.id, tank.setup_date, tank.water_type or "saltwater")]
+        )
+        ms = maturity_results.get(str(tank.id))
+        if ms and ms.get("score", 0) > 0:
+            maturity_score = ms["score"]
+            maturity_data = ms
+    except Exception:
+        pass
+
+    maturity_score = max(0, min(100, maturity_score))
+
     # --- Overall Score (weighted) ---
     overall_score = int(
-        parameter_score * 0.25 +
-        maintenance_score * 0.25 +
+        parameter_score * 0.20 +
+        maintenance_score * 0.20 +
         livestock_score * 0.20 +
         equipment_score * 0.15 +
-        chemistry_score * 0.15
+        maturity_score * 0.15 +
+        chemistry_score * 0.10
     )
     overall_score = max(0, min(100, overall_score))
 
@@ -298,12 +311,12 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
             "parameter_stability": {
                 "score": parameter_score,
                 "grade": _score_to_grade(parameter_score),
-                "weight": 25,
+                "weight": 20,
             },
             "maintenance": {
                 "score": maintenance_score,
                 "grade": _score_to_grade(maintenance_score),
-                "weight": 25,
+                "weight": 20,
             },
             "livestock_health": {
                 "score": livestock_score,
@@ -315,12 +328,18 @@ def compute_report_card(db: Session, tank_id: str, user_id: str) -> dict:
                 "grade": _score_to_grade(equipment_score),
                 "weight": 15,
             },
+            "maturity": {
+                "score": maturity_score,
+                "grade": _score_to_grade(maturity_score),
+                "weight": 15,
+            },
             "water_chemistry": {
                 "score": chemistry_score,
                 "grade": _score_to_grade(chemistry_score),
-                "weight": 15,
+                "weight": 10,
             },
         },
+        "maturity": maturity_data,
         "stats": {
             "total_livestock": total_individuals,
             "species_count": species_count,

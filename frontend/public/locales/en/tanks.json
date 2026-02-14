@@ -193,6 +193,7 @@
       "maintenance": "Maintenance",
       "livestock_health": "Livestock Health",
       "equipment": "Equipment",
+      "maturity": "Tank Maturity",
       "water_chemistry": "Water Chemistry"
     },
     "status": {

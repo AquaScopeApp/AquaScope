@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Tank, MaturityScore, ReportCard } from '../../types'
+import type { Tank, ReportCard } from '../../types'
 import TankImageUpload from './TankImageUpload'
 import DefaultTankAnimation from './DefaultTankAnimation'
 import { tanksApi } from '../../api'
@@ -29,22 +29,13 @@ interface TankSidebarProps {
     icp_test_count?: number
     tank_age_days?: number
   }
-  maturity?: MaturityScore | null
   reportCard?: ReportCard | null
   onEdit?: () => void
   onAddEvent?: () => void
   onRefresh?: () => void
 }
 
-const LEVEL_COLORS: Record<string, { ring: string; text: string; bg: string }> = {
-  new:         { ring: '#9ca3af', text: 'text-gray-400 dark:text-gray-500', bg: 'bg-gray-100 dark:bg-gray-700' },
-  growing:     { ring: '#38bdf8', text: 'text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/20' },
-  established: { ring: '#0284c7', text: 'text-sky-600 dark:text-sky-400', bg: 'bg-sky-50 dark:bg-sky-900/20' },
-  thriving:    { ring: '#10b981', text: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
-  mature:      { ring: '#f59e0b', text: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-900/20' },
-}
-
-export default function TankSidebar({ tank, stats, maturity, reportCard, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
+export default function TankSidebar({ tank, stats, reportCard, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
   const { formatVolume } = useRegionalSettings()
@@ -483,71 +474,6 @@ export default function TankSidebar({ tank, stats, maturity, reportCard, onEdit,
           </p>
         )}
       </div>
-
-      {/* Maturity Score Card */}
-      {maturity && maturity.score > 0 && (() => {
-        const cfg = LEVEL_COLORS[maturity.level] || LEVEL_COLORS.new
-        const size = 64
-        const strokeWidth = 5
-        const radius = (size - strokeWidth) / 2
-        const circumference = 2 * Math.PI * radius
-        const progress = (maturity.score / 100) * circumference
-
-        return (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-4">
-              {tc('maturityTooltip', { age: maturity.age_score, stability: maturity.stability_score, livestock: maturity.livestock_score }).split(' ').slice(0, 2).join(' ') || 'Maturity Score'}
-            </h3>
-
-            <div className="flex items-center gap-4 mb-4">
-              <svg width={size} height={size} className="flex-shrink-0">
-                <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="currentColor" strokeWidth={strokeWidth} className="text-gray-200 dark:text-gray-600" />
-                <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke={cfg.ring} strokeWidth={strokeWidth} strokeDasharray={circumference} strokeDashoffset={circumference - progress} strokeLinecap="round" transform={`rotate(-90 ${size/2} ${size/2})`} />
-                <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central" className="fill-gray-800 dark:fill-gray-100 font-bold" fontSize={18}>{maturity.score}</text>
-              </svg>
-              <div>
-                <div className={`text-lg font-bold capitalize ${cfg.text}`}>
-                  {tc(`maturityLevels.${maturity.level}`)}
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {tc('maturityTooltip', { age: maturity.age_score, stability: maturity.stability_score, livestock: maturity.livestock_score })}
-                </div>
-              </div>
-            </div>
-
-            {/* Breakdown bars */}
-            <div className="space-y-3">
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-500 dark:text-gray-400">{tc('maturityLevels.new') ? 'Age' : 'Age'}</span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{maturity.age_score}/30</span>
-                </div>
-                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-ocean-500 rounded-full transition-all" style={{ width: `${(maturity.age_score / 30) * 100}%` }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-500 dark:text-gray-400">Stability</span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{maturity.stability_score}/40</span>
-                </div>
-                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-teal-500 rounded-full transition-all" style={{ width: `${(maturity.stability_score / 40) * 100}%` }} />
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-500 dark:text-gray-400">Diversity</span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{maturity.livestock_score}/30</span>
-                </div>
-                <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${(maturity.livestock_score / 30) * 100}%` }} />
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      })()}
 
       {/* Dosing Calculator Modal */}
       {showDosingCalc && (

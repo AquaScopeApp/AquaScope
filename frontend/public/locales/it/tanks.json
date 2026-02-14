@@ -193,6 +193,7 @@
       "maintenance": "Manutenzione",
       "livestock_health": "Salute del vivente",
       "equipment": "Attrezzatura",
+      "maturity": "Maturità",
       "water_chemistry": "Chimica dell'acqua"
     },
     "status": {

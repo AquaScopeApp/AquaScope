@@ -28,6 +28,7 @@ CATEGORY_LABELS = {
     'maintenance': 'Maintenance Compliance',
     'livestock_health': 'Livestock Health',
     'equipment': 'Equipment Status',
+    'maturity': 'Tank Maturity',
     'water_chemistry': 'Water Chemistry',
 }
 
