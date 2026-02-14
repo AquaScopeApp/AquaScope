@@ -7,12 +7,13 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import type { Tank, MaturityScore } from '../../types'
+import type { Tank, MaturityScore, ReportCard } from '../../types'
 import TankImageUpload from './TankImageUpload'
 import DefaultTankAnimation from './DefaultTankAnimation'
 import { tanksApi } from '../../api'
 import { useRegionalSettings } from '../../hooks/useRegionalSettings'
 import DosingCalculator from '../dosing/DosingCalculator'
+import TankReportCard from './TankReportCard'
 import type { ShareTokenResponse } from '../../types'
 
 interface TankSidebarProps {
@@ -29,6 +30,7 @@ interface TankSidebarProps {
     tank_age_days?: number
   }
   maturity?: MaturityScore | null
+  reportCard?: ReportCard | null
   onEdit?: () => void
   onAddEvent?: () => void
   onRefresh?: () => void
@@ -42,7 +44,7 @@ const LEVEL_COLORS: Record<string, { ring: string; text: string; bg: string }> =
   mature:      { ring: '#f59e0b', text: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-900/20' },
 }
 
-export default function TankSidebar({ tank, stats, maturity, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
+export default function TankSidebar({ tank, stats, maturity, reportCard, onEdit, onAddEvent, onRefresh }: TankSidebarProps) {
   const { t } = useTranslation('tanks')
   const { t: tc } = useTranslation('common')
   const { formatVolume } = useRegionalSettings()
@@ -54,6 +56,7 @@ export default function TankSidebar({ tank, stats, maturity, onEdit, onAddEvent,
   const [shareLoading, setShareLoading] = useState(false)
   const [shareCopied, setShareCopied] = useState(false)
   const [showDosingCalc, setShowDosingCalc] = useState(false)
+  const [showReportCard, setShowReportCard] = useState(false)
 
   const calculateDaysUp = (setupDate: string | null): number => {
     if (!setupDate) return 0
@@ -221,6 +224,75 @@ export default function TankSidebar({ tank, stats, maturity, onEdit, onAddEvent,
             <p className="text-gray-600 dark:text-gray-400 text-sm">{tank.description}</p>
           )}
         </div>
+
+        {/* Report Card Grade — prominent position */}
+        {reportCard && (() => {
+          const RC_COLORS: Record<string, string> = {
+            'A+': '#10b981', 'A': '#10b981', 'A-': '#10b981',
+            'B+': '#0ea5e9', 'B': '#0ea5e9', 'B-': '#0ea5e9',
+            'C+': '#f59e0b', 'C': '#f59e0b', 'C-': '#f59e0b',
+            'D+': '#f97316', 'D': '#f97316', 'D-': '#f97316',
+            'F': '#ef4444',
+          }
+          const RC_TEXT: Record<string, string> = {
+            'A+': 'text-emerald-600 dark:text-emerald-400', 'A': 'text-emerald-600 dark:text-emerald-400', 'A-': 'text-emerald-600 dark:text-emerald-400',
+            'B+': 'text-sky-600 dark:text-sky-400', 'B': 'text-sky-600 dark:text-sky-400', 'B-': 'text-sky-600 dark:text-sky-400',
+            'C+': 'text-amber-600 dark:text-amber-400', 'C': 'text-amber-600 dark:text-amber-400', 'C-': 'text-amber-600 dark:text-amber-400',
+            'D+': 'text-orange-600 dark:text-orange-400', 'D': 'text-orange-600 dark:text-orange-400', 'D-': 'text-orange-600 dark:text-orange-400',
+            'F': 'text-red-600 dark:text-red-400',
+          }
+          const rcColor = RC_COLORS[reportCard.overall_grade] || '#9ca3af'
+          const rcTextClass = RC_TEXT[reportCard.overall_grade] || 'text-gray-600 dark:text-gray-400'
+
+          return (
+            <div>
+              <button
+                onClick={() => setShowReportCard(!showReportCard)}
+                className="w-full rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-left"
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">📋</span>
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      {t('reportCard.title', 'Report Card')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-lg font-bold ${rcTextClass}`}>{reportCard.overall_grade}</span>
+                    <svg
+                      className={`w-4 h-4 text-gray-400 transition-transform ${showReportCard ? 'rotate-180' : ''}`}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${reportCard.overall_score}%`, backgroundColor: rcColor }}
+                  />
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-right">
+                  {reportCard.overall_score}/100
+                </div>
+              </button>
+
+              {showReportCard && (
+                <div className="mt-2">
+                  <TankReportCard
+                    reportCard={reportCard}
+                    onDownloadPdf={() => {
+                      import('../../api').then(({ tanksApi }) => {
+                        tanksApi.getReportCardPdf(tank.id)
+                      })
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
         {/* Volume Info */}
         <div className="space-y-2 text-sm">

@@ -18,7 +18,7 @@ import {
   icpTestsApi,
   diseasesApi,
 } from '../api'
-import type { Tank, TankCreate, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, MaturityScore, DiseaseRecord } from '../types'
+import type { Tank, TankCreate, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, MaturityScore, DiseaseRecord, ReportCard } from '../types'
 import TankSidebar from '../components/tanks/TankSidebar'
 import TankTabs from '../components/tanks/TankTabs'
 import TankForm from '../components/tanks/TankForm'
@@ -39,6 +39,7 @@ export default function TankDetail() {
   const [icpTests, setIcpTests] = useState<ICPTestSummary[]>([])
   const [diseases, setDiseases] = useState<DiseaseRecord[]>([])
   const [maturity, setMaturity] = useState<MaturityScore | null>(null)
+  const [reportCard, setReportCard] = useState<ReportCard | null>(null)
 
   const [isLoading, setIsLoading] = useState(true)
   const [showEditForm, setShowEditForm] = useState(false)
@@ -92,6 +93,9 @@ export default function TankDetail() {
       setIcpTests(icpTestsData)
       setDiseases(diseasesData)
       setMaturity(maturityData)
+
+      // Load report card separately (non-blocking)
+      tanksApi.getReportCard(tankId).then(setReportCard).catch(() => {})
     } catch (error) {
       console.error('Failed to load tank data:', error)
       alert('Failed to load tank. Returning to tank list.')
@@ -194,6 +198,7 @@ export default function TankDetail() {
             tank={tank}
             stats={stats}
             maturity={maturity}
+            reportCard={reportCard}
             onEdit={() => setShowEditForm(!showEditForm)}
             onAddEvent={() => alert('Add event - switch to Events tab')}
             onRefresh={handleRefresh}

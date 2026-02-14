@@ -183,5 +183,28 @@
     "preview": "Preview",
     "regenerate": "New Link",
     "regenerateConfirm": "Generate a new link? The old link will stop working."
+  },
+  "reportCard": {
+    "title": "Report Card",
+    "overallGrade": "Overall Grade",
+    "score": "Score",
+    "categories": {
+      "parameter_stability": "Parameter Stability",
+      "maintenance": "Maintenance",
+      "livestock_health": "Livestock Health",
+      "equipment": "Equipment",
+      "water_chemistry": "Water Chemistry"
+    },
+    "status": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "fair": "Fair",
+      "poor": "Poor",
+      "critical": "Critical"
+    },
+    "achievements": "Achievements",
+    "insights": "Insights",
+    "noData": "Not enough data to generate a report card",
+    "downloadPdf": "Download PDF"
   }
 }

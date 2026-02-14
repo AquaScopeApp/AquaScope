@@ -183,5 +183,28 @@
     "preview": "Vista previa",
     "regenerate": "Nuevo enlace",
     "regenerateConfirm": "¿Generar un nuevo enlace? El enlace anterior dejará de funcionar."
+  },
+  "reportCard": {
+    "title": "Boletín de salud",
+    "overallGrade": "Nota general",
+    "score": "Puntuación",
+    "categories": {
+      "parameter_stability": "Estabilidad de parámetros",
+      "maintenance": "Mantenimiento",
+      "livestock_health": "Salud del ganado",
+      "equipment": "Equipamiento",
+      "water_chemistry": "Química del agua"
+    },
+    "status": {
+      "excellent": "Excelente",
+      "good": "Bueno",
+      "fair": "Regular",
+      "poor": "Deficiente",
+      "critical": "Crítico"
+    },
+    "achievements": "Logros",
+    "insights": "Recomendaciones",
+    "noData": "No hay suficientes datos para generar un boletín",
+    "downloadPdf": "Descargar PDF"
   }
 }

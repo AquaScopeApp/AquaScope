@@ -183,5 +183,28 @@
     "preview": "Vorschau",
     "regenerate": "Neuer Link",
     "regenerateConfirm": "Neuen Link erstellen? Der alte Link funktioniert nicht mehr."
+  },
+  "reportCard": {
+    "title": "Zeugnis",
+    "overallGrade": "Gesamtnote",
+    "score": "Punktzahl",
+    "categories": {
+      "parameter_stability": "Parameterstabilität",
+      "maintenance": "Wartung",
+      "livestock_health": "Tiergesundheit",
+      "equipment": "Ausrüstung",
+      "water_chemistry": "Wasserchemie"
+    },
+    "status": {
+      "excellent": "Ausgezeichnet",
+      "good": "Gut",
+      "fair": "Befriedigend",
+      "poor": "Mangelhaft",
+      "critical": "Kritisch"
+    },
+    "achievements": "Erfolge",
+    "insights": "Empfehlungen",
+    "noData": "Nicht genügend Daten für ein Zeugnis",
+    "downloadPdf": "PDF herunterladen"
   }
 }

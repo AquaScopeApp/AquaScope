@@ -266,6 +266,12 @@ export default function PublicTankProfile() {
                   ...Object.values(schedule.schedule_data).flat(),
                   1
                 )
+                // Find the dominant channel (highest total intensity) for bar color
+                const channelTotals = schedule.channels.map((_ch: { name: string; color: string }, ci: number) =>
+                  Object.values(schedule.schedule_data).reduce((sum: number, vals: number[]) => sum + (vals[ci] || 0), 0)
+                )
+                const dominantIdx = channelTotals.indexOf(Math.max(...channelTotals))
+                const barColor = schedule.channels[dominantIdx >= 0 ? dominantIdx : 0]?.color || '#38bdf8'
                 return (
                   <div key={idx} className="bg-gray-800/50 rounded-xl p-5">
                     <div className="flex items-center justify-between mb-3">
@@ -293,7 +299,7 @@ export default function PublicTankProfile() {
                               className="flex-1 rounded-t"
                               style={{
                                 height: `${Math.max(pct, 2)}%`,
-                                background: `linear-gradient(to top, ${schedule.channels[0]?.color || '#38bdf8'}88, ${schedule.channels[0]?.color || '#38bdf8'}cc)`,
+                                background: `linear-gradient(to top, ${barColor}88, ${barColor}cc)`,
                               }}
                             />
                           )
@@ -316,6 +322,68 @@ export default function PublicTankProfile() {
             </div>
           </div>
         )}
+
+        {/* Report Card */}
+        {profile.report_card && (() => {
+          const GRADE_COLORS: Record<string, string> = {
+            'A+': '#10b981', 'A': '#10b981', 'A-': '#10b981',
+            'B+': '#0ea5e9', 'B': '#0ea5e9', 'B-': '#0ea5e9',
+            'C+': '#f59e0b', 'C': '#f59e0b', 'C-': '#f59e0b',
+            'D+': '#f97316', 'D': '#f97316', 'D-': '#f97316',
+            'F': '#ef4444',
+          }
+          const rc = profile.report_card
+          return (
+            <div className="bg-gray-800/50 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold flex items-center gap-2">
+                  <span className="text-blue-400">{'\uD83D\uDCCB'}</span> Report Card
+                </h2>
+                <a
+                  href={`${import.meta.env.VITE_API_URL || ''}/api/v1/share/${shareToken}/report-card/pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-300 bg-gray-700/50 rounded-lg hover:bg-gray-600/50 transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  PDF
+                </a>
+              </div>
+              {/* Grade display */}
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold" style={{ color: GRADE_COLORS[rc.overall_grade] || '#9ca3af' }}>
+                    {rc.overall_grade}
+                  </div>
+                  <div className="text-sm text-gray-400 mt-1">{rc.overall_score}/100</div>
+                </div>
+                <div className="flex-1 space-y-2">
+                  {Object.entries(rc.categories || {}).map(([key, cat]: [string, any]) => (
+                    <div key={key} className="flex items-center gap-2 text-xs">
+                      <span className="text-gray-400 w-24 truncate capitalize">{key.replace(/_/g, ' ')}</span>
+                      <div className="flex-1 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${cat.score}%`, backgroundColor: GRADE_COLORS[cat.grade] || '#9ca3af' }} />
+                      </div>
+                      <span className="text-gray-500 w-6 text-right">{cat.grade}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Achievements */}
+              {rc.achievements && rc.achievements.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-4 pt-3 border-t border-gray-700/50">
+                  {rc.achievements.map((ach: any, i: number) => (
+                    <span key={i} className="flex items-center gap-1 px-2 py-1 bg-gray-700/50 rounded-full text-xs text-gray-300">
+                      {ach.icon} {ach.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
         {/* Livestock Showcase — grouped by category */}
         {profile.livestock.length > 0 && (() => {

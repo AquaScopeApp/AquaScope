@@ -510,6 +510,81 @@ def get_tank_maturity(
         return MaturityScore()
 
 
+@router.get("/{tank_id}/report-card")
+def get_tank_report_card(
+    tank_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get the health report card for a tank."""
+    from app.services.report_card import compute_report_card
+    result = compute_report_card(db, str(tank_id), str(current_user.id))
+    if not result:
+        raise HTTPException(status_code=404, detail="Tank not found")
+    return result
+
+
+@router.get("/{tank_id}/report-card/pdf")
+def get_tank_report_card_pdf(
+    tank_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Download the health report card as a PDF."""
+    from app.services.report_card import compute_report_card
+    from app.services.report_card_pdf import generate_report_card_pdf
+    from fastapi.responses import Response
+
+    tank = db.query(Tank).filter(
+        Tank.id == tank_id,
+        Tank.user_id == current_user.id,
+    ).first()
+    if not tank:
+        raise HTTPException(status_code=404, detail="Tank not found")
+
+    result = compute_report_card(db, str(tank_id), str(current_user.id))
+    if not result:
+        raise HTTPException(status_code=404, detail="Report card not available")
+
+    # Gather extra data for a richer PDF
+    from app.models.livestock import Livestock
+    from app.models.lighting import LightingSchedule
+    livestock_rows = db.query(Livestock).filter(
+        Livestock.tank_id == tank_id, Livestock.status == "alive", Livestock.is_archived == False
+    ).all()
+    lighting_rows = db.query(LightingSchedule).filter(
+        LightingSchedule.tank_id == tank_id
+    ).all()
+
+    tank_info = {
+        "setup_date": str(tank.setup_date) if tank.setup_date else None,
+        "display_volume_liters": tank.display_volume_liters,
+        "sump_volume_liters": tank.sump_volume_liters,
+        "total_volume_liters": tank.total_volume_liters,
+        "has_refugium": tank.has_refugium or False,
+        "refugium_type": tank.refugium_type,
+        "refugium_volume_liters": tank.refugium_volume_liters,
+        "refugium_algae": tank.refugium_algae,
+        "refugium_lighting_hours": tank.refugium_lighting_hours,
+        "livestock": [{"species": l.species_name, "common": l.common_name, "type": l.type, "qty": l.quantity} for l in livestock_rows],
+        "lighting": [{"name": ls.name, "channels": len(ls.channels) if ls.channels else 0, "active": ls.is_active} for ls in lighting_rows],
+    }
+
+    pdf_bytes = generate_report_card_pdf(
+        tank_name=tank.name,
+        water_type=tank.water_type or "unknown",
+        report_data=result,
+        tank_info=tank_info,
+    )
+
+    filename = f"report-card-{tank.name.lower().replace(' ', '-')}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
 # ============================================================================
 # Tank Sharing Endpoints
 # ============================================================================

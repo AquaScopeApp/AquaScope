@@ -6,6 +6,7 @@ import type {
   Tank, TankCreate, TankUpdate,
   TankEvent, TankEventCreate, TankEventUpdate,
   ShareTokenResponse,
+  ReportCard,
 } from '../../types'
 import { db, generateId, now, getLocalUserId } from './helpers'
 
@@ -203,6 +204,33 @@ export const tanksApi = {
   getMaturity: async (_tankId: string) => {
     // Maturity scoring not available in local/offline mode
     return { score: 0, level: 'new' as const, age_score: 0, stability_score: 0, livestock_score: 0 }
+  },
+
+  getReportCard: async (_tankId: string): Promise<ReportCard> => ({
+    overall_score: 88,
+    overall_grade: 'B+',
+    status: 'good',
+    categories: {
+      parameter_stability: { score: 85, grade: 'B', weight: 25 },
+      maintenance: { score: 95, grade: 'A', weight: 25 },
+      livestock_health: { score: 90, grade: 'A-', weight: 20 },
+      equipment: { score: 80, grade: 'B-', weight: 15 },
+      water_chemistry: { score: 82, grade: 'B-', weight: 15 },
+    },
+    stats: { total_livestock: 15, species_count: 8, type_diversity: 3, active_diseases: 0, overdue_maintenance: 1, total_reminders: 5, equipment_count: 6, failing_equipment: 0 },
+    achievements: [
+      { key: 'one_year', icon: '\uD83C\uDF82', label: '1 Year Club', detail: '400 days and counting' },
+      { key: 'disease_free', icon: '\uD83D\uDEE1\uFE0F', label: 'Disease Free', detail: '120 days clear' },
+      { key: 'diverse', icon: '\uD83D\uDC20', label: 'Diverse Ecosystem', detail: '8 species' },
+    ],
+    insights: [
+      { type: 'warning', message: '1 maintenance task overdue' },
+      { type: 'success', message: 'All livestock healthy — no active diseases' },
+    ],
+  }),
+
+  getReportCardPdf: async (_tankId: string): Promise<void> => {
+    alert('PDF export is only available in server mode')
   },
 
   // Sharing not available in local mode

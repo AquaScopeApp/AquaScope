@@ -87,6 +87,7 @@ import type {
   LightingScheduleCreate,
   LightingScheduleUpdate,
   LightingPreset,
+  ReportCard,
 } from '../types'
 
 // API base URL - empty string means same origin (nginx proxy in Docker)
@@ -336,6 +337,25 @@ export const tanksApi = {
   regenerateShareToken: async (tankId: string): Promise<ShareTokenResponse> => {
     const response = await apiClient.post<ShareTokenResponse>(`/tanks/${tankId}/share/regenerate`)
     return response.data
+  },
+
+  getReportCard: async (tankId: string): Promise<ReportCard> => {
+    const response = await apiClient.get<ReportCard>(`/tanks/${tankId}/report-card`)
+    return response.data
+  },
+
+  getReportCardPdf: async (tankId: string): Promise<void> => {
+    const response = await apiClient.get(`/tanks/${tankId}/report-card/pdf`, {
+      responseType: 'blob',
+    })
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `report-card.pdf`)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
   },
 }
 

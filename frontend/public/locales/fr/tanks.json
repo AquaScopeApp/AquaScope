@@ -183,5 +183,28 @@
     "preview": "Aperçu",
     "regenerate": "Nouveau lien",
     "regenerateConfirm": "Générer un nouveau lien ? L'ancien lien cessera de fonctionner."
+  },
+  "reportCard": {
+    "title": "Bulletin de santé",
+    "overallGrade": "Note globale",
+    "score": "Score",
+    "categories": {
+      "parameter_stability": "Stabilité des paramètres",
+      "maintenance": "Maintenance",
+      "livestock_health": "Santé du vivant",
+      "equipment": "Équipement",
+      "water_chemistry": "Chimie de l'eau"
+    },
+    "status": {
+      "excellent": "Excellent",
+      "good": "Bon",
+      "fair": "Moyen",
+      "poor": "Médiocre",
+      "critical": "Critique"
+    },
+    "achievements": "Réalisations",
+    "insights": "Conseils",
+    "noData": "Pas assez de données pour générer un bulletin",
+    "downloadPdf": "Télécharger PDF"
   }
 }

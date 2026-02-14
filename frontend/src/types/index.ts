@@ -1138,6 +1138,45 @@ export interface MaturityScore {
   livestock_score: number
 }
 
+export interface CategoryScore {
+  score: number
+  grade: string
+  weight: number
+}
+
+export interface Achievement {
+  key: string
+  icon: string
+  label: string
+  detail: string
+}
+
+export interface Insight {
+  type: 'success' | 'info' | 'warning' | 'alert'
+  message: string
+}
+
+export interface ReportCardStats {
+  total_livestock: number
+  species_count: number
+  type_diversity: number
+  active_diseases: number
+  overdue_maintenance: number
+  total_reminders: number
+  equipment_count: number
+  failing_equipment: number
+}
+
+export interface ReportCard {
+  overall_score: number
+  overall_grade: string
+  status: 'excellent' | 'good' | 'fair' | 'poor' | 'critical'
+  categories: Record<string, CategoryScore>
+  stats: ReportCardStats
+  achievements: Achievement[]
+  insights: Insight[]
+}
+
 export interface DashboardTankSummary {
   tank_id: string
   tank_name: string
@@ -1225,6 +1264,7 @@ export interface PublicTankProfile {
   livestock_count: number
   photo_count: number
   event_count: number
+  report_card?: ReportCard | null
 }
 
 // ============================================================================

@@ -183,5 +183,28 @@
     "preview": "Anteprima",
     "regenerate": "Nuovo link",
     "regenerateConfirm": "Generare un nuovo link? Il vecchio link smetterà di funzionare."
+  },
+  "reportCard": {
+    "title": "Pagella",
+    "overallGrade": "Voto complessivo",
+    "score": "Punteggio",
+    "categories": {
+      "parameter_stability": "Stabilità parametri",
+      "maintenance": "Manutenzione",
+      "livestock_health": "Salute del vivente",
+      "equipment": "Attrezzatura",
+      "water_chemistry": "Chimica dell'acqua"
+    },
+    "status": {
+      "excellent": "Eccellente",
+      "good": "Buono",
+      "fair": "Discreto",
+      "poor": "Scarso",
+      "critical": "Critico"
+    },
+    "achievements": "Traguardi",
+    "insights": "Suggerimenti",
+    "noData": "Dati insufficienti per generare una pagella",
+    "downloadPdf": "Scarica PDF"
   }
 }

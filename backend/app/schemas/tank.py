@@ -169,6 +169,9 @@ class PublicTankProfile(BaseModel):
     # Maturity
     maturity: Optional[dict] = None
 
+    # Report Card
+    report_card: Optional[dict] = None
+
     # Collections
     livestock: List[PublicLivestockItem] = []
     photos: List[PublicPhotoItem] = []

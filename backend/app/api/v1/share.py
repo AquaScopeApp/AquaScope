@@ -22,6 +22,7 @@ from app.schemas.tank import (
 )
 from app.models.lighting import LightingSchedule
 from app.services.maturity import compute_maturity_batch
+from app.services.report_card import compute_report_card
 
 router = APIRouter()
 
@@ -97,6 +98,13 @@ def get_public_profile(token: str, db: Session = Depends(get_db)):
     except Exception:
         pass
 
+    # Report card
+    report_card_data = None
+    try:
+        report_card_data = compute_report_card(db, str(tank.id), str(tank.user_id))
+    except Exception:
+        pass
+
     return PublicTankProfile(
         name=tank.name,
         water_type=tank.water_type or "saltwater",
@@ -113,6 +121,7 @@ def get_public_profile(token: str, db: Session = Depends(get_db)):
         refugium_algae=tank.refugium_algae,
         refugium_lighting_hours=tank.refugium_lighting_hours,
         maturity=maturity_data,
+        report_card=report_card_data,
         livestock=[
             PublicLivestockItem(
                 species_name=l.species_name,
@@ -190,3 +199,52 @@ def get_shared_photo(token: str, photo_id: str, thumbnail: bool = True, db: Sess
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Photo file not found")
 
     return FileResponse(file_path)
+
+
+@router.get("/{token}/report-card/pdf")
+def get_shared_report_card_pdf(token: str, db: Session = Depends(get_db)):
+    """Download the shared tank's report card as a PDF. No auth required."""
+    from app.services.report_card import compute_report_card
+    from app.services.report_card_pdf import generate_report_card_pdf
+    from fastapi.responses import Response
+
+    tank = _get_shared_tank(token, db)
+
+    result = compute_report_card(db, str(tank.id), str(tank.user_id))
+    if not result:
+        raise HTTPException(status_code=404, detail="Report card not available")
+
+    livestock_rows = db.query(Livestock).filter(
+        Livestock.tank_id == tank.id, Livestock.status == "alive", Livestock.is_archived == False
+    ).all()
+    lighting_rows = db.query(LightingSchedule).filter(
+        LightingSchedule.tank_id == tank.id
+    ).all()
+
+    tank_info = {
+        "setup_date": str(tank.setup_date) if tank.setup_date else None,
+        "display_volume_liters": tank.display_volume_liters,
+        "sump_volume_liters": tank.sump_volume_liters,
+        "total_volume_liters": tank.total_volume_liters,
+        "has_refugium": tank.has_refugium or False,
+        "refugium_type": tank.refugium_type,
+        "refugium_volume_liters": tank.refugium_volume_liters,
+        "refugium_algae": tank.refugium_algae,
+        "refugium_lighting_hours": tank.refugium_lighting_hours,
+        "livestock": [{"species": l.species_name, "common": l.common_name, "type": l.type, "qty": l.quantity} for l in livestock_rows],
+        "lighting": [{"name": ls.name, "channels": len(ls.channels) if ls.channels else 0, "active": ls.is_active} for ls in lighting_rows],
+    }
+
+    pdf_bytes = generate_report_card_pdf(
+        tank_name=tank.name,
+        water_type=tank.water_type or "unknown",
+        report_data=result,
+        tank_info=tank_info,
+    )
+
+    filename = f"report-card-{tank.name.lower().replace(' ', '-')}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
