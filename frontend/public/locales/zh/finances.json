@@ -1,0 +1,73 @@
+{
+  "title": "财务",
+  "subtitle": "跟踪各水族箱的支出并管理预算",
+  "allTanks": "所有水族箱",
+  "noData": "还没有支出数据",
+  "cumulative": "累计",
+  "tabs": {
+    "summary": "概要",
+    "details": "详情",
+    "budgets": "预算"
+  },
+  "stats": {
+    "totalSpent": "总支出",
+    "equipment": "设备",
+    "consumables": "耗材",
+    "livestock": "生物",
+    "icpTests": "ICP检测",
+    "electricity": "电费"
+  },
+  "categories": {
+    "equipment": "设备",
+    "consumables": "耗材",
+    "livestock": "生物",
+    "icp_tests": "ICP检测",
+    "electricity": "电费"
+  },
+  "charts": {
+    "categoryBreakdown": "按分类支出",
+    "monthlySpending": "月度支出",
+    "byTank": "按水族箱支出"
+  },
+  "table": {
+    "tank": "水族箱",
+    "total": "总计"
+  },
+  "details": {
+    "allCategories": "所有分类",
+    "items": "项",
+    "date": "日期",
+    "name": "名称",
+    "category": "分类",
+    "tank": "水族箱",
+    "price": "价格",
+    "url": "链接",
+    "edit": "编辑",
+    "editTitle": "编辑支出",
+    "purchaseUrl": "购买链接",
+    "noItems": "未找到支出记录",
+    "confirmDelete": "删除此支出？此操作无法撤销。"
+  },
+  "budget": {
+    "create": "创建预算",
+    "edit": "编辑预算",
+    "delete": "删除",
+    "save": "保存",
+    "cancel": "取消",
+    "name": "预算名称",
+    "amount": "金额",
+    "currency": "货币",
+    "period": "周期",
+    "monthly": "每月",
+    "yearly": "每年",
+    "category": "分类",
+    "tank": "水族箱",
+    "notes": "备注",
+    "allCategories": "所有分类",
+    "allTanks": "所有水族箱",
+    "noBudgets": "还没有创建预算",
+    "confirmDelete": "确定要删除此预算吗？",
+    "remaining": "剩余 {{amount}}",
+    "overBy": "超出 {{amount}}"
+  }
+}

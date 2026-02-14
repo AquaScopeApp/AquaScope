@@ -1,0 +1,53 @@
+{
+  "title": "Ndriçimi",
+  "subtitle": "Menaxho programet e ndriçimit LED për akuariumet tuaja",
+  "createSchedule": "Krijo program",
+  "editSchedule": "Ndrysho programin",
+  "deleteSchedule": "Fshi programin",
+  "deleteConfirm": "Jeni i sigurt që dëshironi ta fshini këtë program ndriçimi?",
+  "noSchedules": "Nuk ka programe ndriçimi ende",
+  "noSchedulesHint": "Krijoni një program ose filloni nga një paracaktim",
+  "fields": {
+    "name": "Emri i programit",
+    "description": "Përshkrimi",
+    "tank": "Akuariumi",
+    "channels": "Kanalet LED",
+    "channelName": "Emri i kanalit",
+    "channelColor": "Ngjyra",
+    "addChannel": "Shto kanal",
+    "removeChannel": "Hiq",
+    "schedule": "Programi",
+    "intensity": "Intensiteti",
+    "hour": "Ora",
+    "notes": "Shënime",
+    "active": "Aktiv",
+    "inactive": "Joaktiv"
+  },
+  "presets": {
+    "title": "Paracaktimet",
+    "loadPreset": "Ngarko nga paracaktimi",
+    "selectPreset": "-- Zgjidh një paracaktim --",
+    "reefbreeders-current": "ReefBreeders — Programi aktual",
+    "reefbreeders-acropora": "ReefBreeders — I optimizuar për Acropora",
+    "reef-low-softies": "Rif — Dritë e ulët (Korale të buta)",
+    "reef-medium-mixed": "Rif — Dritë mesatare (LPS/I përzier)",
+    "freshwater-planted": "Ujë i ëmbël i mbjellur — Dritë e lartë",
+    "refugium-reverse": "Refugium — Fotperiodë e kundërt"
+  },
+  "chart": {
+    "title": "Parashikimi i intensitetit",
+    "xAxis": "Ora",
+    "yAxis": "Intensiteti %"
+  },
+  "stats": {
+    "activeSchedules": "Programe aktive",
+    "totalSchedules": "Programe gjithsej",
+    "tanksWithLighting": "Akuariume me ndriçim"
+  },
+  "actions": {
+    "activate": "Aktivizo",
+    "deactivate": "Çaktivizo",
+    "duplicate": "Dupliko",
+    "save": "Ruaj programin"
+  }
+}

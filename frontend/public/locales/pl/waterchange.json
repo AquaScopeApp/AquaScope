@@ -1,0 +1,92 @@
+{
+  "title": "Kalkulator podmiany wody",
+  "subtitle": "Przewiduj zmiany parametrów lub oblicz potrzebną objętość podmiany",
+  "noTanks": "Brak akwariów. Utwórz najpierw akwarium, aby użyć kalkulatora.",
+  "volume": {
+    "display": "Pokazowe",
+    "sump": "Sump",
+    "total": "Cały system"
+  },
+  "tabs": {
+    "impact": "Podgląd wpływu",
+    "target": "Parametr docelowy",
+    "correction": "Plan korekty",
+    "dosing": "Kalkulator dawkowania"
+  },
+  "impact": {
+    "waterChangePercent": "Podmiana wody",
+    "liters": "{{value}} L",
+    "replacementWater": "Woda zastępcza",
+    "saltMix": "Mieszanka soli",
+    "custom": "Własna",
+    "saveProfile": "Zapisz",
+    "profileSaved": "Zapisano!",
+    "results": "Przewidywane parametry",
+    "noData": "Brak danych o parametrach. Najpierw zapisz jakieś odczyty.",
+    "parameter": "Parametr",
+    "current": "Obecny",
+    "afterWC": "Po podmianie",
+    "change": "Zmiana",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "Parametr do korekty",
+    "currentValue": "Obecna wartość",
+    "targetValue": "Wartość docelowa",
+    "replacementValue": "W wodzie zastępczej",
+    "noReading": "Brak obecnego odczytu",
+    "result": {
+      "required": "Wymagana podmiana wody",
+      "volume": "Objętość do podmiany",
+      "ofTotal": "z {{total}} L łącznie",
+      "notFeasible": "Nieosiągalne przez podmiany wody",
+      "notFeasibleDesc": "Woda zastępcza nie jest w stanie doprowadzić tego parametru do wartości docelowej. Rozważ dawkowanie.",
+      "noChangeNeeded": "Już w normie",
+      "noChangeDesc": "Obecna wartość jest już na poziomie lub bardzo blisko celu."
+    },
+    "split": {
+      "title": "Duża podmiana wody",
+      "description": "Podmiany powyżej 50% mogą stresować mieszkańców. Rozważ {{count}} podmian po {{percent}}% ({{liters}} L każda) w ciągu kilku dni."
+    }
+  },
+  "correction": {
+    "statusOverview": "Obecny status parametrów",
+    "outOfRange": "{{count}} z {{total}} parametrów poza zakresem",
+    "allInRange": "Wszystkie parametry są w optymalnym zakresie!",
+    "criticalCount": "{{count}} krytycznych",
+    "warningCount": "{{count}} ostrzeżeń",
+    "tooHigh": "Za wysoko",
+    "tooLow": "Za nisko",
+    "onTarget": "W normie",
+    "recommendedPlan": "Zalecany plan",
+    "planSummary": "{{count}} podmian wody po {{percent}}% ({{liters}} L każda) w ciągu {{days}} dni",
+    "singleChange": "Pojedyncza podmiana wody {{percent}}% ({{liters}} L)",
+    "noCorrection": "Korekta nie jest wymagana",
+    "schedule": "Harmonogram krok po kroku",
+    "step": "Podmiana #{{number}}",
+    "dayOffset": "Dzień {{day}}",
+    "beforeAfter": "Przed i po",
+    "before": "Przed",
+    "afterPlan": "Po planie",
+    "uncorrectable": {
+      "title": "Nie do skorygowania podmianami wody",
+      "description": "Te parametry wymagają dawkowania lub innych metod korekty:",
+      "useDosing": "Otwórz kalkulator dawkowania"
+    },
+    "config": {
+      "title": "Ustawienia harmonogramu",
+      "maxChange": "Maks. podmiana na krok",
+      "daysBetween": "Dni między podmianami",
+      "days": "{{count}} dni"
+    },
+    "info": {
+      "title": "O stabilności",
+      "description": "Stabilność jest ważniejsza niż perfekcja w akwariach. Duże, gwałtowne wahania parametrów mogą stresować zwierzęta bardziej niż wartości lekko poza zakresem. Ten plan ogranicza każdą podmianę i rozdziela je dla bezpieczeństwa."
+    }
+  },
+  "info": {
+    "title": "Jak to działa",
+    "description": "Podmiany wody rozcieńczają wodę akwariową świeżą wodą zastępczą. Kalkulator używa wzoru rozcieńczania, aby przewidzieć, jak zmieni się każdy parametr.",
+    "formula": "po = obecna × (1 − PW%) + zastępcza × PW%"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Освещение",
+  "subtitle": "Управляйте расписанием LED-освещения для ваших аквариумов",
+  "createSchedule": "Создать расписание",
+  "editSchedule": "Редактировать расписание",
+  "deleteSchedule": "Удалить расписание",
+  "deleteConfirm": "Вы уверены, что хотите удалить это расписание освещения?",
+  "noSchedules": "Расписаний освещения пока нет",
+  "noSchedulesHint": "Создайте расписание или начните с готового шаблона",
+  "fields": {
+    "name": "Название расписания",
+    "description": "Описание",
+    "tank": "Аквариум",
+    "channels": "LED-каналы",
+    "channelName": "Название канала",
+    "channelColor": "Цвет",
+    "addChannel": "Добавить канал",
+    "removeChannel": "Удалить",
+    "schedule": "Расписание",
+    "intensity": "Интенсивность",
+    "hour": "Час",
+    "notes": "Заметки",
+    "active": "Активно",
+    "inactive": "Неактивно"
+  },
+  "presets": {
+    "title": "Готовые шаблоны",
+    "loadPreset": "Загрузить из шаблона",
+    "selectPreset": "-- Выберите шаблон --",
+    "reefbreeders-current": "ReefBreeders — Текущее расписание",
+    "reefbreeders-acropora": "ReefBreeders — Оптимизировано для Acropora",
+    "reef-low-softies": "Риф — Слабый свет (мягкие кораллы)",
+    "reef-medium-mixed": "Риф — Средний свет (LPS/смешанный)",
+    "freshwater-planted": "Пресноводный растительный — Яркий свет",
+    "refugium-reverse": "Рефугиум — Обратный фотопериод"
+  },
+  "chart": {
+    "title": "Предпросмотр интенсивности",
+    "xAxis": "Час",
+    "yAxis": "Интенсивность %"
+  },
+  "stats": {
+    "activeSchedules": "Активные расписания",
+    "totalSchedules": "Всего расписаний",
+    "tanksWithLighting": "Аквариумы с освещением"
+  },
+  "actions": {
+    "activate": "Активировать",
+    "deactivate": "Деактивировать",
+    "duplicate": "Дублировать",
+    "save": "Сохранить расписание"
+  }
+}

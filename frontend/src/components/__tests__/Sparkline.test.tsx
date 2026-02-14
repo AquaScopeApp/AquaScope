@@ -26,6 +26,13 @@ vi.mock('recharts', () => ({
   Tooltip: () => <div />,
 }))
 
+vi.mock('../../hooks/useRegionalSettings', () => ({
+  useRegionalSettings: () => ({
+    tempLabel: '°C',
+    celsiusToDisplay: (v: number, d?: number) => Number(v.toFixed(d ?? 1)),
+  }),
+}))
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -86,8 +93,8 @@ describe('Sparkline Component', () => {
       expect(container.innerHTML).toBe('')
     })
 
-    // Saltwater queries three parameters
-    expect(mockQuery).toHaveBeenCalledTimes(3)
+    // Saltwater queries six parameters
+    expect(mockQuery).toHaveBeenCalledTimes(6)
   })
 
   // -----------------------------------------------------------------------
@@ -121,7 +128,7 @@ describe('Sparkline Component', () => {
 
     // Verify query was called with the correct parameter types
     expect(mockQuery).toHaveBeenCalledWith(
-      expect.objectContaining({ tank_id: 'tank-1', parameter_type: 'temperature', start: '-7d' })
+      expect.objectContaining({ tank_id: 'tank-1', parameter_type: 'temperature', start: '-90d' })
     )
     expect(mockQuery).toHaveBeenCalledWith(
       expect.objectContaining({ parameter_type: 'alkalinity_kh' })

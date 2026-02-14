@@ -1,0 +1,73 @@
+{
+  "title": "Financiën",
+  "subtitle": "Volg uitgaven en beheer budgetten voor je aquariums",
+  "allTanks": "Alle aquariums",
+  "noData": "Nog geen uitgavengegevens",
+  "cumulative": "Cumulatief",
+  "tabs": {
+    "summary": "Samenvatting",
+    "details": "Details",
+    "budgets": "Budgetten"
+  },
+  "stats": {
+    "totalSpent": "Totaal uitgegeven",
+    "equipment": "Apparatuur",
+    "consumables": "Verbruiksartikelen",
+    "livestock": "Dieren",
+    "icpTests": "ICP-testen",
+    "electricity": "Elektriciteit"
+  },
+  "categories": {
+    "equipment": "Apparatuur",
+    "consumables": "Verbruiksartikelen",
+    "livestock": "Dieren",
+    "icp_tests": "ICP-testen",
+    "electricity": "Elektriciteit"
+  },
+  "charts": {
+    "categoryBreakdown": "Uitgaven per categorie",
+    "monthlySpending": "Maandelijkse uitgaven",
+    "byTank": "Uitgaven per aquarium"
+  },
+  "table": {
+    "tank": "Aquarium",
+    "total": "Totaal"
+  },
+  "details": {
+    "allCategories": "Alle categorieën",
+    "items": "items",
+    "date": "Datum",
+    "name": "Naam",
+    "category": "Categorie",
+    "tank": "Aquarium",
+    "price": "Prijs",
+    "url": "URL",
+    "edit": "Bewerken",
+    "editTitle": "Uitgave bewerken",
+    "purchaseUrl": "Aankoop-URL",
+    "noItems": "Geen uitgaven gevonden",
+    "confirmDelete": "Deze uitgave verwijderen? Dit kan niet ongedaan worden gemaakt."
+  },
+  "budget": {
+    "create": "Budget aanmaken",
+    "edit": "Budget bewerken",
+    "delete": "Verwijderen",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "name": "Budgetnaam",
+    "amount": "Bedrag",
+    "currency": "Valuta",
+    "period": "Periode",
+    "monthly": "Maandelijks",
+    "yearly": "Jaarlijks",
+    "category": "Categorie",
+    "tank": "Aquarium",
+    "notes": "Notities",
+    "allCategories": "Alle categorieën",
+    "allTanks": "Alle aquariums",
+    "noBudgets": "Nog geen budgetten aangemaakt",
+    "confirmDelete": "Weet je zeker dat je dit budget wilt verwijderen?",
+    "remaining": "{{amount}} resterend",
+    "overBy": "{{amount}} overschreden"
+  }
+}

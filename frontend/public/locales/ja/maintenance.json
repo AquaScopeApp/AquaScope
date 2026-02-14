@@ -1,0 +1,26 @@
+{
+  "title": "メンテナンススケジュール",
+  "subtitle": "リーフアクアリウムの定期メンテナンスタスクを管理",
+  "addReminder": "リマインダーを追加",
+  "reminders": "リマインダー",
+  "overdue": "期限切れ",
+  "dueSoon": "もうすぐ期限（7日以内）",
+  "upcoming": "予定",
+  "inactive": "無効",
+  "noReminders": "メンテナンスリマインダーがまだありません",
+  "noRemindersDescription": "換水、機器の清掃、その他のタスクの定期リマインダーを設定しましょう",
+  "createFirst": "最初のリマインダーを作成",
+  "confirmDelete": "このリマインダーを削除してよろしいですか？",
+  "deleteFailed": "リマインダーの削除に失敗しました",
+  "fields": {
+    "title": "タイトル",
+    "frequency": "頻度",
+    "nextDue": "次回期限",
+    "lastCompleted": "最終完了",
+    "isActive": "有効"
+  },
+  "frequency": {
+    "days_one": "{{count}} 日ごと",
+    "days_other": "{{count}} 日ごと"
+  }
+}

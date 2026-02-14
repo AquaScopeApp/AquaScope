@@ -1,0 +1,62 @@
+{
+  "calculator": "添加剂计算器",
+  "title": "添加剂计算器",
+  "subtitle": "计算需要添加多少剂量来纠正水质参数",
+  "tankVolume": "水族箱水量",
+  "selectParameter": "选择要纠正的参数",
+  "selectCompound": "选择添加化合物",
+  "currentValue": "当前值",
+  "targetValue": "目标值",
+  "noReading": "无读数 — 手动输入",
+  "noTarget": "无目标值 — 手动输入",
+  "needsCorrection": "需要纠正",
+  "onTarget": "已达标",
+  "noData": "无数据",
+  "result": {
+    "add": "添加",
+    "of": "的",
+    "toRaise": "以提高",
+    "by": "增加",
+    "from": "从",
+    "to": "到",
+    "inYour": "在您的",
+    "system": "系统中",
+    "noCorrection": "无需纠正 — 当前值已达到或超过目标值。"
+  },
+  "safety": {
+    "warning": "大幅纠正",
+    "splitDoses": "建议分 {{count}} 次在2-3天内添加，以避免给水族箱生物带来压力。",
+    "maxSingle": "建议单次最大纠正量：{{value}} {{unit}}"
+  },
+  "info": {
+    "title": "工作原理",
+    "description": "此计算器计算将参数从当前值调整到目标值所需的化合物量。珊瑚和其他生物持续消耗这些元素，因此需要定期测试和纠正。",
+    "balancing": "这是平衡调整，而非日常添加计划。"
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "纯碱",
+      "description": "提升碱度。海水缸首选 — 同时略微提升pH。"
+    },
+    "baking_soda": {
+      "name": "小苏打",
+      "description": "提升碱度。对pH的影响比纯碱温和。常见且便宜。"
+    },
+    "calcium_chloride": {
+      "name": "氯化钙（二水合物）",
+      "description": "海水缸最常用的钙补充剂。"
+    },
+    "magnesium_chloride": {
+      "name": "氯化镁（六水合物）",
+      "description": "提升镁含量。常与硫酸镁配合使用。"
+    },
+    "magnesium_sulfate": {
+      "name": "硫酸镁（泻盐）",
+      "description": "提升镁含量。同时提供硫酸盐。"
+    },
+    "calcium_sulfate": {
+      "name": "硫酸钙（石膏）",
+      "description": "提升淡水缸的总硬度（GH）。"
+    }
+  }
+}

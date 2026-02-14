@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "AquaScope へようこそ",
+    "subtitle": "地域の設定を行いましょう",
+    "country": "国",
+    "countryPlaceholder": "国を選択...",
+    "countryHint": "国を選択すると、以下の推奨設定が自動入力されます",
+    "unitSystem": "容量単位",
+    "metric": "メートル法（リットル）",
+    "usImperial": "米国ヤード・ポンド法（ガロン）",
+    "ukImperial": "英国ヤード・ポンド法（ガロン）",
+    "temperature": "温度",
+    "celsius": "摂氏 (°C)",
+    "fahrenheit": "華氏 (°F)",
+    "currency": "通貨",
+    "dateFormat": "日付形式",
+    "getStarted": "始める",
+    "skip": "後で設定",
+    "skipForNow": "後で設定",
+    "selectCountry": "国を選択...",
+    "custom": "カスタム",
+    "saveFailed": "設定の保存に失敗しました",
+    "preview": "プレビュー",
+    "saving": "保存中..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "リットル",
+    "usGallons": "gal",
+    "usGallonsFull": "米ガロン",
+    "ukGallons": "gal",
+    "ukGallonsFull": "英ガロン",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "アメリカ合衆国",
+    "GB": "イギリス",
+    "FR": "フランス",
+    "DE": "ドイツ",
+    "IT": "イタリア",
+    "ES": "スペイン",
+    "PT": "ポルトガル",
+    "NL": "オランダ",
+    "BE": "ベルギー",
+    "AT": "オーストリア",
+    "CH": "スイス",
+    "CA": "カナダ",
+    "AU": "オーストラリア",
+    "JP": "日本",
+    "BR": "ブラジル"
+  },
+  "admin": {
+    "title": "地域と単位",
+    "description": "すべてのユーザーの単位、温度、日付形式を設定します。",
+    "country": "国 / 地域",
+    "unitSystem": "容量単位",
+    "temperature": "温度単位",
+    "dateFormat": "日付形式",
+    "countryHint": "国を選択すると推奨デフォルトが自動入力されます"
+  }
+}

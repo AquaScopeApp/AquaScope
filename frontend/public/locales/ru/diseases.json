@@ -1,0 +1,86 @@
+{
+  "title": "Болезни и здоровье",
+  "subtitle": "Отслеживайте болезни, лечение и состояние здоровья вашей живности",
+  "addDisease": "Записать болезнь",
+  "editDisease": "Редактировать болезнь",
+  "viewDetail": "Подробности",
+  "noRecords": "Записей о болезнях пока нет",
+  "noRecordsDescription": "Когда вы замечаете проблемы со здоровьем живности, записывайте их здесь для отслеживания лечения и результатов",
+  "createFirst": "Записать первую болезнь",
+  "confirmDelete": "Вы уверены, что хотите удалить эту запись о болезни?",
+  "deleteFailed": "Не удалось удалить запись о болезни",
+  "filterByLivestock": "Фильтр по живности",
+  "allLivestock": "Вся живность",
+  "showResolved": "Показать вылеченные",
+  "hideResolved": "Скрыть вылеченные",
+  "status": {
+    "active": "Активная",
+    "monitoring": "Наблюдение",
+    "resolved": "Вылечена",
+    "chronic": "Хроническая"
+  },
+  "severity": {
+    "mild": "Лёгкая",
+    "moderate": "Умеренная",
+    "severe": "Тяжёлая",
+    "critical": "Критическая"
+  },
+  "fields": {
+    "diseaseName": "Название болезни",
+    "symptoms": "Симптомы",
+    "diagnosis": "Диагноз",
+    "severity": "Тяжесть",
+    "status": "Статус",
+    "detectedDate": "Дата обнаружения",
+    "resolvedDate": "Дата излечения",
+    "outcome": "Результат",
+    "notes": "Заметки",
+    "livestock": "Заболевшая живность"
+  },
+  "treatment": {
+    "title": "Лечение",
+    "add": "Добавить лечение",
+    "edit": "Редактировать лечение",
+    "noTreatments": "Лечение пока не записано",
+    "type": "Тип лечения",
+    "name": "Название лечения",
+    "dosage": "Дозировка",
+    "date": "Дата лечения",
+    "duration": "Продолжительность (дней)",
+    "effectiveness": "Эффективность",
+    "consumable": "Связанный препарат",
+    "consumableNone": "Нет",
+    "confirmDelete": "Вы уверены, что хотите удалить это лечение?",
+    "types": {
+      "medication": "Лекарство",
+      "water_change": "Подмена воды",
+      "quarantine": "Карантин",
+      "dip": "Ванночка/купание",
+      "temperature": "Корректировка температуры",
+      "other": "Другое"
+    },
+    "effectivenessOptions": {
+      "effective": "Эффективно",
+      "partially_effective": "Частично эффективно",
+      "ineffective": "Неэффективно",
+      "too_early": "Слишком рано судить"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Активные",
+    "monitoringDiseases": "Наблюдение",
+    "chronicDiseases": "Хронические",
+    "resolvedDiseases": "Вылечены"
+  },
+  "detail": {
+    "timeline": "Хронология лечения",
+    "detectedOn": "Обнаружено",
+    "resolvedOn": "Вылечено",
+    "ongoing": "Продолжается",
+    "duration": "Продолжительность",
+    "days": "дней"
+  },
+  "suggestions": {
+    "title": "Распространённые болезни"
+  }
+}

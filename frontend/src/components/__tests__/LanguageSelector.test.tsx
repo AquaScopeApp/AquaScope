@@ -32,10 +32,10 @@ describe('LanguageSelector Component', () => {
     expect(select.tagName).toBe('SELECT')
   })
 
-  it('renders all 6 language options', () => {
+  it('renders all 15 language options', () => {
     renderWithProviders(<LanguageSelector />)
     const options = screen.getAllByRole('option')
-    expect(options).toHaveLength(6)
+    expect(options).toHaveLength(15)
   })
 
   it('renders English option', () => {

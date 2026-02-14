@@ -1,0 +1,86 @@
+{
+  "title": "تتبع الأمراض والصحة",
+  "subtitle": "مراقبة الأمراض والعلاجات والنتائج الصحية لكائناتك الحية",
+  "addDisease": "تسجيل مرض",
+  "editDisease": "تعديل المرض",
+  "viewDetail": "عرض التفاصيل",
+  "noRecords": "لا توجد سجلات أمراض بعد",
+  "noRecordsDescription": "عندما تلاحظ مشاكل صحية لدى كائناتك الحية، سجّلها هنا لتتبع العلاجات والنتائج",
+  "createFirst": "سجّل أول مرض",
+  "confirmDelete": "هل أنت متأكد من حذف سجل المرض هذا؟",
+  "deleteFailed": "فشل حذف سجل المرض",
+  "filterByLivestock": "تصفية حسب الكائن الحي",
+  "allLivestock": "جميع الكائنات الحية",
+  "showResolved": "عرض المحلولة",
+  "hideResolved": "إخفاء المحلولة",
+  "status": {
+    "active": "نشط",
+    "monitoring": "تحت المراقبة",
+    "resolved": "تم الحل",
+    "chronic": "مزمن"
+  },
+  "severity": {
+    "mild": "خفيف",
+    "moderate": "متوسط",
+    "severe": "شديد",
+    "critical": "حرج"
+  },
+  "fields": {
+    "diseaseName": "اسم المرض",
+    "symptoms": "الأعراض",
+    "diagnosis": "التشخيص",
+    "severity": "الشدة",
+    "status": "الحالة",
+    "detectedDate": "تاريخ الاكتشاف",
+    "resolvedDate": "تاريخ الحل",
+    "outcome": "النتيجة",
+    "notes": "ملاحظات",
+    "livestock": "الكائن الحي المصاب"
+  },
+  "treatment": {
+    "title": "العلاجات",
+    "add": "إضافة علاج",
+    "edit": "تعديل العلاج",
+    "noTreatments": "لم يتم تسجيل علاجات بعد",
+    "type": "نوع العلاج",
+    "name": "اسم العلاج",
+    "dosage": "الجرعة",
+    "date": "تاريخ العلاج",
+    "duration": "المدة (أيام)",
+    "effectiveness": "الفعالية",
+    "consumable": "الدواء المرتبط",
+    "consumableNone": "بدون",
+    "confirmDelete": "هل أنت متأكد من حذف هذا العلاج؟",
+    "types": {
+      "medication": "دواء",
+      "water_change": "تغيير الماء",
+      "quarantine": "حجر صحي",
+      "dip": "غمر/حمام",
+      "temperature": "تعديل درجة الحرارة",
+      "other": "أخرى"
+    },
+    "effectivenessOptions": {
+      "effective": "فعّال",
+      "partially_effective": "فعّال جزئيًا",
+      "ineffective": "غير فعّال",
+      "too_early": "مبكر جدًا للحكم"
+    }
+  },
+  "summary": {
+    "activeDiseases": "نشطة",
+    "monitoringDiseases": "تحت المراقبة",
+    "chronicDiseases": "مزمنة",
+    "resolvedDiseases": "تم حلها"
+  },
+  "detail": {
+    "timeline": "الجدول الزمني للعلاج",
+    "detectedOn": "تم الاكتشاف في",
+    "resolvedOn": "تم الحل في",
+    "ongoing": "مستمر",
+    "duration": "المدة",
+    "days": "أيام"
+  },
+  "suggestions": {
+    "title": "الأمراض الشائعة"
+  }
+}

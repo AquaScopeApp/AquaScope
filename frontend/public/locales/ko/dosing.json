@@ -1,0 +1,62 @@
+{
+  "calculator": "첨가제 계산기",
+  "title": "첨가제 계산기",
+  "subtitle": "수질 매개변수를 보정하기 위한 첨가량 계산",
+  "tankVolume": "수조 수량",
+  "selectParameter": "보정할 매개변수 선택",
+  "selectCompound": "첨가 화합물 선택",
+  "currentValue": "현재 값",
+  "targetValue": "목표 값",
+  "noReading": "측정값 없음 — 수동 입력",
+  "noTarget": "목표값 없음 — 수동 입력",
+  "needsCorrection": "보정 필요",
+  "onTarget": "목표 도달",
+  "noData": "데이터 없음",
+  "result": {
+    "add": "첨가량",
+    "of": "의",
+    "toRaise": "를 올리기 위해",
+    "by": "만큼",
+    "from": "에서",
+    "to": "까지",
+    "inYour": "귀하의",
+    "system": "시스템에서",
+    "noCorrection": "보정이 필요하지 않습니다 — 현재 값이 목표값 이상입니다."
+  },
+  "safety": {
+    "warning": "대폭 보정",
+    "splitDoses": "수조 생물의 스트레스를 피하기 위해 {{count}}회로 나누어 2~3일에 걸쳐 첨가하는 것을 권장합니다.",
+    "maxSingle": "권장 1회 최대 보정량: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "작동 원리",
+    "description": "이 계산기는 매개변수를 현재 값에서 목표값으로 조정하는 데 필요한 화합물의 양을 계산합니다. 산호 및 기타 생물은 이러한 원소를 지속적으로 소비하므로 정기적인 검사와 보정이 필요합니다.",
+    "balancing": "이것은 균형 조정이며, 일일 첨가 일정이 아닙니다."
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "소다회",
+      "description": "알칼리니티를 높입니다. 리프 수조에 적합 — pH도 약간 상승시킵니다."
+    },
+    "baking_soda": {
+      "name": "베이킹소다",
+      "description": "알칼리니티를 높입니다. 소다회보다 pH에 대한 영향이 부드럽습니다. 저렴하고 쉽게 구할 수 있습니다."
+    },
+    "calcium_chloride": {
+      "name": "염화칼슘 (이수화물)",
+      "description": "리프 수조에서 가장 일반적인 칼슘 보충제입니다."
+    },
+    "magnesium_chloride": {
+      "name": "염화마그네슘 (육수화물)",
+      "description": "마그네슘을 높입니다. 황산마그네슘과 함께 사용되는 경우가 많습니다."
+    },
+    "magnesium_sulfate": {
+      "name": "황산마그네슘 (엡솜솔트)",
+      "description": "마그네슘을 높입니다. 황산염도 공급합니다."
+    },
+    "calcium_sulfate": {
+      "name": "황산칼슘 (석고)",
+      "description": "담수 수조의 총경도(GH)를 높입니다."
+    }
+  }
+}

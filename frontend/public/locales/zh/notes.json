@@ -1,0 +1,17 @@
+{
+  "title": "笔记",
+  "subtitle": "水族箱日志和观察记录",
+  "newNote": "新建笔记",
+  "filterByTank": "按水族箱筛选",
+  "allTanks": "所有水族箱",
+  "totalNotes": "笔记总数",
+  "thisMonth": "本月",
+  "avgPerWeek": "每周平均",
+  "noNotes": "还没有笔记",
+  "startDocumenting": "通过观察记录和笔记开始记录您的水族之旅",
+  "createFirst": "创建第一条笔记",
+  "confirmDelete": "确定要删除此笔记吗？",
+  "saveFailed": "保存笔记失败",
+  "deleteFailed": "删除笔记失败",
+  "loading": "加载笔记中..."
+}

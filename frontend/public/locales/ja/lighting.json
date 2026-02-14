@@ -1,0 +1,53 @@
+{
+  "title": "照明",
+  "subtitle": "水槽のLED照明スケジュールを管理",
+  "createSchedule": "スケジュールを作成",
+  "editSchedule": "スケジュールを編集",
+  "deleteSchedule": "スケジュールを削除",
+  "deleteConfirm": "この照明スケジュールを削除してよろしいですか？",
+  "noSchedules": "照明スケジュールがまだありません",
+  "noSchedulesHint": "スケジュールを作成するか、プリセットから開始",
+  "fields": {
+    "name": "スケジュール名",
+    "description": "説明",
+    "tank": "水槽",
+    "channels": "LEDチャンネル",
+    "channelName": "チャンネル名",
+    "channelColor": "カラー",
+    "addChannel": "チャンネルを追加",
+    "removeChannel": "削除",
+    "schedule": "スケジュール",
+    "intensity": "照度",
+    "hour": "時間",
+    "notes": "メモ",
+    "active": "有効",
+    "inactive": "無効"
+  },
+  "presets": {
+    "title": "プリセット",
+    "loadPreset": "プリセットから読み込み",
+    "selectPreset": "-- プリセットを選択 --",
+    "reefbreeders-current": "ReefBreeders — 現在のスケジュール",
+    "reefbreeders-acropora": "ReefBreeders — ミドリイシ最適化",
+    "reef-low-softies": "リーフ — 弱光（ソフトコーラル）",
+    "reef-medium-mixed": "リーフ — 中光（LPS/ミックス）",
+    "freshwater-planted": "淡水水草水槽 — 強光",
+    "refugium-reverse": "リフュジウム — 逆光周期"
+  },
+  "chart": {
+    "title": "照度プレビュー",
+    "xAxis": "時間",
+    "yAxis": "照度 %"
+  },
+  "stats": {
+    "activeSchedules": "有効なスケジュール",
+    "totalSchedules": "総スケジュール数",
+    "tanksWithLighting": "照明設定済みの水槽"
+  },
+  "actions": {
+    "activate": "有効にする",
+    "deactivate": "無効にする",
+    "duplicate": "複製",
+    "save": "スケジュールを保存"
+  }
+}

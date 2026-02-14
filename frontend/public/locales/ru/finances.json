@@ -1,0 +1,73 @@
+{
+  "title": "Финансы",
+  "subtitle": "Отслеживайте расходы и управляйте бюджетами ваших аквариумов",
+  "allTanks": "Все аквариумы",
+  "noData": "Данных о расходах пока нет",
+  "cumulative": "Накопительно",
+  "tabs": {
+    "summary": "Сводка",
+    "details": "Детали",
+    "budgets": "Бюджеты"
+  },
+  "stats": {
+    "totalSpent": "Всего потрачено",
+    "equipment": "Оборудование",
+    "consumables": "Расходники",
+    "livestock": "Живность",
+    "icpTests": "ICP Тесты",
+    "electricity": "Электричество"
+  },
+  "categories": {
+    "equipment": "Оборудование",
+    "consumables": "Расходники",
+    "livestock": "Живность",
+    "icp_tests": "ICP Тесты",
+    "electricity": "Электричество"
+  },
+  "charts": {
+    "categoryBreakdown": "Расходы по категориям",
+    "monthlySpending": "Ежемесячные расходы",
+    "byTank": "Расходы по аквариумам"
+  },
+  "table": {
+    "tank": "Аквариум",
+    "total": "Итого"
+  },
+  "details": {
+    "allCategories": "Все категории",
+    "items": "записей",
+    "date": "Дата",
+    "name": "Название",
+    "category": "Категория",
+    "tank": "Аквариум",
+    "price": "Цена",
+    "url": "Ссылка",
+    "edit": "Изменить",
+    "editTitle": "Редактировать расход",
+    "purchaseUrl": "Ссылка на покупку",
+    "noItems": "Расходы не найдены",
+    "confirmDelete": "Удалить этот расход? Это действие необратимо."
+  },
+  "budget": {
+    "create": "Создать бюджет",
+    "edit": "Редактировать бюджет",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "name": "Название бюджета",
+    "amount": "Сумма",
+    "currency": "Валюта",
+    "period": "Период",
+    "monthly": "Ежемесячно",
+    "yearly": "Ежегодно",
+    "category": "Категория",
+    "tank": "Аквариум",
+    "notes": "Заметки",
+    "allCategories": "Все категории",
+    "allTanks": "Все аквариумы",
+    "noBudgets": "Бюджеты ещё не созданы",
+    "confirmDelete": "Вы уверены, что хотите удалить этот бюджет?",
+    "remaining": "{{amount}} осталось",
+    "overBy": "Превышение на {{amount}}"
+  }
+}

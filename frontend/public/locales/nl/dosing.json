@@ -1,0 +1,62 @@
+{
+  "calculator": "Doseringscalculator",
+  "title": "Doseringscalculator",
+  "subtitle": "Bereken hoeveel je moet doseren om je waterparameters te corrigeren",
+  "tankVolume": "Aquariumvolume",
+  "selectParameter": "Selecteer een parameter om te corrigeren",
+  "selectCompound": "Selecteer een doseringsverbinding",
+  "currentValue": "Huidige waarde",
+  "targetValue": "Doelwaarde",
+  "noReading": "Geen meting — handmatig invoeren",
+  "noTarget": "Geen doel — handmatig invoeren",
+  "needsCorrection": "Correctie nodig",
+  "onTarget": "Op doel",
+  "noData": "Geen gegevens",
+  "result": {
+    "add": "Voeg toe",
+    "of": "van",
+    "toRaise": "om te verhogen",
+    "by": "met",
+    "from": "van",
+    "to": "naar",
+    "inYour": "in je",
+    "system": "systeem",
+    "noCorrection": "Geen correctie nodig — huidige waarde is op of boven het doel."
+  },
+  "safety": {
+    "warning": "Grote correctie",
+    "splitDoses": "Overweeg te verdelen over {{count}} doses gedurende 2–3 dagen om stress voor je aquariumbewoners te voorkomen.",
+    "maxSingle": "Maximaal aanbevolen enkele correctie: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "Hoe dit werkt",
+    "description": "Deze calculator berekent hoeveel verbinding je moet toevoegen om een parameter van de huidige waarde naar je doel te brengen. Koralen en andere organismen verbruiken deze elementen voortdurend, dus regelmatig testen en corrigeren is normaal.",
+    "balancing": "Je bent aan het balanceren — niet dagelijkse doses aan het plannen."
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "Soda",
+      "description": "Verhoogt alkaliniteit. Voorkeur voor rifaquariums — verhoogt ook licht de pH."
+    },
+    "baking_soda": {
+      "name": "Natriumbicarbonaat",
+      "description": "Verhoogt alkaliniteit. Zachter pH-effect dan soda. Gangbaar en goedkoop."
+    },
+    "calcium_chloride": {
+      "name": "Calciumchloride (dihydraat)",
+      "description": "Meest voorkomend calciumsupplement voor rifaquariums."
+    },
+    "magnesium_chloride": {
+      "name": "Magnesiumchloride (hexahydraat)",
+      "description": "Verhoogt magnesium. Wordt vaak samen met magnesiumsulfaat gebruikt."
+    },
+    "magnesium_sulfate": {
+      "name": "Magnesiumsulfaat (Epsom zout)",
+      "description": "Verhoogt magnesium. Levert ook sulfaat."
+    },
+    "calcium_sulfate": {
+      "name": "Calciumsulfaat (gips)",
+      "description": "Verhoogt de totale hardheid (GH) in zoetwateraquariums."
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "title": "维护计划",
+  "subtitle": "跟踪海水水族箱的定期维护任务",
+  "addReminder": "添加提醒",
+  "reminders": "提醒",
+  "overdue": "已逾期",
+  "dueSoon": "即将到期（7天内）",
+  "upcoming": "即将到来",
+  "inactive": "不活跃",
+  "noReminders": "还没有维护提醒",
+  "noRemindersDescription": "设置换水、设备清洁和其他任务的定期提醒",
+  "createFirst": "创建第一个提醒",
+  "confirmDelete": "确定要删除此提醒吗？",
+  "deleteFailed": "删除提醒失败",
+  "fields": {
+    "title": "标题",
+    "frequency": "频率",
+    "nextDue": "下次到期",
+    "lastCompleted": "上次完成",
+    "isActive": "活跃"
+  },
+  "frequency": {
+    "days_one": "每 {{count}} 天",
+    "days_other": "每 {{count}} 天"
+  }
+}

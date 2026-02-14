@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "AquaScope에 오신 것을 환영합니다",
+    "subtitle": "지역 설정을 구성해 봅시다",
+    "country": "국가",
+    "countryPlaceholder": "국가를 선택하세요...",
+    "countryHint": "국가를 선택하면 아래 권장 설정이 자동으로 입력됩니다",
+    "unitSystem": "용량 단위",
+    "metric": "미터법 (리터)",
+    "usImperial": "미국 야드파운드법 (갤런)",
+    "ukImperial": "영국 야드파운드법 (갤런)",
+    "temperature": "온도",
+    "celsius": "섭씨 (°C)",
+    "fahrenheit": "화씨 (°F)",
+    "currency": "통화",
+    "dateFormat": "날짜 형식",
+    "getStarted": "시작하기",
+    "skip": "나중에 설정",
+    "skipForNow": "나중에 설정",
+    "selectCountry": "국가를 선택하세요...",
+    "custom": "사용자 정의",
+    "saveFailed": "설정 저장에 실패했습니다",
+    "preview": "미리보기",
+    "saving": "저장 중..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "리터",
+    "usGallons": "gal",
+    "usGallonsFull": "미국 갤런",
+    "ukGallons": "gal",
+    "ukGallonsFull": "영국 갤런",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "미국",
+    "GB": "영국",
+    "FR": "프랑스",
+    "DE": "독일",
+    "IT": "이탈리아",
+    "ES": "스페인",
+    "PT": "포르투갈",
+    "NL": "네덜란드",
+    "BE": "벨기에",
+    "AT": "오스트리아",
+    "CH": "스위스",
+    "CA": "캐나다",
+    "AU": "호주",
+    "JP": "일본",
+    "BR": "브라질"
+  },
+  "admin": {
+    "title": "지역 및 단위",
+    "description": "모든 사용자의 단위, 온도, 날짜 형식을 설정합니다.",
+    "country": "국가 / 지역",
+    "unitSystem": "용량 단위",
+    "temperature": "온도 단위",
+    "dateFormat": "날짜 형식",
+    "countryHint": "국가를 선택하면 권장 기본값이 자동으로 입력됩니다"
+  }
+}

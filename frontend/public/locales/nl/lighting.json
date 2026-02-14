@@ -1,0 +1,53 @@
+{
+  "title": "Verlichting",
+  "subtitle": "Beheer LED-verlichtingsschema's voor je aquariums",
+  "createSchedule": "Schema aanmaken",
+  "editSchedule": "Schema bewerken",
+  "deleteSchedule": "Schema verwijderen",
+  "deleteConfirm": "Weet je zeker dat je dit verlichtingsschema wilt verwijderen?",
+  "noSchedules": "Nog geen verlichtingsschema's",
+  "noSchedulesHint": "Maak een schema aan of begin met een preset",
+  "fields": {
+    "name": "Schemanaam",
+    "description": "Beschrijving",
+    "tank": "Aquarium",
+    "channels": "LED-kanalen",
+    "channelName": "Kanaalnaam",
+    "channelColor": "Kleur",
+    "addChannel": "Kanaal toevoegen",
+    "removeChannel": "Verwijderen",
+    "schedule": "Schema",
+    "intensity": "Intensiteit",
+    "hour": "Uur",
+    "notes": "Notities",
+    "active": "Actief",
+    "inactive": "Inactief"
+  },
+  "presets": {
+    "title": "Presets",
+    "loadPreset": "Laden vanuit preset",
+    "selectPreset": "-- Selecteer een preset --",
+    "reefbreeders-current": "ReefBreeders — Huidig schema",
+    "reefbreeders-acropora": "ReefBreeders — Geoptimaliseerd voor Acropora",
+    "reef-low-softies": "Rif — Weinig licht (Zachtkoralen)",
+    "reef-medium-mixed": "Rif — Gemiddeld licht (LPS/Gemengd)",
+    "freshwater-planted": "Zoetwater beplant — Veel licht",
+    "refugium-reverse": "Refugium — Omgekeerde fotoperiode"
+  },
+  "chart": {
+    "title": "Intensiteitsvoorbeeld",
+    "xAxis": "Uur",
+    "yAxis": "Intensiteit %"
+  },
+  "stats": {
+    "activeSchedules": "Actieve schema's",
+    "totalSchedules": "Totaal schema's",
+    "tanksWithLighting": "Aquariums met verlichting"
+  },
+  "actions": {
+    "activate": "Activeren",
+    "deactivate": "Deactiveren",
+    "duplicate": "Dupliceren",
+    "save": "Schema opslaan"
+  }
+}

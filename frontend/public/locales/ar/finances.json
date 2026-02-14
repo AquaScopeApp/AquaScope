@@ -1,0 +1,73 @@
+{
+  "title": "المالية",
+  "subtitle": "تتبع الإنفاق وإدارة الميزانيات عبر أحواضك",
+  "allTanks": "جميع الأحواض",
+  "noData": "لا توجد بيانات إنفاق بعد",
+  "cumulative": "تراكمي",
+  "tabs": {
+    "summary": "ملخص",
+    "details": "التفاصيل",
+    "budgets": "الميزانيات"
+  },
+  "stats": {
+    "totalSpent": "إجمالي الإنفاق",
+    "equipment": "المعدات",
+    "consumables": "المواد الاستهلاكية",
+    "livestock": "الكائنات الحية",
+    "icpTests": "اختبارات ICP",
+    "electricity": "الكهرباء"
+  },
+  "categories": {
+    "equipment": "المعدات",
+    "consumables": "المواد الاستهلاكية",
+    "livestock": "الكائنات الحية",
+    "icp_tests": "اختبارات ICP",
+    "electricity": "الكهرباء"
+  },
+  "charts": {
+    "categoryBreakdown": "الإنفاق حسب الفئة",
+    "monthlySpending": "الإنفاق الشهري",
+    "byTank": "الإنفاق حسب الحوض"
+  },
+  "table": {
+    "tank": "الحوض",
+    "total": "الإجمالي"
+  },
+  "details": {
+    "allCategories": "جميع الفئات",
+    "items": "عناصر",
+    "date": "التاريخ",
+    "name": "الاسم",
+    "category": "الفئة",
+    "tank": "الحوض",
+    "price": "السعر",
+    "url": "الرابط",
+    "edit": "تعديل",
+    "editTitle": "تعديل المصروف",
+    "purchaseUrl": "رابط الشراء",
+    "noItems": "لم يتم العثور على مصاريف",
+    "confirmDelete": "حذف هذا المصروف؟ لا يمكن التراجع عن هذا."
+  },
+  "budget": {
+    "create": "إنشاء ميزانية",
+    "edit": "تعديل الميزانية",
+    "delete": "حذف",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "name": "اسم الميزانية",
+    "amount": "المبلغ",
+    "currency": "العملة",
+    "period": "الفترة",
+    "monthly": "شهري",
+    "yearly": "سنوي",
+    "category": "الفئة",
+    "tank": "الحوض",
+    "notes": "ملاحظات",
+    "allCategories": "جميع الفئات",
+    "allTanks": "جميع الأحواض",
+    "noBudgets": "لم يتم إنشاء ميزانيات بعد",
+    "confirmDelete": "هل أنت متأكد من حذف هذه الميزانية؟",
+    "remaining": "{{amount}} متبقي",
+    "overBy": "تجاوز بمقدار {{amount}}"
+  }
+}

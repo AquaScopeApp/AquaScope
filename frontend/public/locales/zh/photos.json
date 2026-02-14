@@ -1,0 +1,16 @@
+{
+  "title": "照片",
+  "subtitle": "水族箱照片库和时间线",
+  "uploadPhoto": "上传照片",
+  "filterByTank": "按水族箱筛选",
+  "allTanks": "所有水族箱",
+  "totalPhotos": "照片总数",
+  "thisMonth": "本月",
+  "tanksWithPhotos": "有照片的水族箱",
+  "noPhotos": "还没有照片",
+  "startUploading": "上传第一张照片，开始构建水族箱时间线",
+  "confirmDelete": "确定要删除此照片吗？",
+  "deleteFailed": "删除照片失败",
+  "updateFailed": "更新照片失败",
+  "loading": "加载照片中..."
+}

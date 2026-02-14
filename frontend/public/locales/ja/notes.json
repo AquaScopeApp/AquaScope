@@ -1,0 +1,17 @@
+{
+  "title": "ノート",
+  "subtitle": "水槽ジャーナルと観察記録",
+  "newNote": "新しいノート",
+  "filterByTank": "水槽でフィルター",
+  "allTanks": "すべての水槽",
+  "totalNotes": "ノート総数",
+  "thisMonth": "今月",
+  "avgPerWeek": "週平均",
+  "noNotes": "ノートがまだありません",
+  "startDocumenting": "観察記録やノートでリーフジャーニーを記録しましょう",
+  "createFirst": "最初のノートを作成",
+  "confirmDelete": "このノートを削除してよろしいですか？",
+  "saveFailed": "ノートの保存に失敗しました",
+  "deleteFailed": "ノートの削除に失敗しました",
+  "loading": "ノートを読み込み中..."
+}

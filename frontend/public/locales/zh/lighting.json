@@ -1,0 +1,53 @@
+{
+  "title": "灯光",
+  "subtitle": "管理水族箱的LED灯光计划",
+  "createSchedule": "创建计划",
+  "editSchedule": "编辑计划",
+  "deleteSchedule": "删除计划",
+  "deleteConfirm": "确定要删除此灯光计划吗？",
+  "noSchedules": "还没有灯光计划",
+  "noSchedulesHint": "创建计划或从预设开始",
+  "fields": {
+    "name": "计划名称",
+    "description": "描述",
+    "tank": "水族箱",
+    "channels": "LED通道",
+    "channelName": "通道名称",
+    "channelColor": "颜色",
+    "addChannel": "添加通道",
+    "removeChannel": "移除",
+    "schedule": "计划",
+    "intensity": "强度",
+    "hour": "小时",
+    "notes": "备注",
+    "active": "活跃",
+    "inactive": "不活跃"
+  },
+  "presets": {
+    "title": "预设",
+    "loadPreset": "从预设加载",
+    "selectPreset": "-- 选择预设 --",
+    "reefbreeders-current": "ReefBreeders — 当前计划",
+    "reefbreeders-acropora": "ReefBreeders — 鹿角珊瑚优化",
+    "reef-low-softies": "珊瑚礁 — 低光（软体珊瑚）",
+    "reef-medium-mixed": "珊瑚礁 — 中光（LPS/混合）",
+    "freshwater-planted": "淡水水草缸 — 强光",
+    "refugium-reverse": "藻缸 — 反光周期"
+  },
+  "chart": {
+    "title": "强度预览",
+    "xAxis": "小时",
+    "yAxis": "强度 %"
+  },
+  "stats": {
+    "activeSchedules": "活跃计划",
+    "totalSchedules": "计划总数",
+    "tanksWithLighting": "有灯光设置的水族箱"
+  },
+  "actions": {
+    "activate": "设为活跃",
+    "deactivate": "停用",
+    "duplicate": "复制",
+    "save": "保存计划"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "calculator": "Dozaj Hesaplayıcı",
+  "title": "Dozaj Hesaplayıcı",
+  "subtitle": "Su parametrelerinizi düzeltmek için ne kadar dozajlama yapacağınızı hesaplayın",
+  "tankVolume": "Akvaryum Hacmi",
+  "selectParameter": "Düzeltilecek parametreyi seçin",
+  "selectCompound": "Dozaj bileşiğini seçin",
+  "currentValue": "Mevcut Değer",
+  "targetValue": "Hedef Değer",
+  "noReading": "Ölçüm yok — manuel girin",
+  "noTarget": "Hedef yok — manuel girin",
+  "needsCorrection": "Düzeltme gerekiyor",
+  "onTarget": "Hedefte",
+  "noData": "Veri yok",
+  "result": {
+    "add": "Ekleyin",
+    "of": "",
+    "toRaise": "yükseltmek için",
+    "by": "kadar",
+    "from": "değerinden",
+    "to": "değerine",
+    "inYour": "sisteminizde",
+    "system": "",
+    "noCorrection": "Düzeltme gerekmiyor — mevcut değer hedefte veya üzerinde."
+  },
+  "safety": {
+    "warning": "Büyük Düzeltme",
+    "splitDoses": "Akvaryum sakinlerinizi strese sokmamak için 2-3 gün boyunca {{count}} doza bölmeyi düşünün.",
+    "maxSingle": "Önerilen maksimum tek düzeltme: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "Bu nasıl çalışır",
+    "description": "Bu hesaplayıcı, bir parametreyi mevcut değerinden hedefinize getirmek için ne kadar bileşik eklemeniz gerektiğini hesaplar. Mercanlar ve diğer organizmalar bu elementleri sürekli tüketir, bu nedenle düzenli test ve düzeltme beklenen bir durumdur.",
+    "balancing": "Dengeleme yapıyorsunuz — günlük doz planlamıyorsunuz."
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "Soda Külü",
+      "description": "Alkaliniteyi yükseltir. Resif akvaryumları için tercih edilir — pH'ı da hafifçe yükseltir."
+    },
+    "baking_soda": {
+      "name": "Kabartma Tozu",
+      "description": "Alkaliniteyi yükseltir. Soda külüne göre daha yumuşak pH etkisi. Yaygın ve ekonomik."
+    },
+    "calcium_chloride": {
+      "name": "Kalsiyum Klorür (dihidrat)",
+      "description": "Resif akvaryumları için en yaygın kalsiyum takviyesi."
+    },
+    "magnesium_chloride": {
+      "name": "Magnezyum Klorür (heksahidrat)",
+      "description": "Magnezyumu yükseltir. Genellikle magnezyum sülfat ile birlikte kullanılır."
+    },
+    "magnesium_sulfate": {
+      "name": "Magnezyum Sülfat (Epsom Tuzu)",
+      "description": "Magnezyumu yükseltir. Ayrıca sülfat sağlar."
+    },
+    "calcium_sulfate": {
+      "name": "Kalsiyum Sülfat (alçıtaşı)",
+      "description": "Tatlı su akvaryumlarında genel sertliği (GH) yükseltir."
+    }
+  }
+}

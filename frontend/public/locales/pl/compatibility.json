@@ -1,0 +1,62 @@
+{
+  "checker": "Kompatybilność",
+  "title": "Sprawdzanie kompatybilności",
+  "subtitle": "Sprawdź, czy mieszkańcy Twojego akwarium są ze sobą kompatybilni",
+  "selectTank": "Wybierz akwarium do sprawdzenia",
+  "overallCompatible": "Wszystkie sprawdzone gatunki wydają się kompatybilne",
+  "overallCaution": "Wykryto pewne potencjalne problemy",
+  "overallIncompatible": "Wykryto problemy z kompatybilnością",
+  "speciesChecked": "Sprawdzono {{count}} gatunków",
+  "issuesFound": "Znaleziono {{count}} problem(ów)",
+  "noIssues": "Nie wykryto problemów z kompatybilnością",
+  "notInDatabase": "Gatunek nie znajduje się w bazie danych",
+  "notInDatabaseInfo": "Poniższe gatunki nie znajdują się w naszej bazie kompatybilności. Nie przeprowadzono dla nich sprawdzeń.",
+  "noLivestock": "Brak aktywnych zwierząt w tym akwarium do sprawdzenia",
+  "inlineCompatible": "Ten gatunek wydaje się kompatybilny z obecnymi mieszkańcami akwarium.",
+  "inlineNoData": "Brak danych o kompatybilności dla tego gatunku.",
+  "inlineChecking": "Sprawdzanie kompatybilności...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}} ({{tempA}}) może wchodzić w konflikt z {{speciesB}} ({{tempB}}). Agresywne gatunki mogą stresować lub ranić pokojowych współmieszkańców.",
+    "reef_safety": "{{speciesA}} nie jest bezpieczny dla rafy i może uszkodzić lub zjeść {{speciesB}}.",
+    "reef_safety_caution": "{{speciesA}} ma wątpliwe bezpieczeństwo dla rafy. Uważnie monitoruj z {{speciesB}}.",
+    "tank_too_small": "{{species}} potrzebuje co najmniej {{required}}L — to akwarium ma tylko {{actual}}L.",
+    "territorial_duplicates": "Wiele {{species}} w tym samym akwarium może walczyć o terytorium.",
+    "predator_prey": "{{predator}} jest naturalnym drapieżnikiem {{prey}}. Wysokie ryzyko drapieżnictwa.",
+    "size_disparity": "{{large}} jest znacznie większy niż {{small}}. Różnica w rozmiarze stanowi zagrożenie.",
+    "water_type_conflict": "{{species}} to gatunek {{speciesWater}} i może nie rozwijać się w akwarium {{tankWater}}.",
+    "specific_seahorse": "Koniki morskie powinny być trzymane w akwariach gatunkowych. {{other}} może konkurować o pokarm lub je stresować.",
+    "specific_axolotl": "Axolotle najlepiej trzymać samodzielnie lub z własnym gatunkiem. {{other}} może skubać skrzela lub zostać zjedzony.",
+    "specific_betta_male": "Wiele samców Betta będzie agresywnie walczyć. Trzymaj tylko jednego samca na akwarium.",
+    "specific_coral_war": "{{speciesA}} i {{speciesB}} mogą prowadzić wojnę chemiczną, jeśli zostaną umieszczone zbyt blisko.",
+    "corallivore_conflict": "{{speciesA}} żywi się koralami i uszkodzi {{speciesB}}."
+  },
+  "info": {
+    "title": "Jak to działa",
+    "description": "Ten sprawdzacz wykorzystuje wbudowaną bazę danych cech popularnych gatunków akwariowych do sprawdzania konfliktów agresji, bezpieczeństwa rafy, rozmiaru akwarium, sporów terytorialnych i relacji drapieżnik-ofiara.",
+    "disclaimer": "To jest narzędzie wspomagające, a nie gwarancja. Zachowanie osobnicze jest zmienne. Zawsze dokładnie zbadaj gatunki przed ich dodaniem.",
+    "sourcesTitle": "Źródła danych",
+    "sources": "Cechy gatunków opracowano na podstawie uznanych źródeł: FishBase.org (taksonomia, ekologia, zachowanie), WoRMS (World Register of Marine Species), przewodniki pielęgnacyjne LiveAquaria, wiki społeczności Reef2Reef/ReefCentral, Aquarium Corals Erica Bornemana (allelopatia koralowa) oraz wytyczne hodowlane MASNA. Rozmiary akwariów odzwierciedlają powszechnie akceptowane minima ze społeczności akwarystycznej."
+  },
+  "severity": {
+    "compatible": "Kompatybilny",
+    "caution": "Ostrożność",
+    "incompatible": "Niekompatybilny"
+  },
+  "tabs": {
+    "issues": "Problemy",
+    "matrix": "Macierz",
+    "network": "Sieć"
+  },
+  "matrix": {
+    "clickForDetails": "Kliknij komórkę, aby zobaczyć szczegóły"
+  },
+  "network": {
+    "predatorPrey": "Drapieżnik → Ofiara",
+    "incompatible": "Niekompatybilny",
+    "caution": "Ostrożność",
+    "fish": "Ryba",
+    "coral": "Koral",
+    "invertebrate": "Bezkręgowiec",
+    "noConnections": "Nie znaleziono problemów z kompatybilnością między gatunkami"
+  }
+}

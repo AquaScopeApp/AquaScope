@@ -1,0 +1,73 @@
+{
+  "title": "Finanslar",
+  "subtitle": "Akvaryumlarınız genelinde harcamalarınızı takip edin ve bütçelerinizi yönetin",
+  "allTanks": "Tüm Akvaryumlar",
+  "noData": "Henüz harcama verisi yok",
+  "cumulative": "Kümülatif",
+  "tabs": {
+    "summary": "Özet",
+    "details": "Detaylar",
+    "budgets": "Bütçeler"
+  },
+  "stats": {
+    "totalSpent": "Toplam Harcama",
+    "equipment": "Ekipman",
+    "consumables": "Sarf Malzemeleri",
+    "livestock": "Canlılar",
+    "icpTests": "ICP Testleri",
+    "electricity": "Elektrik"
+  },
+  "categories": {
+    "equipment": "Ekipman",
+    "consumables": "Sarf Malzemeleri",
+    "livestock": "Canlılar",
+    "icp_tests": "ICP Testleri",
+    "electricity": "Elektrik"
+  },
+  "charts": {
+    "categoryBreakdown": "Kategoriye Göre Harcama",
+    "monthlySpending": "Aylık Harcama",
+    "byTank": "Akvaryuma Göre Harcama"
+  },
+  "table": {
+    "tank": "Akvaryum",
+    "total": "Toplam"
+  },
+  "details": {
+    "allCategories": "Tüm Kategoriler",
+    "items": "öğe",
+    "date": "Tarih",
+    "name": "Ad",
+    "category": "Kategori",
+    "tank": "Akvaryum",
+    "price": "Fiyat",
+    "url": "URL",
+    "edit": "Düzenle",
+    "editTitle": "Harcamayı Düzenle",
+    "purchaseUrl": "Satın Alma URL",
+    "noItems": "Harcama bulunamadı",
+    "confirmDelete": "Bu harcamayı sil? Bu işlem geri alınamaz."
+  },
+  "budget": {
+    "create": "Bütçe Oluştur",
+    "edit": "Bütçeyi Düzenle",
+    "delete": "Sil",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "name": "Bütçe Adı",
+    "amount": "Tutar",
+    "currency": "Para Birimi",
+    "period": "Dönem",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "category": "Kategori",
+    "tank": "Akvaryum",
+    "notes": "Notlar",
+    "allCategories": "Tüm Kategoriler",
+    "allTanks": "Tüm Akvaryumlar",
+    "noBudgets": "Henüz bütçe oluşturulmadı",
+    "confirmDelete": "Bu bütçeyi silmek istediğinize emin misiniz?",
+    "remaining": "{{amount}} kalan",
+    "overBy": "{{amount}} aşım"
+  }
+}

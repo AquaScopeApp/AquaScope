@@ -1,0 +1,17 @@
+{
+  "title": "노트",
+  "subtitle": "수조 일지 및 관찰 기록",
+  "newNote": "새 노트",
+  "filterByTank": "수조별 필터",
+  "allTanks": "모든 수조",
+  "totalNotes": "총 노트 수",
+  "thisMonth": "이번 달",
+  "avgPerWeek": "주간 평균",
+  "noNotes": "아직 노트가 없습니다",
+  "startDocumenting": "관찰 기록과 노트로 리프 여정을 기록해 보세요",
+  "createFirst": "첫 번째 노트 만들기",
+  "confirmDelete": "이 노트를 삭제하시겠습니까?",
+  "saveFailed": "노트 저장에 실패했습니다",
+  "deleteFailed": "노트 삭제에 실패했습니다",
+  "loading": "노트 로딩 중..."
+}

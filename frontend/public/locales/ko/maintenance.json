@@ -1,0 +1,26 @@
+{
+  "title": "유지보수 일정",
+  "subtitle": "해수 수족관의 정기 유지보수 작업을 관리",
+  "addReminder": "알림 추가",
+  "reminders": "알림",
+  "overdue": "기한 초과",
+  "dueSoon": "곧 도래 (7일 이내)",
+  "upcoming": "예정",
+  "inactive": "비활성",
+  "noReminders": "아직 유지보수 알림이 없습니다",
+  "noRemindersDescription": "환수, 장비 청소 등의 정기 알림을 설정하세요",
+  "createFirst": "첫 번째 알림 만들기",
+  "confirmDelete": "이 알림을 삭제하시겠습니까?",
+  "deleteFailed": "알림 삭제에 실패했습니다",
+  "fields": {
+    "title": "제목",
+    "frequency": "빈도",
+    "nextDue": "다음 기한",
+    "lastCompleted": "최근 완료",
+    "isActive": "활성"
+  },
+  "frequency": {
+    "days_one": "{{count}}일마다",
+    "days_other": "{{count}}일마다"
+  }
+}

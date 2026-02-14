@@ -33,6 +33,14 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
+vi.mock('../../hooks/useRegionalSettings', () => ({
+  useRegionalSettings: () => ({
+    formatVolume: (v: number | null | undefined) => v != null ? `${v} L` : '-',
+    tempLabel: '°C',
+    celsiusToDisplay: (v: number) => v,
+  }),
+}))
+
 globalThis.URL.createObjectURL = vi.fn(() => 'blob:test-url')
 globalThis.URL.revokeObjectURL = vi.fn()
 
@@ -48,6 +56,16 @@ const makeTank = (overrides: Partial<Tank> = {}): Tank => ({
   description: 'A beautiful mixed reef tank',
   image_url: null,
   setup_date: '2023-06-15',
+  electricity_cost_per_day: null,
+  has_refugium: false,
+  refugium_volume_liters: null,
+  refugium_type: null,
+  refugium_algae: null,
+  refugium_lighting_hours: null,
+  refugium_notes: null,
+  is_archived: false,
+  share_token: null,
+  share_enabled: false,
   created_at: '2023-06-15T00:00:00Z',
   updated_at: '2024-01-01T00:00:00Z',
   events: [],
@@ -57,6 +75,8 @@ const makeTank = (overrides: Partial<Tank> = {}): Tank => ({
 describe('TankCard Component', () => {
   const mockOnEdit = vi.fn()
   const mockOnDelete = vi.fn()
+  const mockOnArchive = vi.fn()
+  const mockOnUnarchive = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -65,7 +85,7 @@ describe('TankCard Component', () => {
   it('renders tank name', () => {
     const tank = makeTank()
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     expect(screen.getByText('My Reef Tank')).toBeInTheDocument()
@@ -74,7 +94,7 @@ describe('TankCard Component', () => {
   it('renders water type badge via aquarium subtype', () => {
     const tank = makeTank({ aquarium_subtype: 'mixed_reef' })
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     // The subtype badge renders with t(`subtype.${tank.aquarium_subtype}`, { defaultValue: ... })
@@ -89,23 +109,23 @@ describe('TankCard Component', () => {
       total_volume_liters: 380,
     })
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     expect(screen.getByText('fields.displayVolume')).toBeInTheDocument()
     expect(screen.getByText('fields.sumpVolume')).toBeInTheDocument()
-    // Display volume: "300 fields.liters"
-    expect(screen.getByText('300 fields.liters')).toBeInTheDocument()
-    // Sump volume: "80 fields.liters"
-    expect(screen.getByText('80 fields.liters')).toBeInTheDocument()
-    // Total volume
-    expect(screen.getByText('380.0 fields.liters')).toBeInTheDocument()
+    // Display volume: formatted by formatVolume mock as "300 L"
+    expect(screen.getByText('300 L')).toBeInTheDocument()
+    // Sump volume: formatted by formatVolume mock as "80 L"
+    expect(screen.getByText('80 L')).toBeInTheDocument()
+    // Total volume: formatted by formatVolume mock as "380 L"
+    expect(screen.getByText('380 L')).toBeInTheDocument()
   })
 
   it('calls onEdit callback when edit button is clicked', async () => {
     const tank = makeTank()
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
     const user = userEvent.setup()
 
@@ -119,7 +139,7 @@ describe('TankCard Component', () => {
   it('calls onDelete callback when delete button is clicked', async () => {
     const tank = makeTank()
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
     const user = userEvent.setup()
 
@@ -133,7 +153,7 @@ describe('TankCard Component', () => {
   it('handles tank with no events', () => {
     const tank = makeTank({ events: [] })
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     // The "recentEvents" section should not render when events is empty
@@ -143,7 +163,7 @@ describe('TankCard Component', () => {
   it('shows setup date', () => {
     const tank = makeTank({ setup_date: '2023-06-15' })
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     expect(screen.getByText('fields.setupDate')).toBeInTheDocument()
@@ -155,7 +175,7 @@ describe('TankCard Component', () => {
   it('shows notSet when setup date is null', () => {
     const tank = makeTank({ setup_date: null })
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     expect(screen.getByText('notSet')).toBeInTheDocument()
@@ -190,7 +210,7 @@ describe('TankCard Component', () => {
     })
 
     renderWithProviders(
-      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} />
+      <TankCard tank={tank} onEdit={mockOnEdit} onDelete={mockOnDelete} onArchive={mockOnArchive} onUnarchive={mockOnUnarchive} />
     )
 
     expect(screen.getByText('recentEvents')).toBeInTheDocument()

@@ -1,0 +1,39 @@
+{
+  "title": "ICP-watertesten",
+  "subtitle": "Upload ATI-lab PDF's om automatisch sporenelementen en waterkwaliteit bij te houden",
+  "uploadNew": "Nieuwe test uploaden",
+  "selectTank": "Selecteer aquarium",
+  "allTanks": "Alle aquariums",
+  "uploading": "Uploaden...",
+  "uploadATI": "ATI PDF uploaden",
+  "processing": "Verwerken...",
+  "uploadHelp": "Upload ATI Aquaristik ICP-test PDF voor automatische gegevensextractie",
+  "testHistory": "Testgeschiedenis",
+  "tests": "testen",
+  "loading": "Laden...",
+  "noTests": "Nog geen ICP-testen. Upload je eerste test!",
+  "uploadSuccess": "ICP-test succesvol geüpload",
+  "uploadSuccessMulti": "ICP-testen succesvol geüpload",
+  "uploadFailed": "Uploaden mislukt:",
+  "confirmDelete": "Weet je zeker dat je deze ICP-test wilt verwijderen?",
+  "deleteFailed": "Verwijderen van test mislukt",
+  "selectTest": "Selecteer een test uit de lijst om details te bekijken",
+  "testId": "Test-ID:",
+  "waterType": {
+    "saltwater": "Zoutwater",
+    "roWater": "RO-water"
+  },
+  "scores": {
+    "major": "Hoofdelementen",
+    "minor": "Sporenelementen",
+    "pollutants": "Vervuilers",
+    "base": "Basiselementen"
+  },
+  "tabs": {
+    "major": "Hoofd",
+    "minor": "Spoor",
+    "pollutants": "Vervuilers"
+  },
+  "notes": "Notities",
+  "cost": "Testkosten"
+}

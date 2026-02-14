@@ -1,0 +1,39 @@
+{
+  "title": "Testy ICP wody",
+  "subtitle": "Prześlij PDF-y z laboratorium ATI, aby automatycznie śledzić pierwiastki śladowe i jakość wody",
+  "uploadNew": "Prześlij nowy test",
+  "selectTank": "Wybierz akwarium",
+  "allTanks": "Wszystkie akwaria",
+  "uploading": "Przesyłanie...",
+  "uploadATI": "Prześlij PDF ATI",
+  "processing": "Przetwarzanie...",
+  "uploadHelp": "Prześlij PDF testu ICP ATI Aquaristik w celu automatycznej ekstrakcji danych",
+  "testHistory": "Historia testów",
+  "tests": "testy",
+  "loading": "Ładowanie...",
+  "noTests": "Brak testów ICP. Prześlij swój pierwszy test!",
+  "uploadSuccess": "Test ICP przesłany pomyślnie",
+  "uploadSuccessMulti": "Testy ICP przesłane pomyślnie",
+  "uploadFailed": "Nie udało się przesłać:",
+  "confirmDelete": "Czy na pewno chcesz usunąć ten test ICP?",
+  "deleteFailed": "Nie udało się usunąć testu",
+  "selectTest": "Wybierz test z listy, aby zobaczyć szczegóły",
+  "testId": "ID testu:",
+  "waterType": {
+    "saltwater": "Woda morska",
+    "roWater": "Woda RO"
+  },
+  "scores": {
+    "major": "Główne elementy",
+    "minor": "Elementy śladowe",
+    "pollutants": "Zanieczyszczenia",
+    "base": "Elementy bazowe"
+  },
+  "tabs": {
+    "major": "Główne",
+    "minor": "Śladowe",
+    "pollutants": "Zanieczyszczenia"
+  },
+  "notes": "Notatki",
+  "cost": "Koszt testu"
+}

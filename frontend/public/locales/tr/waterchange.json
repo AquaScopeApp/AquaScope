@@ -1,0 +1,92 @@
+{
+  "title": "Su Değişimi Hesaplayıcı",
+  "subtitle": "Parametre değişikliklerini öngörün veya gerekli su değişimi hacmini hesaplayın",
+  "noTanks": "Henüz akvaryum yok. Hesaplayıcıyı kullanmak için önce bir akvaryum oluşturun.",
+  "volume": {
+    "display": "Gösteri",
+    "sump": "Sump",
+    "total": "Toplam Sistem"
+  },
+  "tabs": {
+    "impact": "Etki Önizleme",
+    "target": "Hedef Parametre",
+    "correction": "Düzeltme Planı",
+    "dosing": "Dozaj Hesaplayıcı"
+  },
+  "impact": {
+    "waterChangePercent": "Su Değişimi",
+    "liters": "{{value}} L",
+    "replacementWater": "Yedek Su",
+    "saltMix": "Tuz Karışımı",
+    "custom": "Özel",
+    "saveProfile": "Kaydet",
+    "profileSaved": "Kaydedildi!",
+    "results": "Öngörülen Parametreler",
+    "noData": "Parametre verisi yok. Önce bazı ölçümler kaydedin.",
+    "parameter": "Parametre",
+    "current": "Mevcut",
+    "afterWC": "SD Sonrası",
+    "change": "Değişim",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "Düzeltilecek parametre",
+    "currentValue": "Mevcut Değer",
+    "targetValue": "Hedef Değer",
+    "replacementValue": "Yedek sudaki değer",
+    "noReading": "Mevcut ölçüm yok",
+    "result": {
+      "required": "Gereken Su Değişimi",
+      "volume": "Değiştirilecek hacim",
+      "ofTotal": "toplam {{total}} L'den",
+      "notFeasible": "Su değişimi ile başarılamaz",
+      "notFeasibleDesc": "Yedek su bu parametreyi hedef değere getiremez. Bunun yerine dozajlamayı düşünün.",
+      "noChangeNeeded": "Zaten hedefte",
+      "noChangeDesc": "Mevcut değer zaten hedefte veya çok yakınında."
+    },
+    "split": {
+      "title": "Büyük Su Değişimi",
+      "description": "%50 üzerindeki değişimler sakinleri strese sokabilir. Birkaç gün boyunca {{count}} adet %{{percent}} (her biri {{liters}} L) değişim yapmayı düşünün."
+    }
+  },
+  "correction": {
+    "statusOverview": "Mevcut Parametre Durumu",
+    "outOfRange": "{{total}} parametreden {{count}} tanesi aralık dışında",
+    "allInRange": "Tüm parametreler optimum aralıkta!",
+    "criticalCount": "{{count}} kritik",
+    "warningCount": "{{count}} uyarı",
+    "tooHigh": "Çok yüksek",
+    "tooLow": "Çok düşük",
+    "onTarget": "Hedefte",
+    "recommendedPlan": "Önerilen Plan",
+    "planSummary": "{{days}} gün boyunca {{count}} adet %{{percent}} (her biri {{liters}} L) su değişimi",
+    "singleChange": "Tek seferde %{{percent}} ({{liters}} L) su değişimi",
+    "noCorrection": "Düzeltme gerekmiyor",
+    "schedule": "Adım Adım Takvim",
+    "step": "Değişim #{{number}}",
+    "dayOffset": "Gün {{day}}",
+    "beforeAfter": "Önce ve Sonra",
+    "before": "Önce",
+    "afterPlan": "Plan Sonrası",
+    "uncorrectable": {
+      "title": "Su Değişimiyle Düzeltilemez",
+      "description": "Bu parametreler dozajlama veya başka düzeltme yöntemleri gerektiriyor:",
+      "useDosing": "Dozaj Hesaplayıcıyı Aç"
+    },
+    "config": {
+      "title": "Takvim Ayarları",
+      "maxChange": "Adım başına maks. değişim",
+      "daysBetween": "Değişimler arası gün",
+      "days": "{{count}} gün"
+    },
+    "info": {
+      "title": "Kararlılık Hakkında",
+      "description": "Akvaryumlarda kararlılık mükemmellikten daha önemlidir. Büyük ve hızlı parametre dalgalanmaları, hafif aralık dışı değerlerden daha fazla strese neden olabilir. Bu plan her değişimi sınırlar ve güvenlik için aralarında boşluk bırakır."
+    }
+  },
+  "info": {
+    "title": "Nasıl çalışır",
+    "description": "Su değişimleri akvaryum suyunu taze yedek suyla seyreltir. Hesaplayıcı, her parametrenin nasıl değişeceğini öngörmek için seyreltme formülünü kullanır.",
+    "formula": "sonra = mevcut × (1 − SD%) + yedek × SD%"
+  }
+}

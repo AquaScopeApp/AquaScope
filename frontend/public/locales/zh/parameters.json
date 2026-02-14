@@ -1,0 +1,54 @@
+{
+  "title": "水质参数",
+  "subtitle": "跟踪和可视化您的海水缸水质化学",
+  "logParameters": "记录参数",
+  "hideForm": "隐藏表单",
+  "showTable": "显示表格",
+  "hideTable": "隐藏表格",
+  "latestReadings": "最新读数",
+  "history": "历史记录",
+  "selectTank": "选择水族箱",
+  "noTanksYet": "还没有水族箱",
+  "noTanksDescription": "记录参数前需要先创建一个水族箱",
+  "createFirstTank": "创建您的第一个水族箱",
+  "rawDataTable": "原始数据表（调试视图）",
+  "totalEntries": "总条目数：",
+  "filterByParameter": "按参数筛选...",
+  "noData": "所选时间范围内没有数据",
+  "noParameterData": "还没有参数数据",
+  "startTracking": "记录您的第一次水质测试结果，开始跟踪水质化学",
+  "logFirst": "记录第一次参数",
+  "showing": "显示第 {{from}} 至 {{to}} 条，共 {{total}} 条",
+  "page": "第 {{current}} 页，共 {{total}} 页",
+  "timeRange": "时间范围：",
+  "ranges": {
+    "7d": "7天",
+    "30d": "30天",
+    "90d": "90天",
+    "1y": "1年",
+    "all": "全部"
+  },
+  "table": {
+    "timestamp": "时间戳",
+    "parameter": "参数",
+    "value": "值",
+    "unit": "单位",
+    "actions": "操作"
+  },
+  "fields": {
+    "calcium": "钙 (Ca)",
+    "magnesium": "镁 (Mg)",
+    "alkalinity": "碱度 (KH)",
+    "nitrate": "硝酸盐 (NO3)",
+    "phosphate": "磷酸盐 (PO4)",
+    "salinity": "盐度",
+    "temperature": "温度",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

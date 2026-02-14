@@ -1,0 +1,54 @@
+{
+  "title": "Su Parametreleri",
+  "subtitle": "Resif akvaryumunuzun su kimyasını takip edin ve görselleştirin",
+  "logParameters": "Parametre Kaydet",
+  "hideForm": "Formu Gizle",
+  "showTable": "Tabloyu Göster",
+  "hideTable": "Tabloyu Gizle",
+  "latestReadings": "Son Ölçümler",
+  "history": "Geçmiş",
+  "selectTank": "Akvaryum Seçin",
+  "noTanksYet": "Henüz Akvaryum Yok",
+  "noTanksDescription": "Parametre kaydetmeden önce bir akvaryum oluşturmanız gerekiyor",
+  "createFirstTank": "İlk Akvaryumunuzu Oluşturun",
+  "rawDataTable": "Ham Veri Tablosu (Hata Ayıklama Görünümü)",
+  "totalEntries": "Toplam kayıt:",
+  "filterByParameter": "Parametreye göre filtrele...",
+  "noData": "Seçilen zaman aralığında veri bulunamadı",
+  "noParameterData": "Henüz Parametre Verisi Yok",
+  "startTracking": "İlk su testi sonuçlarınızı kaydederek su kimyasını takip etmeye başlayın",
+  "logFirst": "İlk Parametreleri Kaydet",
+  "showing": "{{from}} - {{to}} arası gösteriliyor, toplam {{total}} kayıt",
+  "page": "Sayfa {{current}} / {{total}}",
+  "timeRange": "Zaman Aralığı:",
+  "ranges": {
+    "7d": "7 Gün",
+    "30d": "30 Gün",
+    "90d": "90 Gün",
+    "1y": "1 Yıl",
+    "all": "Tüm Zamanlar"
+  },
+  "table": {
+    "timestamp": "Zaman Damgası",
+    "parameter": "Parametre",
+    "value": "Değer",
+    "unit": "Birim",
+    "actions": "İşlemler"
+  },
+  "fields": {
+    "calcium": "Kalsiyum (Ca)",
+    "magnesium": "Magnezyum (Mg)",
+    "alkalinity": "Alkalinite (KH)",
+    "nitrate": "Nitrat (NO3)",
+    "phosphate": "Fosfat (PO4)",
+    "salinity": "Tuzluluk",
+    "temperature": "Sıcaklık",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

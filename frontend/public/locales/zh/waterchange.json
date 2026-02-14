@@ -1,0 +1,92 @@
+{
+  "title": "换水计算器",
+  "subtitle": "预测参数变化或计算所需换水量",
+  "noTanks": "还没有水族箱。请先创建水族箱再使用计算器。",
+  "volume": {
+    "display": "主缸",
+    "sump": "底缸",
+    "total": "系统总量"
+  },
+  "tabs": {
+    "impact": "影响预览",
+    "target": "目标参数",
+    "correction": "纠正计划",
+    "dosing": "添加剂计算器"
+  },
+  "impact": {
+    "waterChangePercent": "换水量",
+    "liters": "{{value}} L",
+    "replacementWater": "替换水",
+    "saltMix": "海盐",
+    "custom": "自定义",
+    "saveProfile": "保存",
+    "profileSaved": "已保存！",
+    "results": "预测参数",
+    "noData": "没有参数数据。请先记录一些读数。",
+    "parameter": "参数",
+    "current": "当前",
+    "afterWC": "换水后",
+    "change": "变化",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "要纠正的参数",
+    "currentValue": "当前值",
+    "targetValue": "目标值",
+    "replacementValue": "替换水中的值",
+    "noReading": "无当前读数",
+    "result": {
+      "required": "需要的换水量",
+      "volume": "换水体积",
+      "ofTotal": "总量 {{total}} L",
+      "notFeasible": "换水无法实现",
+      "notFeasibleDesc": "替换水无法将此参数调至目标值。请考虑使用添加剂。",
+      "noChangeNeeded": "已达标",
+      "noChangeDesc": "当前值已达到或非常接近目标值。"
+    },
+    "split": {
+      "title": "大量换水",
+      "description": "超过50%的换水可能会给生物带来压力。建议分 {{count}} 次进行，每次 {{percent}}%（{{liters}} L），间隔数天。"
+    }
+  },
+  "correction": {
+    "statusOverview": "当前参数状态",
+    "outOfRange": "{{total}} 个参数中有 {{count}} 个超出范围",
+    "allInRange": "所有参数均在最佳范围内！",
+    "criticalCount": "{{count}} 个危险",
+    "warningCount": "{{count}} 个警告",
+    "tooHigh": "偏高",
+    "tooLow": "偏低",
+    "onTarget": "达标",
+    "recommendedPlan": "推荐计划",
+    "planSummary": "{{days}} 天内进行 {{count}} 次换水，每次 {{percent}}%（{{liters}} L）",
+    "singleChange": "一次换水 {{percent}}%（{{liters}} L）",
+    "noCorrection": "无需纠正",
+    "schedule": "分步计划",
+    "step": "换水 #{{number}}",
+    "dayOffset": "第 {{day}} 天",
+    "beforeAfter": "前后对比",
+    "before": "之前",
+    "afterPlan": "计划完成后",
+    "uncorrectable": {
+      "title": "换水无法纠正",
+      "description": "这些参数需要添加剂或其他纠正方法：",
+      "useDosing": "打开添加剂计算器"
+    },
+    "config": {
+      "title": "计划设置",
+      "maxChange": "每次最大换水量",
+      "daysBetween": "换水间隔",
+      "days": "{{count}} 天"
+    },
+    "info": {
+      "title": "关于稳定性",
+      "description": "在水族养殖中，稳定性比完美更重要。大幅、快速的参数波动比略微偏离范围更容易给生物带来压力。此计划限制每次变化量并间隔进行，以确保安全。"
+    }
+  },
+  "info": {
+    "title": "工作原理",
+    "description": "换水是用新的替换水稀释水族箱中的水。计算器使用稀释公式预测每个参数的变化。",
+    "formula": "换水后 = 当前值 × (1 − 换水%) + 替换水值 × 换水%"
+  }
+}

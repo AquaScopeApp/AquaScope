@@ -1,0 +1,86 @@
+{
+  "title": "Gjurmimi i sëmundjeve dhe shëndetit",
+  "subtitle": "Monitoroni sëmundjet, trajtimet dhe rezultatet shëndetësore të gjallesave tuaja",
+  "addDisease": "Regjistro sëmundje",
+  "editDisease": "Ndrysho sëmundjen",
+  "viewDetail": "Shiko detajet",
+  "noRecords": "Nuk ka regjistrime sëmundjesh ende",
+  "noRecordsDescription": "Kur vini re probleme shëndetësore me gjallesat tuaja, regjistroni ato këtu për të gjurmuar trajtimet dhe rezultatet",
+  "createFirst": "Regjistro sëmundjen e parë",
+  "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë regjistrim sëmundjeje?",
+  "deleteFailed": "Dështoi fshirja e regjistrimit të sëmundjes",
+  "filterByLivestock": "Filtro sipas gjallesës",
+  "allLivestock": "Të gjitha gjallesat",
+  "showResolved": "Shfaq të zgjidhurat",
+  "hideResolved": "Fshih të zgjidhurat",
+  "status": {
+    "active": "Aktive",
+    "monitoring": "Në monitorim",
+    "resolved": "E zgjidhur",
+    "chronic": "Kronike"
+  },
+  "severity": {
+    "mild": "E lehtë",
+    "moderate": "Mesatare",
+    "severe": "E rëndë",
+    "critical": "Kritike"
+  },
+  "fields": {
+    "diseaseName": "Emri i sëmundjes",
+    "symptoms": "Simptomat",
+    "diagnosis": "Diagnoza",
+    "severity": "Rëndia",
+    "status": "Statusi",
+    "detectedDate": "Data e zbulimit",
+    "resolvedDate": "Data e zgjidhjes",
+    "outcome": "Rezultati",
+    "notes": "Shënime",
+    "livestock": "Gjallesat e prekura"
+  },
+  "treatment": {
+    "title": "Trajtimet",
+    "add": "Shto trajtim",
+    "edit": "Ndrysho trajtimin",
+    "noTreatments": "Nuk ka trajtime të regjistruara ende",
+    "type": "Lloji i trajtimit",
+    "name": "Emri i trajtimit",
+    "dosage": "Dozimi",
+    "date": "Data e trajtimit",
+    "duration": "Kohëzgjatja (ditë)",
+    "effectiveness": "Efektiviteti",
+    "consumable": "Ilaçi i lidhur",
+    "consumableNone": "Asnjë",
+    "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë trajtim?",
+    "types": {
+      "medication": "Ilaç",
+      "water_change": "Ndërrim uji",
+      "quarantine": "Karantinë",
+      "dip": "Zhytje/Banjë",
+      "temperature": "Rregullim temperature",
+      "other": "Tjetër"
+    },
+    "effectivenessOptions": {
+      "effective": "Efektiv",
+      "partially_effective": "Pjesërisht efektiv",
+      "ineffective": "Joefektiv",
+      "too_early": "Shumë herët për ta thënë"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Aktive",
+    "monitoringDiseases": "Në monitorim",
+    "chronicDiseases": "Kronike",
+    "resolvedDiseases": "Të zgjidhura"
+  },
+  "detail": {
+    "timeline": "Kronologjia e trajtimit",
+    "detectedOn": "Zbuluar më",
+    "resolvedOn": "Zgjidhur më",
+    "ongoing": "Në vazhdim",
+    "duration": "Kohëzgjatja",
+    "days": "ditë"
+  },
+  "suggestions": {
+    "title": "Sëmundjet e zakonshme"
+  }
+}

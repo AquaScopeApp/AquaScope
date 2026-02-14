@@ -1,0 +1,62 @@
+{
+  "checker": "Pajtueshmëria",
+  "title": "Kontrolluesi i pajtueshmërisë",
+  "subtitle": "Kontrolloni nëse banorët e akuariumit tuaj janë të pajtueshëm me njëri-tjetrin",
+  "selectTank": "Zgjidh një akuarium për të kontrolluar",
+  "overallCompatible": "Të gjitha speciet e kontrolluara duken të pajtueshme",
+  "overallCaution": "U zbuluan disa shqetësime të mundshme",
+  "overallIncompatible": "U zbuluan probleme pajtueshmërie",
+  "speciesChecked": "{{count}} specie të kontrolluara",
+  "issuesFound": "{{count}} problem(e) të gjetura",
+  "noIssues": "Nuk u zbuluan probleme pajtueshmërie",
+  "notInDatabase": "Speciet nuk janë në bazën e të dhënave",
+  "notInDatabaseInfo": "Speciet e mëposhtme nuk janë në bazën tonë të pajtueshmërisë. Nuk u kryen kontrolle për to.",
+  "noLivestock": "Nuk ka gjallesa aktive në këtë akuarium për të kontrolluar",
+  "inlineCompatible": "Kjo specie duket e pajtueshme me banorët aktualë të akuariumit.",
+  "inlineNoData": "Nuk ka të dhëna pajtueshmërie të disponueshme për këtë specie.",
+  "inlineChecking": "Duke kontrolluar pajtueshmërinë...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}} ({{tempA}}) mund të konfliktohet me {{speciesB}} ({{tempB}}). Speciet agresive mund të stresojnë ose dëmtojnë shokët paqësorë.",
+    "reef_safety": "{{speciesA}} nuk është i sigurt për rif dhe mund të dëmtojë ose hajë {{speciesB}}.",
+    "reef_safety_caution": "{{speciesA}} ka siguri të dyshimtë për rifin. Monitoroni me kujdes me {{speciesB}}.",
+    "tank_too_small": "{{species}} ka nevojë për të paktën {{required}}L — ky akuarium ka vetëm {{actual}}L.",
+    "territorial_duplicates": "Shumë {{species}} në të njëjtin akuarium mund të luftojnë për territor.",
+    "predator_prey": "{{predator}} është grabitqar natyral i {{prey}}. Rrezik i lartë grabitqarie.",
+    "size_disparity": "{{large}} është shumë më i madh se {{small}}. Dallimi në madhësi paraqet rrezik.",
+    "water_type_conflict": "{{species}} është specie e {{speciesWater}} dhe mund të mos lulëzojë në akuarium {{tankWater}}.",
+    "specific_seahorse": "Kalorësit e detit duhet të mbahen vetëm me specien e tyre. {{other}} mund t'i konkurrojë për ushqim ose t'i stresojë.",
+    "specific_axolotl": "Axolotlët mbahen më mirë vetëm ose me specien e tyre. {{other}} mund t'u kafshojë brelat ose të hahet.",
+    "specific_betta_male": "Shumë Betta meshkuj do të luftojnë në mënyrë agresive. Mbani vetëm një meshkuj për akuarium.",
+    "specific_coral_war": "{{speciesA}} dhe {{speciesB}} mund të angazhohen në luftë kimike nëse vendosen shumë afër.",
+    "corallivore_conflict": "{{speciesA}} ushqehet me korale dhe do të dëmtojë {{speciesB}}."
+  },
+  "info": {
+    "title": "Si funksionon",
+    "description": "Ky kontrollues përdor një bazë të dhënash të brendshme të tipareve të specieve të zakonshme të akuariumit për të kontrolluar konfliktet e agresionit, sigurinë e rifit, madhësinë e akuariumit, mosmarrëveshjet territoriale dhe marrëdhëniet grabitqar-pre.",
+    "disclaimer": "Ky është një mjet udhëzimi, jo garanci. Sjellja individuale ndryshon. Gjithmonë hulumtoni speciet thellësisht para se t'i shtoni.",
+    "sourcesTitle": "Burimet e të dhënave",
+    "sources": "Tiparet e specieve janë përpiluar nga referenca të konsoliduara: FishBase.org (taksonomia, ekologjia, sjellja), WoRMS (Regjistri botëror i specieve detare), udhëzuesit e kujdesit LiveAquaria, wiki-t e komunitetit Reef2Reef/ReefCentral, Aquarium Corals i Eric Borneman (alelopatia e koraleve), dhe udhëzimet e mbajtjes MASNA. Madhësitë e akuariumeve reflektojnë minimumet e pranuara gjerësisht nga komuniteti i akuaristëve."
+  },
+  "severity": {
+    "compatible": "I pajtueshëm",
+    "caution": "Kujdes",
+    "incompatible": "I papajtueshëm"
+  },
+  "tabs": {
+    "issues": "Probleme",
+    "matrix": "Matrica",
+    "network": "Rrjeti"
+  },
+  "matrix": {
+    "clickForDetails": "Kliko një qelizë për të parë detajet"
+  },
+  "network": {
+    "predatorPrey": "Grabitqar → Pre",
+    "incompatible": "I papajtueshëm",
+    "caution": "Kujdes",
+    "fish": "Peshk",
+    "coral": "Koral",
+    "invertebrate": "Jovertebror",
+    "noConnections": "Nuk u gjetën probleme pajtueshmërie mes specieve"
+  }
+}

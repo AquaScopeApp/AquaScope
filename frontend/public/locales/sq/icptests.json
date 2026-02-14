@@ -1,0 +1,39 @@
+{
+  "title": "Testet ICP të ujit",
+  "subtitle": "Ngarko PDF-të e laboratorit ATI për të gjurmuar automatikisht elementet gjurmë dhe cilësinë e ujit",
+  "uploadNew": "Ngarko test të ri",
+  "selectTank": "Zgjidh akuariumin",
+  "allTanks": "Të gjitha akuariumet",
+  "uploading": "Duke ngarkuar...",
+  "uploadATI": "Ngarko PDF ATI",
+  "processing": "Duke përpunuar...",
+  "uploadHelp": "Ngarko PDF-në e testit ICP të ATI Aquaristik për përftimin automatik të të dhënave",
+  "testHistory": "Historiku i testeve",
+  "tests": "teste",
+  "loading": "Duke ngarkuar...",
+  "noTests": "Nuk ka teste ICP ende. Ngarko testin e parë!",
+  "uploadSuccess": "Testi ICP u ngarkua me sukses",
+  "uploadSuccessMulti": "Testet ICP u ngarkuan me sukses",
+  "uploadFailed": "Dështoi ngarkimi:",
+  "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë test ICP?",
+  "deleteFailed": "Dështoi fshirja e testit",
+  "selectTest": "Zgjidh një test nga lista për të parë detajet",
+  "testId": "ID e testit:",
+  "waterType": {
+    "saltwater": "Ujë i kripur",
+    "roWater": "Ujë RO"
+  },
+  "scores": {
+    "major": "Elementet kryesore",
+    "minor": "Elementet dytësore",
+    "pollutants": "Ndotësit",
+    "base": "Elementet bazë"
+  },
+  "tabs": {
+    "major": "Kryesore",
+    "minor": "Dytësore",
+    "pollutants": "Ndotës"
+  },
+  "notes": "Shënime",
+  "cost": "Kostoja e testit"
+}

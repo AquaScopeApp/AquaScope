@@ -1,0 +1,53 @@
+{
+  "title": "Aydınlatma",
+  "subtitle": "Akvaryumlarınız için LED aydınlatma programlarını yönetin",
+  "createSchedule": "Program Oluştur",
+  "editSchedule": "Programı Düzenle",
+  "deleteSchedule": "Programı Sil",
+  "deleteConfirm": "Bu aydınlatma programını silmek istediğinize emin misiniz?",
+  "noSchedules": "Henüz aydınlatma programı yok",
+  "noSchedulesHint": "Bir program oluşturun veya hazır şablondan başlayın",
+  "fields": {
+    "name": "Program Adı",
+    "description": "Açıklama",
+    "tank": "Akvaryum",
+    "channels": "LED Kanalları",
+    "channelName": "Kanal Adı",
+    "channelColor": "Renk",
+    "addChannel": "Kanal Ekle",
+    "removeChannel": "Kaldır",
+    "schedule": "Program",
+    "intensity": "Yoğunluk",
+    "hour": "Saat",
+    "notes": "Notlar",
+    "active": "Aktif",
+    "inactive": "Pasif"
+  },
+  "presets": {
+    "title": "Hazır Şablonlar",
+    "loadPreset": "Şablondan Yükle",
+    "selectPreset": "-- Bir şablon seçin --",
+    "reefbreeders-current": "ReefBreeders — Mevcut Program",
+    "reefbreeders-acropora": "ReefBreeders — Acropora İçin Optimize",
+    "reef-low-softies": "Resif — Düşük Işık (Yumuşak Mercanlar)",
+    "reef-medium-mixed": "Resif — Orta Işık (LPS/Karışık)",
+    "freshwater-planted": "Tatlı Su Bitkili — Yüksek Işık",
+    "refugium-reverse": "Refugium — Ters Fotoperiyot"
+  },
+  "chart": {
+    "title": "Yoğunluk Önizleme",
+    "xAxis": "Saat",
+    "yAxis": "Yoğunluk %"
+  },
+  "stats": {
+    "activeSchedules": "Aktif Programlar",
+    "totalSchedules": "Toplam Programlar",
+    "tanksWithLighting": "Aydınlatmalı Akvaryumlar"
+  },
+  "actions": {
+    "activate": "Aktif Yap",
+    "deactivate": "Devre Dışı Bırak",
+    "duplicate": "Kopyala",
+    "save": "Programı Kaydet"
+  }
+}

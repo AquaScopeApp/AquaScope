@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "Mirë se vini në AquaScope",
+    "subtitle": "Le t'i konfigurojmë preferencat tuaja rajonale",
+    "country": "Shteti",
+    "countryPlaceholder": "Zgjidhni shtetin tuaj...",
+    "countryHint": "Zgjedhja e shtetit plotëson automatikisht cilësimet e rekomanduara më poshtë",
+    "unitSystem": "Njësitë e vëllimit",
+    "metric": "Metrike (litra)",
+    "usImperial": "Imperiale amerikane (galona)",
+    "ukImperial": "Imperiale britanike (galona)",
+    "temperature": "Temperatura",
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "currency": "Monedha",
+    "dateFormat": "Formati i datës",
+    "getStarted": "Fillo",
+    "skip": "Kalo për tani",
+    "skipForNow": "Kalo për tani",
+    "selectCountry": "Zgjidhni shtetin tuaj...",
+    "custom": "I personalizuar",
+    "saveFailed": "Dështoi ruajtja e cilësimeve",
+    "preview": "Parashikim",
+    "saving": "Duke ruajtur..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "litra",
+    "usGallons": "gal",
+    "usGallonsFull": "galona amerikane",
+    "ukGallons": "gal",
+    "ukGallonsFull": "galona britanike",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "Shtetet e Bashkuara",
+    "GB": "Mbretëria e Bashkuar",
+    "FR": "Franca",
+    "DE": "Gjermania",
+    "IT": "Italia",
+    "ES": "Spanja",
+    "PT": "Portugalia",
+    "NL": "Holanda",
+    "BE": "Belgjika",
+    "AT": "Austria",
+    "CH": "Zvicra",
+    "CA": "Kanada",
+    "AU": "Australia",
+    "JP": "Japonia",
+    "BR": "Brazili"
+  },
+  "admin": {
+    "title": "Rajonale dhe njësitë",
+    "description": "Konfiguroni njësitë, temperaturën dhe formatin e datës për të gjithë përdoruesit.",
+    "country": "Shteti / Rajoni",
+    "unitSystem": "Njësitë e vëllimit",
+    "temperature": "Njësia e temperaturës",
+    "dateFormat": "Formati i datës",
+    "countryHint": "Zgjedhja e shtetit plotëson automatikisht parazgjedhjet e rekomanduara"
+  }
+}

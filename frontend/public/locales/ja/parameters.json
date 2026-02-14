@@ -1,0 +1,54 @@
+{
+  "title": "水質パラメータ",
+  "subtitle": "リーフ水槽の水質化学を追跡・可視化",
+  "logParameters": "パラメータを記録",
+  "hideForm": "フォームを隠す",
+  "showTable": "テーブルを表示",
+  "hideTable": "テーブルを隠す",
+  "latestReadings": "最新の測定値",
+  "history": "履歴",
+  "selectTank": "水槽を選択",
+  "noTanksYet": "水槽がまだありません",
+  "noTanksDescription": "パラメータを記録するには、まず水槽を作成してください",
+  "createFirstTank": "最初の水槽を作成",
+  "rawDataTable": "生データテーブル（デバッグビュー）",
+  "totalEntries": "総エントリ数:",
+  "filterByParameter": "パラメータでフィルター...",
+  "noData": "選択した期間にデータがありません",
+  "noParameterData": "パラメータデータがまだありません",
+  "startTracking": "最初の水質検査結果を記録して水質化学の追跡を始めましょう",
+  "logFirst": "最初のパラメータを記録",
+  "showing": "{{total}} 件中 {{from}} 〜 {{to}} 件を表示",
+  "page": "ページ {{current}} / {{total}}",
+  "timeRange": "期間:",
+  "ranges": {
+    "7d": "7日間",
+    "30d": "30日間",
+    "90d": "90日間",
+    "1y": "1年間",
+    "all": "全期間"
+  },
+  "table": {
+    "timestamp": "日時",
+    "parameter": "パラメータ",
+    "value": "値",
+    "unit": "単位",
+    "actions": "操作"
+  },
+  "fields": {
+    "calcium": "カルシウム (Ca)",
+    "magnesium": "マグネシウム (Mg)",
+    "alkalinity": "アルカリニティ (KH)",
+    "nitrate": "硝酸塩 (NO3)",
+    "phosphate": "リン酸塩 (PO4)",
+    "salinity": "塩分濃度",
+    "temperature": "水温",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

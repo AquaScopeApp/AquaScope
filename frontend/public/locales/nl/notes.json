@@ -1,0 +1,17 @@
+{
+  "title": "Notities",
+  "subtitle": "Aquariumdagboek en waarnemingen",
+  "newNote": "Nieuwe notitie",
+  "filterByTank": "Filteren op aquarium",
+  "allTanks": "Alle aquariums",
+  "totalNotes": "Totaal notities",
+  "thisMonth": "Deze maand",
+  "avgPerWeek": "Gemiddeld per week",
+  "noNotes": "Nog geen notities",
+  "startDocumenting": "Begin met het documenteren van je aquariumreis met waarnemingen en notities",
+  "createFirst": "Eerste notitie aanmaken",
+  "confirmDelete": "Weet je zeker dat je deze notitie wilt verwijderen?",
+  "saveFailed": "Opslaan van notitie mislukt",
+  "deleteFailed": "Verwijderen van notitie mislukt",
+  "loading": "Notities laden..."
+}

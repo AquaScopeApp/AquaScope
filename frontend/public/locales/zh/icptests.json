@@ -1,0 +1,39 @@
+{
+  "title": "ICP水质检测",
+  "subtitle": "上传ATI实验室PDF自动跟踪微量元素和水质",
+  "uploadNew": "上传新检测",
+  "selectTank": "选择水族箱",
+  "allTanks": "所有水族箱",
+  "uploading": "上传中...",
+  "uploadATI": "上传ATI PDF",
+  "processing": "处理中...",
+  "uploadHelp": "上传ATI Aquaristik ICP检测PDF以自动提取数据",
+  "testHistory": "检测历史",
+  "tests": "次检测",
+  "loading": "加载中...",
+  "noTests": "还没有ICP检测。上传您的第一次检测！",
+  "uploadSuccess": "ICP检测上传成功",
+  "uploadSuccessMulti": "ICP检测上传成功",
+  "uploadFailed": "上传失败：",
+  "confirmDelete": "确定要删除此ICP检测吗？",
+  "deleteFailed": "删除检测失败",
+  "selectTest": "从列表中选择一个检测以查看详情",
+  "testId": "检测ID：",
+  "waterType": {
+    "saltwater": "海水",
+    "roWater": "RO水"
+  },
+  "scores": {
+    "major": "主要元素",
+    "minor": "微量元素",
+    "pollutants": "污染物",
+    "base": "基础元素"
+  },
+  "tabs": {
+    "major": "主要",
+    "minor": "微量",
+    "pollutants": "污染物"
+  },
+  "notes": "备注",
+  "cost": "检测费用"
+}

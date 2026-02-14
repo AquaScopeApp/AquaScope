@@ -1,0 +1,39 @@
+{
+  "title": "ICP Su Testleri",
+  "subtitle": "Eser elementleri ve su kalitesini otomatik olarak takip etmek için ATI laboratuvar PDF'lerini yükleyin",
+  "uploadNew": "Yeni Test Yükle",
+  "selectTank": "Akvaryum Seçin",
+  "allTanks": "Tüm Akvaryumlar",
+  "uploading": "Yükleniyor...",
+  "uploadATI": "ATI PDF Yükle",
+  "processing": "İşleniyor...",
+  "uploadHelp": "Otomatik veri çıkarımı için ATI Aquaristik ICP test PDF'ini yükleyin",
+  "testHistory": "Test Geçmişi",
+  "tests": "test",
+  "loading": "Yükleniyor...",
+  "noTests": "Henüz ICP testi yok. İlk testinizi yükleyin!",
+  "uploadSuccess": "ICP testi başarıyla yüklendi",
+  "uploadSuccessMulti": "ICP testleri başarıyla yüklendi",
+  "uploadFailed": "Yükleme başarısız:",
+  "confirmDelete": "Bu ICP testini silmek istediğinize emin misiniz?",
+  "deleteFailed": "Test silinemedi",
+  "selectTest": "Detayları görmek için listeden bir test seçin",
+  "testId": "Test ID:",
+  "waterType": {
+    "saltwater": "Tuzlu Su",
+    "roWater": "RO Suyu"
+  },
+  "scores": {
+    "major": "Ana Elementler",
+    "minor": "İz Elementler",
+    "pollutants": "Kirleticiler",
+    "base": "Temel Elementler"
+  },
+  "tabs": {
+    "major": "Ana",
+    "minor": "İz",
+    "pollutants": "Kirleticiler"
+  },
+  "notes": "Notlar",
+  "cost": "Test Ücreti"
+}

@@ -1,0 +1,92 @@
+{
+  "title": "Llogaritësi i ndërrimit të ujit",
+  "subtitle": "Parashiko ndryshimet e parametrave ose llogarit vëllimin e nevojshëm të ndërrimit të ujit",
+  "noTanks": "Nuk ka akuariume ende. Krijoni një akuarium fillimisht për të përdorur llogaritësin.",
+  "volume": {
+    "display": "Ekspozimi",
+    "sump": "Sump",
+    "total": "Sistemi total"
+  },
+  "tabs": {
+    "impact": "Parashikimi i ndikimit",
+    "target": "Parametri objektiv",
+    "correction": "Plani i korrigjimit",
+    "dosing": "Llogaritësi i dozimit"
+  },
+  "impact": {
+    "waterChangePercent": "Ndërrimi i ujit",
+    "liters": "{{value}} L",
+    "replacementWater": "Uji zëvendësues",
+    "saltMix": "Përzierje kripërash",
+    "custom": "I personalizuar",
+    "saveProfile": "Ruaj",
+    "profileSaved": "U ruajt!",
+    "results": "Parametrat e parashikuara",
+    "noData": "Nuk ka të dhëna parametrash. Regjistroni disa lexime fillimisht.",
+    "parameter": "Parametri",
+    "current": "Aktual",
+    "afterWC": "Pas ndërrimit",
+    "change": "Ndryshimi",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "Parametri për të korrigjuar",
+    "currentValue": "Vlera aktuale",
+    "targetValue": "Vlera e synuar",
+    "replacementValue": "Në ujin zëvendësues",
+    "noReading": "Nuk ka lexim aktual",
+    "result": {
+      "required": "Ndërrimi i nevojshëm i ujit",
+      "volume": "Vëllimi për ndërrim",
+      "ofTotal": "nga {{total}} L gjithsej",
+      "notFeasible": "Nuk arrihet me ndërrime uji",
+      "notFeasibleDesc": "Uji zëvendësues nuk mund ta çojë këtë parametër te vlera e synuar. Konsideroni dozimin.",
+      "noChangeNeeded": "Tashmë në objektiv",
+      "noChangeDesc": "Vlera aktuale është tashmë në ose shumë afër objektivit."
+    },
+    "split": {
+      "title": "Ndërrim i madh uji",
+      "description": "Ndërrimet mbi 50% mund të stresojnë banorët. Konsideroni {{count}} ndërrime prej {{percent}}% ({{liters}} L secila) gjatë disa ditëve."
+    }
+  },
+  "correction": {
+    "statusOverview": "Statusi aktual i parametrave",
+    "outOfRange": "{{count}} nga {{total}} parametra jashtë intervalit",
+    "allInRange": "Të gjitha parametrat janë brenda intervalit optimal!",
+    "criticalCount": "{{count}} kritikë",
+    "warningCount": "{{count}} paralajmërim",
+    "tooHigh": "Shumë i lartë",
+    "tooLow": "Shumë i ulët",
+    "onTarget": "Në objektiv",
+    "recommendedPlan": "Plani i rekomanduar",
+    "planSummary": "{{count}} ndërrime uji prej {{percent}}% ({{liters}} L secila) gjatë {{days}} ditëve",
+    "singleChange": "Një ndërrim uji prej {{percent}}% ({{liters}} L)",
+    "noCorrection": "Nuk nevojitet korrigjim",
+    "schedule": "Programi hap pas hapi",
+    "step": "Ndërrimi #{{number}}",
+    "dayOffset": "Dita {{day}}",
+    "beforeAfter": "Para dhe pas",
+    "before": "Para",
+    "afterPlan": "Pas planit",
+    "uncorrectable": {
+      "title": "Nuk korrigjohet me ndërrime uji",
+      "description": "Këto parametra kanë nevojë për dozim ose metoda të tjera korrigjimi:",
+      "useDosing": "Hap llogaritësin e dozimit"
+    },
+    "config": {
+      "title": "Cilësimet e programit",
+      "maxChange": "Ndërrimi maksimal për hap",
+      "daysBetween": "Ditë mes ndërrimeve",
+      "days": "{{count}} ditë"
+    },
+    "info": {
+      "title": "Rreth stabilitetit",
+      "description": "Stabiliteti është më i rëndësishëm se përsosmëria në akuariume. Luhatjet e mëdha dhe të shpejta të parametrave mund të stresojnë gjallesat më shumë se vlerat pak jashtë intervalit. Ky plan kufizon çdo ndërrim dhe i ndan ato për siguri."
+    }
+  },
+  "info": {
+    "title": "Si funksionon",
+    "description": "Ndërrimet e ujit hollojnë ujin e akuariumit me ujë të freskët zëvendësues. Llogaritësi përdor formulën e hollimit për të parashikuar si ndryshon secili parametër.",
+    "formula": "pas = aktual × (1 − %NU) + zëvendësues × %NU"
+  }
+}

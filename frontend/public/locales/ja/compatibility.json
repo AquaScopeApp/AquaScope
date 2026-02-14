@@ -1,0 +1,62 @@
+{
+  "checker": "相性チェック",
+  "title": "相性チェッカー",
+  "subtitle": "水槽の生体同士の相性を確認",
+  "selectTank": "チェックする水槽を選択",
+  "overallCompatible": "チェックしたすべての種は相性が良いようです",
+  "overallCaution": "いくつかの懸念点が見つかりました",
+  "overallIncompatible": "相性の問題が検出されました",
+  "speciesChecked": "{{count}} 種をチェック",
+  "issuesFound": "{{count}} 件の問題が見つかりました",
+  "noIssues": "相性の問題は検出されませんでした",
+  "notInDatabase": "データベースにない種",
+  "notInDatabaseInfo": "以下の種は相性データベースに登録されていません。これらのチェックは実行されませんでした。",
+  "noLivestock": "この水槽にチェックする生体がいません",
+  "inlineCompatible": "この種は現在の水槽の生体と相性が良いようです。",
+  "inlineNoData": "この種の相性データはありません。",
+  "inlineChecking": "相性をチェック中...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}}（{{tempA}}）は{{speciesB}}（{{tempB}}）と衝突する可能性があります。攻撃的な種は温和な仲間にストレスを与えたり傷つけたりすることがあります。",
+    "reef_safety": "{{speciesA}} はリーフセーフではなく、{{speciesB}} を傷つけたり捕食する可能性があります。",
+    "reef_safety_caution": "{{speciesA}} のリーフセーフ性は疑問があります。{{speciesB}} との混泳は注意深く観察してください。",
+    "tank_too_small": "{{species}} は最低 {{required}}L 必要ですが、この水槽は {{actual}}L しかありません。",
+    "territorial_duplicates": "同じ水槽に複数の {{species}} がいると縄張り争いが起こる可能性があります。",
+    "predator_prey": "{{predator}} は {{prey}} の天敵です。捕食のリスクが高いです。",
+    "size_disparity": "{{large}} は {{small}} よりもはるかに大きいです。この体格差にはリスクがあります。",
+    "water_type_conflict": "{{species}} は {{speciesWater}} の種であり、{{tankWater}} の水槽では適応できない可能性があります。",
+    "specific_seahorse": "タツノオトシゴは種専用水槽で飼育すべきです。{{other}} は餌の競合やストレスの原因になる可能性があります。",
+    "specific_axolotl": "ウーパールーパーは単独飼育が最適です。{{other}} はエラを齧ったり、捕食される可能性があります。",
+    "specific_betta_male": "複数のオスのベタは激しく闘争します。水槽にはオス1匹のみにしてください。",
+    "specific_coral_war": "{{speciesA}} と {{speciesB}} は近くに配置すると化学戦争を起こす可能性があります。",
+    "corallivore_conflict": "{{speciesA}} はサンゴを捕食し、{{speciesB}} を傷つけます。"
+  },
+  "info": {
+    "title": "仕組みについて",
+    "description": "このチェッカーは、一般的な水槽生物の特性データベースを使用して、攻撃性、リーフセーフ性、水槽サイズ、縄張り争い、捕食関係をチェックします。",
+    "disclaimer": "これはガイダンスツールであり、保証ではありません。個体の行動は異なります。追加する前に必ず種について十分に調査してください。",
+    "sourcesTitle": "データソース",
+    "sources": "種の特性は以下の確立された参考資料から編纂されています: FishBase.org（分類学、生態学、行動）、WoRMS（世界海洋生物種登録）、LiveAquaria 飼育ガイド、Reef2Reef/ReefCentral コミュニティウィキ、Eric Borneman の Aquarium Corals（サンゴのアレロパシー）、MASNA 飼育ガイドライン。水槽サイズはリーフキーピングコミュニティで広く認められた最小値を反映しています。"
+  },
+  "severity": {
+    "compatible": "相性良好",
+    "caution": "注意",
+    "incompatible": "相性不良"
+  },
+  "tabs": {
+    "issues": "問題点",
+    "matrix": "マトリックス",
+    "network": "ネットワーク"
+  },
+  "matrix": {
+    "clickForDetails": "セルをクリックして詳細を表示"
+  },
+  "network": {
+    "predatorPrey": "捕食者 → 被食者",
+    "incompatible": "相性不良",
+    "caution": "注意",
+    "fish": "魚",
+    "coral": "サンゴ",
+    "invertebrate": "無脊椎動物",
+    "noConnections": "種間の相性の問題は見つかりませんでした"
+  }
+}

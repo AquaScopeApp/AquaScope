@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "Welkom bij AquaScope",
+    "subtitle": "Laten we je regionale voorkeuren instellen",
+    "country": "Land",
+    "countryPlaceholder": "Selecteer je land...",
+    "countryHint": "Een land selecteren vult automatisch de aanbevolen instellingen hieronder in",
+    "unitSystem": "Volume-eenheden",
+    "metric": "Metrisch (liter)",
+    "usImperial": "Amerikaans imperiaal (gallon)",
+    "ukImperial": "Brits imperiaal (gallon)",
+    "temperature": "Temperatuur",
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "currency": "Valuta",
+    "dateFormat": "Datumformaat",
+    "getStarted": "Aan de slag",
+    "skip": "Nu overslaan",
+    "skipForNow": "Nu overslaan",
+    "selectCountry": "Selecteer je land...",
+    "custom": "Aangepast",
+    "saveFailed": "Opslaan van instellingen mislukt",
+    "preview": "Voorbeeld",
+    "saving": "Opslaan..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "liter",
+    "usGallons": "gal",
+    "usGallonsFull": "US gallon",
+    "ukGallons": "gal",
+    "ukGallonsFull": "UK gallon",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "Verenigde Staten",
+    "GB": "Verenigd Koninkrijk",
+    "FR": "Frankrijk",
+    "DE": "Duitsland",
+    "IT": "Italië",
+    "ES": "Spanje",
+    "PT": "Portugal",
+    "NL": "Nederland",
+    "BE": "België",
+    "AT": "Oostenrijk",
+    "CH": "Zwitserland",
+    "CA": "Canada",
+    "AU": "Australië",
+    "JP": "Japan",
+    "BR": "Brazilië"
+  },
+  "admin": {
+    "title": "Regionaal & Eenheden",
+    "description": "Configureer eenheden, temperatuur en datumformaat voor alle gebruikers.",
+    "country": "Land / Regio",
+    "unitSystem": "Volume-eenheden",
+    "temperature": "Temperatuureenheid",
+    "dateFormat": "Datumformaat",
+    "countryHint": "Een land selecteren vult automatisch de aanbevolen standaardwaarden in"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Programi i mirëmbajtjes",
+  "subtitle": "Gjurmo detyrat e përsëritura të mirëmbajtjes për akuariumin tënd",
+  "addReminder": "Shto kujtesë",
+  "reminders": "Kujtesa",
+  "overdue": "Të vonuara",
+  "dueSoon": "Afati së shpejti (7 ditë)",
+  "upcoming": "Të ardhshme",
+  "inactive": "Joaktive",
+  "noReminders": "Nuk ka kujtesa mirëmbajtjeje ende",
+  "noRemindersDescription": "Vendosni kujtesa të përsëritura për ndërrimin e ujit, pastrimin e pajisjeve dhe detyra të tjera",
+  "createFirst": "Krijo kujtesën e parë",
+  "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë kujtesë?",
+  "deleteFailed": "Dështoi fshirja e kujtesës",
+  "fields": {
+    "title": "Titulli",
+    "frequency": "Frekuenca",
+    "nextDue": "Afati tjetër",
+    "lastCompleted": "Kryerja e fundit",
+    "isActive": "Aktive"
+  },
+  "frequency": {
+    "days_one": "Çdo {{count}} ditë",
+    "days_other": "Çdo {{count}} ditë"
+  }
+}

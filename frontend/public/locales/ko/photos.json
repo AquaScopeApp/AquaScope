@@ -1,0 +1,16 @@
+{
+  "title": "사진",
+  "subtitle": "수조 사진 갤러리 및 타임라인",
+  "uploadPhoto": "사진 업로드",
+  "filterByTank": "수조별 필터",
+  "allTanks": "모든 수조",
+  "totalPhotos": "총 사진 수",
+  "thisMonth": "이번 달",
+  "tanksWithPhotos": "사진이 있는 수조",
+  "noPhotos": "아직 사진이 없습니다",
+  "startUploading": "첫 번째 사진을 업로드하여 수조 타임라인을 시작하세요",
+  "confirmDelete": "이 사진을 삭제하시겠습니까?",
+  "deleteFailed": "사진 삭제에 실패했습니다",
+  "updateFailed": "사진 업데이트에 실패했습니다",
+  "loading": "사진 로딩 중..."
+}

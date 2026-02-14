@@ -1,0 +1,26 @@
+{
+  "title": "Bakım Takvimi",
+  "subtitle": "Resif akvaryumunuz için tekrarlayan bakım görevlerini takip edin",
+  "addReminder": "Hatırlatıcı Ekle",
+  "reminders": "Hatırlatıcılar",
+  "overdue": "Gecikmiş",
+  "dueSoon": "Yakında (7 gün)",
+  "upcoming": "Yaklaşan",
+  "inactive": "Pasif",
+  "noReminders": "Henüz bakım hatırlatıcısı yok",
+  "noRemindersDescription": "Su değişimi, ekipman temizliği ve diğer görevler için tekrarlayan hatırlatıcılar oluşturun",
+  "createFirst": "İlk Hatırlatıcıyı Oluştur",
+  "confirmDelete": "Bu hatırlatıcıyı silmek istediğinize emin misiniz?",
+  "deleteFailed": "Hatırlatıcı silinemedi",
+  "fields": {
+    "title": "Başlık",
+    "frequency": "Sıklık",
+    "nextDue": "Sonraki Tarih",
+    "lastCompleted": "Son Tamamlama",
+    "isActive": "Aktif"
+  },
+  "frequency": {
+    "days_one": "Her {{count}} gün",
+    "days_other": "Her {{count}} gün"
+  }
+}

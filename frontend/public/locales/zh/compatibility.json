@@ -1,0 +1,62 @@
+{
+  "checker": "兼容性",
+  "title": "兼容性检查器",
+  "subtitle": "检查水族箱中的生物彼此是否兼容",
+  "selectTank": "选择要检查的水族箱",
+  "overallCompatible": "所有已检查的物种看起来兼容",
+  "overallCaution": "检测到一些潜在问题",
+  "overallIncompatible": "检测到兼容性问题",
+  "speciesChecked": "已检查 {{count}} 个物种",
+  "issuesFound": "发现 {{count}} 个问题",
+  "noIssues": "未检测到兼容性问题",
+  "notInDatabase": "物种不在数据库中",
+  "notInDatabaseInfo": "以下物种不在我们的兼容性数据库中。未对其进行检查。",
+  "noLivestock": "此水族箱中没有可检查的活跃生物",
+  "inlineCompatible": "此物种与您当前水族箱中的生物兼容。",
+  "inlineNoData": "没有此物种的兼容性数据。",
+  "inlineChecking": "正在检查兼容性...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}}（{{tempA}}）可能与 {{speciesB}}（{{tempB}}）发生冲突。攻击性物种可能会对温和的缸友造成压力或伤害。",
+    "reef_safety": "{{speciesA}} 不是珊瑚安全的，可能会损坏或吞食 {{speciesB}}。",
+    "reef_safety_caution": "{{speciesA}} 的珊瑚安全性存疑。与 {{speciesB}} 混养需密切观察。",
+    "tank_too_small": "{{species}} 需要至少 {{required}}L — 此水族箱仅有 {{actual}}L。",
+    "territorial_duplicates": "同一水族箱中多只 {{species}} 可能会争夺领地。",
+    "predator_prey": "{{predator}} 是 {{prey}} 的天敌。被捕食的风险很高。",
+    "size_disparity": "{{large}} 比 {{small}} 大得多。体型差异构成风险。",
+    "water_type_conflict": "{{species}} 是 {{speciesWater}} 物种，可能不适合 {{tankWater}} 水族箱。",
+    "specific_seahorse": "海马应养在专用缸中。{{other}} 可能与海马争食或给海马造成压力。",
+    "specific_axolotl": "美西螈最好单独饲养或只与同种混养。{{other}} 可能会咬伤鳃或被吞食。",
+    "specific_betta_male": "多只雄性斗鱼会激烈打斗。每缸只养一只雄性。",
+    "specific_coral_war": "{{speciesA}} 和 {{speciesB}} 如果放置太近可能会发生化学战。",
+    "corallivore_conflict": "{{speciesA}} 以珊瑚为食，会损坏 {{speciesB}}。"
+  },
+  "info": {
+    "title": "工作原理",
+    "description": "此检查器使用常见水族物种特征的内置数据库来检查攻击性冲突、珊瑚安全性、水族箱大小、领地争端和捕食关系。",
+    "disclaimer": "这是一个指导工具，不是保证。个体行为各异。添加物种前请务必充分研究。",
+    "sourcesTitle": "数据来源",
+    "sources": "物种特征数据编纂自以下权威参考资料：FishBase.org（分类学、生态学、行为）、WoRMS（世界海洋物种登记册）、LiveAquaria 养护指南、Reef2Reef/ReefCentral 社区百科、Eric Borneman 的 Aquarium Corals（珊瑚化感作用）以及 MASNA 养殖指南。水族箱大小反映了海水养殖社区广泛认可的最低标准。"
+  },
+  "severity": {
+    "compatible": "兼容",
+    "caution": "注意",
+    "incompatible": "不兼容"
+  },
+  "tabs": {
+    "issues": "问题",
+    "matrix": "矩阵",
+    "network": "网络"
+  },
+  "matrix": {
+    "clickForDetails": "点击单元格查看详情"
+  },
+  "network": {
+    "predatorPrey": "捕食者 → 猎物",
+    "incompatible": "不兼容",
+    "caution": "注意",
+    "fish": "鱼类",
+    "coral": "珊瑚",
+    "invertebrate": "无脊椎动物",
+    "noConnections": "未发现物种间的兼容性问题"
+  }
+}

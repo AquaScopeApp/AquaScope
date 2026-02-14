@@ -25,7 +25,20 @@ vi.mock('react-i18next', () => ({
 }))
 
 vi.mock('../../api', () => ({
-  tanksApi: { getImageBlobUrl: vi.fn().mockResolvedValue('blob:test-url') },
+  tanksApi: {
+    getImageBlobUrl: vi.fn().mockResolvedValue('blob:test-url'),
+    enableSharing: vi.fn().mockResolvedValue({ share_token: 'tok' }),
+    disableSharing: vi.fn().mockResolvedValue({}),
+    regenerateShareToken: vi.fn().mockResolvedValue({ share_token: 'tok2' }),
+  },
+}))
+
+vi.mock('../../hooks/useRegionalSettings', () => ({
+  useRegionalSettings: () => ({
+    formatVolume: (v: number) => `${v}L`,
+    tempLabel: '°C',
+    celsiusToDisplay: (v: number) => v,
+  }),
 }))
 
 // Stub heavy child components so the sidebar tests stay focused
@@ -43,6 +56,14 @@ vi.mock('../tanks/DefaultTankAnimation', () => ({
   default: ({ waterType }: any) => (
     <div data-testid="default-tank-animation">{waterType}</div>
   ),
+}))
+
+vi.mock('../dosing/DosingCalculator', () => ({
+  default: () => <div data-testid="dosing-calculator">DosingCalculator</div>,
+}))
+
+vi.mock('../tanks/TankReportCard', () => ({
+  default: () => <div data-testid="tank-report-card">TankReportCard</div>,
 }))
 
 vi.mock('react-router-dom', async () => {
@@ -72,6 +93,16 @@ const makeTank = (overrides: Partial<Tank> = {}): Tank => ({
   description: 'A beautiful mixed reef tank',
   image_url: null,
   setup_date: '2023-06-15',
+  electricity_cost_per_day: null,
+  has_refugium: false,
+  refugium_volume_liters: null,
+  refugium_type: null,
+  refugium_algae: null,
+  refugium_lighting_hours: null,
+  refugium_notes: null,
+  is_archived: false,
+  share_token: null,
+  share_enabled: false,
   created_at: '2023-06-15T00:00:00Z',
   updated_at: '2024-01-01T00:00:00Z',
   events: [],
@@ -156,6 +187,7 @@ describe('TankSidebar Component', () => {
       event_count: 5,
       equipment_count: 3,
       livestock_count: 12,
+      consumable_count: 0,
       photo_count: 8,
       note_count: 2,
       maintenance_count: 1,
@@ -164,17 +196,15 @@ describe('TankSidebar Component', () => {
     }
     renderWithProviders(<TankSidebar tank={makeTank()} stats={stats} />)
 
-    // The statistics section heading
-    expect(screen.getByText('statistics')).toBeInTheDocument()
-    // The mocked TankStats renders the stats as JSON
-    expect(screen.getByTestId('tank-stats')).toBeInTheDocument()
+    // The stats.tank_age_days is used to show days running badge
+    expect(screen.getByText('stats.daysRunning 200')).toBeInTheDocument()
   })
 
   it('does not render stats section when stats are not provided', () => {
     renderWithProviders(<TankSidebar tank={makeTank()} />)
 
-    expect(screen.queryByText('statistics')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('tank-stats')).not.toBeInTheDocument()
+    // Without stats the days-running badge still shows (calculated from setup_date)
+    expect(screen.getByText(/stats\.daysRunning/)).toBeInTheDocument()
   })
 
   it('shows quick action buttons', () => {
@@ -187,13 +217,14 @@ describe('TankSidebar Component', () => {
       />
     )
 
-    expect(screen.getByText('quickActions')).toBeInTheDocument()
-    // The action link/button texts are prefixed with emojis by the component
+    // The action link/button texts are rendered inside the quick actions grid
     expect(screen.getByText(/actions\.logParameters/)).toBeInTheDocument()
     expect(screen.getByText(/actions\.uploadPhoto/)).toBeInTheDocument()
     expect(screen.getByText(/actions\.addEvent/)).toBeInTheDocument()
     expect(screen.getByText(/actions\.manageEquipment/)).toBeInTheDocument()
     expect(screen.getByText(/actions\.manageLivestock/)).toBeInTheDocument()
+    expect(screen.getByText(/actions\.dosingCalc/)).toBeInTheDocument()
+    expect(screen.getByText(/actions\.waterChangeCalc/)).toBeInTheDocument()
   })
 
   it('does not render addEvent button when onAddEvent is not provided', () => {

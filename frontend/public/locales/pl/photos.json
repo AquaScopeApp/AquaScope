@@ -1,0 +1,16 @@
+{
+  "title": "Zdjęcia",
+  "subtitle": "Galeria zdjęć akwarium i oś czasu",
+  "uploadPhoto": "Prześlij zdjęcie",
+  "filterByTank": "Filtruj według akwarium",
+  "allTanks": "Wszystkie akwaria",
+  "totalPhotos": "Łączna liczba zdjęć",
+  "thisMonth": "Ten miesiąc",
+  "tanksWithPhotos": "Akwaria ze zdjęciami",
+  "noPhotos": "Brak zdjęć",
+  "startUploading": "Prześlij swoje pierwsze zdjęcie, aby zacząć budować oś czasu akwarium",
+  "confirmDelete": "Czy na pewno chcesz usunąć to zdjęcie?",
+  "deleteFailed": "Nie udało się usunąć zdjęcia",
+  "updateFailed": "Nie udało się zaktualizować zdjęcia",
+  "loading": "Ładowanie zdjęć..."
+}

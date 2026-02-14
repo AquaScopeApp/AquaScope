@@ -1,0 +1,73 @@
+{
+  "title": "Financat",
+  "subtitle": "Gjurmo shpenzimet dhe menaxho buxhetet nëpër akuariumet tuaja",
+  "allTanks": "Të gjitha akuariumet",
+  "noData": "Nuk ka të dhëna shpenzimesh ende",
+  "cumulative": "Kumulative",
+  "tabs": {
+    "summary": "Përmbledhja",
+    "details": "Detajet",
+    "budgets": "Buxhetet"
+  },
+  "stats": {
+    "totalSpent": "Shpenzuar gjithsej",
+    "equipment": "Pajisje",
+    "consumables": "Materiale harxhuese",
+    "livestock": "Gjallesa",
+    "icpTests": "Teste ICP",
+    "electricity": "Energji elektrike"
+  },
+  "categories": {
+    "equipment": "Pajisje",
+    "consumables": "Materiale harxhuese",
+    "livestock": "Gjallesa",
+    "icp_tests": "Teste ICP",
+    "electricity": "Energji elektrike"
+  },
+  "charts": {
+    "categoryBreakdown": "Shpenzimet sipas kategorisë",
+    "monthlySpending": "Shpenzimet mujore",
+    "byTank": "Shpenzimet sipas akuariumit"
+  },
+  "table": {
+    "tank": "Akuariumi",
+    "total": "Gjithsej"
+  },
+  "details": {
+    "allCategories": "Të gjitha kategoritë",
+    "items": "artikuj",
+    "date": "Data",
+    "name": "Emri",
+    "category": "Kategoria",
+    "tank": "Akuariumi",
+    "price": "Çmimi",
+    "url": "URL",
+    "edit": "Ndrysho",
+    "editTitle": "Ndrysho shpenzimin",
+    "purchaseUrl": "Lidhja e blerjes",
+    "noItems": "Nuk u gjetën shpenzime",
+    "confirmDelete": "Të fshihet ky shpenzim? Kjo nuk mund të kthehet mbrapsht."
+  },
+  "budget": {
+    "create": "Krijo buxhet",
+    "edit": "Ndrysho buxhetin",
+    "delete": "Fshi",
+    "save": "Ruaj",
+    "cancel": "Anulo",
+    "name": "Emri i buxhetit",
+    "amount": "Shuma",
+    "currency": "Monedha",
+    "period": "Periudha",
+    "monthly": "Mujore",
+    "yearly": "Vjetore",
+    "category": "Kategoria",
+    "tank": "Akuariumi",
+    "notes": "Shënime",
+    "allCategories": "Të gjitha kategoritë",
+    "allTanks": "Të gjitha akuariumet",
+    "noBudgets": "Nuk janë krijuar buxhete ende",
+    "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë buxhet?",
+    "remaining": "{{amount}} mbetur",
+    "overBy": "Tejkaluar me {{amount}}"
+  }
+}

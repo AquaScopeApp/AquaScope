@@ -1,0 +1,53 @@
+{
+  "title": "الإضاءة",
+  "subtitle": "إدارة جداول إضاءة LED لأحواضك",
+  "createSchedule": "إنشاء جدول",
+  "editSchedule": "تعديل الجدول",
+  "deleteSchedule": "حذف الجدول",
+  "deleteConfirm": "هل أنت متأكد من حذف جدول الإضاءة هذا؟",
+  "noSchedules": "لا توجد جداول إضاءة بعد",
+  "noSchedulesHint": "أنشئ جدولاً أو ابدأ من قالب جاهز",
+  "fields": {
+    "name": "اسم الجدول",
+    "description": "الوصف",
+    "tank": "الحوض",
+    "channels": "قنوات LED",
+    "channelName": "اسم القناة",
+    "channelColor": "اللون",
+    "addChannel": "إضافة قناة",
+    "removeChannel": "إزالة",
+    "schedule": "الجدول",
+    "intensity": "الشدة",
+    "hour": "الساعة",
+    "notes": "ملاحظات",
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "presets": {
+    "title": "القوالب الجاهزة",
+    "loadPreset": "تحميل من قالب",
+    "selectPreset": "-- اختر قالبًا --",
+    "reefbreeders-current": "ReefBreeders — الجدول الحالي",
+    "reefbreeders-acropora": "ReefBreeders — مُحسَّن لـ Acropora",
+    "reef-low-softies": "شعاب — إضاءة منخفضة (مرجان رخو)",
+    "reef-medium-mixed": "شعاب — إضاءة متوسطة (LPS/مختلط)",
+    "freshwater-planted": "ماء عذب مزروع — إضاءة عالية",
+    "refugium-reverse": "ريفيوجيوم — فترة ضوئية عكسية"
+  },
+  "chart": {
+    "title": "معاينة الشدة",
+    "xAxis": "الساعة",
+    "yAxis": "الشدة %"
+  },
+  "stats": {
+    "activeSchedules": "الجداول النشطة",
+    "totalSchedules": "إجمالي الجداول",
+    "tanksWithLighting": "أحواض بإضاءة"
+  },
+  "actions": {
+    "activate": "تفعيل",
+    "deactivate": "إلغاء التفعيل",
+    "duplicate": "نسخ",
+    "save": "حفظ الجدول"
+  }
+}

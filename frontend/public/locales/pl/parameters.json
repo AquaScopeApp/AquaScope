@@ -1,0 +1,54 @@
+{
+  "title": "Parametry wody",
+  "subtitle": "Śledź i wizualizuj chemię wody w swoim akwarium",
+  "logParameters": "Zapisz parametry",
+  "hideForm": "Ukryj formularz",
+  "showTable": "Pokaż tabelę",
+  "hideTable": "Ukryj tabelę",
+  "latestReadings": "Ostatnie odczyty",
+  "history": "Historia",
+  "selectTank": "Wybierz akwarium",
+  "noTanksYet": "Brak akwariów",
+  "noTanksDescription": "Musisz najpierw utworzyć akwarium, zanim zapiszesz parametry",
+  "createFirstTank": "Utwórz swoje pierwsze akwarium",
+  "rawDataTable": "Tabela surowych danych (Widok debug)",
+  "totalEntries": "Łączna liczba wpisów:",
+  "filterByParameter": "Filtruj według parametru...",
+  "noData": "Brak danych w wybranym zakresie czasowym",
+  "noParameterData": "Brak danych o parametrach",
+  "startTracking": "Zacznij śledzić chemię wody, zapisując wyniki pierwszego testu",
+  "logFirst": "Zapisz pierwsze parametry",
+  "showing": "Wyświetlanie {{from}} do {{to}} z {{total}} wpisów",
+  "page": "Strona {{current}} z {{total}}",
+  "timeRange": "Zakres czasowy:",
+  "ranges": {
+    "7d": "7 dni",
+    "30d": "30 dni",
+    "90d": "90 dni",
+    "1y": "1 rok",
+    "all": "Wszystko"
+  },
+  "table": {
+    "timestamp": "Znacznik czasu",
+    "parameter": "Parametr",
+    "value": "Wartość",
+    "unit": "Jednostka",
+    "actions": "Akcje"
+  },
+  "fields": {
+    "calcium": "Wapń (Ca)",
+    "magnesium": "Magnez (Mg)",
+    "alkalinity": "Alkaliczność (KH)",
+    "nitrate": "Azotan (NO3)",
+    "phosphate": "Fosforan (PO4)",
+    "salinity": "Zasolenie",
+    "temperature": "Temperatura",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

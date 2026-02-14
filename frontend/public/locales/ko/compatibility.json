@@ -1,0 +1,62 @@
+{
+  "checker": "호환성",
+  "title": "호환성 검사기",
+  "subtitle": "수조 내 생물의 상호 호환성 확인",
+  "selectTank": "검사할 수조 선택",
+  "overallCompatible": "검사된 모든 종이 호환되는 것으로 보입니다",
+  "overallCaution": "잠재적인 우려 사항이 감지되었습니다",
+  "overallIncompatible": "호환성 문제가 감지되었습니다",
+  "speciesChecked": "{{count}}종 검사 완료",
+  "issuesFound": "{{count}}건의 문제 발견",
+  "noIssues": "호환성 문제가 감지되지 않았습니다",
+  "notInDatabase": "데이터베이스에 없는 종",
+  "notInDatabaseInfo": "다음 종은 호환성 데이터베이스에 없습니다. 이 종에 대한 검사는 수행되지 않았습니다.",
+  "noLivestock": "이 수조에 검사할 활성 생물이 없습니다",
+  "inlineCompatible": "이 종은 현재 수조의 생물과 호환됩니다.",
+  "inlineNoData": "이 종에 대한 호환성 데이터가 없습니다.",
+  "inlineChecking": "호환성 확인 중...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}} ({{tempA}})은(는) {{speciesB}} ({{tempB}})와(과) 충돌할 수 있습니다. 공격적인 종은 온순한 동료에게 스트레스를 주거나 해를 끼칠 수 있습니다.",
+    "reef_safety": "{{speciesA}}은(는) 리프 세이프가 아니며 {{speciesB}}을(를) 손상시키거나 잡아먹을 수 있습니다.",
+    "reef_safety_caution": "{{speciesA}}의 리프 세이프 여부가 불확실합니다. {{speciesB}}와(과) 함께 면밀히 관찰하세요.",
+    "tank_too_small": "{{species}}은(는) 최소 {{required}}L가 필요합니다 — 이 수조는 {{actual}}L밖에 되지 않습니다.",
+    "territorial_duplicates": "같은 수조에 여러 마리의 {{species}}이(가) 있으면 영역 다툼이 발생할 수 있습니다.",
+    "predator_prey": "{{predator}}은(는) {{prey}}의 천적입니다. 포식 위험이 높습니다.",
+    "size_disparity": "{{large}}은(는) {{small}}보다 훨씬 큽니다. 크기 차이는 위험을 초래합니다.",
+    "water_type_conflict": "{{species}}은(는) {{speciesWater}} 종으로 {{tankWater}} 수조에서는 적응하지 못할 수 있습니다.",
+    "specific_seahorse": "해마는 종 전용 수조에서 사육해야 합니다. {{other}}은(는) 먹이 경쟁이나 스트레스의 원인이 될 수 있습니다.",
+    "specific_axolotl": "아홀로틀은 단독 사육이 가장 좋습니다. {{other}}은(는) 아가미를 물거나 잡아먹힐 수 있습니다.",
+    "specific_betta_male": "수컷 베타 여러 마리는 격렬하게 싸웁니다. 수조당 수컷 1마리만 사육하세요.",
+    "specific_coral_war": "{{speciesA}}와(과) {{speciesB}}은(는) 너무 가까이 배치하면 화학전을 벌일 수 있습니다.",
+    "corallivore_conflict": "{{speciesA}}은(는) 산호를 먹으며 {{speciesB}}을(를) 손상시킵니다."
+  },
+  "info": {
+    "title": "작동 원리",
+    "description": "이 검사기는 일반적인 수족관 생물의 특성 데이터베이스를 사용하여 공격성 충돌, 리프 세이프 여부, 수조 크기, 영역 분쟁, 포식 관계를 확인합니다.",
+    "disclaimer": "이것은 안내 도구이며 보증이 아닙니다. 개체의 행동은 다양합니다. 생물을 추가하기 전에 항상 충분히 조사하세요.",
+    "sourcesTitle": "데이터 출처",
+    "sources": "종 특성 데이터는 다음의 확립된 참고 자료에서 편찬되었습니다: FishBase.org (분류학, 생태학, 행동), WoRMS (세계 해양 생물 종 등록), LiveAquaria 사육 가이드, Reef2Reef/ReefCentral 커뮤니티 위키, Eric Borneman의 Aquarium Corals (산호 타감작용), MASNA 사육 지침. 수조 크기는 리프키핑 커뮤니티에서 널리 인정되는 최소 기준을 반영합니다."
+  },
+  "severity": {
+    "compatible": "호환",
+    "caution": "주의",
+    "incompatible": "비호환"
+  },
+  "tabs": {
+    "issues": "문제",
+    "matrix": "매트릭스",
+    "network": "네트워크"
+  },
+  "matrix": {
+    "clickForDetails": "셀을 클릭하여 상세 보기"
+  },
+  "network": {
+    "predatorPrey": "포식자 → 먹이",
+    "incompatible": "비호환",
+    "caution": "주의",
+    "fish": "어류",
+    "coral": "산호",
+    "invertebrate": "무척추동물",
+    "noConnections": "종 간 호환성 문제가 발견되지 않았습니다"
+  }
+}

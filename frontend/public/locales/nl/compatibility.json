@@ -1,0 +1,62 @@
+{
+  "checker": "Compatibiliteit",
+  "title": "Compatibiliteitscontrole",
+  "subtitle": "Controleer of je aquariumbewoners compatibel zijn met elkaar",
+  "selectTank": "Selecteer een aquarium om te controleren",
+  "overallCompatible": "Alle gecontroleerde soorten lijken compatibel",
+  "overallCaution": "Enkele mogelijke problemen gedetecteerd",
+  "overallIncompatible": "Compatibiliteitsproblemen gedetecteerd",
+  "speciesChecked": "{{count}} soorten gecontroleerd",
+  "issuesFound": "{{count}} probleem/problemen gevonden",
+  "noIssues": "Geen compatibiliteitsproblemen gedetecteerd",
+  "notInDatabase": "Soort niet in database",
+  "notInDatabaseInfo": "De volgende soorten staan niet in onze compatibiliteitsdatabase. Er zijn geen controles voor ze uitgevoerd.",
+  "noLivestock": "Geen actieve dieren in dit aquarium om te controleren",
+  "inlineCompatible": "Deze soort lijkt compatibel met je huidige aquariumbewoners.",
+  "inlineNoData": "Geen compatibiliteitsgegevens beschikbaar voor deze soort.",
+  "inlineChecking": "Compatibiliteit controleren...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}} ({{tempA}}) kan conflicteren met {{speciesB}} ({{tempB}}). Agressieve soorten kunnen vreedzame soortgenoten stressen of verwonden.",
+    "reef_safety": "{{speciesA}} is niet rifveilig en kan {{speciesB}} beschadigen of opeten.",
+    "reef_safety_caution": "{{speciesA}} heeft twijfelachtige rifveiligheid. Houd nauwlettend in de gaten met {{speciesB}}.",
+    "tank_too_small": "{{species}} heeft minimaal {{required}}L nodig — dit aquarium is slechts {{actual}}L.",
+    "territorial_duplicates": "Meerdere {{species}} in hetzelfde aquarium kunnen om territorium vechten.",
+    "predator_prey": "{{predator}} is een natuurlijke vijand van {{prey}}. Hoog predatierisico.",
+    "size_disparity": "{{large}} is veel groter dan {{small}}. Het grootteverschil vormt een risico.",
+    "water_type_conflict": "{{species}} is een {{speciesWater}} soort en gedijt mogelijk niet in een {{tankWater}} aquarium.",
+    "specific_seahorse": "Zeepaardjes moeten in soortspecifieke aquariums worden gehouden. {{other}} kan ze beconcurreren om voedsel of stressen.",
+    "specific_axolotl": "Axolotls worden het best alleen of met soortgenoten gehouden. {{other}} kan aan kieuwen knabbelen of worden opgegeten.",
+    "specific_betta_male": "Meerdere mannelijke Betta's zullen agressief vechten. Houd slechts één mannetje per aquarium.",
+    "specific_coral_war": "{{speciesA}} en {{speciesB}} kunnen chemische oorlog voeren als ze te dicht bij elkaar worden geplaatst.",
+    "corallivore_conflict": "{{speciesA}} eet koraal en zal {{speciesB}} beschadigen."
+  },
+  "info": {
+    "title": "Hoe dit werkt",
+    "description": "Deze controle gebruikt een ingebouwde database van veelvoorkomende aquariumsoorten om agressieconflicten, rifveiligheid, aquariumgrootte, territoriale geschillen en roofdier-prooi relaties te controleren.",
+    "disclaimer": "Dit is een hulpmiddel, geen garantie. Individueel gedrag varieert. Onderzoek soorten altijd grondig voordat je ze toevoegt.",
+    "sourcesTitle": "Gegevensbronnen",
+    "sources": "Soorteigenschappen zijn samengesteld uit gevestigde referenties: FishBase.org (taxonomie, ecologie, gedrag), WoRMS (World Register of Marine Species), LiveAquaria verzorgingsgidsen, Reef2Reef/ReefCentral community wiki's, Eric Borneman's Aquarium Corals (koraal allelopathie), en MASNA huisvestingsrichtlijnen. Aquariumgroottes weerspiegelen breed geaccepteerde minima uit de aquaristiekgemeenschap."
+  },
+  "severity": {
+    "compatible": "Compatibel",
+    "caution": "Voorzichtigheid",
+    "incompatible": "Incompatibel"
+  },
+  "tabs": {
+    "issues": "Problemen",
+    "matrix": "Matrix",
+    "network": "Netwerk"
+  },
+  "matrix": {
+    "clickForDetails": "Klik op een cel voor details"
+  },
+  "network": {
+    "predatorPrey": "Roofdier → Prooi",
+    "incompatible": "Incompatibel",
+    "caution": "Voorzichtigheid",
+    "fish": "Vis",
+    "coral": "Koraal",
+    "invertebrate": "Ongewervelde",
+    "noConnections": "Geen compatibiliteitsproblemen gevonden tussen soorten"
+  }
+}

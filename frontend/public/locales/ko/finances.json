@@ -1,0 +1,73 @@
+{
+  "title": "재무",
+  "subtitle": "수족관 전체의 지출 추적 및 예산 관리",
+  "allTanks": "모든 수조",
+  "noData": "아직 지출 데이터가 없습니다",
+  "cumulative": "누적",
+  "tabs": {
+    "summary": "요약",
+    "details": "상세",
+    "budgets": "예산"
+  },
+  "stats": {
+    "totalSpent": "총 지출",
+    "equipment": "장비",
+    "consumables": "소모품",
+    "livestock": "생물",
+    "icpTests": "ICP 검사",
+    "electricity": "전기 요금"
+  },
+  "categories": {
+    "equipment": "장비",
+    "consumables": "소모품",
+    "livestock": "생물",
+    "icp_tests": "ICP 검사",
+    "electricity": "전기 요금"
+  },
+  "charts": {
+    "categoryBreakdown": "카테고리별 지출",
+    "monthlySpending": "월별 지출",
+    "byTank": "수조별 지출"
+  },
+  "table": {
+    "tank": "수조",
+    "total": "합계"
+  },
+  "details": {
+    "allCategories": "모든 카테고리",
+    "items": "건",
+    "date": "날짜",
+    "name": "이름",
+    "category": "카테고리",
+    "tank": "수조",
+    "price": "가격",
+    "url": "URL",
+    "edit": "편집",
+    "editTitle": "지출 편집",
+    "purchaseUrl": "구매 URL",
+    "noItems": "지출 내역이 없습니다",
+    "confirmDelete": "이 지출을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다."
+  },
+  "budget": {
+    "create": "예산 만들기",
+    "edit": "예산 편집",
+    "delete": "삭제",
+    "save": "저장",
+    "cancel": "취소",
+    "name": "예산 이름",
+    "amount": "금액",
+    "currency": "통화",
+    "period": "기간",
+    "monthly": "월별",
+    "yearly": "연별",
+    "category": "카테고리",
+    "tank": "수조",
+    "notes": "메모",
+    "allCategories": "모든 카테고리",
+    "allTanks": "모든 수조",
+    "noBudgets": "아직 예산이 만들어지지 않았습니다",
+    "confirmDelete": "이 예산을 삭제하시겠습니까?",
+    "remaining": "{{amount}} 남음",
+    "overBy": "{{amount}} 초과"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "title": "Waterparameters",
+  "subtitle": "Volg en visualiseer de waterchemie van je aquarium",
+  "logParameters": "Parameters loggen",
+  "hideForm": "Formulier verbergen",
+  "showTable": "Tabel tonen",
+  "hideTable": "Tabel verbergen",
+  "latestReadings": "Laatste metingen",
+  "history": "Geschiedenis",
+  "selectTank": "Selecteer aquarium",
+  "noTanksYet": "Nog geen aquariums",
+  "noTanksDescription": "Je moet eerst een aquarium aanmaken voordat je parameters kunt loggen",
+  "createFirstTank": "Maak je eerste aquarium aan",
+  "rawDataTable": "Ruwe gegevenstabel (Debug weergave)",
+  "totalEntries": "Totaal aantal records:",
+  "filterByParameter": "Filteren op parameter...",
+  "noData": "Geen gegevens beschikbaar in het geselecteerde tijdsbereik",
+  "noParameterData": "Nog geen parametergegevens",
+  "startTracking": "Begin met het volgen van je waterchemie door je eerste watertestresultaten te loggen",
+  "logFirst": "Eerste parameters loggen",
+  "showing": "{{from}} tot {{to}} van {{total}} records weergegeven",
+  "page": "Pagina {{current}} van {{total}}",
+  "timeRange": "Tijdsbereik:",
+  "ranges": {
+    "7d": "7 Dagen",
+    "30d": "30 Dagen",
+    "90d": "90 Dagen",
+    "1y": "1 Jaar",
+    "all": "Alles"
+  },
+  "table": {
+    "timestamp": "Tijdstempel",
+    "parameter": "Parameter",
+    "value": "Waarde",
+    "unit": "Eenheid",
+    "actions": "Acties"
+  },
+  "fields": {
+    "calcium": "Calcium (Ca)",
+    "magnesium": "Magnesium (Mg)",
+    "alkalinity": "Alkaliniteit (KH)",
+    "nitrate": "Nitraat (NO3)",
+    "phosphate": "Fosfaat (PO4)",
+    "salinity": "Zoutgehalte",
+    "temperature": "Temperatuur",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

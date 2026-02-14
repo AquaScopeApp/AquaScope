@@ -1,0 +1,92 @@
+{
+  "title": "Waterwisselcalculator",
+  "subtitle": "Voorspel parameterveranderingen of bereken het benodigde waterwisselvolume",
+  "noTanks": "Nog geen aquariums. Maak eerst een aquarium aan om de calculator te gebruiken.",
+  "volume": {
+    "display": "Toon",
+    "sump": "Sump",
+    "total": "Totaal systeem"
+  },
+  "tabs": {
+    "impact": "Impactvoorbeeld",
+    "target": "Doelparameter",
+    "correction": "Correctieplan",
+    "dosing": "Doseringscalculator"
+  },
+  "impact": {
+    "waterChangePercent": "Waterwissel",
+    "liters": "{{value}} L",
+    "replacementWater": "Vervangingswater",
+    "saltMix": "Zeezoutmengsel",
+    "custom": "Aangepast",
+    "saveProfile": "Opslaan",
+    "profileSaved": "Opgeslagen!",
+    "results": "Verwachte parameters",
+    "noData": "Geen parametergegevens. Log eerst wat metingen.",
+    "parameter": "Parameter",
+    "current": "Huidig",
+    "afterWC": "Na wissel",
+    "change": "Verschil",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "Parameter om te corrigeren",
+    "currentValue": "Huidige waarde",
+    "targetValue": "Doelwaarde",
+    "replacementValue": "In vervangingswater",
+    "noReading": "Geen huidige meting",
+    "result": {
+      "required": "Benodigde waterwissel",
+      "volume": "Te wisselen volume",
+      "ofTotal": "van {{total}} L totaal",
+      "notFeasible": "Niet haalbaar met waterwissels",
+      "notFeasibleDesc": "Het vervangingswater kan deze parameter niet naar het doel brengen. Overweeg dosering.",
+      "noChangeNeeded": "Al op doel",
+      "noChangeDesc": "Huidige waarde is al op of zeer dicht bij het doel."
+    },
+    "split": {
+      "title": "Grote waterwissel",
+      "description": "Wissels boven 50% kunnen bewoners stressen. Overweeg {{count}} wissels van {{percent}}% ({{liters}} L elk) verspreid over meerdere dagen."
+    }
+  },
+  "correction": {
+    "statusOverview": "Huidige parameterstatus",
+    "outOfRange": "{{count}} van {{total}} parameters buiten bereik",
+    "allInRange": "Alle parameters zijn binnen het optimale bereik!",
+    "criticalCount": "{{count}} kritiek",
+    "warningCount": "{{count}} waarschuwing",
+    "tooHigh": "Te hoog",
+    "tooLow": "Te laag",
+    "onTarget": "Op doel",
+    "recommendedPlan": "Aanbevolen plan",
+    "planSummary": "{{count}} waterwissels van {{percent}}% ({{liters}} L elk) over {{days}} dagen",
+    "singleChange": "Enkele waterwissel van {{percent}}% ({{liters}} L)",
+    "noCorrection": "Geen correctie nodig",
+    "schedule": "Stapsgewijs schema",
+    "step": "Wissel #{{number}}",
+    "dayOffset": "Dag {{day}}",
+    "beforeAfter": "Voor en na",
+    "before": "Voor",
+    "afterPlan": "Na plan",
+    "uncorrectable": {
+      "title": "Niet corrigeerbaar met waterwissels",
+      "description": "Deze parameters hebben dosering of andere correctiemethoden nodig:",
+      "useDosing": "Open doseringscalculator"
+    },
+    "config": {
+      "title": "Schema-instellingen",
+      "maxChange": "Max wissel per stap",
+      "daysBetween": "Dagen tussen wissels",
+      "days": "{{count}} dagen"
+    },
+    "info": {
+      "title": "Over stabiliteit",
+      "description": "Stabiliteit is belangrijker dan perfectie in aquariums. Grote, snelle parameterschommelingen kunnen dieren meer stressen dan licht afwijkende waarden. Dit plan beperkt elke wissel en spreidt ze voor de veiligheid."
+    }
+  },
+  "info": {
+    "title": "Hoe het werkt",
+    "description": "Waterwissels verdunnen aquariumwater met vers vervangingswater. De calculator gebruikt de verdunningsformule om te voorspellen hoe elke parameter verschuift.",
+    "formula": "na = huidig × (1 − WW%) + vervanging × WW%"
+  }
+}

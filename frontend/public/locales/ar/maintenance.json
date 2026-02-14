@@ -1,0 +1,26 @@
+{
+  "title": "جدول الصيانة",
+  "subtitle": "تتبع مهام الصيانة الدورية لحوض الشعاب المرجانية",
+  "addReminder": "إضافة تذكير",
+  "reminders": "التذكيرات",
+  "overdue": "متأخر",
+  "dueSoon": "قريبًا (7 أيام)",
+  "upcoming": "قادم",
+  "inactive": "غير نشط",
+  "noReminders": "لا توجد تذكيرات صيانة بعد",
+  "noRemindersDescription": "أنشئ تذكيرات دورية لتغيير الماء وتنظيف المعدات والمهام الأخرى",
+  "createFirst": "أنشئ أول تذكير",
+  "confirmDelete": "هل أنت متأكد من حذف هذا التذكير؟",
+  "deleteFailed": "فشل حذف التذكير",
+  "fields": {
+    "title": "العنوان",
+    "frequency": "التكرار",
+    "nextDue": "الموعد التالي",
+    "lastCompleted": "آخر إتمام",
+    "isActive": "نشط"
+  },
+  "frequency": {
+    "days_one": "كل {{count}} يوم",
+    "days_other": "كل {{count}} يوم"
+  }
+}

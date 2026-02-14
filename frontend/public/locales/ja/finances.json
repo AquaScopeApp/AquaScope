@@ -1,0 +1,73 @@
+{
+  "title": "財務",
+  "subtitle": "アクアリウム全体の支出と予算を管理",
+  "allTanks": "すべての水槽",
+  "noData": "支出データがまだありません",
+  "cumulative": "累計",
+  "tabs": {
+    "summary": "概要",
+    "details": "詳細",
+    "budgets": "予算"
+  },
+  "stats": {
+    "totalSpent": "総支出",
+    "equipment": "機器",
+    "consumables": "消耗品",
+    "livestock": "生体",
+    "icpTests": "ICP検査",
+    "electricity": "電気代"
+  },
+  "categories": {
+    "equipment": "機器",
+    "consumables": "消耗品",
+    "livestock": "生体",
+    "icp_tests": "ICP検査",
+    "electricity": "電気代"
+  },
+  "charts": {
+    "categoryBreakdown": "カテゴリ別支出",
+    "monthlySpending": "月別支出",
+    "byTank": "水槽別支出"
+  },
+  "table": {
+    "tank": "水槽",
+    "total": "合計"
+  },
+  "details": {
+    "allCategories": "すべてのカテゴリ",
+    "items": "件",
+    "date": "日付",
+    "name": "名前",
+    "category": "カテゴリ",
+    "tank": "水槽",
+    "price": "価格",
+    "url": "URL",
+    "edit": "編集",
+    "editTitle": "経費を編集",
+    "purchaseUrl": "購入URL",
+    "noItems": "経費が見つかりません",
+    "confirmDelete": "この経費を削除しますか？この操作は元に戻せません。"
+  },
+  "budget": {
+    "create": "予算を作成",
+    "edit": "予算を編集",
+    "delete": "削除",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "name": "予算名",
+    "amount": "金額",
+    "currency": "通貨",
+    "period": "期間",
+    "monthly": "月次",
+    "yearly": "年次",
+    "category": "カテゴリ",
+    "tank": "水槽",
+    "notes": "メモ",
+    "allCategories": "すべてのカテゴリ",
+    "allTanks": "すべての水槽",
+    "noBudgets": "まだ予算が作成されていません",
+    "confirmDelete": "この予算を削除してよろしいですか？",
+    "remaining": "残り {{amount}}",
+    "overBy": "{{amount}} 超過"
+  }
+}

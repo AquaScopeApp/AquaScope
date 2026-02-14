@@ -1,0 +1,26 @@
+{
+  "title": "Harmonogram konserwacji",
+  "subtitle": "Śledź powtarzające się zadania konserwacyjne dla swojego akwarium",
+  "addReminder": "Dodaj przypomnienie",
+  "reminders": "Przypomnienia",
+  "overdue": "Zaległe",
+  "dueSoon": "Wkrótce (7 dni)",
+  "upcoming": "Nadchodzące",
+  "inactive": "Nieaktywne",
+  "noReminders": "Brak przypomnień o konserwacji",
+  "noRemindersDescription": "Ustaw cykliczne przypomnienia o podmianach wody, czyszczeniu sprzętu i innych zadaniach",
+  "createFirst": "Utwórz pierwsze przypomnienie",
+  "confirmDelete": "Czy na pewno chcesz usunąć to przypomnienie?",
+  "deleteFailed": "Nie udało się usunąć przypomnienia",
+  "fields": {
+    "title": "Tytuł",
+    "frequency": "Częstotliwość",
+    "nextDue": "Następny termin",
+    "lastCompleted": "Ostatnio wykonano",
+    "isActive": "Aktywne"
+  },
+  "frequency": {
+    "days_one": "Co {{count}} dzień",
+    "days_other": "Co {{count}} dni"
+  }
+}

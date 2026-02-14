@@ -1,0 +1,54 @@
+{
+  "title": "수질 매개변수",
+  "subtitle": "리프 수조의 수질 화학을 추적하고 시각화",
+  "logParameters": "매개변수 기록",
+  "hideForm": "양식 숨기기",
+  "showTable": "테이블 표시",
+  "hideTable": "테이블 숨기기",
+  "latestReadings": "최신 측정값",
+  "history": "이력",
+  "selectTank": "수조 선택",
+  "noTanksYet": "아직 수조가 없습니다",
+  "noTanksDescription": "매개변수를 기록하려면 먼저 수조를 만들어야 합니다",
+  "createFirstTank": "첫 번째 수조 만들기",
+  "rawDataTable": "원시 데이터 테이블 (디버그 뷰)",
+  "totalEntries": "총 항목 수:",
+  "filterByParameter": "매개변수로 필터...",
+  "noData": "선택한 기간에 데이터가 없습니다",
+  "noParameterData": "아직 매개변수 데이터가 없습니다",
+  "startTracking": "첫 번째 수질 검사 결과를 기록하여 수질 화학 추적을 시작하세요",
+  "logFirst": "첫 매개변수 기록",
+  "showing": "{{total}}개 중 {{from}} ~ {{to}} 표시",
+  "page": "{{total}} 중 {{current}} 페이지",
+  "timeRange": "기간:",
+  "ranges": {
+    "7d": "7일",
+    "30d": "30일",
+    "90d": "90일",
+    "1y": "1년",
+    "all": "전체"
+  },
+  "table": {
+    "timestamp": "타임스탬프",
+    "parameter": "매개변수",
+    "value": "값",
+    "unit": "단위",
+    "actions": "작업"
+  },
+  "fields": {
+    "calcium": "칼슘 (Ca)",
+    "magnesium": "마그네슘 (Mg)",
+    "alkalinity": "알칼리니티 (KH)",
+    "nitrate": "질산염 (NO3)",
+    "phosphate": "인산염 (PO4)",
+    "salinity": "염도",
+    "temperature": "수온",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

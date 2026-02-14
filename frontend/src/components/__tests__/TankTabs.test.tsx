@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { renderWithProviders, userEvent } from '../../test/test-utils'
 import TankTabs from '../tanks/TankTabs'
-import type { Tank, TankEvent, Equipment, Livestock, Photo, Note, MaintenanceReminder, ICPTestSummary } from '../../types'
+import type { Tank, TankEvent, Equipment, Livestock, Consumable, Photo, Note, MaintenanceReminder, ICPTestSummary, DiseaseRecord } from '../../types'
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -187,6 +187,8 @@ const emptyProps = {
   notes: [] as Note[],
   maintenance: [] as MaintenanceReminder[],
   icpTests: [] as ICPTestSummary[],
+  consumables: [] as Consumable[],
+  diseases: [] as DiseaseRecord[],
   ...defaultCallbacks,
 }
 
@@ -195,13 +197,14 @@ describe('TankTabs Component', () => {
     vi.clearAllMocks()
   })
 
-  it('renders all 8 tab buttons', () => {
+  it('renders all 9 tab buttons', () => {
     renderWithProviders(<TankTabs {...emptyProps} />)
 
     expect(screen.getByText('tabs.overview')).toBeInTheDocument()
     expect(screen.getByText('tabs.events')).toBeInTheDocument()
     expect(screen.getByText('tabs.equipment')).toBeInTheDocument()
     expect(screen.getByText('tabs.livestock')).toBeInTheDocument()
+    expect(screen.getByText('Health')).toBeInTheDocument()
     expect(screen.getByText('tabs.photos')).toBeInTheDocument()
     expect(screen.getByText('tabs.notes')).toBeInTheDocument()
     expect(screen.getByText('tabs.icpTests')).toBeInTheDocument()

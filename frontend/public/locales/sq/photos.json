@@ -1,0 +1,16 @@
+{
+  "title": "Foto",
+  "subtitle": "Galeria dhe kronologjia e fotove të akuariumit",
+  "uploadPhoto": "Ngarko foto",
+  "filterByTank": "Filtro sipas akuariumit",
+  "allTanks": "Të gjitha akuariumet",
+  "totalPhotos": "Foto gjithsej",
+  "thisMonth": "Këtë muaj",
+  "tanksWithPhotos": "Akuariume me foto",
+  "noPhotos": "Nuk ka foto ende",
+  "startUploading": "Ngarko foton e parë për të filluar ndërtimin e kronologjisë së akuariumit",
+  "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë foto?",
+  "deleteFailed": "Dështoi fshirja e fotos",
+  "updateFailed": "Dështoi përditësimi i fotos",
+  "loading": "Duke ngarkuar fotot..."
+}

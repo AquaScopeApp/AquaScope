@@ -1,0 +1,16 @@
+{
+  "title": "Fotoğraflar",
+  "subtitle": "Akvaryum fotoğraf galerisi ve zaman çizelgesi",
+  "uploadPhoto": "Fotoğraf Yükle",
+  "filterByTank": "Akvaryuma Göre Filtrele",
+  "allTanks": "Tüm Akvaryumlar",
+  "totalPhotos": "Toplam Fotoğraf",
+  "thisMonth": "Bu Ay",
+  "tanksWithPhotos": "Fotoğraflı Akvaryumlar",
+  "noPhotos": "Henüz fotoğraf yok",
+  "startUploading": "Akvaryum zaman çizelgenizi oluşturmak için ilk fotoğrafınızı yükleyin",
+  "confirmDelete": "Bu fotoğrafı silmek istediğinize emin misiniz?",
+  "deleteFailed": "Fotoğraf silinemedi",
+  "updateFailed": "Fotoğraf güncellenemedi",
+  "loading": "Fotoğraflar yükleniyor..."
+}

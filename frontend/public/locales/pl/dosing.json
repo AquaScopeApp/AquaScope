@@ -1,0 +1,62 @@
+{
+  "calculator": "Kalkulator dawkowania",
+  "title": "Kalkulator dawkowania",
+  "subtitle": "Oblicz, ile dawkować, aby skorygować parametry wody",
+  "tankVolume": "Objętość akwarium",
+  "selectParameter": "Wybierz parametr do korekty",
+  "selectCompound": "Wybierz związek do dawkowania",
+  "currentValue": "Obecna wartość",
+  "targetValue": "Wartość docelowa",
+  "noReading": "Brak odczytu — wpisz ręcznie",
+  "noTarget": "Brak celu — wpisz ręcznie",
+  "needsCorrection": "Wymaga korekty",
+  "onTarget": "W normie",
+  "noData": "Brak danych",
+  "result": {
+    "add": "Dodaj",
+    "of": "z",
+    "toRaise": "aby podnieść",
+    "by": "o",
+    "from": "z",
+    "to": "do",
+    "inYour": "w Twoim",
+    "system": "systemie",
+    "noCorrection": "Korekta nie jest wymagana — obecna wartość jest na poziomie lub powyżej celu."
+  },
+  "safety": {
+    "warning": "Duża korekta",
+    "splitDoses": "Rozważ podzielenie na {{count}} dawek w ciągu 2–3 dni, aby uniknąć stresu mieszkańców akwarium.",
+    "maxSingle": "Maks. zalecana jednorazowa korekta: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "Jak to działa",
+    "description": "Ten kalkulator oblicza, ile związku należy dodać, aby doprowadzić parametr z obecnej wartości do celu. Korale i inne organizmy stale zużywają te elementy, dlatego regularne testowanie i korekta jest oczekiwana.",
+    "balancing": "Balansujesz — nie planujesz codziennych dawek."
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "Soda kalcynowana",
+      "description": "Podnosi alkaliczność. Preferowana dla akwariów rafowych — również nieznacznie podnosi pH."
+    },
+    "baking_soda": {
+      "name": "Soda oczyszczona",
+      "description": "Podnosi alkaliczność. Łagodniejszy wpływ na pH niż soda kalcynowana. Powszechna i tania."
+    },
+    "calcium_chloride": {
+      "name": "Chlorek wapnia (dwuwodny)",
+      "description": "Najpopularniejszy suplement wapnia do akwariów rafowych."
+    },
+    "magnesium_chloride": {
+      "name": "Chlorek magnezu (sześciowodny)",
+      "description": "Podnosi magnez. Często stosowany razem z siarczanem magnezu."
+    },
+    "magnesium_sulfate": {
+      "name": "Siarczan magnezu (sól Epsom)",
+      "description": "Podnosi magnez. Dostarcza również siarczan."
+    },
+    "calcium_sulfate": {
+      "name": "Siarczan wapnia (gips)",
+      "description": "Podnosi twardość ogólną (GH) w akwariach słodkowodnych."
+    }
+  }
+}

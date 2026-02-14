@@ -1,0 +1,17 @@
+{
+  "title": "Notatki",
+  "subtitle": "Dziennik akwarium i obserwacje",
+  "newNote": "Nowa notatka",
+  "filterByTank": "Filtruj według akwarium",
+  "allTanks": "Wszystkie akwaria",
+  "totalNotes": "Łączna liczba notatek",
+  "thisMonth": "Ten miesiąc",
+  "avgPerWeek": "Średnio na tydzień",
+  "noNotes": "Brak notatek",
+  "startDocumenting": "Zacznij dokumentować swoją przygodę akwarystyczną obserwacjami i notatkami",
+  "createFirst": "Utwórz pierwszą notatkę",
+  "confirmDelete": "Czy na pewno chcesz usunąć tę notatkę?",
+  "saveFailed": "Nie udało się zapisać notatki",
+  "deleteFailed": "Nie udało się usunąć notatki",
+  "loading": "Ładowanie notatek..."
+}

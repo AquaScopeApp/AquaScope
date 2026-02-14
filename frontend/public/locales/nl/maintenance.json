@@ -1,0 +1,26 @@
+{
+  "title": "Onderhoudsschema",
+  "subtitle": "Volg terugkerende onderhoudstaken voor je aquarium",
+  "addReminder": "Herinnering toevoegen",
+  "reminders": "Herinneringen",
+  "overdue": "Achterstallig",
+  "dueSoon": "Binnenkort (7 dagen)",
+  "upcoming": "Aanstaand",
+  "inactive": "Inactief",
+  "noReminders": "Nog geen onderhoudsherinneringen",
+  "noRemindersDescription": "Stel terugkerende herinneringen in voor waterwissels, apparatuurreiniging en andere taken",
+  "createFirst": "Eerste herinnering aanmaken",
+  "confirmDelete": "Weet je zeker dat je deze herinnering wilt verwijderen?",
+  "deleteFailed": "Verwijderen van herinnering mislukt",
+  "fields": {
+    "title": "Titel",
+    "frequency": "Frequentie",
+    "nextDue": "Volgende keer",
+    "lastCompleted": "Laatst voltooid",
+    "isActive": "Actief"
+  },
+  "frequency": {
+    "days_one": "Elke {{count}} dag",
+    "days_other": "Elke {{count}} dagen"
+  }
+}

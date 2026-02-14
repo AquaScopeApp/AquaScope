@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "AquaScope'a Hoş Geldiniz",
+    "subtitle": "Bölgesel tercihlerinizi yapılandıralım",
+    "country": "Ülke",
+    "countryPlaceholder": "Ülkenizi seçin...",
+    "countryHint": "Ülke seçimi aşağıdaki önerilen ayarları otomatik doldurur",
+    "unitSystem": "Hacim Birimleri",
+    "metric": "Metrik (litre)",
+    "usImperial": "ABD İmparatorluk (galon)",
+    "ukImperial": "İngiliz İmparatorluk (galon)",
+    "temperature": "Sıcaklık",
+    "celsius": "Santigrat (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "currency": "Para Birimi",
+    "dateFormat": "Tarih Formatı",
+    "getStarted": "Başla",
+    "skip": "Şimdilik atla",
+    "skipForNow": "Şimdilik atla",
+    "selectCountry": "Ülkenizi seçin...",
+    "custom": "Özel",
+    "saveFailed": "Ayarlar kaydedilemedi",
+    "preview": "Önizleme",
+    "saving": "Kaydediliyor..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "litre",
+    "usGallons": "gal",
+    "usGallonsFull": "ABD galonu",
+    "ukGallons": "gal",
+    "ukGallonsFull": "İngiliz galonu",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "Amerika Birleşik Devletleri",
+    "GB": "Birleşik Krallık",
+    "FR": "Fransa",
+    "DE": "Almanya",
+    "IT": "İtalya",
+    "ES": "İspanya",
+    "PT": "Portekiz",
+    "NL": "Hollanda",
+    "BE": "Belçika",
+    "AT": "Avusturya",
+    "CH": "İsviçre",
+    "CA": "Kanada",
+    "AU": "Avustralya",
+    "JP": "Japonya",
+    "BR": "Brezilya"
+  },
+  "admin": {
+    "title": "Bölgesel Ayarlar ve Birimler",
+    "description": "Tüm kullanıcılar için birimleri, sıcaklığı ve tarih formatını yapılandırın.",
+    "country": "Ülke / Bölge",
+    "unitSystem": "Hacim Birimleri",
+    "temperature": "Sıcaklık Birimi",
+    "dateFormat": "Tarih Formatı",
+    "countryHint": "Ülke seçimi önerilen varsayılanları otomatik doldurur"
+  }
+}

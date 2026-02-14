@@ -1,0 +1,62 @@
+{
+  "calculator": "添加計算ツール",
+  "title": "添加計算ツール",
+  "subtitle": "水質パラメータを補正するための添加量を計算",
+  "tankVolume": "水槽水量",
+  "selectParameter": "補正するパラメータを選択",
+  "selectCompound": "添加する化合物を選択",
+  "currentValue": "現在の値",
+  "targetValue": "目標値",
+  "noReading": "測定値なし — 手動で入力",
+  "noTarget": "目標値なし — 手動で入力",
+  "needsCorrection": "補正が必要",
+  "onTarget": "目標値に到達",
+  "noData": "データなし",
+  "result": {
+    "add": "添加量",
+    "of": "の",
+    "toRaise": "を上げるため",
+    "by": "を",
+    "from": "から",
+    "to": "まで",
+    "inYour": "あなたの",
+    "system": "システムで",
+    "noCorrection": "補正不要 — 現在の値が目標値以上です。"
+  },
+  "safety": {
+    "warning": "大幅な補正",
+    "splitDoses": "水槽の生体へのストレスを避けるため、{{count}} 回に分けて2〜3日かけて添加することをお勧めします。",
+    "maxSingle": "推奨される1回の最大補正量: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "仕組みについて",
+    "description": "この計算ツールは、パラメータを現在の値から目標値に到達させるために必要な化合物の量を計算します。サンゴやその他の生物はこれらの元素を継続的に消費するため、定期的な検査と補正が必要です。",
+    "balancing": "これはバランス調整であり、毎日の添加スケジュールではありません。"
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "ソーダ灰",
+      "description": "アルカリニティを上げます。リーフ水槽に最適 — pHもわずかに上昇します。"
+    },
+    "baking_soda": {
+      "name": "重曹",
+      "description": "アルカリニティを上げます。ソーダ灰よりpHへの影響が穏やかです。安価で入手しやすいです。"
+    },
+    "calcium_chloride": {
+      "name": "塩化カルシウム（二水和物）",
+      "description": "リーフ水槽で最も一般的なカルシウム補給剤です。"
+    },
+    "magnesium_chloride": {
+      "name": "塩化マグネシウム（六水和物）",
+      "description": "マグネシウムを上げます。硫酸マグネシウムと併用されることが多いです。"
+    },
+    "magnesium_sulfate": {
+      "name": "硫酸マグネシウム（エプソムソルト）",
+      "description": "マグネシウムを上げます。硫酸塩も供給します。"
+    },
+    "calcium_sulfate": {
+      "name": "硫酸カルシウム（石膏）",
+      "description": "淡水水槽の総硬度（GH）を上げます。"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Shënime",
+  "subtitle": "Ditari dhe vëzhgimet e akuariumit",
+  "newNote": "Shënim i ri",
+  "filterByTank": "Filtro sipas akuariumit",
+  "allTanks": "Të gjitha akuariumet",
+  "totalNotes": "Shënime gjithsej",
+  "thisMonth": "Këtë muaj",
+  "avgPerWeek": "Mesatarja për javë",
+  "noNotes": "Nuk ka shënime ende",
+  "startDocumenting": "Filloni dokumentimin e udhëtimit tuaj të akuariumit me vëzhgime dhe shënime",
+  "createFirst": "Krijo shënimin e parë",
+  "confirmDelete": "Jeni i sigurt që dëshironi ta fshini këtë shënim?",
+  "saveFailed": "Dështoi ruajtja e shënimit",
+  "deleteFailed": "Dështoi fshirja e shënimit",
+  "loading": "Duke ngarkuar shënimet..."
+}

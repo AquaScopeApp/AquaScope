@@ -1,0 +1,16 @@
+{
+  "title": "الصور",
+  "subtitle": "معرض صور الحوض والجدول الزمني",
+  "uploadPhoto": "رفع صورة",
+  "filterByTank": "تصفية حسب الحوض",
+  "allTanks": "جميع الأحواض",
+  "totalPhotos": "إجمالي الصور",
+  "thisMonth": "هذا الشهر",
+  "tanksWithPhotos": "أحواض بها صور",
+  "noPhotos": "لا توجد صور بعد",
+  "startUploading": "ارفع صورتك الأولى لبدء بناء الجدول الزمني لحوضك",
+  "confirmDelete": "هل أنت متأكد من حذف هذه الصورة؟",
+  "deleteFailed": "فشل حذف الصورة",
+  "updateFailed": "فشل تحديث الصورة",
+  "loading": "جارٍ تحميل الصور..."
+}

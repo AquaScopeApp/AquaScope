@@ -1,0 +1,86 @@
+{
+  "title": "Hastalık ve Sağlık Takibi",
+  "subtitle": "Canlılarınız için hastalıkları, tedavileri ve sağlık sonuçlarını izleyin",
+  "addDisease": "Hastalık Kaydet",
+  "editDisease": "Hastalığı Düzenle",
+  "viewDetail": "Detayları Gör",
+  "noRecords": "Henüz hastalık kaydı yok",
+  "noRecordsDescription": "Canlılarınızda sağlık sorunları fark ettiğinizde, tedavileri ve sonuçları takip etmek için buraya kaydedin",
+  "createFirst": "İlk Hastalığı Kaydet",
+  "confirmDelete": "Bu hastalık kaydını silmek istediğinize emin misiniz?",
+  "deleteFailed": "Hastalık kaydı silinemedi",
+  "filterByLivestock": "Canlıya göre filtrele",
+  "allLivestock": "Tüm Canlılar",
+  "showResolved": "Çözümlenmişleri Göster",
+  "hideResolved": "Çözümlenmişleri Gizle",
+  "status": {
+    "active": "Aktif",
+    "monitoring": "İzleniyor",
+    "resolved": "Çözümlendi",
+    "chronic": "Kronik"
+  },
+  "severity": {
+    "mild": "Hafif",
+    "moderate": "Orta",
+    "severe": "Şiddetli",
+    "critical": "Kritik"
+  },
+  "fields": {
+    "diseaseName": "Hastalık Adı",
+    "symptoms": "Belirtiler",
+    "diagnosis": "Tanı",
+    "severity": "Şiddet",
+    "status": "Durum",
+    "detectedDate": "Tespit Tarihi",
+    "resolvedDate": "Çözüm Tarihi",
+    "outcome": "Sonuç",
+    "notes": "Notlar",
+    "livestock": "Etkilenen Canlı"
+  },
+  "treatment": {
+    "title": "Tedaviler",
+    "add": "Tedavi Ekle",
+    "edit": "Tedaviyi Düzenle",
+    "noTreatments": "Henüz tedavi kaydedilmedi",
+    "type": "Tedavi Tipi",
+    "name": "Tedavi Adı",
+    "dosage": "Dozaj",
+    "date": "Tedavi Tarihi",
+    "duration": "Süre (gün)",
+    "effectiveness": "Etkinlik",
+    "consumable": "Bağlı İlaç",
+    "consumableNone": "Yok",
+    "confirmDelete": "Bu tedaviyi silmek istediğinize emin misiniz?",
+    "types": {
+      "medication": "İlaç",
+      "water_change": "Su Değişimi",
+      "quarantine": "Karantina",
+      "dip": "Banyo/Daldırma",
+      "temperature": "Sıcaklık Ayarlaması",
+      "other": "Diğer"
+    },
+    "effectivenessOptions": {
+      "effective": "Etkili",
+      "partially_effective": "Kısmen Etkili",
+      "ineffective": "Etkisiz",
+      "too_early": "Söylemek İçin Çok Erken"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Aktif",
+    "monitoringDiseases": "İzleniyor",
+    "chronicDiseases": "Kronik",
+    "resolvedDiseases": "Çözümlendi"
+  },
+  "detail": {
+    "timeline": "Tedavi Zaman Çizelgesi",
+    "detectedOn": "Tespit tarihi",
+    "resolvedOn": "Çözüm tarihi",
+    "ongoing": "Devam ediyor",
+    "duration": "Süre",
+    "days": "gün"
+  },
+  "suggestions": {
+    "title": "Yaygın Hastalıklar"
+  }
+}

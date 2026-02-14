@@ -1,0 +1,86 @@
+{
+  "title": "病気・健康管理",
+  "subtitle": "生体の病気、治療、健康状態を記録・追跡",
+  "addDisease": "病気を記録",
+  "editDisease": "病気を編集",
+  "viewDetail": "詳細を表示",
+  "noRecords": "病気の記録がまだありません",
+  "noRecordsDescription": "生体の健康上の問題に気づいたら、ここに記録して治療と経過を追跡しましょう",
+  "createFirst": "最初の病気を記録",
+  "confirmDelete": "この病気の記録を削除してよろしいですか？",
+  "deleteFailed": "病気の記録の削除に失敗しました",
+  "filterByLivestock": "生体でフィルター",
+  "allLivestock": "すべての生体",
+  "showResolved": "治癒済みを表示",
+  "hideResolved": "治癒済みを非表示",
+  "status": {
+    "active": "治療中",
+    "monitoring": "経過観察",
+    "resolved": "治癒済み",
+    "chronic": "慢性"
+  },
+  "severity": {
+    "mild": "軽度",
+    "moderate": "中程度",
+    "severe": "重度",
+    "critical": "危険"
+  },
+  "fields": {
+    "diseaseName": "病名",
+    "symptoms": "症状",
+    "diagnosis": "診断",
+    "severity": "重症度",
+    "status": "ステータス",
+    "detectedDate": "発見日",
+    "resolvedDate": "治癒日",
+    "outcome": "結果",
+    "notes": "メモ",
+    "livestock": "罹患した生体"
+  },
+  "treatment": {
+    "title": "治療",
+    "add": "治療を追加",
+    "edit": "治療を編集",
+    "noTreatments": "まだ治療が記録されていません",
+    "type": "治療タイプ",
+    "name": "治療名",
+    "dosage": "投与量",
+    "date": "治療日",
+    "duration": "期間（日数）",
+    "effectiveness": "有効性",
+    "consumable": "関連薬品",
+    "consumableNone": "なし",
+    "confirmDelete": "この治療を削除してよろしいですか？",
+    "types": {
+      "medication": "薬品",
+      "water_change": "換水",
+      "quarantine": "隔離",
+      "dip": "薬浴",
+      "temperature": "温度調整",
+      "other": "その他"
+    },
+    "effectivenessOptions": {
+      "effective": "有効",
+      "partially_effective": "部分的に有効",
+      "ineffective": "無効",
+      "too_early": "判断するには早すぎる"
+    }
+  },
+  "summary": {
+    "activeDiseases": "治療中",
+    "monitoringDiseases": "経過観察",
+    "chronicDiseases": "慢性",
+    "resolvedDiseases": "治癒済み"
+  },
+  "detail": {
+    "timeline": "治療タイムライン",
+    "detectedOn": "発見日",
+    "resolvedOn": "治癒日",
+    "ongoing": "治療中",
+    "duration": "期間",
+    "days": "日"
+  },
+  "suggestions": {
+    "title": "一般的な病気"
+  }
+}

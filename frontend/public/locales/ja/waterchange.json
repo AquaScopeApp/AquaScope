@@ -1,0 +1,92 @@
+{
+  "title": "換水計算ツール",
+  "subtitle": "パラメータの変化を予測し、必要な換水量を計算",
+  "noTanks": "水槽がまだありません。計算ツールを使用するにはまず水槽を作成してください。",
+  "volume": {
+    "display": "メイン水槽",
+    "sump": "サンプ",
+    "total": "総システム"
+  },
+  "tabs": {
+    "impact": "影響プレビュー",
+    "target": "目標パラメータ",
+    "correction": "補正プラン",
+    "dosing": "添加計算ツール"
+  },
+  "impact": {
+    "waterChangePercent": "換水量",
+    "liters": "{{value}} L",
+    "replacementWater": "交換水",
+    "saltMix": "人工海水",
+    "custom": "カスタム",
+    "saveProfile": "保存",
+    "profileSaved": "保存しました！",
+    "results": "予測パラメータ",
+    "noData": "パラメータデータがありません。まず測定値を記録してください。",
+    "parameter": "パラメータ",
+    "current": "現在",
+    "afterWC": "換水後",
+    "change": "変化",
+    "unchanged": "—"
+  },
+  "target": {
+    "selectParameter": "補正するパラメータ",
+    "currentValue": "現在の値",
+    "targetValue": "目標値",
+    "replacementValue": "交換水の値",
+    "noReading": "現在の測定値なし",
+    "result": {
+      "required": "必要な換水量",
+      "volume": "交換する水量",
+      "ofTotal": "総水量 {{total}} L のうち",
+      "notFeasible": "換水では達成できません",
+      "notFeasibleDesc": "交換水ではこのパラメータを目標値に到達させることができません。添加を検討してください。",
+      "noChangeNeeded": "すでに目標値です",
+      "noChangeDesc": "現在の値はすでに目標値または非常に近い値です。"
+    },
+    "split": {
+      "title": "大量換水",
+      "description": "50%を超える換水は生体にストレスを与える可能性があります。{{count}} 回に分けて {{percent}}%（各 {{liters}} L）を数日かけて行うことを検討してください。"
+    }
+  },
+  "correction": {
+    "statusOverview": "現在のパラメータ状態",
+    "outOfRange": "{{total}} パラメータ中 {{count}} が範囲外",
+    "allInRange": "すべてのパラメータが最適範囲内です！",
+    "criticalCount": "{{count}} 危険",
+    "warningCount": "{{count}} 警告",
+    "tooHigh": "高すぎる",
+    "tooLow": "低すぎる",
+    "onTarget": "目標値",
+    "recommendedPlan": "推奨プラン",
+    "planSummary": "{{days}} 日間で {{count}} 回の換水（各 {{percent}}%・{{liters}} L）",
+    "singleChange": "1回の換水 {{percent}}%（{{liters}} L）",
+    "noCorrection": "補正不要",
+    "schedule": "ステップバイステップのスケジュール",
+    "step": "換水 #{{number}}",
+    "dayOffset": "{{day}} 日目",
+    "beforeAfter": "実施前後",
+    "before": "実施前",
+    "afterPlan": "プラン完了後",
+    "uncorrectable": {
+      "title": "換水では補正できません",
+      "description": "これらのパラメータには添加や他の補正方法が必要です:",
+      "useDosing": "添加計算ツールを開く"
+    },
+    "config": {
+      "title": "スケジュール設定",
+      "maxChange": "1回あたりの最大換水量",
+      "daysBetween": "換水間隔",
+      "days": "{{count}} 日"
+    },
+    "info": {
+      "title": "安定性について",
+      "description": "アクアリウムでは完璧さよりも安定性が重要です。急激なパラメータの変化は、やや範囲外の値よりも生体にストレスを与えます。このプランは各回の変化を制限し、安全のために間隔を空けています。"
+    }
+  },
+  "info": {
+    "title": "仕組みについて",
+    "description": "換水は水槽の水を新しい交換水で希釈します。この計算ツールは希釈公式を使用して各パラメータの変化を予測します。",
+    "formula": "換水後 = 現在値 × (1 − 換水%) + 交換水値 × 換水%"
+  }
+}

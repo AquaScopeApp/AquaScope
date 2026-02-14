@@ -29,8 +29,8 @@ vi.mock('../../api', () => ({
 
 const mockRefreshCurrency = vi.fn().mockResolvedValue(undefined)
 
-vi.mock('../../hooks/useCurrency', () => ({
-  useCurrency: () => ({
+vi.mock('../../hooks/useRegionalSettings', () => ({
+  useRegionalSettings: () => ({
     currency: 'EUR',
     bannerTheme: 'reef',
     isLoaded: true,

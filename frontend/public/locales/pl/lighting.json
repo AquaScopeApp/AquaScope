@@ -1,0 +1,53 @@
+{
+  "title": "Oświetlenie",
+  "subtitle": "Zarządzaj harmonogramami oświetlenia LED dla swoich akwariów",
+  "createSchedule": "Utwórz harmonogram",
+  "editSchedule": "Edytuj harmonogram",
+  "deleteSchedule": "Usuń harmonogram",
+  "deleteConfirm": "Czy na pewno chcesz usunąć ten harmonogram oświetlenia?",
+  "noSchedules": "Brak harmonogramów oświetlenia",
+  "noSchedulesHint": "Utwórz harmonogram lub zacznij od presetu",
+  "fields": {
+    "name": "Nazwa harmonogramu",
+    "description": "Opis",
+    "tank": "Akwarium",
+    "channels": "Kanały LED",
+    "channelName": "Nazwa kanału",
+    "channelColor": "Kolor",
+    "addChannel": "Dodaj kanał",
+    "removeChannel": "Usuń",
+    "schedule": "Harmonogram",
+    "intensity": "Intensywność",
+    "hour": "Godzina",
+    "notes": "Notatki",
+    "active": "Aktywny",
+    "inactive": "Nieaktywny"
+  },
+  "presets": {
+    "title": "Presety",
+    "loadPreset": "Załaduj z presetu",
+    "selectPreset": "-- Wybierz preset --",
+    "reefbreeders-current": "ReefBreeders — Aktualny harmonogram",
+    "reefbreeders-acropora": "ReefBreeders — Zoptymalizowany dla Acropora",
+    "reef-low-softies": "Rafa — Słabe światło (Korale miękkie)",
+    "reef-medium-mixed": "Rafa — Średnie światło (LPS/Mieszane)",
+    "freshwater-planted": "Słodkowodne roślinne — Mocne światło",
+    "refugium-reverse": "Refugium — Odwrócony fotoperiod"
+  },
+  "chart": {
+    "title": "Podgląd intensywności",
+    "xAxis": "Godzina",
+    "yAxis": "Intensywność %"
+  },
+  "stats": {
+    "activeSchedules": "Aktywne harmonogramy",
+    "totalSchedules": "Łącznie harmonogramów",
+    "tanksWithLighting": "Akwaria z oświetleniem"
+  },
+  "actions": {
+    "activate": "Aktywuj",
+    "deactivate": "Dezaktywuj",
+    "duplicate": "Duplikuj",
+    "save": "Zapisz harmonogram"
+  }
+}

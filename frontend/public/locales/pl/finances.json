@@ -1,0 +1,73 @@
+{
+  "title": "Finanse",
+  "subtitle": "Śledź wydatki i zarządzaj budżetami dla swoich akwariów",
+  "allTanks": "Wszystkie akwaria",
+  "noData": "Brak danych o wydatkach",
+  "cumulative": "Kumulatywne",
+  "tabs": {
+    "summary": "Podsumowanie",
+    "details": "Szczegóły",
+    "budgets": "Budżety"
+  },
+  "stats": {
+    "totalSpent": "Wydano łącznie",
+    "equipment": "Sprzęt",
+    "consumables": "Materiały eksploatacyjne",
+    "livestock": "Zwierzęta",
+    "icpTests": "Testy ICP",
+    "electricity": "Elektryczność"
+  },
+  "categories": {
+    "equipment": "Sprzęt",
+    "consumables": "Materiały eksploatacyjne",
+    "livestock": "Zwierzęta",
+    "icp_tests": "Testy ICP",
+    "electricity": "Elektryczność"
+  },
+  "charts": {
+    "categoryBreakdown": "Wydatki według kategorii",
+    "monthlySpending": "Wydatki miesięczne",
+    "byTank": "Wydatki według akwarium"
+  },
+  "table": {
+    "tank": "Akwarium",
+    "total": "Razem"
+  },
+  "details": {
+    "allCategories": "Wszystkie kategorie",
+    "items": "elementy",
+    "date": "Data",
+    "name": "Nazwa",
+    "category": "Kategoria",
+    "tank": "Akwarium",
+    "price": "Cena",
+    "url": "URL",
+    "edit": "Edytuj",
+    "editTitle": "Edytuj wydatek",
+    "purchaseUrl": "Link do zakupu",
+    "noItems": "Nie znaleziono wydatków",
+    "confirmDelete": "Usunąć ten wydatek? Tej operacji nie można cofnąć."
+  },
+  "budget": {
+    "create": "Utwórz budżet",
+    "edit": "Edytuj budżet",
+    "delete": "Usuń",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "name": "Nazwa budżetu",
+    "amount": "Kwota",
+    "currency": "Waluta",
+    "period": "Okres",
+    "monthly": "Miesięcznie",
+    "yearly": "Rocznie",
+    "category": "Kategoria",
+    "tank": "Akwarium",
+    "notes": "Notatki",
+    "allCategories": "Wszystkie kategorie",
+    "allTanks": "Wszystkie akwaria",
+    "noBudgets": "Nie utworzono jeszcze budżetów",
+    "confirmDelete": "Czy na pewno chcesz usunąć ten budżet?",
+    "remaining": "{{amount}} pozostało",
+    "overBy": "Przekroczono o {{amount}}"
+  }
+}

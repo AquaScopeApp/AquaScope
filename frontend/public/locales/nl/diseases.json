@@ -1,0 +1,86 @@
+{
+  "title": "Ziekte- & gezondheidstracking",
+  "subtitle": "Monitor ziekten, behandelingen en gezondheidsresultaten van je dieren",
+  "addDisease": "Ziekte loggen",
+  "editDisease": "Ziekte bewerken",
+  "viewDetail": "Details bekijken",
+  "noRecords": "Nog geen ziekte-records",
+  "noRecordsDescription": "Als je gezondheidsproblemen bij je dieren opmerkt, log ze hier om behandelingen en resultaten bij te houden",
+  "createFirst": "Eerste ziekte loggen",
+  "confirmDelete": "Weet je zeker dat je dit ziekte-record wilt verwijderen?",
+  "deleteFailed": "Verwijderen van ziekte-record mislukt",
+  "filterByLivestock": "Filteren op dier",
+  "allLivestock": "Alle dieren",
+  "showResolved": "Opgeloste tonen",
+  "hideResolved": "Opgeloste verbergen",
+  "status": {
+    "active": "Actief",
+    "monitoring": "Monitoring",
+    "resolved": "Opgelost",
+    "chronic": "Chronisch"
+  },
+  "severity": {
+    "mild": "Mild",
+    "moderate": "Matig",
+    "severe": "Ernstig",
+    "critical": "Kritiek"
+  },
+  "fields": {
+    "diseaseName": "Ziektenaam",
+    "symptoms": "Symptomen",
+    "diagnosis": "Diagnose",
+    "severity": "Ernst",
+    "status": "Status",
+    "detectedDate": "Datum gedetecteerd",
+    "resolvedDate": "Datum opgelost",
+    "outcome": "Resultaat",
+    "notes": "Notities",
+    "livestock": "Getroffen dieren"
+  },
+  "treatment": {
+    "title": "Behandelingen",
+    "add": "Behandeling toevoegen",
+    "edit": "Behandeling bewerken",
+    "noTreatments": "Nog geen behandelingen geregistreerd",
+    "type": "Behandelingstype",
+    "name": "Behandelingsnaam",
+    "dosage": "Dosering",
+    "date": "Behandelingsdatum",
+    "duration": "Duur (dagen)",
+    "effectiveness": "Effectiviteit",
+    "consumable": "Gekoppeld medicijn",
+    "consumableNone": "Geen",
+    "confirmDelete": "Weet je zeker dat je deze behandeling wilt verwijderen?",
+    "types": {
+      "medication": "Medicijn",
+      "water_change": "Waterwissel",
+      "quarantine": "Quarantaine",
+      "dip": "Dip/Bad",
+      "temperature": "Temperatuuraanpassing",
+      "other": "Overig"
+    },
+    "effectivenessOptions": {
+      "effective": "Effectief",
+      "partially_effective": "Gedeeltelijk effectief",
+      "ineffective": "Niet effectief",
+      "too_early": "Te vroeg om te zeggen"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Actief",
+    "monitoringDiseases": "Monitoring",
+    "chronicDiseases": "Chronisch",
+    "resolvedDiseases": "Opgelost"
+  },
+  "detail": {
+    "timeline": "Behandelingstijdlijn",
+    "detectedOn": "Gedetecteerd op",
+    "resolvedOn": "Opgelost op",
+    "ongoing": "Lopend",
+    "duration": "Duur",
+    "days": "dagen"
+  },
+  "suggestions": {
+    "title": "Veelvoorkomende ziekten"
+  }
+}

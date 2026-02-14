@@ -1,0 +1,16 @@
+{
+  "title": "写真",
+  "subtitle": "水槽のフォトギャラリーとタイムライン",
+  "uploadPhoto": "写真をアップロード",
+  "filterByTank": "水槽でフィルター",
+  "allTanks": "すべての水槽",
+  "totalPhotos": "写真総数",
+  "thisMonth": "今月",
+  "tanksWithPhotos": "写真のある水槽",
+  "noPhotos": "写真がまだありません",
+  "startUploading": "最初の写真をアップロードして水槽タイムラインを作りましょう",
+  "confirmDelete": "この写真を削除してよろしいですか？",
+  "deleteFailed": "写真の削除に失敗しました",
+  "updateFailed": "写真の更新に失敗しました",
+  "loading": "写真を読み込み中..."
+}

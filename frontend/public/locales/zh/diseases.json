@@ -1,0 +1,86 @@
+{
+  "title": "疾病与健康跟踪",
+  "subtitle": "监控生物的疾病、治疗和健康状况",
+  "addDisease": "记录疾病",
+  "editDisease": "编辑疾病",
+  "viewDetail": "查看详情",
+  "noRecords": "还没有疾病记录",
+  "noRecordsDescription": "当您发现生物健康问题时，在此记录以跟踪治疗和结果",
+  "createFirst": "记录第一个疾病",
+  "confirmDelete": "确定要删除此疾病记录吗？",
+  "deleteFailed": "删除疾病记录失败",
+  "filterByLivestock": "按生物筛选",
+  "allLivestock": "所有生物",
+  "showResolved": "显示已康复",
+  "hideResolved": "隐藏已康复",
+  "status": {
+    "active": "治疗中",
+    "monitoring": "观察中",
+    "resolved": "已康复",
+    "chronic": "慢性"
+  },
+  "severity": {
+    "mild": "轻微",
+    "moderate": "中等",
+    "severe": "严重",
+    "critical": "危急"
+  },
+  "fields": {
+    "diseaseName": "疾病名称",
+    "symptoms": "症状",
+    "diagnosis": "诊断",
+    "severity": "严重程度",
+    "status": "状态",
+    "detectedDate": "发现日期",
+    "resolvedDate": "康复日期",
+    "outcome": "结果",
+    "notes": "备注",
+    "livestock": "受影响的生物"
+  },
+  "treatment": {
+    "title": "治疗",
+    "add": "添加治疗",
+    "edit": "编辑治疗",
+    "noTreatments": "还没有治疗记录",
+    "type": "治疗类型",
+    "name": "治疗名称",
+    "dosage": "剂量",
+    "date": "治疗日期",
+    "duration": "持续时间（天）",
+    "effectiveness": "有效性",
+    "consumable": "关联药品",
+    "consumableNone": "无",
+    "confirmDelete": "确定要删除此治疗记录吗？",
+    "types": {
+      "medication": "药物治疗",
+      "water_change": "换水",
+      "quarantine": "隔离",
+      "dip": "药浴",
+      "temperature": "温度调整",
+      "other": "其他"
+    },
+    "effectivenessOptions": {
+      "effective": "有效",
+      "partially_effective": "部分有效",
+      "ineffective": "无效",
+      "too_early": "尚无法判断"
+    }
+  },
+  "summary": {
+    "activeDiseases": "治疗中",
+    "monitoringDiseases": "观察中",
+    "chronicDiseases": "慢性",
+    "resolvedDiseases": "已康复"
+  },
+  "detail": {
+    "timeline": "治疗时间线",
+    "detectedOn": "发现于",
+    "resolvedOn": "康复于",
+    "ongoing": "进行中",
+    "duration": "持续时间",
+    "days": "天"
+  },
+  "suggestions": {
+    "title": "常见疾病"
+  }
+}

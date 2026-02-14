@@ -1,0 +1,62 @@
+{
+  "checker": "Uyumluluk",
+  "title": "Uyumluluk Kontrolü",
+  "subtitle": "Akvaryum sakinlerinizin birbiriyle uyumlu olup olmadığını kontrol edin",
+  "selectTank": "Kontrol edilecek akvaryumu seçin",
+  "overallCompatible": "Kontrol edilen tüm türler uyumlu görünüyor",
+  "overallCaution": "Bazı potansiyel endişeler tespit edildi",
+  "overallIncompatible": "Uyumluluk sorunları tespit edildi",
+  "speciesChecked": "{{count}} tür kontrol edildi",
+  "issuesFound": "{{count}} sorun bulundu",
+  "noIssues": "Uyumluluk sorunu tespit edilmedi",
+  "notInDatabase": "Tür veritabanında yok",
+  "notInDatabaseInfo": "Aşağıdaki türler uyumluluk veritabanımızda bulunmuyor. Onlar için kontrol yapılmadı.",
+  "noLivestock": "Bu akvaryumda kontrol edilecek aktif canlı yok",
+  "inlineCompatible": "Bu tür mevcut akvaryum sakinlerinizle uyumlu görünüyor.",
+  "inlineNoData": "Bu tür için uyumluluk verisi mevcut değil.",
+  "inlineChecking": "Uyumluluk kontrol ediliyor...",
+  "rules": {
+    "aggression_conflict": "{{speciesA}} ({{tempA}}) ile {{speciesB}} ({{tempB}}) çatışabilir. Agresif türler barışçıl akvaryum arkadaşlarını strese sokabilir veya zarar verebilir.",
+    "reef_safety": "{{speciesA}} resif-güvenli değildir ve {{speciesB}}'ye zarar verebilir veya yiyebilir.",
+    "reef_safety_caution": "{{speciesA}}'nın resif güvenliği şüphelidir. {{speciesB}} ile yakından izleyin.",
+    "tank_too_small": "{{species}} en az {{required}}L gerektirir — bu akvaryum sadece {{actual}}L.",
+    "territorial_duplicates": "Aynı akvaryumda birden fazla {{species}} bölge için kavga edebilir.",
+    "predator_prey": "{{predator}}, {{prey}} için doğal bir avcıdır. Yüksek avlanma riski.",
+    "size_disparity": "{{large}}, {{small}}'dan çok daha büyüktür. Boyut farkı risk oluşturur.",
+    "water_type_conflict": "{{species}} bir {{speciesWater}} türüdür ve {{tankWater}} akvaryumda iyi yaşayamayabilir.",
+    "specific_seahorse": "Denizatları sadece kendi türleriyle akvaryumda tutulmalıdır. {{other}} yiyecek için rekabet edebilir veya strese sokabilir.",
+    "specific_axolotl": "Aksalotller en iyi tek başlarına veya kendi türleriyle tutulur. {{other}} solungaçlarını ısırabilir veya yenebilir.",
+    "specific_betta_male": "Birden fazla erkek Betta agresif şekilde kavga eder. Akvaryum başına sadece bir erkek tutun.",
+    "specific_coral_war": "{{speciesA}} ve {{speciesB}} çok yakın yerleştirilirse kimyasal savaşa girebilir.",
+    "corallivore_conflict": "{{speciesA}} mercanla beslenir ve {{speciesB}}'ye zarar verir."
+  },
+  "info": {
+    "title": "Bu nasıl çalışır",
+    "description": "Bu kontrol aracı, agresyon çatışmaları, resif güvenliği, akvaryum boyutu, bölge anlaşmazlıkları ve avcı-av ilişkilerini kontrol etmek için yaygın akvaryum türlerinin özelliklerinin bulunduğu dahili bir veritabanı kullanır.",
+    "disclaimer": "Bu bir yönlendirme aracıdır, garanti değildir. Bireysel davranışlar değişebilir. Ekleme yapmadan önce türleri her zaman kapsamlı şekilde araştırın.",
+    "sourcesTitle": "Veri kaynakları",
+    "sources": "Tür özellikleri yerleşik referanslardan derlenmiştir: FishBase.org (taksonomi, ekoloji, davranış), WoRMS (World Register of Marine Species), LiveAquaria bakım rehberleri, Reef2Reef/ReefCentral topluluk wikileri, Eric Borneman'ın Aquarium Corals (mercan allelopatisi) ve MASNA bakım kılavuzları. Akvaryum boyutları resif tutma topluluğundan yaygın olarak kabul edilen minimumları yansıtmaktadır."
+  },
+  "severity": {
+    "compatible": "Uyumlu",
+    "caution": "Dikkat",
+    "incompatible": "Uyumsuz"
+  },
+  "tabs": {
+    "issues": "Sorunlar",
+    "matrix": "Matris",
+    "network": "Ağ"
+  },
+  "matrix": {
+    "clickForDetails": "Ayrıntılar için bir hücreye tıklayın"
+  },
+  "network": {
+    "predatorPrey": "Avcı → Av",
+    "incompatible": "Uyumsuz",
+    "caution": "Dikkat",
+    "fish": "Balık",
+    "coral": "Mercan",
+    "invertebrate": "Omurgasız",
+    "noConnections": "Türler arasında uyumluluk sorunu bulunamadı"
+  }
+}

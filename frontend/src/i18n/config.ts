@@ -16,7 +16,7 @@ i18n
   .use(initReactI18next) // Pass i18n to react-i18next
   .init({
     fallbackLng: 'en',
-    supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt'],
+    supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt', 'sq', 'nl', 'ja', 'tr', 'pl', 'ar', 'ru', 'zh', 'ko'],
 
     debug: import.meta.env.DEV,
 

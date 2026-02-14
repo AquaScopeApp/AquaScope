@@ -1,0 +1,16 @@
+{
+  "title": "Foto's",
+  "subtitle": "Aquarium fotogalerij en tijdlijn",
+  "uploadPhoto": "Foto uploaden",
+  "filterByTank": "Filteren op aquarium",
+  "allTanks": "Alle aquariums",
+  "totalPhotos": "Totaal foto's",
+  "thisMonth": "Deze maand",
+  "tanksWithPhotos": "Aquariums met foto's",
+  "noPhotos": "Nog geen foto's",
+  "startUploading": "Upload je eerste foto om je aquariumtijdlijn te starten",
+  "confirmDelete": "Weet je zeker dat je deze foto wilt verwijderen?",
+  "deleteFailed": "Verwijderen van foto mislukt",
+  "updateFailed": "Bijwerken van foto mislukt",
+  "loading": "Foto's laden..."
+}

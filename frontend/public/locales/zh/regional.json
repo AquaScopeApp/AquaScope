@@ -1,0 +1,62 @@
+{
+  "setup": {
+    "title": "欢迎使用 AquaScope",
+    "subtitle": "让我们配置您的地区偏好设置",
+    "country": "国家",
+    "countryPlaceholder": "选择您的国家...",
+    "countryHint": "选择国家后将自动填充下方的推荐设置",
+    "unitSystem": "容量单位",
+    "metric": "公制（升）",
+    "usImperial": "美制（加仑）",
+    "ukImperial": "英制（加仑）",
+    "temperature": "温度",
+    "celsius": "摄氏度 (°C)",
+    "fahrenheit": "华氏度 (°F)",
+    "currency": "货币",
+    "dateFormat": "日期格式",
+    "getStarted": "开始使用",
+    "skip": "稍后设置",
+    "skipForNow": "稍后设置",
+    "selectCountry": "选择您的国家...",
+    "custom": "自定义",
+    "saveFailed": "保存设置失败",
+    "preview": "预览",
+    "saving": "保存中..."
+  },
+  "units": {
+    "liters": "L",
+    "litersFull": "升",
+    "usGallons": "gal",
+    "usGallonsFull": "美制加仑",
+    "ukGallons": "gal",
+    "ukGallonsFull": "英制加仑",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  },
+  "countries": {
+    "US": "美国",
+    "GB": "英国",
+    "FR": "法国",
+    "DE": "德国",
+    "IT": "意大利",
+    "ES": "西班牙",
+    "PT": "葡萄牙",
+    "NL": "荷兰",
+    "BE": "比利时",
+    "AT": "奥地利",
+    "CH": "瑞士",
+    "CA": "加拿大",
+    "AU": "澳大利亚",
+    "JP": "日本",
+    "BR": "巴西"
+  },
+  "admin": {
+    "title": "地区与单位",
+    "description": "为所有用户配置单位、温度和日期格式。",
+    "country": "国家 / 地区",
+    "unitSystem": "容量单位",
+    "temperature": "温度单位",
+    "dateFormat": "日期格式",
+    "countryHint": "选择国家后将自动填充推荐的默认值"
+  }
+}

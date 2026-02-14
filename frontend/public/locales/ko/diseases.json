@@ -1,0 +1,86 @@
+{
+  "title": "질병 및 건강 관리",
+  "subtitle": "생물의 질병, 치료, 건강 결과를 모니터링",
+  "addDisease": "질병 기록",
+  "editDisease": "질병 편집",
+  "viewDetail": "상세 보기",
+  "noRecords": "아직 질병 기록이 없습니다",
+  "noRecordsDescription": "생물의 건강 문제를 발견하면 여기에 기록하여 치료와 결과를 추적하세요",
+  "createFirst": "첫 번째 질병 기록",
+  "confirmDelete": "이 질병 기록을 삭제하시겠습니까?",
+  "deleteFailed": "질병 기록 삭제에 실패했습니다",
+  "filterByLivestock": "생물별 필터",
+  "allLivestock": "모든 생물",
+  "showResolved": "완치됨 표시",
+  "hideResolved": "완치됨 숨기기",
+  "status": {
+    "active": "치료 중",
+    "monitoring": "관찰 중",
+    "resolved": "완치됨",
+    "chronic": "만성"
+  },
+  "severity": {
+    "mild": "경미",
+    "moderate": "중등도",
+    "severe": "중증",
+    "critical": "위급"
+  },
+  "fields": {
+    "diseaseName": "질병명",
+    "symptoms": "증상",
+    "diagnosis": "진단",
+    "severity": "심각도",
+    "status": "상태",
+    "detectedDate": "발견 날짜",
+    "resolvedDate": "완치 날짜",
+    "outcome": "결과",
+    "notes": "메모",
+    "livestock": "감염된 생물"
+  },
+  "treatment": {
+    "title": "치료",
+    "add": "치료 추가",
+    "edit": "치료 편집",
+    "noTreatments": "아직 치료 기록이 없습니다",
+    "type": "치료 유형",
+    "name": "치료명",
+    "dosage": "용량",
+    "date": "치료 날짜",
+    "duration": "기간 (일)",
+    "effectiveness": "효과",
+    "consumable": "연결된 약품",
+    "consumableNone": "없음",
+    "confirmDelete": "이 치료를 삭제하시겠습니까?",
+    "types": {
+      "medication": "약물 치료",
+      "water_change": "환수",
+      "quarantine": "격리",
+      "dip": "약욕",
+      "temperature": "온도 조절",
+      "other": "기타"
+    },
+    "effectivenessOptions": {
+      "effective": "효과적",
+      "partially_effective": "부분적으로 효과적",
+      "ineffective": "효과 없음",
+      "too_early": "판단하기 이름"
+    }
+  },
+  "summary": {
+    "activeDiseases": "치료 중",
+    "monitoringDiseases": "관찰 중",
+    "chronicDiseases": "만성",
+    "resolvedDiseases": "완치됨"
+  },
+  "detail": {
+    "timeline": "치료 타임라인",
+    "detectedOn": "발견일",
+    "resolvedOn": "완치일",
+    "ongoing": "진행 중",
+    "duration": "기간",
+    "days": "일"
+  },
+  "suggestions": {
+    "title": "일반적인 질병"
+  }
+}

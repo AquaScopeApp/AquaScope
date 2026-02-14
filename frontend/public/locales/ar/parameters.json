@@ -1,0 +1,54 @@
+{
+  "title": "معايير الماء",
+  "subtitle": "تتبع وعرض كيمياء مياه حوض الشعاب المرجانية",
+  "logParameters": "تسجيل المعايير",
+  "hideForm": "إخفاء النموذج",
+  "showTable": "عرض الجدول",
+  "hideTable": "إخفاء الجدول",
+  "latestReadings": "آخر القراءات",
+  "history": "السجل",
+  "selectTank": "اختر حوضًا",
+  "noTanksYet": "لا توجد أحواض بعد",
+  "noTanksDescription": "تحتاج إلى إنشاء حوض قبل تسجيل المعايير",
+  "createFirstTank": "أنشئ حوضك الأول",
+  "rawDataTable": "جدول البيانات الخام (عرض تصحيح الأخطاء)",
+  "totalEntries": "إجمالي السجلات:",
+  "filterByParameter": "تصفية حسب المعيار...",
+  "noData": "لا توجد بيانات متاحة في النطاق الزمني المحدد",
+  "noParameterData": "لا توجد بيانات معايير بعد",
+  "startTracking": "ابدأ بتتبع كيمياء الماء عن طريق تسجيل نتائج أول اختبار للماء",
+  "logFirst": "سجّل المعايير الأولى",
+  "showing": "عرض {{from}} إلى {{to}} من {{total}} سجل",
+  "page": "صفحة {{current}} من {{total}}",
+  "timeRange": "النطاق الزمني:",
+  "ranges": {
+    "7d": "7 أيام",
+    "30d": "30 يومًا",
+    "90d": "90 يومًا",
+    "1y": "سنة واحدة",
+    "all": "كل الأوقات"
+  },
+  "table": {
+    "timestamp": "الطابع الزمني",
+    "parameter": "المعيار",
+    "value": "القيمة",
+    "unit": "الوحدة",
+    "actions": "الإجراءات"
+  },
+  "fields": {
+    "calcium": "الكالسيوم (Ca)",
+    "magnesium": "المغنيسيوم (Mg)",
+    "alkalinity": "القلوية (KH)",
+    "nitrate": "النترات (NO3)",
+    "phosphate": "الفوسفات (PO4)",
+    "salinity": "الملوحة",
+    "temperature": "درجة الحرارة",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

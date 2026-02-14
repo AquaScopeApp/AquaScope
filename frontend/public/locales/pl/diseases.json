@@ -1,0 +1,86 @@
+{
+  "title": "Śledzenie chorób i zdrowia",
+  "subtitle": "Monitoruj choroby, leczenie i wyniki zdrowotne swoich zwierząt",
+  "addDisease": "Zapisz chorobę",
+  "editDisease": "Edytuj chorobę",
+  "viewDetail": "Zobacz szczegóły",
+  "noRecords": "Brak zapisów chorób",
+  "noRecordsDescription": "Gdy zauważysz problemy zdrowotne u swoich zwierząt, zapisz je tutaj, aby śledzić leczenie i wyniki",
+  "createFirst": "Zapisz pierwszą chorobę",
+  "confirmDelete": "Czy na pewno chcesz usunąć ten zapis choroby?",
+  "deleteFailed": "Nie udało się usunąć zapisu choroby",
+  "filterByLivestock": "Filtruj według zwierzęcia",
+  "allLivestock": "Wszystkie zwierzęta",
+  "showResolved": "Pokaż rozwiązane",
+  "hideResolved": "Ukryj rozwiązane",
+  "status": {
+    "active": "Aktywna",
+    "monitoring": "Monitorowana",
+    "resolved": "Rozwiązana",
+    "chronic": "Przewlekła"
+  },
+  "severity": {
+    "mild": "Łagodna",
+    "moderate": "Umiarkowana",
+    "severe": "Ciężka",
+    "critical": "Krytyczna"
+  },
+  "fields": {
+    "diseaseName": "Nazwa choroby",
+    "symptoms": "Objawy",
+    "diagnosis": "Diagnoza",
+    "severity": "Nasilenie",
+    "status": "Status",
+    "detectedDate": "Data wykrycia",
+    "resolvedDate": "Data rozwiązania",
+    "outcome": "Wynik",
+    "notes": "Notatki",
+    "livestock": "Dotknięte zwierzęta"
+  },
+  "treatment": {
+    "title": "Leczenie",
+    "add": "Dodaj leczenie",
+    "edit": "Edytuj leczenie",
+    "noTreatments": "Brak zarejestrowanych leczeń",
+    "type": "Rodzaj leczenia",
+    "name": "Nazwa leczenia",
+    "dosage": "Dawkowanie",
+    "date": "Data leczenia",
+    "duration": "Czas trwania (dni)",
+    "effectiveness": "Skuteczność",
+    "consumable": "Powiązany lek",
+    "consumableNone": "Brak",
+    "confirmDelete": "Czy na pewno chcesz usunąć to leczenie?",
+    "types": {
+      "medication": "Lek",
+      "water_change": "Podmiana wody",
+      "quarantine": "Kwarantanna",
+      "dip": "Kąpiel lecznicza",
+      "temperature": "Regulacja temperatury",
+      "other": "Inne"
+    },
+    "effectivenessOptions": {
+      "effective": "Skuteczne",
+      "partially_effective": "Częściowo skuteczne",
+      "ineffective": "Nieskuteczne",
+      "too_early": "Za wcześnie na ocenę"
+    }
+  },
+  "summary": {
+    "activeDiseases": "Aktywne",
+    "monitoringDiseases": "Monitorowane",
+    "chronicDiseases": "Przewlekłe",
+    "resolvedDiseases": "Rozwiązane"
+  },
+  "detail": {
+    "timeline": "Oś czasu leczenia",
+    "detectedOn": "Wykryto dnia",
+    "resolvedOn": "Rozwiązano dnia",
+    "ongoing": "W trakcie",
+    "duration": "Czas trwania",
+    "days": "dni"
+  },
+  "suggestions": {
+    "title": "Częste choroby"
+  }
+}

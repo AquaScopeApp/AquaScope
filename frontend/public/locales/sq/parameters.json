@@ -1,0 +1,54 @@
+{
+  "title": "Parametrat e ujit",
+  "subtitle": "Gjurmo dhe vizualizo kiminë e ujit të akuariumit",
+  "logParameters": "Regjistro parametrat",
+  "hideForm": "Fshih formularin",
+  "showTable": "Shfaq tabelën",
+  "hideTable": "Fshih tabelën",
+  "latestReadings": "Leximet e fundit",
+  "history": "Historiku",
+  "selectTank": "Zgjidh akuariumin",
+  "noTanksYet": "Nuk ka akuariume ende",
+  "noTanksDescription": "Duhet të krijoni një akuarium para se të regjistroni parametrat",
+  "createFirstTank": "Krijo akuariumin e parë",
+  "rawDataTable": "Tabela e të dhënave (Pamje debug)",
+  "totalEntries": "Regjistrime gjithsej:",
+  "filterByParameter": "Filtro sipas parametrit...",
+  "noData": "Nuk ka të dhëna të disponueshme në intervalin e zgjedhur kohor",
+  "noParameterData": "Nuk ka të dhëna parametrash ende",
+  "startTracking": "Filloni gjurmimin e kimisë së ujit duke regjistruar rezultatet e testit të parë",
+  "logFirst": "Regjistro parametrat e parë",
+  "showing": "Duke shfaqur {{from}} deri {{to}} nga {{total}} regjistrime",
+  "page": "Faqja {{current}} nga {{total}}",
+  "timeRange": "Intervali kohor:",
+  "ranges": {
+    "7d": "7 Ditë",
+    "30d": "30 Ditë",
+    "90d": "90 Ditë",
+    "1y": "1 Vit",
+    "all": "Të gjitha"
+  },
+  "table": {
+    "timestamp": "Data dhe ora",
+    "parameter": "Parametri",
+    "value": "Vlera",
+    "unit": "Njësia",
+    "actions": "Veprime"
+  },
+  "fields": {
+    "calcium": "Kalciumi (Ca)",
+    "magnesium": "Magneziumi (Mg)",
+    "alkalinity": "Alkaliteti (KH)",
+    "nitrate": "Nitrati (NO3)",
+    "phosphate": "Fosfati (PO4)",
+    "salinity": "Kripësia",
+    "temperature": "Temperatura",
+    "ph": "pH"
+  },
+  "units": {
+    "ppm": "ppm",
+    "dkh": "dKH",
+    "celsius": "°C",
+    "fahrenheit": "°F"
+  }
+}

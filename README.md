@@ -107,7 +107,7 @@ If you find AquaScope useful, consider supporting its development:
 | **Dark Mode** | Full dark theme with toggle, persisted preference, and comprehensive styling across all components |
 | **Tank Maturity Score** | Gamified 0-100 score based on age, parameter stability, and livestock diversity — shown as radial gauge badge |
 | **Public Tank Profiles** | Shareable read-only tank pages with live stats, livestock, and parameters |
-| **Multi-Language** | 6 languages: English, French, Spanish, German, Italian, Portuguese |
+| **Multi-Language** | 15 languages: English, French, Spanish, German, Italian, Portuguese, Albanian, Dutch, Japanese, Turkish, Polish, Arabic, Russian, Chinese, Korean |
 | **PWA / Installable** | Progressive Web App with offline support, service worker caching, and install prompt |
 | **Dashboard** | Sparkline parameter trends, maturity badges, background tank images, animated banners (reef/planted/custom), CSV export |
 | **Admin Panel** | User management, module toggles, database info, storage browser, orphan cleanup, species traits editor |
@@ -124,7 +124,7 @@ If you find AquaScope useful, consider supporting its development:
 - **Disease/Health Tracking** — Full-stack module for logging diseases linked to specific livestock, with treatment timelines (medication, quarantine, dips, water changes), severity/status tracking, consumable stock deduction, and a common diseases knowledge base (30+ saltwater and freshwater diseases)
 - **Health tab** on tank detail page showing active disease count and per-tank health summary
 - **Seed data** — 5 disease records with treatments across demo saltwater and freshwater tanks
-- **6-language i18n** — full disease module translations (EN, FR, DE, ES, IT, PT)
+- **15-language i18n** — full translations (EN, FR, DE, ES, IT, PT, SQ, NL, JA, TR, PL, AR, RU, ZH, KO)
 
 ### Previous: v1.10.0
 
@@ -373,7 +373,7 @@ AquaScope/
 │   │   ├── api/          # API client + routing layer
 │   │   ├── hooks/        # Custom React hooks
 │   │   └── i18n/         # Internationalization config
-│   ├── public/locales/   # Translation files (6 languages x 17 namespaces)
+│   ├── public/locales/   # Translation files (15 languages x 20 namespaces)
 │   └── Dockerfile
 ├── data/                 # Shared data files
 │   └── species-traits.json  # Species compatibility knowledge base (60+ entries)

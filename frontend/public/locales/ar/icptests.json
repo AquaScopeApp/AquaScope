@@ -1,0 +1,39 @@
+{
+  "title": "اختبارات ICP للماء",
+  "subtitle": "ارفع ملفات PDF من مختبر ATI لتتبع العناصر النزرة وجودة الماء تلقائيًا",
+  "uploadNew": "رفع اختبار جديد",
+  "selectTank": "اختر حوضًا",
+  "allTanks": "جميع الأحواض",
+  "uploading": "جارٍ الرفع...",
+  "uploadATI": "رفع PDF من ATI",
+  "processing": "جارٍ المعالجة...",
+  "uploadHelp": "ارفع ملف PDF لاختبار ICP من ATI Aquaristik للاستخراج التلقائي للبيانات",
+  "testHistory": "سجل الاختبارات",
+  "tests": "اختبارات",
+  "loading": "جارٍ التحميل...",
+  "noTests": "لا توجد اختبارات ICP بعد. ارفع اختبارك الأول!",
+  "uploadSuccess": "تم رفع اختبار ICP بنجاح",
+  "uploadSuccessMulti": "تم رفع اختبارات ICP بنجاح",
+  "uploadFailed": "فشل الرفع:",
+  "confirmDelete": "هل أنت متأكد من حذف هذا الاختبار؟",
+  "deleteFailed": "فشل حذف الاختبار",
+  "selectTest": "اختر اختبارًا من القائمة لعرض التفاصيل",
+  "testId": "معرّف الاختبار:",
+  "waterType": {
+    "saltwater": "ماء مالح",
+    "roWater": "ماء RO"
+  },
+  "scores": {
+    "major": "العناصر الرئيسية",
+    "minor": "العناصر الثانوية",
+    "pollutants": "الملوثات",
+    "base": "العناصر الأساسية"
+  },
+  "tabs": {
+    "major": "رئيسية",
+    "minor": "ثانوية",
+    "pollutants": "ملوثات"
+  },
+  "notes": "ملاحظات",
+  "cost": "تكلفة الاختبار"
+}

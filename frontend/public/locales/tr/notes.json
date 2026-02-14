@@ -1,0 +1,17 @@
+{
+  "title": "Notlar",
+  "subtitle": "Akvaryum günlüğü ve gözlemler",
+  "newNote": "Yeni Not",
+  "filterByTank": "Akvaryuma Göre Filtrele",
+  "allTanks": "Tüm Akvaryumlar",
+  "totalNotes": "Toplam Not",
+  "thisMonth": "Bu Ay",
+  "avgPerWeek": "Haftalık Ortalama",
+  "noNotes": "Henüz not yok",
+  "startDocumenting": "Gözlemler ve notlarla resif yolculuğunuzu belgelemeye başlayın",
+  "createFirst": "İlk Notu Oluştur",
+  "confirmDelete": "Bu notu silmek istediğinize emin misiniz?",
+  "saveFailed": "Not kaydedilemedi",
+  "deleteFailed": "Not silinemedi",
+  "loading": "Notlar yükleniyor..."
+}

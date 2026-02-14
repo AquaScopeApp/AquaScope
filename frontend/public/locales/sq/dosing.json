@@ -1,0 +1,62 @@
+{
+  "calculator": "Llogaritësi i dozimit",
+  "title": "Llogaritësi i dozimit",
+  "subtitle": "Llogarit sa duhet të dozosh për të korrigjuar parametrat e ujit",
+  "tankVolume": "Vëllimi i akuariumit",
+  "selectParameter": "Zgjidh një parametër për të korrigjuar",
+  "selectCompound": "Zgjidh një kompound dozimi",
+  "currentValue": "Vlera aktuale",
+  "targetValue": "Vlera e synuar",
+  "noReading": "Nuk ka lexim — vendos manualisht",
+  "noTarget": "Nuk ka objektiv — vendos manualisht",
+  "needsCorrection": "Ka nevojë për korrigjim",
+  "onTarget": "Në objektiv",
+  "noData": "Nuk ka të dhëna",
+  "result": {
+    "add": "Shto",
+    "of": "nga",
+    "toRaise": "për të ngritur",
+    "by": "me",
+    "from": "nga",
+    "to": "në",
+    "inYour": "në sistemin tënd",
+    "system": "sistem",
+    "noCorrection": "Nuk nevojitet korrigjim — vlera aktuale është në ose mbi objektivin."
+  },
+  "safety": {
+    "warning": "Korrigjim i madh",
+    "splitDoses": "Konsideroni ta ndani në {{count}} doza gjatë 2–3 ditëve për të shmangur stresin e banorëve të akuariumit.",
+    "maxSingle": "Korrigjimi maksimal i rekomanduar për një herë: {{value}} {{unit}}"
+  },
+  "info": {
+    "title": "Si funksionon",
+    "description": "Ky llogaritës llogarit sa kompound duhet të shtoni për ta çuar një parametër nga vlera aktuale te objektivi juaj. Koralet dhe organizmat e tjera konsumojnë këto elemente vazhdimisht, kështu që testimi dhe korrigjimi i rregullt pritet.",
+    "balancing": "Ju jeni duke balancuar — jo duke planifikuar doza ditore."
+  },
+  "compounds": {
+    "soda_ash": {
+      "name": "Sodë e rëndë",
+      "description": "Rrit alkalitetin. E preferuar për akuariumet e rifit — gjithashtu rrit pak pH-në."
+    },
+    "baking_soda": {
+      "name": "Sodë buke",
+      "description": "Rrit alkalitetin. Ndikim më i butë në pH sesa soda e rëndë. E zakonshme dhe e lirë."
+    },
+    "calcium_chloride": {
+      "name": "Klorur kalciumi (dihidrat)",
+      "description": "Suplementi më i zakonshëm i kalciumit për akuariumet e rifit."
+    },
+    "magnesium_chloride": {
+      "name": "Klorur magneziumi (heksahidrat)",
+      "description": "Rrit magneziumin. Shpesh përdoret bashkë me sulfat magneziumi."
+    },
+    "magnesium_sulfate": {
+      "name": "Sulfat magneziumi (Kripë Epsom)",
+      "description": "Rrit magneziumin. Gjithashtu ofron sulfat."
+    },
+    "calcium_sulfate": {
+      "name": "Sulfat kalciumi (gips)",
+      "description": "Rrit fortësinë e përgjithshme (GH) në akuariumet me ujë të ëmbël."
+    }
+  }
+}
