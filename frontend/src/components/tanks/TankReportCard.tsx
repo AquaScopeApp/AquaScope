@@ -198,7 +198,7 @@ export default function TankReportCard({ reportCard, onDownloadPdf }: TankReport
       {/* Category Breakdown */}
       <div className="space-y-3">
         <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-          {t('reportCard.categories', 'Categories')}
+          {t('reportCard.categoryDetails', 'Categories')}
         </h4>
         {Object.entries(categories).map(([key, cat]) => {
           const meta = CATEGORY_LABELS[key] || { label: key, icon: '' }
